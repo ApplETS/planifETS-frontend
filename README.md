@@ -1,29 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# <p align="center">PlanifETS Frontend</p>
 
-## Getting Started
+<p align="center">
+  <a href="https://github.com/your-repo/planifETS-frontend/actions/workflows/ci.yml" target="_blank">
+    <img src="https://github.com/your-repo/planifETS-frontend/actions/workflows/ci.yml/badge.svg" alt="CI Status" style="height: 20px; margin-right: 5px;">
+  </a>
+  <a href="https://www.notion.so/PlanifETS-Frontend" target="_blank">
+    <img src="https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white" alt="Notion" style="height: 20px; margin-right: 5px;">
+  </a>
+</p>
 
-First, run the development server:
+> _Session planner for students at the École de technologie supérieure_
 
-```bash
-yarn dev
+This frontend complements the PlanifETS backend, providing an intuitive and user-friendly interface for academic session planning at ÉTS. With real-time updates and seamless integration, students can easily organize and optimize their academic paths.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Technologies Used
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- [Next.js](https://nextjs.org/)  
+- [React](https://reactjs.org/)  
+- [TypeScript](https://www.typescriptlang.org/)  
+- [Tailwind CSS](https://tailwindcss.com/)  
+- [Vercel](https://vercel.com/)  
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ Onboarding
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To get started with the frontend, refer to our onboarding documentation available on [Notion](https://www.notion.so/PlanifETS-Frontend).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Quick Start
 
-## Deploy on Vercel
+1. Install dependencies:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   yarn install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. Run the development server:
+
+   ```bash
+   yarn dev
+   ```
+
+3. Open [http://localhost:3000](http://localhost:3000) to view the application.
+
+---
+
+## ⚖️ License
+
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/your-repo/planifETS-frontend/blob/main/LICENSE) file for more information.
+
+---
+
+
+## 📚 Learn More
+
+- [Next.js Documentation](https://nextjs.org/docs): Explore features and APIs.
+- [React Documentation](https://reactjs.org): Learn the basics of React.
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs): Style your application effortlessly.
+
+---
+
+## 🚀 Deploying on Vercel
+
+Deploy this project using [Vercel](https://vercel.com). Follow the [Next.js deployment guide](https://nextjs.org/docs/deployment) for detailed steps.
+
+---
+
+🎉 **Make your academic planning at ÉTS effortless with PlanifETS!**

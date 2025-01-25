@@ -1,10 +1,10 @@
 # <p align="center">PlanifETS Frontend</p>
 
 <p align="center">
-  <a href="https://github.com/your-repo/planifETS-frontend/actions/workflows/ci.yml" target="_blank">
+  <a href="https://github.com/ApplETS/planifETS-frontend/actions/workflows/ci.yml" target="_blank">
     <img src="https://github.com/your-repo/planifETS-frontend/actions/workflows/ci.yml/badge.svg" alt="CI Status" style="height: 20px; margin-right: 5px;">
   </a>
-  <a href="https://www.notion.so/PlanifETS-Frontend" target="_blank">
+  <a href="https://www.notion.so/PlanifETS-29cdf43623ec4c749dc5280dcaa3dba4" target="_blank">
     <img src="https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white" alt="Notion" style="height: 20px; margin-right: 5px;">
   </a>
 </p>
@@ -17,17 +17,16 @@ This frontend complements the PlanifETS backend, providing an intuitive and user
 
 ## 🚀 Technologies Used
 
-- [Next.js](https://nextjs.org/)  
-- [React](https://reactjs.org/)  
-- [TypeScript](https://www.typescriptlang.org/)  
-- [Tailwind CSS](https://tailwindcss.com/)  
-- [Vercel](https://vercel.com/)  
+- [Next.js](https://nextjs.org/)
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
 
 ---
 
 ## 🛠️ Onboarding
 
-To get started with the frontend, refer to our onboarding documentation available on [Notion](https://www.notion.so/PlanifETS-Frontend).
+To get started with the frontend, refer to our onboarding documentation available on [Notion](https://www.notion.so/Frontend-Onboarding-1827e115b74f80ef9802daa8f3425813?pvs=25).
 
 ### Quick Start
 
@@ -49,22 +48,15 @@ To get started with the frontend, refer to our onboarding documentation availabl
 
 ## ⚖️ License
 
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/your-repo/planifETS-frontend/blob/main/LICENSE) file for more information.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/ApplETS/planifETS-frontend/blob/main/LICENSE) file for more information.
 
 ---
-
 
 ## 📚 Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs): Explore features and APIs.
 - [React Documentation](https://reactjs.org): Learn the basics of React.
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs): Style your application effortlessly.
-
----
-
-## 🚀 Deploying on Vercel
-
-Deploy this project using [Vercel](https://vercel.com). Follow the [Next.js deployment guide](https://nextjs.org/docs/deployment) for detailed steps.
 
 ---
 

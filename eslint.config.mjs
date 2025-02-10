@@ -34,6 +34,7 @@ export default antfu({
   rules: {
     ...nextPlugin.configs.recommended.rules,
     ...nextPlugin.configs['core-web-vitals'].rules,
+    '@stylistic/indent': ['error', 2],
   },
 }, {
   files: [

@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react';
 
 /**
  * Hook for managing the planner's state and operations
- * Handles year management, course additions/removals, and duplicate course detection
+ * Handles year management and course additions/removals
  *
  * @param {YearData[]} initialData - Initial planner data
  * @returns {object} Planner state and operations
@@ -15,20 +15,9 @@ import { useCallback, useState } from 'react';
  * @property {Function} addCourseToSession - Adds a course to a specific session
  * @property {Function} moveCourseBetweenSessions - Moves a course between sessions
  * @property {Function} removeCourseFromSession - Removes a course from a session
- * @property {object | null} duplicateAddData - Data for duplicate course addition
- * @property {Function} setDuplicateAddData - Sets the duplicate course addition data
- * @property {Function} confirmAddCourseAnyway - Confirms adding a course despite duplication
- * @property {Function} cancelAddCourseAnyway - Cancels adding a course due to duplication
  */
 export const usePlannerState = (initialData: YearData[] = []) => {
   const [plannerData, setPlannerData] = useState<YearData[]>(initialData);
-  const [duplicateAddData, setDuplicateAddData] = useState<{
-    course: Course;
-    existingYear: number;
-    existingSessionName: string;
-    newYear: number;
-    newSessionName: string;
-  } | null>(null);
 
   const addYear = useCallback(() => {
     setPlannerData((prev) => {
@@ -151,32 +140,13 @@ export const usePlannerState = (initialData: YearData[] = []) => {
     [],
   );
 
-  const confirmAddCourseAnyway = useCallback(() => {
-    if (duplicateAddData) {
-      addCourseToSession(
-        duplicateAddData.newYear,
-        duplicateAddData.newSessionName,
-        duplicateAddData.course,
-      );
-      setDuplicateAddData(null);
-    }
-  }, [duplicateAddData, addCourseToSession]);
-
-  const cancelAddCourseAnyway = useCallback(() => {
-    setDuplicateAddData(null);
-  }, []);
-
   return {
     plannerData,
     setPlannerData,
-    duplicateAddData,
-    setDuplicateAddData,
     addYear,
     deleteYear,
     addCourseToSession,
     moveCourseBetweenSessions,
     removeCourseFromSession,
-    confirmAddCourseAnyway,
-    cancelAddCourseAnyway,
   };
 };

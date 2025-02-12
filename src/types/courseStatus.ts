@@ -3,8 +3,7 @@ export type CourseStatus =
   | 'In Progress'
   | 'Failed'
   | 'Not Offered'
-  | 'Planned'
-  | 'Duplicate';
+  | 'Planned';
 
 export const statusTranslations: Record<CourseStatus, string> = {
   'Completed': 'Complété',
@@ -12,7 +11,6 @@ export const statusTranslations: Record<CourseStatus, string> = {
   'Failed': 'Échoué',
   'Not Offered': 'Non offert',
   'Planned': 'Planifié',
-  'Duplicate': 'Dupliqué',
 };
 
 export const statusTagClasses: Record<CourseStatus, string> = {
@@ -21,5 +19,4 @@ export const statusTagClasses: Record<CourseStatus, string> = {
   'Failed': 'bg-failedCourseTag text-textLightBackground border-favoris',
   'Not Offered': 'bg-notOfferedCourseTag text-textLightBackground border-favoris',
   'Planned': 'bg-buttonTags text-textLightBackground border-favoris',
-  'Duplicate': 'bg-duplicateCourseTag text-textLightBackground border-favoris',
 };

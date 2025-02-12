@@ -4,7 +4,7 @@
   <a href="https://github.com/ApplETS/planifETS-frontend/actions/workflows/ci.yml" target="_blank">
     <img src="https://github.com/your-repo/planifETS-frontend/actions/workflows/ci.yml/badge.svg" alt="CI Status" style="height: 20px; margin-right: 5px;">
   </a>
-  <a href="https://www.notion.so/PlanifETS-29cdf43623ec4c749dc5280dcaa3dba4" target="_blank">
+  <a href="https://dot-soursop-fcc.notion.site/PlanifETS-29cdf43623ec4c749dc5280dcaa3dba4" target="_blank">
     <img src="https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white" alt="Notion" style="height: 20px; margin-right: 5px;">
   </a>
 </p>
@@ -26,7 +26,7 @@ This frontend complements the PlanifETS backend, providing an intuitive and user
 
 ## 🛠️ Onboarding
 
-To get started with the frontend, refer to our onboarding documentation available on [Notion](https://www.notion.so/Frontend-Onboarding-1827e115b74f80ef9802daa8f3425813?pvs=25).
+To get started with the frontend, refer to our onboarding documentation available on [Notion](https://dot-soursop-fcc.notion.site/Frontend-Onboarding-1827e115b74f80ef9802daa8f3425813).
 
 ### Quick Start
 

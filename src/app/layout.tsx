@@ -1,34 +1,35 @@
-import type { Metadata } from 'next';
-import localFont from 'next/font/local';
+import { Analytics } from '@vercel/analytics/react';
+
+import ErrorBoundary from '../components/ErrorBoundary';
+
+import Navbar from '../components/Navbar/Navbar';
+import ClientProviders from '../components/Providers/ClientProviders';
+import ThemeProvider from '../components/ThemeProvider';
+import DndContext from '../context/dnd/DndContext';
+import { PlannerProvider } from '../context/planner/PlannerContext';
 import './globals.css';
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-});
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
-});
-
-export const metadata: Metadata = {
-  title: 'PlanifETS',
-  description: 'Plan and organize your university courses across sessions',
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body>
+        <ErrorBoundary>
+          <ThemeProvider>
+            <DndContext>
+              <ClientProviders>
+                <PlannerProvider>
+                  <div className="min-h-screen bg-background pt-16 text-textDarkBackground">
+                    <main>
+                      <Navbar />
+                      {children}
+                      <Analytics />
+                    </main>
+                  </div>
+                </PlannerProvider>
+              </ClientProviders>
+            </DndContext>
+          </ThemeProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

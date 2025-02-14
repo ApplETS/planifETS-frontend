@@ -18,7 +18,6 @@ export const PlannerProvider = ({ children }: { children: ReactNode }) => {
     isLoggedIn ? coursesData : generateEmptyYears(currentYear, 4),
   );
 
-  // Use our custom hook for course movement operations
   const { moveCourseBetweenSessions, addCourseToSession, removeCourseFromSession } = useCourseMove({
     plannerData: plannerState.plannerData,
     setPlannerData: plannerState.setPlannerData,

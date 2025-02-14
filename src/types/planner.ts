@@ -12,8 +12,7 @@ export type Course = {
     | 'In Progress'
     | 'Failed'
     | 'Not Offered'
-    | 'Planned'
-    | 'Duplicate'; // TODO: add 'TBD'/'À déterminer' status
+    | 'Planned'; // TODO: add 'TBD'/'À déterminer' status
 };
 
 export type YearData = {

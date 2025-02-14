@@ -16,7 +16,6 @@ const tailwindConfig = {
         completedCourseTag: '#6DE9A2',
         inProgressCourseTag: '#EED37E',
         failedCourseTag: '#FFA5A6',
-        duplicateCourseTag: '#FFA500',
         notOfferedCourseTag: '#d15656',
         buttonTags: '#A5A1FF',
 

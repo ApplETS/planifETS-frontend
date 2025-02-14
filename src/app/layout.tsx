@@ -1,4 +1,5 @@
 import { Analytics } from '@vercel/analytics/react';
+import { Suspense } from 'react';
 
 import ErrorBoundary from '../components/ErrorBoundary';
 
@@ -14,21 +15,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <ErrorBoundary>
-          <ThemeProvider>
-            <DndContext>
-              <ClientProviders>
-                <PlannerProvider>
-                  <div className="min-h-screen bg-background pt-16 text-textDarkBackground">
-                    <main>
-                      <Navbar />
-                      {children}
-                      <Analytics />
-                    </main>
-                  </div>
-                </PlannerProvider>
-              </ClientProviders>
-            </DndContext>
-          </ThemeProvider>
+          <Suspense fallback={null}>
+            <ThemeProvider>
+              <DndContext>
+                <ClientProviders>
+                  <PlannerProvider>
+                    <div className="min-h-screen bg-background pt-16 text-textDarkBackground">
+                      <main>
+                        <Navbar />
+                        {children}
+                        <Analytics />
+                      </main>
+                    </div>
+                  </PlannerProvider>
+                </ClientProviders>
+              </DndContext>
+            </ThemeProvider>
+          </Suspense>
         </ErrorBoundary>
       </body>
     </html>

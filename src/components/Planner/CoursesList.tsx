@@ -31,10 +31,6 @@ const getCourseStatus = (
     isPastSession: boolean;
   },
 ): CourseStatus => {
-  if (courseStatus === 'Duplicate') {
-    return 'Duplicate';
-  }
-
   if (timeInfo.isCurrentSession) {
     return 'In Progress';
   }

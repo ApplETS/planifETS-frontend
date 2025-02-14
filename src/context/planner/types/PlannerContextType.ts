@@ -2,14 +2,6 @@ import type { Course } from './Course';
 import type { SessionName } from './Session';
 import type { YearData } from './YearData';
 
-export type DuplicateAddData = {
-  existingYear: number;
-  existingSessionName: SessionName;
-  newYear: number;
-  newSessionName: SessionName;
-  course: Course;
-};
-
 export type PlannerContextType = {
   plannerData: YearData[];
   addCourseToSession: (year: number, sessionName: SessionName, course: Course) => void;
@@ -27,7 +19,4 @@ export type PlannerContextType = {
   ) => void;
   deleteYear: (year: number) => void;
   addYear: () => void;
-  duplicateAddData: DuplicateAddData | null;
-  confirmAddCourseAnyway: () => void;
-  cancelAddCourseAnyway: () => void;
 };

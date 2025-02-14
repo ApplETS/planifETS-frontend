@@ -15,18 +15,9 @@ type UseCourseMove = {
   setPlannerData: React.Dispatch<React.SetStateAction<YearData[]>>;
 };
 
-type CourseInstance = {
-  yearData: YearData;
-  sessionName: SessionName;
-  course: Course;
-  isFuture: boolean;
-  isCurrent: boolean;
-  isPast: boolean;
-};
-
 /**
  * Hook for managing course movement logic between sessions
- * Handles course status updates, duplicate detection, and validation
+ * Handles course status updates and validation
  * @param {UseCourseMove} props - Props containing planner data and state setter
  * @param {YearData[]} props.plannerData - Current state of the planner
  * @param {Function} props.setPlannerData - State setter for planner data
@@ -38,29 +29,15 @@ export const useCourseMove = ({
 }: UseCourseMove) => {
   const { enqueueSnackbar } = useSnackbar();
 
-  const shouldMarkAsDuplicate = useCallback(
-    (instances: CourseInstance[]) => {
-      const futureInstances = instances.filter(
-        instance => instance.isFuture && !instance.isPast,
-      );
-      return futureInstances.length > 1;
-    },
-    [],
-  );
-
   const determineCourseStatus = useCallback(
     (
       course: Course,
       year: number,
       sessionName: SessionName,
-      willBeDuplicate: boolean,
       isFuture: boolean,
     ): Course['status'] => {
       const isAvailable = isCourseAvailable(course, sessionName, year);
 
-      if (willBeDuplicate && isFuture) {
-        return 'Duplicate';
-      }
       if (!isAvailable) {
         return 'Not Offered';
       }
@@ -138,21 +115,10 @@ export const useCourseMove = ({
         return;
       }
 
-      const allInstances: CourseInstance[] = [
-        {
-          yearData: toYearData,
-          sessionName: toSession,
-          course,
-          ...timing,
-        },
-      ];
-
-      const willBeDuplicate = shouldMarkAsDuplicate(allInstances);
       const newStatus = determineCourseStatus(
         course,
         toYear,
         toSession,
-        willBeDuplicate,
         timing.isFuture,
       );
 
@@ -162,7 +128,7 @@ export const useCourseMove = ({
 
       setPlannerData(newPlannerData);
     },
-    [determineCourseStatus, enqueueSnackbar, plannerData, setPlannerData, shouldMarkAsDuplicate],
+    [determineCourseStatus, enqueueSnackbar, plannerData, setPlannerData],
   );
 
   const addCourseToSession = useCallback(
@@ -194,21 +160,10 @@ export const useCourseMove = ({
         return;
       }
 
-      const allInstances: CourseInstance[] = [
-        {
-          yearData,
-          sessionName,
-          course,
-          ...timing,
-        },
-      ];
-
-      const willBeDuplicate = shouldMarkAsDuplicate(allInstances);
       const newStatus = determineCourseStatus(
         course,
         year,
         sessionName,
-        willBeDuplicate,
         timing.isFuture,
       );
 
@@ -219,7 +174,7 @@ export const useCourseMove = ({
 
       setPlannerData(newPlannerData);
     },
-    [determineCourseStatus, enqueueSnackbar, plannerData, setPlannerData, shouldMarkAsDuplicate],
+    [determineCourseStatus, enqueueSnackbar, plannerData, setPlannerData],
   );
 
   const removeCourseFromSession = useCallback(

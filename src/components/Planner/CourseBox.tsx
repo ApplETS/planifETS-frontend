@@ -1,9 +1,9 @@
 'use client';
 
+import type { Course } from '@/types/course';
 import type { FC } from 'react';
-import type { Course } from '../../context/planner/types/Course';
-import type { CourseStatus } from '../../types/courseStatus';
 
+import type { CourseStatus } from '../../types/courseStatus';
 import { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { useDraggableCourse } from '../../hooks/course/useDraggableCourse';

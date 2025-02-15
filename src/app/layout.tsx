@@ -14,8 +14,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <ErrorBoundary>
-          <Suspense fallback={null}>
+        <Suspense fallback={null}>
+          <ErrorBoundary>
             <ThemeProvider>
               <DndContext>
                 <ClientProviders>
@@ -31,8 +31,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </ClientProviders>
               </DndContext>
             </ThemeProvider>
-          </Suspense>
-        </ErrorBoundary>
+          </ErrorBoundary>
+        </Suspense>
       </body>
     </html>
   );

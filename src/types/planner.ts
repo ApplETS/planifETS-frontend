@@ -1,19 +1,5 @@
 import type { Session, SessionName } from '../context/planner/types/Session';
-
-export type Course = {
-  code: string;
-  title: string;
-  credits: number;
-  prerequisites: string[];
-  availability: string[];
-  isFavorited?: boolean;
-  status?:
-    | 'Completed'
-    | 'In Progress'
-    | 'Failed'
-    | 'Not Offered'
-    | 'Planned'; // TODO: add 'TBD'/'À déterminer' status
-};
+import type { Course } from './course';
 
 export type YearData = {
   year: number;

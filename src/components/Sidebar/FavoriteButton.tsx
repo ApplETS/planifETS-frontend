@@ -7,13 +7,13 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
 type FavoriteButtonProps = {
   isFavorited: boolean;
-  onToggleFavorite: () => void;
+  onToggle: () => void;
   isHovered: boolean;
 };
 
 const FavoriteButton: FC<FavoriteButtonProps> = ({
   isFavorited,
-  onToggleFavorite,
+  onToggle,
   isHovered,
 }) => (
   <BaseButton
@@ -22,7 +22,7 @@ const FavoriteButton: FC<FavoriteButtonProps> = ({
     className="absolute right-0 top-0 z-20 !bg-transparent !p-0"
     onClick={(e) => {
       e.stopPropagation();
-      onToggleFavorite();
+      onToggle();
     }}
   >
     {isFavorited || isHovered

@@ -1,4 +1,4 @@
-import type { Course } from './Course';
+import type { Course } from '@/types/course';
 import type { SessionName } from './Session';
 import type { YearData } from './YearData';
 

@@ -1,4 +1,4 @@
-import type { Course } from './Course';
+import type { Course } from '@/types/course';
 
 export type Session = {
   name: string;

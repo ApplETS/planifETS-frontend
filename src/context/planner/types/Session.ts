@@ -1,4 +1,4 @@
-import type { Course } from './Course';
+import type { Course } from '@/types/course';
 
 export const SESSION_NAMES = {
   AUTUMN: 'Automne',

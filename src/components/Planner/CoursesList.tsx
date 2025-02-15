@@ -1,8 +1,8 @@
+import type { Course } from '@/types/course';
 import type { FC } from 'react';
-import type { Course } from '../../context/planner/types/Course';
 import type { SessionName } from '../../context/planner/types/Session';
-import type { CourseStatus } from '../../types/courseStatus';
 
+import type { CourseStatus } from '../../types/courseStatus';
 import React from 'react';
 import CourseBox from './CourseBox';
 

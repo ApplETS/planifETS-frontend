@@ -1,9 +1,9 @@
 'use client';
 
+import type { Course } from '@/types/course';
 import type { FC } from 'react';
-import type { Course } from '../../context/planner/types/Course';
-import type { SessionName } from '../../context/planner/types/Session';
 
+import type { SessionName } from '../../context/planner/types/Session';
 import { useAuthStore } from '@/store/authStore';
 import { useCallback, useEffect, useState } from 'react';
 import { useSessionDrop } from '../../hooks/planner/useSessionDrop';
@@ -110,11 +110,11 @@ const Session: FC<SessionProps> = ({
   });
 
   // Determine if this is a future session with no availability data (beyond H26)
+  // TODO: Use backend endpoint to fetch latest available session
   const isNoAvailabilityData
     = (year === 2026 && (sessionName === 'Été' || sessionName === 'Automne'))
       || year > 2026;
 
-  // Create a memoized ref callback to handle the drop function
   const dropRef = useCallback(
     (node: HTMLDivElement | null) => {
       drop(node);

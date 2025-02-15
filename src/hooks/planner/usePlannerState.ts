@@ -1,4 +1,4 @@
-import type { Course } from '../../context/planner/types/Course';
+import type { Course } from '@/types/course';
 import type { Session } from '../../context/planner/types/Session';
 import type { YearData } from '../../context/planner/types/YearData';
 import { useCallback, useState } from 'react';

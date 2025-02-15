@@ -1,7 +1,7 @@
-import type { Course } from '../../context/planner/types/Course';
+import type { Course } from '@/types/course';
 import type { SessionName } from '../../context/planner/types/Session';
-import type { YearData } from '../../context/planner/types/YearData';
 
+import type { YearData } from '../../context/planner/types/YearData';
 import { useSnackbar } from 'notistack';
 import { useCallback } from 'react';
 import {

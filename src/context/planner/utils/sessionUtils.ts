@@ -1,4 +1,5 @@
-import type { Course } from '../types/Course';
+import type { Course } from '@/types/course';
+
 import type { Session, SessionName, SessionTiming } from '../types/Session';
 import type { TimeInfo } from '../types/TimeInfo';
 import { SESSION_NAMES } from '../types/Session';

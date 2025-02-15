@@ -1,4 +1,4 @@
-import type { Course } from '../types/planner';
+import type { Course } from '@/types/course';
 
 export const programCourses: { [key: string]: Course[] } = {
   7084: [

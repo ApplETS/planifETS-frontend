@@ -1,4 +1,4 @@
-import type { Course } from './planner';
+import type { Course } from './course';
 
 type DragItemType = 'COURSE' | 'COURSE_BOX';
 

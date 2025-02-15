@@ -1,4 +1,4 @@
-import type { Course } from '../types/Course';
+import type { Course } from '@/types/course';
 import type { SessionName } from '../types/Session';
 import type { YearData } from '../types/YearData';
 import { isCourseAvailable, updateSessionCourses } from './sessionUtils';

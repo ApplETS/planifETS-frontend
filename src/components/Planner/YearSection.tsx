@@ -1,6 +1,7 @@
 'use client';
 
-import type { Course } from '../../context/planner/types/Course';
+import type { Course } from '@/types/course';
+
 import type { SessionName, Session as SessionType } from '../../context/planner/types/Session';
 
 import React, { useState } from 'react';

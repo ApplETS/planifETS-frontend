@@ -1,8 +1,9 @@
+import type { TimeInfo } from '@/context/planner/types/TimeInfo';
 import type { CourseStatus } from '@/types/course';
 import type { SessionName } from '@/types/session';
 import { useSessionStore } from '@/store/sessionStore';
 import { generateSessionKey } from '@/types/session';
-import { determineStatus, type TimeInfo } from './courseStatusUtils';
+import { determineStatus } from './courseStatusUtils';
 
 export const useCourseStatus = () => {
   const sessionStore = useSessionStore();

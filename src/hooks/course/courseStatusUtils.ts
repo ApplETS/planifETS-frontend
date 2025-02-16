@@ -1,10 +1,6 @@
+import type { TimeInfo } from '@/context/planner/types/TimeInfo';
 import type { CourseStatus } from '@/types/course';
 import type { Session } from '@/types/session';
-
-export type TimeInfo = {
-  isCurrentSession: boolean;
-  isPastSession: boolean;
-};
 
 export const determineStatus = (
   session: Session | undefined,
@@ -15,13 +11,17 @@ export const determineStatus = (
     instance => instance.courseId === courseId,
   );
 
+  if (courseInstance?.status) {
+    return courseInstance.status;
+  }
+
   if (timeInfo.isCurrentSession) {
     return 'In Progress';
   }
 
   if (timeInfo.isPastSession) {
-    return courseInstance?.status === 'Failed' ? 'Failed' : 'Completed';
+    return 'Completed';
   }
 
-  return courseInstance?.status || 'Planned';
+  return 'Planned';
 };

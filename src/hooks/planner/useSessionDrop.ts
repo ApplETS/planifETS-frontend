@@ -46,12 +46,14 @@ export const useSessionDrop = ({ year, sessionName, timeInfo }: UseSessionDropPr
         return;
       }
 
-      console.log('Dropping item:', item); // Debug log
+      // eslint-disable-next-line no-console
+      console.log('Dropping item:', item);
 
       if (item.type === DND_TYPES.COURSE_BOX && item.fromYear && item.fromSession) {
         handleMoveCourse(item.fromYear, item.fromSession, item.courseId);
       } else if (item.type === DND_TYPES.COURSE) {
-        console.log('Adding course:', item.courseId); // Debug log
+        // eslint-disable-next-line no-console
+        console.log('Adding course:', item.courseId);
         const courseId = item.courseId || item.course.id;
         handleAddCourse(courseId);
       }

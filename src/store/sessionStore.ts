@@ -1,5 +1,6 @@
-import type { CourseInstance } from '@/types/course';
+import type { CourseInstance, CourseStatus } from '@/types/course';
 import type { Session, SessionName } from '@/types/session';
+import { getSessionTiming } from '@/context/planner/utils/sessionUtils';
 import { calculateTotalCredits, createSessionsForYear } from '@/utils/sessionUtils';
 import { persistConfig } from 'lib/persistConfig';
 import { create } from 'zustand';
@@ -41,24 +42,40 @@ export const useSessionStore = create<SessionState & SessionActions>()(
         return;
       }
 
-      set(state => ({
-        sessions: {
-          ...state.sessions,
-          [sessionKey]: {
-            key: sessionKey,
-            name: sessionName as SessionName,
-            year: Number.parseInt(year, 10),
-            courseInstances: [
-              ...(state.sessions[sessionKey]?.courseInstances || []),
-              { courseId, status: 'Planned' },
-            ],
-            totalCredits: calculateTotalCredits([
-              ...(state.sessions[sessionKey]?.courseInstances || []),
-              { courseId, status: 'Planned' },
-            ]),
+      set((state) => {
+        const session = state.sessions[sessionKey];
+        const timeInfo = getSessionTiming(Number(year), sessionName as SessionName);
+
+        const initialStatus: CourseStatus = timeInfo.isCurrent
+          ? 'In Progress'
+          : timeInfo.isPast
+            ? 'Completed'
+            : 'Planned';
+
+        const newCourseInstance: CourseInstance = {
+          courseId,
+          status: initialStatus,
+        };
+
+        return {
+          sessions: {
+            ...state.sessions,
+            [sessionKey]: {
+              key: sessionKey,
+              name: sessionName as SessionName,
+              year: Number.parseInt(year, 10),
+              courseInstances: [
+                ...(session?.courseInstances || []),
+                newCourseInstance,
+              ],
+              totalCredits: calculateTotalCredits([
+                ...(session?.courseInstances || []),
+                newCourseInstance,
+              ]),
+            },
           },
-        },
-      }));
+        };
+      });
     },
 
     removeCourseFromSession: (sessionKey, courseId) => {

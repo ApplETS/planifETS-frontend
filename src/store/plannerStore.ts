@@ -7,6 +7,7 @@ import { useSessionStore } from './sessionStore';
 type PlannerState = {
   name: string;
   sessionKeys: string[];
+  totalCredits: number;
 };
 
 type PlannerActions = {
@@ -15,12 +16,23 @@ type PlannerActions = {
   deleteYear: (year: number) => void;
   getSessionKeysForYear: (year: number) => string[];
   getYears: () => number[];
+  recalculateTotalCredits: () => void;
 };
 
 export const usePlannerStore = create<PlannerState & PlannerActions>()(
   persistConfig('planner-store', (set, get) => ({
     name: 'Default Planner',
     sessionKeys: [],
+    totalCredits: 0,
+
+    recalculateTotalCredits: () => {
+      const sessionStore = useSessionStore.getState();
+      const totalCredits = get().sessionKeys.reduce((total, sessionKey) => {
+        const session = sessionStore.getSessionByKey(sessionKey);
+        return total + (session?.totalCredits || 0);
+      }, 0);
+      set({ totalCredits });
+    },
 
     initializePlanner: () => {
       const currentYear = new Date().getFullYear();
@@ -34,6 +46,7 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
       }
 
       set({ sessionKeys });
+      get().recalculateTotalCredits();
     },
 
     addYear: () => {

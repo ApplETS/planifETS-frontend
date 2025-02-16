@@ -11,6 +11,7 @@ export const useSessionOperations = (year: number, sessionName: SessionName) => 
   const { enqueueSnackbar } = useSnackbar();
   const sessionStore = useSessionStore();
   const sessionKey = generateSessionKey(year, sessionName);
+  const session = sessionStore.getSessionByKey(sessionKey);
   const courseInstances = sessionStore.getSessionCourses(sessionKey);
   const timeInfo = getSessionTiming(year, sessionName);
 
@@ -52,5 +53,6 @@ export const useSessionOperations = (year: number, sessionName: SessionName) => 
     handleAddCourse,
     handleRemoveCourse,
     handleMoveCourse,
+    sessionTotalCredits: session?.totalCredits ?? 0,
   };
 };

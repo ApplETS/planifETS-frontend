@@ -4,8 +4,7 @@ import type { SessionName } from '@/types/session';
 import type { FC } from 'react';
 import { useSessionDrop } from '@/hooks/planner/useSessionDrop';
 import { useSessionOperations } from '@/hooks/session/useSessionOperations';
-import { calculateTotalCredits } from '@/utils/sessionUtils';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import CoursesList from './CoursesList';
 import SessionHeader from './SessionHeader';
 
@@ -20,6 +19,7 @@ const Session: FC<SessionProps> = ({ year, sessionName }) => {
     timing,
     handleRemoveCourse,
     handleMoveCourse,
+    sessionTotalCredits,
   } = useSessionOperations(year, sessionName);
 
   const { drop, isOver, canDrop } = useSessionDrop({
@@ -27,8 +27,6 @@ const Session: FC<SessionProps> = ({ year, sessionName }) => {
     sessionName,
     timeInfo: timing,
   });
-
-  const totalCredits = useMemo(() => calculateTotalCredits(courseInstances), [courseInstances]);
 
   const dropRef = useCallback((node: HTMLDivElement | null) => {
     drop(node);
@@ -45,7 +43,7 @@ const Session: FC<SessionProps> = ({ year, sessionName }) => {
       <SessionHeader
         sessionName={sessionName}
         year={year}
-        totalCredits={totalCredits}
+        totalCredits={sessionTotalCredits}
         isNoAvailabilityData={false}
       />
       <CoursesList

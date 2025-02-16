@@ -1,4 +1,4 @@
-import type { Course, CourseStatus } from '@/types/course';
+import type { Course, CourseInstance, CourseStatus } from '@/types/course';
 import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { useCallback } from 'react';
@@ -10,8 +10,8 @@ export const useSessionCourses = () => {
   const getCourseWithStatus = useCallback(
     (courseId: number, sessionKey: string): (Course & { status: CourseStatus }) | undefined => {
       const course = courseStore.getCourse(courseId);
-      const session = sessionStore.getSession(sessionKey);
-      const courseInstance = session?.courseInstances.find(ci => ci.courseId === courseId);
+      const session = sessionStore.getSessionByKey(sessionKey);
+      const courseInstance = session?.courseInstances.find((ci: CourseInstance) => ci.courseId === courseId);
 
       if (!course || !courseInstance) {
         return undefined;
@@ -27,7 +27,7 @@ export const useSessionCourses = () => {
 
   const getSessionCourses = useCallback(
     (sessionKey: string) => {
-      const session = sessionStore.getSession(sessionKey);
+      const session = sessionStore.getSessionByKey(sessionKey);
       if (!session) {
         return [];
       }

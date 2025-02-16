@@ -2,7 +2,7 @@ import type { Course } from '@/types/course';
 import type { SessionName } from '@/types/session';
 import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
-import { generateSessionKey, getSessionTiming } from '@/utils/sessionUtils';
+import { generateSessionKey, getSessionTiming, validateSessionOperation as validateSession } from '@/utils/sessionUtils';
 import { useSnackbar } from 'notistack';
 import { useCallback } from 'react';
 
@@ -12,14 +12,13 @@ export const useCourseOperations = () => {
   const sessionStore = useSessionStore();
 
   const validateSessionOperation = useCallback(
-    (year: number, sessionName: SessionName, operation: string): boolean => {
-      const timing = getSessionTiming(year, sessionName);
-
-      if (timing.isPastSession) {
-        enqueueSnackbar(`Cannot ${operation} courses in past sessions`, { variant: 'error' });
+    (year: number, sessionName: SessionName, operation: string) => {
+      const timeInfo = getSessionTiming(year, sessionName);
+      const error = validateSession(timeInfo, operation);
+      if (error) {
+        enqueueSnackbar(error, { variant: 'error' });
         return false;
       }
-
       return true;
     },
     [enqueueSnackbar],
@@ -86,5 +85,6 @@ export const useCourseOperations = () => {
     moveCourseBetweenSessions,
     removeCourseFromSession,
     getCourseInstances,
+    validateSessionOperation,
   };
 };

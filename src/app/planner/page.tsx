@@ -13,10 +13,15 @@ export default function PlannerPage() {
   const { getSessionsByYear, initializeSessions } = useSessionStore();
 
   useEffect(() => {
+    const sessionStore = useSessionStore.getState();
+
     initializePlanner();
-    // Initialize sessions for each year
+
     getYears().forEach((year) => {
-      initializeSessions(year);
+      const yearSessions = sessionStore.getSessionsByYear(year);
+      if (yearSessions.length === 0) {
+        initializeSessions(year);
+      }
     });
   }, [initializePlanner, getYears, initializeSessions]);
 

@@ -68,11 +68,13 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
           sessionKeys: [...state.sessionKeys, ...newKeys],
         };
       });
+      get().recalculateTotalCredits();
     },
 
     deleteYear: (year: number) => {
       const keysToDelete = get().sessionKeys.filter(key => key.startsWith(`${year}-`));
       const sessionStore = useSessionStore.getState();
+
       keysToDelete.forEach((key) => {
         delete sessionStore.sessions[key];
       });
@@ -81,6 +83,7 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
       set(state => ({
         sessionKeys: state.sessionKeys.filter(key => !key.startsWith(`${year}-`)),
       }));
+      get().recalculateTotalCredits();
     },
 
     getSessionKeysForYear: (year: number) => {

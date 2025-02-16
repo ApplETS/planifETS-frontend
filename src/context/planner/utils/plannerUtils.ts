@@ -1,6 +1,6 @@
 import type { coursesData } from '@/app/planner/courses-data';
 import type { YearData } from '@/types/planner';
-import { generateSessionKey } from '@/types/session';
+import { generateSessionKey } from '@/utils/sessionUtils';
 
 export const convertCoursesToSessions = (data: typeof coursesData): YearData[] => {
   if (Array.isArray(data)) {

@@ -1,7 +1,11 @@
-import type { CourseInstance, CourseStatus } from '@/types/course';
+import type { CourseInstance } from '@/types/course';
 import type { Session, SessionName } from '@/types/session';
-import { getSessionTiming } from '@/context/planner/utils/sessionUtils';
-import { calculateTotalCredits, createSessionsForYear } from '@/utils/sessionUtils';
+import { determineInitialStatus } from '@/utils/courseUtils';
+import {
+  calculateTotalCredits,
+  createSessionsForYear,
+  getSessionTiming,
+} from '@/utils/sessionUtils';
 import { persistConfig } from 'lib/persistConfig';
 import { create } from 'zustand';
 import { useCourseStore } from './courseStore';
@@ -44,17 +48,12 @@ export const useSessionStore = create<SessionState & SessionActions>()(
 
       set((state) => {
         const session = state.sessions[sessionKey];
-        const timeInfo = getSessionTiming(Number(year), sessionName as SessionName);
-
-        const initialStatus: CourseStatus = timeInfo.isCurrent
-          ? 'In Progress'
-          : timeInfo.isPast
-            ? 'Completed'
-            : 'Planned';
+        const timing = getSessionTiming(Number(year), sessionName as SessionName);
+        const timeInfo = timing;
 
         const newCourseInstance: CourseInstance = {
           courseId,
-          status: initialStatus,
+          status: determineInitialStatus(timeInfo),
         };
 
         return {

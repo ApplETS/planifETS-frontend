@@ -1,7 +1,22 @@
+import type { TimeInfo } from '@/context/planner/types/TimeInfo';
 import type { CourseInstance, CourseStatus } from '@/types/course';
 import type { YearData } from '@/types/planner';
 import type { SessionName } from '@/types/session';
 
+// Status determination
+export const determineInitialStatus = (timeInfo: TimeInfo): CourseStatus => {
+  if (timeInfo.isCurrentSession) {
+    return 'In Progress';
+  }
+
+  if (timeInfo.isPastSession) {
+    return 'Completed';
+  }
+
+  return 'Planned';
+};
+
+// Course location utilities
 export const findCourseInPlanner = (
   plannerData: YearData[],
   courseId: number,
@@ -17,25 +32,24 @@ export const findCourseInPlanner = (
   return null;
 };
 
+// Session update utilities
 type SessionUpdate = (courseInstances: CourseInstance[]) => CourseInstance[];
 
 const updateYearSession = (
   yearData: YearData,
   sessionName: SessionName,
   updateFn: SessionUpdate,
-): YearData => {
-  return {
-    ...yearData,
-    sessions: yearData.sessions.map(session =>
-      session.name === sessionName
-        ? {
-          ...session,
-          courseInstances: updateFn(session.courseInstances),
-        }
-        : session,
-    ),
-  };
-};
+): YearData => ({
+  ...yearData,
+  sessions: yearData.sessions.map(session =>
+    session.name === sessionName
+      ? {
+        ...session,
+        courseInstances: updateFn(session.courseInstances),
+      }
+      : session,
+  ),
+});
 
 export const addCourseToSession = (
   yearData: YearData,
@@ -79,10 +93,7 @@ export const moveCourseToSession = (
   courseId: number,
   newStatus: CourseStatus,
 ): YearData => {
-  // First remove from original session
   const updatedYearData = removeCourseFromSession(yearData, fromSession, courseId);
-
-  // Then add to new session with new status
   return updateYearSession(updatedYearData, toSession, courseInstances => [
     ...courseInstances,
     { courseId, status: newStatus },

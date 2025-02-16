@@ -10,7 +10,6 @@ import { Typography } from '@mui/material';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useEffect, useState } from 'react';
-import { LISTE_COURS_LABEL } from '../../constants';
 import CourseCard from './CourseCard';
 import SearchBar from './CourseSearchBar';
 
@@ -83,7 +82,7 @@ export default function CourseSidebar() {
         aria-label="Tabs for course list and favorites"
         selectionFollowsFocus
       >
-        <Tab icon={<MenuBookIcon />} label={LISTE_COURS_LABEL} iconPosition="start" />
+        <Tab icon={<MenuBookIcon />} label="Cours" iconPosition="start" />
         <Tab icon={<FavoriteIcon />} label="Favoris" iconPosition="start" />
       </Tabs>
 

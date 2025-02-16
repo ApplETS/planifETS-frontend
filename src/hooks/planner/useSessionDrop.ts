@@ -18,7 +18,7 @@ type UseSessionDropProps = {
  * Hook for managing drag and drop functionality of courses into sessions
  * @param {UseSessionDropProps} props - Props containing session information and handlers
  * @param {number} props.year - The academic year
- * @param {SessionName} props.sessionName - Name of the session (e.g., 'Automne', 'Hiver', 'Été')
+ * @param {SessionName} props.sessionName
  * @param {object} props.timeInfo - Information about the session's timing
  * @param {boolean} props.timeInfo.isPastSession - Whether the session is in the past
  * @returns {object} Drop target props and confirmation dialog state

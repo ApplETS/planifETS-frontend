@@ -1,8 +1,10 @@
 import type { SessionName } from '@/types/session';
-import { getSessionTiming } from '@/context/planner/utils/sessionUtils';
 import { useSessionStore } from '@/store/sessionStore';
-import { generateSessionKey } from '@/types/session';
-import { validateSessionOperation } from '@/utils/sessionUtils';
+import {
+  generateSessionKey,
+  getSessionTiming,
+  validateSessionOperation,
+} from '@/utils/sessionUtils';
 import { useSnackbar } from 'notistack';
 
 export const useSessionOperations = (year: number, sessionName: SessionName) => {
@@ -10,10 +12,10 @@ export const useSessionOperations = (year: number, sessionName: SessionName) => 
   const sessionStore = useSessionStore();
   const sessionKey = generateSessionKey(year, sessionName);
   const courseInstances = sessionStore.getSessionCourses(sessionKey);
-  const timing = getSessionTiming(year, sessionName);
+  const timeInfo = getSessionTiming(year, sessionName);
 
   const handleOperation = (operation: string, callback: () => void) => {
-    const error = validateSessionOperation(timing, operation);
+    const error = validateSessionOperation(timeInfo, operation);
     if (error) {
       enqueueSnackbar(error, { variant: 'error' });
       return;
@@ -46,11 +48,7 @@ export const useSessionOperations = (year: number, sessionName: SessionName) => 
 
   return {
     courseInstances,
-    timing: {
-      isCurrentSession: timing.isCurrent,
-      isFutureSession: timing.isFuture,
-      isPastSession: timing.isPast,
-    },
+    timing: timeInfo,
     handleAddCourse,
     handleRemoveCourse,
     handleMoveCourse,

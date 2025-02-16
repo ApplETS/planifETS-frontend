@@ -1,5 +1,5 @@
-import { generateSessionKey } from '@/types/session';
-import { SESSION_NAMES } from '@/utils/sessionUtils';
+import { SessionEnum, type SessionName } from '@/types/session';
+import { generateSessionKey } from '@/utils/sessionUtils';
 import { persistConfig } from 'lib/persistConfig';
 import { create } from 'zustand';
 import { useSessionStore } from './sessionStore';
@@ -27,7 +27,7 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
       const sessionKeys: string[] = [];
 
       for (let year = currentYear; year < currentYear + 4; year++) {
-        SESSION_NAMES.forEach((session) => {
+        Object.values(SessionEnum).forEach((session: SessionName) => {
           sessionKeys.push(generateSessionKey(year, session));
         });
         useSessionStore.getState().initializeSessions(year);
@@ -45,7 +45,7 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
 
         const maxYear = Math.max(...years, 0);
         const newYear = maxYear + 1;
-        const newKeys = SESSION_NAMES.map(session =>
+        const newKeys = Object.values(SessionEnum).map((session: SessionName) =>
           generateSessionKey(newYear, session),
         );
 

@@ -2,14 +2,14 @@ import type { Course } from '@/types/course';
 import type { SessionName } from '@/types/session';
 import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
-import { generateSessionKey } from '@/types/session';
+import { generateSessionKey } from '@/utils/sessionUtils';
 import { useCallback } from 'react';
-import { useSessionValidation } from './useSessionValidation';
+import { useCourseOperations } from './useCourseOperations';
 
 export const useCourseActions = () => {
   const sessionStore = useSessionStore();
   const courseStore = useCourseStore();
-  const { validateSessionOperation } = useSessionValidation();
+  const { validateSessionOperation } = useCourseOperations();
 
   const addCourseToSession = useCallback(
     (year: number, sessionName: SessionName, course: Course) => {
@@ -21,7 +21,8 @@ export const useCourseActions = () => {
         courseStore.addCourse(course);
       }
 
-      sessionStore.addCourseToSession(year, sessionName, course.id);
+      const sessionKey = generateSessionKey(year, sessionName);
+      sessionStore.addCourseToSession(sessionKey, course.id);
     },
     [sessionStore, courseStore, validateSessionOperation],
   );

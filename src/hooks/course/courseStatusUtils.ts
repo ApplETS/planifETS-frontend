@@ -1,6 +1,7 @@
 import type { TimeInfo } from '@/context/planner/types/TimeInfo';
 import type { CourseStatus } from '@/types/course';
 import type { Session } from '@/types/session';
+import { determineInitialStatus } from '@/utils/courseUtils';
 
 export const determineStatus = (
   session: Session | undefined,
@@ -15,13 +16,5 @@ export const determineStatus = (
     return courseInstance.status;
   }
 
-  if (timeInfo.isCurrentSession) {
-    return 'In Progress';
-  }
-
-  if (timeInfo.isPastSession) {
-    return 'Completed';
-  }
-
-  return 'Planned';
+  return determineInitialStatus(timeInfo);
 };

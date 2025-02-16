@@ -1,9 +1,8 @@
 import type { Course } from '@/types/course';
 import type { SessionName } from '@/types/session';
-import { getSessionTiming } from '@/context/planner/utils/sessionUtils';
 import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
-import { generateSessionKey } from '@/types/session';
+import { generateSessionKey, getSessionTiming } from '@/utils/sessionUtils';
 import { useSnackbar } from 'notistack';
 import { useCallback } from 'react';
 
@@ -12,24 +11,37 @@ export const useCourseOperations = () => {
   const courseStore = useCourseStore();
   const sessionStore = useSessionStore();
 
-  const addCourseToSession = useCallback(
-    (year: number, sessionName: SessionName, course: Course) => {
+  const validateSessionOperation = useCallback(
+    (year: number, sessionName: SessionName, operation: string): boolean => {
       const timing = getSessionTiming(year, sessionName);
 
-      if (timing.isPast) {
-        enqueueSnackbar('Cannot add courses to past sessions', { variant: 'error' });
+      if (timing.isPastSession) {
+        enqueueSnackbar(`Cannot ${operation} courses in past sessions`, { variant: 'error' });
+        return false;
+      }
+
+      return true;
+    },
+    [enqueueSnackbar],
+  );
+
+  const addCourseToSession = useCallback(
+    (year: number, sessionName: SessionName, course: Course | number) => {
+      if (!validateSessionOperation(year, sessionName, 'add')) {
         return;
       }
 
-      // Ensure course exists in courseStore
-      if (!courseStore.getCourse(course.id)) {
+      const courseId = typeof course === 'number' ? course : course.id;
+
+      // Ensure course exists in courseStore if Course object is provided
+      if (typeof course !== 'number' && !courseStore.getCourse(course.id)) {
         courseStore.addCourse(course);
       }
 
       const sessionKey = generateSessionKey(year, sessionName);
-      sessionStore.addCourseToSession(sessionKey, course.id);
+      sessionStore.addCourseToSession(sessionKey, courseId);
     },
-    [enqueueSnackbar, sessionStore, courseStore],
+    [validateSessionOperation, sessionStore, courseStore],
   );
 
   const moveCourseBetweenSessions = useCallback(
@@ -38,36 +50,31 @@ export const useCourseOperations = () => {
       fromSession: SessionName,
       toYear: number,
       toSession: SessionName,
-      course: Course,
+      course: Course | number,
     ) => {
-      const timing = getSessionTiming(toYear, toSession);
-
-      if (timing.isPast) {
-        enqueueSnackbar('Cannot move courses to past sessions', { variant: 'error' });
+      if (!validateSessionOperation(toYear, toSession, 'move')) {
         return;
       }
 
+      const courseId = typeof course === 'number' ? course : course.id;
       const fromSessionKey = generateSessionKey(fromYear, fromSession);
       const toSessionKey = generateSessionKey(toYear, toSession);
 
-      sessionStore.moveCourse(fromSessionKey, toSessionKey, course.id);
+      sessionStore.moveCourse(fromSessionKey, toSessionKey, courseId);
     },
-    [enqueueSnackbar, sessionStore],
+    [validateSessionOperation, sessionStore],
   );
 
   const removeCourseFromSession = useCallback(
     (year: number, sessionName: SessionName, courseId: number) => {
-      const timing = getSessionTiming(year, sessionName);
-
-      if (timing.isPast) {
-        enqueueSnackbar('Cannot remove courses from past sessions', { variant: 'error' });
+      if (!validateSessionOperation(year, sessionName, 'remove')) {
         return;
       }
 
       const sessionKey = generateSessionKey(year, sessionName);
       sessionStore.removeCourseFromSession(sessionKey, courseId);
     },
-    [enqueueSnackbar, sessionStore],
+    [validateSessionOperation, sessionStore],
   );
 
   const getCourseInstances = useCallback((sessionKey: string) => {

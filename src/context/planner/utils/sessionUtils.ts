@@ -2,6 +2,7 @@ import type { Course } from '@/types/course';
 
 import type { Session, SessionName, SessionTiming } from '../types/Session';
 import type { TimeInfo } from '../types/TimeInfo';
+import { coursesData } from '@/app/planner/courses-data';
 import { SESSION_NAMES } from '../types/Session';
 
 // Session-related constants
@@ -56,11 +57,12 @@ export const generateSessionCode = (sessionName: SessionName, year: number): str
 /**
  * Checks if a course is available in a given session
  */
-export const isCourseAvailable = (
-  course: Course,
-  sessionName: SessionName,
-  year: number,
-): boolean => {
+export const isCourseAvailable = (courseId: number, sessionName: SessionName, year: number): boolean => {
+  const course = coursesData.courses[courseId];
+  if (!course) {
+    return false;
+  }
+
   const sessionCode = generateSessionCode(sessionName, year);
   return course.availability.includes(sessionCode);
 };
@@ -82,7 +84,7 @@ export const determineCourseStatus = (
     return 'In Progress';
   }
 
-  if (!isCourseAvailable(course, sessionName, year)) {
+  if (!isCourseAvailable(course.id, sessionName, year)) {
     return 'Not Offered';
   }
 

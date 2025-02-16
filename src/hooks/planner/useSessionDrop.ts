@@ -1,33 +1,17 @@
-import type { Course } from '@/types/course';
-
-import type { SessionName } from '../../context/planner/types/Session';
-
-import { useCallback } from 'react';
-import { useDragLayer, useDrop } from 'react-dnd';
-import { isCourseAvailable } from '../../context/planner/utils/sessionUtils';
-import { useConfirmationDialog } from '../common/confirmationDialog/useConfirmationDialog';
-
-type DropItem = {
-  type: string;
-  course: Course;
-  fromYear?: number;
-  fromSession?: SessionName;
-};
+import type { DraggedItem } from '@/types/dnd';
+import type { SessionName } from '@/types/session';
+import { DND_TYPES } from '@/types/dnd';
+import { useDrop } from 'react-dnd';
+import { useSessionOperations } from '../session/useSessionOperations';
 
 type UseSessionDropProps = {
   year: number;
   sessionName: SessionName;
   timeInfo: {
     isPastSession: boolean;
+    isCurrentSession: boolean;
+    isFutureSession: boolean;
   };
-  addCourseToSession: (year: number, sessionName: SessionName, course: Course) => void;
-  moveCourseBetweenSessions: (
-    fromYear: number,
-    fromSession: SessionName,
-    toYear: number,
-    toSession: SessionName,
-    course: Course
-  ) => void;
 };
 
 /**
@@ -37,99 +21,46 @@ type UseSessionDropProps = {
  * @param {SessionName} props.sessionName - Name of the session (e.g., 'Automne', 'Hiver', 'Été')
  * @param {object} props.timeInfo - Information about the session's timing
  * @param {boolean} props.timeInfo.isPastSession - Whether the session is in the past
- * @param {Function} props.addCourseToSession - Handler to add a course to a session
- * @param {Function} props.moveCourseBetweenSessions - Handler to move a course between sessions
  * @returns {object} Drop target props and confirmation dialog state
  */
-export const useSessionDrop = ({
-  year,
-  sessionName,
-  timeInfo,
-  addCourseToSession,
-  moveCourseBetweenSessions,
-}: UseSessionDropProps) => {
-  const { isDragging, item } = useDragLayer(monitor => ({
-    isDragging: monitor.isDragging(),
-    item: monitor.getItem(),
-  }));
+export const useSessionDrop = ({ year, sessionName, timeInfo }: UseSessionDropProps) => {
+  const { handleAddCourse, handleMoveCourse } = useSessionOperations(year, sessionName);
 
-  const {
-    isConfirmationDialogOpen: isConfirmationOpen,
-    confirmationDialogMessage: confirmationMessage,
-    confirmationDialogTitle: confirmationTitle,
-    handleConfirm,
-    handleCancel,
-    showConfirmation,
-  } = useConfirmationDialog();
-
-  const isAvailableForDraggedCourse
-    = isDragging && item?.course && isCourseAvailable(item.course, sessionName, year);
-
-  const handleCourseMove = useCallback((dropItem: DropItem) => {
-    // Use setTimeout to defer the state update until after the render cycle
-    setTimeout(() => {
-      if (dropItem.fromYear !== undefined && dropItem.fromSession !== undefined) {
-        moveCourseBetweenSessions(
-          dropItem.fromYear,
-          dropItem.fromSession,
-          year,
-          sessionName,
-          dropItem.course,
-        );
-      } else {
-        addCourseToSession(year, sessionName, dropItem.course);
-      }
-    }, 0);
-  }, [addCourseToSession, moveCourseBetweenSessions, year, sessionName]);
-
-  const [{ isOver, canDrop }, drop] = useDrop<DropItem, void, { isOver: boolean; canDrop: boolean }>({
-    accept: ['COURSE', 'COURSE_BOX'],
-    canDrop: (dropItem) => {
-      if (timeInfo.isPastSession) {
-        return false;
-      }
-      if (!dropItem.course) {
+  const [{ isOver, canDrop }, drop] = useDrop(() => ({
+    accept: [DND_TYPES.COURSE, DND_TYPES.COURSE_BOX],
+    canDrop: (item: DraggedItem) => {
+      if (!item || timeInfo.isPastSession) {
         return false;
       }
 
-      // Allow dropping even if course is not available
+      // For course box (moving between sessions), always allow
+      if (item.type === DND_TYPES.COURSE_BOX) {
+        return true;
+      }
+
+      // For new courses, always allow for now
       return true;
     },
-    drop: (dropItem) => {
-      if (timeInfo.isPastSession) {
-        return;
-      }
-      if (!dropItem.course) {
+    drop: (item: DraggedItem) => {
+      if (!item) {
         return;
       }
 
-      const isAvailable = isCourseAvailable(dropItem.course, sessionName, year);
-      if (!isAvailable) {
-        showConfirmation({
-          title: 'Cours non disponible',
-          message: `Le cours ${dropItem.course.code} n'est pas disponible pour la session ${sessionName} ${year}. \n\nVoulez-vous quand même l'ajouter?`,
-          onConfirm: () => handleCourseMove(dropItem),
-        });
-        return;
-      }
+      console.log('Dropping item:', item); // Debug log
 
-      handleCourseMove(dropItem);
+      if (item.type === DND_TYPES.COURSE_BOX && item.fromYear && item.fromSession) {
+        handleMoveCourse(item.fromYear, item.fromSession, item.courseId);
+      } else if (item.type === DND_TYPES.COURSE) {
+        console.log('Adding course:', item.courseId); // Debug log
+        const courseId = item.courseId || item.course.id;
+        handleAddCourse(courseId);
+      }
     },
     collect: monitor => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
     }),
-  });
+  }), [year, sessionName, timeInfo, handleAddCourse, handleMoveCourse]);
 
-  return {
-    drop,
-    isOver,
-    canDrop,
-    isAvailableForDraggedCourse,
-    isConfirmationOpen,
-    confirmationMessage,
-    confirmationTitle,
-    handleConfirm,
-    handleCancel,
-  };
+  return { drop, isOver, canDrop };
 };

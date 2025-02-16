@@ -1,61 +1,54 @@
 'use client';
 
-import type { YearData } from '@/types/planner';
 import YearSection from '@/components/Planner/YearSection';
 import ProgramSection from '@/components/ProgramSection';
-
-import { CreditsProvider } from '@/context/credits/CreditsContext';
-import { usePlannerContext } from '@/context/planner/usePlannerContext';
+import { usePlannerStore } from '@/store/plannerStore';
+import { useSessionStore } from '@/store/sessionStore';
 import Button from '@mui/material/Button';
+import { useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
 
 export default function PlannerPage() {
-  const {
-    plannerData,
-    addCourseToSession,
-    moveCourseBetweenSessions,
-    removeCourseFromSession,
-    deleteYear,
-    addYear,
-  } = usePlannerContext();
+  const { initializePlanner, getYears, addYear } = usePlannerStore();
+  const { getSessionsByYear, initializeSessions } = useSessionStore();
 
-  const handleAddYear = () => {
-    addYear();
-  };
+  useEffect(() => {
+    initializePlanner();
+    // Initialize sessions for each year
+    getYears().forEach((year) => {
+      initializeSessions(year);
+    });
+  }, [initializePlanner, getYears, initializeSessions]);
+
+  const years = getYears();
 
   return (
-    <CreditsProvider>
-      <div className="flex w-full flex-col">
-        <div className="w-full">
-          <ProgramSection />
-        </div>
-
-        <div className="mt-6 w-full space-y-4" data-testid="year-sections">
-          {plannerData.map((yearData: YearData) => (
-            <YearSection
-              key={yearData.year}
-              year={yearData.year}
-              sessions={yearData.sessions}
-              addCourseToSession={addCourseToSession}
-              moveCourseBetweenSessions={moveCourseBetweenSessions}
-              removeCourseFromSession={removeCourseFromSession}
-              deleteYear={deleteYear}
-              isLastYear={yearData.year === Math.max(...plannerData.map((y: YearData) => y.year))}
-            />
-          ))}
-        </div>
-
-        <div className="mt-8 flex justify-center">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleAddYear}
-            startIcon={<FaPlus />}
-          >
-            Ajouter une année
-          </Button>
-        </div>
+    <div className="flex w-full flex-col">
+      <div className="w-full">
+        <ProgramSection />
       </div>
-    </CreditsProvider>
+
+      <div className="mt-6 w-full space-y-4" data-testid="year-sections">
+        {years.map(year => (
+          <YearSection
+            key={year}
+            year={year}
+            sessions={getSessionsByYear(year)}
+            isLastYear={year === Math.max(...years)}
+          />
+        ))}
+      </div>
+
+      <div className="mt-8 flex justify-center">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={addYear}
+          startIcon={<FaPlus />}
+        >
+          Ajouter une année
+        </Button>
+      </div>
+    </div>
   );
 }

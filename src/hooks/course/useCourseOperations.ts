@@ -1,18 +1,36 @@
+import type { Course } from '@/types/course';
 import type { SessionName } from '@/types/session';
 import { getSessionTiming } from '@/context/planner/utils/sessionUtils';
+import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { generateSessionKey } from '@/types/session';
 import { useSnackbar } from 'notistack';
 import { useCallback } from 'react';
 
-/**
- * Hook for managing course movement logic between sessions
- * Handles course status updates and validation
- * @returns {object} Course movement handlers and utility functions
- */
-export const useCourseMove = () => {
+export const useCourseOperations = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const courseStore = useCourseStore();
   const sessionStore = useSessionStore();
+
+  const addCourseToSession = useCallback(
+    (year: number, sessionName: SessionName, course: Course) => {
+      const timing = getSessionTiming(year, sessionName);
+
+      if (timing.isPast) {
+        enqueueSnackbar('Cannot add courses to past sessions', { variant: 'error' });
+        return;
+      }
+
+      // Ensure course exists in courseStore
+      if (!courseStore.getCourse(course.id)) {
+        courseStore.addCourse(course);
+      }
+
+      const sessionKey = generateSessionKey(year, sessionName);
+      sessionStore.addCourseToSession(sessionKey, course.id);
+    },
+    [enqueueSnackbar, sessionStore, courseStore],
+  );
 
   const moveCourseBetweenSessions = useCallback(
     (
@@ -20,7 +38,7 @@ export const useCourseMove = () => {
       fromSession: SessionName,
       toYear: number,
       toSession: SessionName,
-      courseId: number,
+      course: Course,
     ) => {
       const timing = getSessionTiming(toYear, toSession);
 
@@ -32,21 +50,7 @@ export const useCourseMove = () => {
       const fromSessionKey = generateSessionKey(fromYear, fromSession);
       const toSessionKey = generateSessionKey(toYear, toSession);
 
-      sessionStore.moveCourseBetweenSessions(fromSessionKey, toSessionKey, courseId);
-    },
-    [enqueueSnackbar, sessionStore],
-  );
-
-  const addCourseToSession = useCallback(
-    (year: number, sessionName: SessionName, courseId: number) => {
-      const timing = getSessionTiming(year, sessionName);
-
-      if (timing.isPast) {
-        enqueueSnackbar('Cannot add courses to past sessions', { variant: 'error' });
-        return;
-      }
-
-      sessionStore.addCourseToSession(year, sessionName, courseId);
+      sessionStore.moveCourse(fromSessionKey, toSessionKey, course.id);
     },
     [enqueueSnackbar, sessionStore],
   );
@@ -66,9 +70,14 @@ export const useCourseMove = () => {
     [enqueueSnackbar, sessionStore],
   );
 
+  const getCourseInstances = useCallback((sessionKey: string) => {
+    return sessionStore.getSessionCourses(sessionKey);
+  }, [sessionStore]);
+
   return {
-    moveCourseBetweenSessions,
     addCourseToSession,
+    moveCourseBetweenSessions,
     removeCourseFromSession,
+    getCourseInstances,
   };
 };

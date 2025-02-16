@@ -69,8 +69,8 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <FavoriteButton
-        isFavorited={isFavorite(course.code)}
-        onToggle={() => toggleFavorite(course.code)}
+        isFavorited={isFavorite(course.id)}
+        onToggle={() => toggleFavorite(course.id)}
         isHovered={isHovered}
       />
       <div className="flex items-start justify-between">

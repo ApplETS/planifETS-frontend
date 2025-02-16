@@ -1,72 +1,90 @@
-import type { Course } from '@/types/course';
-import type { SessionName } from '../types/Session';
-import type { YearData } from '../types/YearData';
-import { isCourseAvailable, updateSessionCourses } from './sessionUtils';
+import type { CourseInstance, CourseStatus } from '@/types/course';
+import type { YearData } from '@/types/planner';
+import type { SessionName } from '@/types/session';
 
 export const findCourseInPlanner = (
   plannerData: YearData[],
-  courseCode: string,
-): { yearData: YearData; sessionName: SessionName; course: Course } | null => {
+  courseId: number,
+): { yearData: YearData; sessionName: SessionName; courseInstance: CourseInstance } | null => {
   for (const yearData of plannerData) {
     for (const session of yearData.sessions) {
-      const course = session.courses.find(c => c.code === courseCode);
-      if (course) {
-        return { yearData, sessionName: session.name, course };
+      const courseInstance = session.courseInstances.find(ci => ci.courseId === courseId);
+      if (courseInstance) {
+        return { yearData, sessionName: session.name, courseInstance };
       }
     }
   }
   return null;
 };
 
-export const updateYearSession = (
+type SessionUpdate = (courseInstances: CourseInstance[]) => CourseInstance[];
+
+const updateYearSession = (
   yearData: YearData,
-  sessionName: string,
-  updateFn: (courses: Course[]) => Course[],
+  sessionName: SessionName,
+  updateFn: SessionUpdate,
 ): YearData => {
   return {
     ...yearData,
     sessions: yearData.sessions.map(session =>
       session.name === sessionName
-        ? updateSessionCourses(session, updateFn(session.courses))
+        ? {
+          ...session,
+          courseInstances: updateFn(session.courseInstances),
+        }
         : session,
     ),
   };
 };
 
-export const removeCourseFromSession = (
-  yearData: YearData,
-  sessionName: SessionName,
-  courseCode: string,
-): YearData => {
-  return updateYearSession(yearData, sessionName, courses =>
-    courses.filter(c => c.code !== courseCode));
-};
-
 export const addCourseToSession = (
   yearData: YearData,
   sessionName: SessionName,
-  course: Course,
-  forcedStatus?: Course['status'],
+  courseId: number,
+  status: CourseStatus = 'Planned',
 ): YearData => {
-  const isAvailable = isCourseAvailable(course, sessionName, yearData.year);
-  const status
-    = forcedStatus ?? ((isAvailable ? 'Planned' : 'Not Offered') as Course['status']);
-
-  return updateYearSession(yearData, sessionName, (courses) => {
-    const existingCourse = courses.find(c => c.code === course.code);
-    if (existingCourse) {
-      return courses.map(c => (c.code === course.code ? { ...c, status } : c));
+  return updateYearSession(yearData, sessionName, (courseInstances) => {
+    if (courseInstances.some(ci => ci.courseId === courseId)) {
+      return courseInstances;
     }
-    return [...courses, { ...course, status }];
+    return [...courseInstances, { courseId, status }];
   });
+};
+
+export const removeCourseFromSession = (
+  yearData: YearData,
+  sessionName: SessionName,
+  courseId: number,
+): YearData => {
+  return updateYearSession(yearData, sessionName, courseInstances =>
+    courseInstances.filter(ci => ci.courseId !== courseId));
 };
 
 export const updateCourseStatus = (
   yearData: YearData,
   sessionName: SessionName,
-  courseCode: string,
-  status: Course['status'],
+  courseId: number,
+  status: CourseStatus,
 ): YearData => {
-  return updateYearSession(yearData, sessionName, courses =>
-    courses.map(c => (c.code === courseCode ? { ...c, status } : c)));
+  return updateYearSession(yearData, sessionName, courseInstances =>
+    courseInstances.map(ci =>
+      ci.courseId === courseId ? { ...ci, status } : ci,
+    ));
+};
+
+export const moveCourseToSession = (
+  yearData: YearData,
+  fromSession: SessionName,
+  toSession: SessionName,
+  courseId: number,
+  newStatus: CourseStatus,
+): YearData => {
+  // First remove from original session
+  const updatedYearData = removeCourseFromSession(yearData, fromSession, courseId);
+
+  // Then add to new session with new status
+  return updateYearSession(updatedYearData, toSession, courseInstances => [
+    ...courseInstances,
+    { courseId, status: newStatus },
+  ]);
 };

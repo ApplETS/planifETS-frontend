@@ -30,7 +30,6 @@ export default function CourseSidebar() {
     if (selectedProgram && programCourses[selectedProgram]) {
       const initialCourses = programCourses[selectedProgram].map(course => ({
         ...course,
-        status: 'Planned' as const,
       }));
 
       setCourses(initialCourses);

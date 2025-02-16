@@ -1,8 +1,10 @@
 import type { Course } from '@/types/course';
 
-export const programCourses: { [key: string]: Course[] } = {
+export const programCourses: { [key: string]: Course[] }
+= {
   7084: [
     {
+      id: 345678,
       code: 'CHM131',
       title: 'Chimie et matériaux',
       credits: 4,
@@ -10,6 +12,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 923451,
       code: 'PRE013',
       title:
         'Développement professionnel et santé et sécurité du travail en secteur informatique',
@@ -18,6 +21,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 281736,
       code: 'ATE150',
       title: 'Règles de base en santé et sécurité',
       credits: 0,
@@ -25,6 +29,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 465920,
       code: 'MAT145',
       title: 'Calcul différentiel et intégral',
       credits: 4,
@@ -32,6 +37,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 127834,
       code: 'LOG100',
       title: 'Programmation et réseautique en génie logiciel',
       credits: 4,
@@ -39,6 +45,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 564738,
       code: 'ING150',
       title: 'Statique et dynamique',
       credits: 4,
@@ -46,6 +53,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 837465,
       code: 'ATE100',
       title: 'Intégrité intellectuelle',
       credits: 0,
@@ -53,6 +61,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 902345,
       code: 'LOG121',
       title: 'Conception orientée objet',
       credits: 4,
@@ -60,6 +69,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 234567,
       code: 'MAT210',
       title: 'Logique et mathématiques discrètes',
       credits: 4,
@@ -67,6 +77,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MAT145'],
     },
     {
+      id: 678901,
       code: 'ING160',
       title: 'Thermodynamique et mécanique des fluides',
       credits: 4,
@@ -74,6 +85,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['ING150'],
     },
     {
+      id: 345612,
       code: 'PHY332',
       title: 'Électricité et magnétisme',
       credits: 4,
@@ -81,6 +93,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 789012,
       code: 'MAT265',
       title: 'Équations différentielles',
       credits: 4,
@@ -88,6 +101,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MAT145'],
     },
     {
+      id: 456789,
       code: 'LOG210',
       title: 'Analyse et conception de logiciels',
       credits: 4,
@@ -95,6 +109,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['LOG121'],
     },
     {
+      id: 123789,
       code: 'LOG240',
       title: 'Tests et maintenance',
       credits: 3,
@@ -102,6 +117,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['LOG100'],
     },
     {
+      id: 987654,
       code: 'PHY335',
       title: 'Physique des ondes',
       credits: 4,
@@ -109,6 +125,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 654321,
       code: 'COM410',
       title: 'Rédaction technique et communication en génie logiciel',
       credits: 3,
@@ -116,6 +133,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 321654,
       code: 'GTI350',
       title: 'Conception et évaluation des interfaces utilisateurs',
       credits: 4,
@@ -123,6 +141,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['LOG210'],
     },
     {
+      id: 789345,
       code: 'LOG320',
       title: 'Structures de données et algorithmes',
       credits: 4,
@@ -130,6 +149,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MAT210', 'LOG121'],
     },
     {
+      id: 234890,
       code: 'LOG410',
       title: 'Analyse de besoins et spécifications',
       credits: 3,
@@ -137,6 +157,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['LOG240'],
     },
     {
+      id: 890123,
       code: 'MAT472',
       title: 'Algèbre linéaire et géométrie de l’espace',
       credits: 4,
@@ -144,6 +165,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MAT145'],
     },
     {
+      id: 567890,
       code: 'PEP110',
       title: 'Encadrement de la profession et éthique professionnelle',
       credits: 1,
@@ -151,6 +173,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 345987,
       code: 'GTI510',
       title: 'Gestion de projets et assurance de la qualité',
       credits: 3,
@@ -158,6 +181,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 129384,
       code: 'LOG430',
       title: 'Architecture logicielle',
       credits: 4,
@@ -165,6 +189,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['LOG210'],
     },
     {
+      id: 748392,
       code: 'GTI650',
       title: 'Introduction à l\'information quantique',
       credits: 3,
@@ -172,6 +197,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 236547,
       code: 'LOG675',
       title: 'Programmation compétitive',
       credits: 3,
@@ -179,6 +205,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 635478,
       code: 'MAT350',
       title: 'Probabilités et statistiques',
       credits: 4,
@@ -186,6 +213,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MAT145'],
     },
     {
+      id: 864209,
       code: 'LOG660',
       title: 'Bases de données de haute performance',
       credits: 4,
@@ -193,6 +221,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['LOG320'],
     },
     {
+      id: 103456,
       code: 'GIA400',
       title: 'Analyse de rentabilité de projets',
       credits: 3,
@@ -200,6 +229,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 907856,
       code: 'GTI611',
       title: 'Réseaux de communication IP',
       credits: 4,
@@ -207,6 +237,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 560123,
       code: 'GTI755',
       title: 'Apprentissage machine quantique',
       credits: 3,
@@ -214,13 +245,16 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 480932,
       code: 'GTI320',
-      title: 'Programmation mathématique : patrons et algorithmes efficaces',
+      title:
+        'Programmation mathématique : patrons et algorithmes efficaces',
       credits: 3,
       availability: ['A24', 'H25', 'É25', 'A25', 'H26'],
       prerequisites: ['MAT472', 'LOG121'],
     },
     {
+      id: 741852,
       code: 'LOG460',
       title: 'Sécurité des logiciels',
       credits: 3,
@@ -228,6 +262,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['LOG121'],
     },
     {
+      id: 951753,
       code: 'LOG645',
       title: 'Architectures de calculs parallèles',
       credits: 3,
@@ -235,6 +270,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 852963,
       code: 'LOG680',
       title: 'Introduction à l\'approche DevOps',
       credits: 3,
@@ -242,6 +278,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 159357,
       code: 'LOG710',
       title: 'Principes des systèmes d’exploitation et programmation système',
       credits: 3,
@@ -249,6 +286,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 357951,
       code: 'LOG736',
       title: 'Fondements des systèmes distribués',
       credits: 3,
@@ -256,6 +294,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 468123,
       code: 'LOG750',
       title: 'Infographie',
       credits: 3,
@@ -263,6 +302,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 582739,
       code: 'LOG721',
       title: 'Intergiciels pour applications distribués',
       credits: 3,
@@ -270,6 +310,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 617483,
       code: 'LOG550',
       title: 'Conception de systèmes informatiques en temps réel',
       credits: 3,
@@ -277,6 +318,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 764829,
       code: 'LOG530',
       title: 'Réingénierie du logiciel',
       credits: 3,
@@ -284,6 +326,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 839201,
       code: 'LOG725',
       title: 'Ingénierie et conception de jeux vidéo',
       credits: 3,
@@ -291,6 +334,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['GTI320'],
     },
     {
+      id: 920384,
       code: 'LOG450',
       title: 'Conception d’applications mobiles',
       credits: 3,
@@ -298,6 +342,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 135792,
       code: 'TIN503',
       title: 'Environnement, technologie et société',
       credits: 3,
@@ -305,6 +350,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 246813,
       code: 'GTI619',
       title: 'Sécurité des systèmes',
       credits: 3,
@@ -312,6 +358,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 357924,
       code: 'LOG780',
       title: 'Sujets émergents en génie logiciel',
       credits: 3,
@@ -319,6 +366,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 468025,
       code: 'LOG635',
       title: 'Systèmes intelligents et algorithmes',
       credits: 3,
@@ -326,6 +374,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 579136,
       code: 'GTI719',
       title: 'Sécurité des réseaux d\'entreprise',
       credits: 3,
@@ -333,6 +382,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 680247,
       code: 'ELE641',
       title: 'Systèmes embarqués et normes en aérospatiale',
       credits: 3,
@@ -340,6 +390,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 791358,
       code: 'GTI720',
       title: 'Protection des renseignements personnels',
       credits: 3,
@@ -347,6 +398,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 802469,
       code: 'ELE674',
       title: 'Systèmes embarqués avancés',
       credits: 3,
@@ -354,6 +406,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 913580,
       code: 'GTI723',
       title: 'Test d’intrusion',
       credits: 3,
@@ -361,6 +414,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 102468,
       code: 'ELE543',
       title: 'Principes des systèmes embarqués',
       credits: 4,
@@ -368,6 +422,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 213579,
       code: 'GTI771',
       title: 'Apprentissage machine avancé',
       credits: 3,
@@ -375,6 +430,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MAT472', 'LOG635'],
     },
     {
+      id: 324680,
       code: 'GTI745',
       title: 'Interfaces utilisateurs avancées',
       credits: 3,
@@ -382,20 +438,25 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 435791,
       code: 'GTI780',
-      title: 'Sujets émergents en technologie de l\'information',
+      title:
+        'Sujets émergents en technologie de l\'information',
       credits: 3,
       availability: [],
       prerequisites: [],
     },
     {
+      id: 546802,
       code: 'LOG795',
-      title: 'Projet de fin d’études en génie logiciel',
+      title:
+        'Projet de fin d’études en génie logiciel',
       credits: 4,
       availability: ['A24', 'H25', 'É25', 'A25', 'H26'],
       prerequisites: [],
     },
     {
+      id: 657913,
       code: 'GTI700',
       title: 'Principes et fondements de l’Internet des objets (IdO)',
       credits: 3,
@@ -403,6 +464,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 768024,
       code: 'GTI525',
       title: 'Technologies de développement Internet',
       credits: 3,
@@ -410,6 +472,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 879135,
       code: 'LOG791',
       title: 'Projets spéciaux',
       credits: 3,
@@ -419,6 +482,7 @@ export const programCourses: { [key: string]: Course[] } = {
   ],
   7684: [
     {
+      id: 112233,
       code: 'PRE011',
       title:
         'Développement professionnel et initiation à la santé et sécurité au travail',
@@ -427,6 +491,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 223344,
       code: 'MEC129',
       title: 'Développement de produits assisté par ordinateur',
       credits: 4,
@@ -434,6 +499,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 334455,
       code: 'ATE150',
       title: 'Règles de base en santé et sécurité',
       credits: 0,
@@ -441,6 +507,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 445566,
       code: 'ATE100',
       title: 'Intégrité intellectuelle',
       credits: 0,
@@ -448,6 +515,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 556677,
       code: 'MEC029',
       title: 'Communication graphique et fabrication mécanique',
       credits: 3,
@@ -455,6 +523,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 667788,
       code: 'MEC111',
       title: 'Statique de l\'ingénieur',
       credits: 4,
@@ -462,6 +531,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 778899,
       code: 'COM130',
       title: 'Méthodes de communication en génie mécanique',
       credits: 3,
@@ -469,6 +539,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 889900,
       code: 'MAT145',
       title: 'Calcul différentiel et intégral',
       credits: 4,
@@ -476,6 +547,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 990011,
       code: 'MAT165',
       title: 'Algèbre linéaire et analyse vectorielle',
       credits: 4,
@@ -483,6 +555,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MAT145'],
     },
     {
+      id: 101112,
       code: 'CHM131',
       title: 'Chimie et matériaux',
       credits: 4,
@@ -490,6 +563,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 121314,
       code: 'MEC222',
       title: 'Dynamique',
       credits: 3,
@@ -497,6 +571,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 131415,
       code: 'MEC240',
       title: 'Thermodynamique',
       credits: 4,
@@ -504,6 +579,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 141516,
       code: 'PEP110',
       title: 'Encadrement de la profession et éthique professionnelle',
       credits: 1,
@@ -511,6 +587,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 151617,
       code: 'INF136',
       title: 'Introduction à la  programmation en Python',
       credits: 4,
@@ -518,6 +595,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 161718,
       code: 'MEC200',
       title: 'Technologie des matériaux',
       credits: 4,
@@ -525,6 +603,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['CHM131'],
     },
     {
+      id: 171819,
       code: 'MAT265',
       title: 'Équations différentielles',
       credits: 4,
@@ -532,6 +611,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MAT145'],
     },
     {
+      id: 181920,
       code: 'MEC335',
       title: 'Mécanique des fluides',
       credits: 4,
@@ -539,6 +619,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MEC222'],
     },
     {
+      id: 192021,
       code: 'MEC329',
       title: 'Résistance des matériaux',
       credits: 4,
@@ -546,6 +627,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MEC111'],
     },
     {
+      id: 202122,
       code: 'MEC636',
       title: 'Acoustique industrielle',
       credits: 3,
@@ -553,13 +635,16 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MEC222'],
     },
     {
+      id: 212223,
       code: 'MEC423',
-      title: 'Méthode des éléments finis des corps déformables',
+      title:
+        'Méthode des éléments finis des corps déformables',
       credits: 4,
       availability: ['É24', 'A24', 'H25', 'É25', 'A25'],
       prerequisites: [],
     },
     {
+      id: 222324,
       code: 'MEC300',
       title: 'Technologie de fabrication',
       credits: 3,
@@ -567,6 +652,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MEC200'],
     },
     {
+      id: 232425,
       code: 'PHY332',
       title: 'Électricité et magnétisme',
       credits: 4,
@@ -574,6 +660,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 242526,
       code: 'MAT350',
       title: 'Probabilités et statistiques',
       credits: 4,
@@ -581,6 +668,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MAT145'],
     },
     {
+      id: 252627,
       code: 'GIA410',
       title: 'Gestion et économie des projets d’ingénierie',
       credits: 3,
@@ -588,6 +676,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 262728,
       code: 'MEC528',
       title: 'Éléments de machines',
       credits: 3,
@@ -595,6 +684,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MEC423'],
     },
     {
+      id: 272829,
       code: 'MEC402',
       title: 'Production et fabrication industrielles',
       credits: 3,
@@ -602,6 +692,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 282930,
       code: 'MEC592',
       title: 'Projet de conception de machines',
       credits: 4,
@@ -609,6 +700,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MEC129', 'MEC300'],
     },
     {
+      id: 293031,
       code: 'MEC664',
       title: 'Optimisation des procédés industriels',
       credits: 3,
@@ -616,6 +708,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MAT350'],
     },
     {
+      id: 303132,
       code: 'MEC634',
       title: 'Mise en forme des alliages : expérimentation et simulation',
       credits: 3,
@@ -623,6 +716,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 313233,
       code: 'MEC558',
       title: 'Introduction à la dynamique des fluides numériques',
       credits: 3,
@@ -630,6 +724,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 323334,
       code: 'MEC744',
       title: 'Manipulateurs robotiques',
       credits: 3,
@@ -637,6 +732,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 333435,
       code: 'MEC755',
       title: 'Gestion de projets industriels avancée',
       credits: 3,
@@ -644,6 +740,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 343536,
       code: 'GTS501',
       title: 'Ingénierie des systèmes humains',
       credits: 3,
@@ -651,6 +748,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 353637,
       code: 'MEC532',
       title: 'Transfert de chaleur',
       credits: 3,
@@ -658,13 +756,16 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 363738,
       code: 'MEC546',
-      title: 'Circuits électriques et électrotechnique',
+      title:
+        'Circuits électriques et électrotechnique',
       credits: 3,
       availability: ['É24', 'A24', 'H25', 'É25', 'A25'],
       prerequisites: ['PHY332'],
     },
     {
+      id: 373839,
       code: 'MEC555',
       title: 'Analyse des contraintes',
       credits: 3,
@@ -672,6 +773,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 383940,
       code: 'MEC556',
       title: 'Aérothermodynamique des écoulements',
       credits: 3,
@@ -679,6 +781,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MEC335'],
     },
     {
+      id: 394041,
       code: 'MEC619',
       title: 'Mécanique des matériaux composites',
       credits: 3,
@@ -686,6 +789,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MEC329'],
     },
     {
+      id: 404142,
       code: 'MEC627',
       title: 'Technologies de fabrication additive',
       credits: 3,
@@ -693,6 +797,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 414243,
       code: 'MEC786',
       title: 'Mise en forme de polymères et composites',
       credits: 3,
@@ -700,13 +805,16 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 424344,
       code: 'MEC525',
-      title: 'Conception vibratoire et dynamique des structures',
+      title:
+        'Conception vibratoire et dynamique des structures',
       credits: 4,
       availability: ['É24', 'A24', 'H25', 'É25', 'A25'],
       prerequisites: [],
     },
     {
+      id: 434445,
       code: 'MEC652',
       title: 'Conception des systèmes manufacturiers',
       credits: 3,
@@ -714,6 +822,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 444546,
       code: 'MEC730',
       title: 'Climatisation et réfrigération industrielles',
       credits: 3,
@@ -721,6 +830,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MEC335'],
     },
     {
+      id: 454647,
       code: 'MEC738',
       title: 'Conception et analyse des assemblages',
       credits: 4,
@@ -728,13 +838,16 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MEC423'],
     },
     {
+      id: 464748,
       code: 'MEC735',
-      title: 'Conception intégrée des systèmes mécaniques dans les bâtiments',
+      title:
+        'Conception intégrée des systèmes mécaniques dans les bâtiments',
       credits: 3,
       availability: ['H25'],
       prerequisites: [],
     },
     {
+      id: 474849,
       code: 'MEC557',
       title: 'Méthodes expérimentales en thermofluide',
       credits: 3,
@@ -742,6 +855,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 484950,
       code: 'MEC788',
       title: 'Mécatronique',
       credits: 3,
@@ -749,6 +863,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 495051,
       code: 'MEC761',
       title: 'Essais mécaniques et contrôle non destructif',
       credits: 3,
@@ -756,27 +871,34 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 505152,
       code: 'MEC628',
-      title: 'Conception de systèmes à fluide sous pression',
+      title:
+        'Conception de systèmes à fluide sous pression',
       credits: 3,
       availability: ['É24', 'É25'],
       prerequisites: [],
     },
     {
+      id: 515253,
       code: 'MEC743',
-      title: 'Instrumentation et contrôle des procédés industriels',
+      title:
+        'Instrumentation et contrôle des procédés industriels',
       credits: 3,
       availability: ['É24', 'H25', 'A25'],
       prerequisites: [],
     },
     {
+      id: 525354,
       code: 'MEC754',
-      title: 'Optimisation en production manufacturière',
+      title:
+        'Optimisation en production manufacturière',
       credits: 3,
       availability: ['É24', 'É25'],
       prerequisites: [],
     },
     {
+      id: 535455,
       code: 'MEC745',
       title: 'Robotique mobile',
       credits: 3,
@@ -784,6 +906,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 545556,
       code: 'MEC625',
       title: 'Technologie du soudage',
       credits: 3,
@@ -791,13 +914,16 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MEC200'],
     },
     {
+      id: 555657,
       code: 'GTS503',
-      title: 'Technologies de la santé, normes et homologation',
+      title:
+        'Technologies de la santé, normes et homologation',
       credits: 3,
       availability: ['H25', 'H26'],
       prerequisites: [],
     },
     {
+      id: 565758,
       code: 'MEC630',
       title: 'Ventilation et chauffage',
       credits: 3,
@@ -805,13 +931,16 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MEC335'],
     },
     {
+      id: 575859,
       code: 'MEC602',
-      title: 'Tolérancement et métrologie tridimensionnelle',
+      title:
+        'Tolérancement et métrologie tridimensionnelle',
       credits: 3,
       availability: ['H25'],
       prerequisites: [],
     },
     {
+      id: 585960,
       code: 'MEC757',
       title: 'Introduction à l’aérodynamique',
       credits: 3,
@@ -819,6 +948,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 596061,
       code: 'MEC671',
       title: 'Design conceptuel des aéronefs',
       credits: 3,
@@ -826,6 +956,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 606162,
       code: 'MEC723',
       title: 'Fabrication numérique',
       credits: 3,
@@ -833,6 +964,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 616263,
       code: 'MEC702',
       title: 'Techniques de maintenance prédictive et fiabilité',
       credits: 3,
@@ -840,6 +972,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 626364,
       code: 'TIN504',
       title: 'Santé, technologie et société',
       credits: 3,
@@ -847,6 +980,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 636465,
       code: 'MEC733',
       title: 'Gestion d\'énergie dans les bâtiments',
       credits: 3,
@@ -854,6 +988,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 646566,
       code: 'MEC758',
       title: 'Systèmes de propulsion : thermopropulsion et turbomachines',
       credits: 3,
@@ -861,6 +996,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 656667,
       code: 'MEC737',
       title: 'Moteurs alternatifs à combustion interne',
       credits: 3,
@@ -868,6 +1004,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 666768,
       code: 'GTS640',
       title: 'Dossier électronique de santé',
       credits: 3,
@@ -875,6 +1012,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 676869,
       code: 'GTS620',
       title: 'Biomatériaux pour dispositifs médicaux',
       credits: 3,
@@ -882,6 +1020,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 686970,
       code: 'GTS615',
       title: 'Instrumentation biomédicale',
       credits: 3,
@@ -889,6 +1028,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 697071,
       code: 'GTS610',
       title: 'Modélisation et traitement des signaux biomédicaux',
       credits: 3,
@@ -896,6 +1036,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 707172,
       code: 'MEC781',
       title: 'Méthodes d’usinage avancées',
       credits: 3,
@@ -903,6 +1044,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 717273,
       code: 'GTS602',
       title: 'Conception d\'orthèses et de prothèses',
       credits: 3,
@@ -910,6 +1052,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 727374,
       code: 'TIN503',
       title: 'Environnement, technologie et société',
       credits: 3,
@@ -917,6 +1060,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 737475,
       code: 'AER600',
       title: 'Introduction à l’aérospatiale',
       credits: 3,
@@ -924,6 +1068,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 747576,
       code: 'MEC791',
       title: 'Projets spéciaux',
       credits: 3,
@@ -931,6 +1076,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 757677,
       code: 'MEC727',
       title: 'Tribologie',
       credits: 3,
@@ -938,13 +1084,16 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 767778,
       code: 'MEC785',
-      title: 'Méthodologie de conception pour la fabrication et l’assemblage',
+      title:
+        'Méthodologie de conception pour la fabrication et l’assemblage',
       credits: 3,
       availability: ['É24', 'A24', 'É25', 'A25'],
       prerequisites: [],
     },
     {
+      id: 777879,
       code: 'MEC729',
       title: 'Mécanismes et dynamique des machines',
       credits: 3,
@@ -952,6 +1101,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: ['MEC222'],
     },
     {
+      id: 787980,
       code: 'MEC795',
       title: 'Projet de fin d\'études en génie mécanique',
       credits: 4,
@@ -959,6 +1109,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 798081,
       code: 'GTS502',
       title: 'Risques dans le secteur de la santé : sources et techniques d’évaluation',
       credits: 3,
@@ -966,6 +1117,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 808182,
       code: 'GTS504',
       title: 'Introduction à l\'ingénierie de la réadaptation',
       credits: 3,
@@ -973,6 +1125,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 818283,
       code: 'GTS601',
       title: 'Principes de l\'imagerie médicale',
       credits: 3,
@@ -980,6 +1133,7 @@ export const programCourses: { [key: string]: Course[] } = {
       prerequisites: [],
     },
     {
+      id: 828384,
       code: 'GIA602',
       title: 'Ergonomie et sécurité en milieu industriel',
       credits: 3,

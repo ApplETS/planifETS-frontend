@@ -1,94 +1,78 @@
-import type { Course, CourseStatus } from '@/types/course';
+import type { Course } from '@/types/course';
 import { persistConfig } from 'lib/persistConfig';
 import { create } from 'zustand';
 
 type CourseState = {
-  courses: Record<string, Course>;
-  favoriteCourses: string[];
+  courses: Record<number, Course>;
+  favoriteCourses: number[];
 };
 
 type CourseActions = {
   setCourses: (courses: Course[]) => void;
   addCourse: (course: Course) => void;
-  removeCourse: (courseCode: string) => void;
-  toggleFavorite: (courseCode: string) => void;
-  updateCourseStatus: (courseCode: string, status: CourseStatus) => void;
-  getCourse: (courseCode: string) => Course | undefined;
+  removeCourse: (courseId: number) => void;
+  toggleFavorite: (courseId: number) => void;
+  getCourse: (courseId: number) => Course | undefined;
   getAllCourses: () => Course[];
   getFavoriteCourses: () => Course[];
-  isFavorite: (courseCode: string) => boolean;
+  isFavorite: (courseId: number) => boolean;
 };
 
 export const useCourseStore = create<CourseState & CourseActions>()(
-  persistConfig('courseStore', (set, get) => ({
+  persistConfig('course-store', (set, get) => ({
     courses: {},
     favoriteCourses: [],
 
     setCourses: (courses) => {
-      const coursesRecord = courses.reduce<Record<string, Course>>((acc, course) => {
-        acc[course.code] = course;
+      const coursesRecord = courses.reduce<Record<number, Course>>((acc, course) => {
+        if (course.id) {
+          acc[course.id] = course;
+        }
         return acc;
       }, {});
-
       set({ courses: coursesRecord });
     },
 
     addCourse: (course) => {
+      if (!course.id) {
+        return;
+      }
       set(state => ({
         courses: {
           ...state.courses,
-          [course.code]: course,
+          [course.id]: course,
         },
       }));
     },
 
-    removeCourse: (courseCode) => {
+    removeCourse: (courseId) => {
       set((state) => {
-        const { [courseCode]: _, ...rest } = state.courses;
+        const { [courseId]: _, ...rest } = state.courses;
         return { courses: rest };
       });
     },
 
-    toggleFavorite: (courseCode) => {
+    toggleFavorite: (courseId) => {
       set((state) => {
         const favorites = [...state.favoriteCourses];
-        const index = favorites.indexOf(courseCode);
+        const index = favorites.indexOf(courseId);
 
         if (index !== -1) {
           favorites.splice(index, 1);
         } else {
-          favorites.push(courseCode);
+          favorites.push(courseId);
         }
 
         return { favoriteCourses: favorites };
       });
     },
 
-    updateCourseStatus: (courseCode, status) => {
-      set((state) => {
-        const course = state.courses[courseCode];
-        if (!course) {
-          return state;
-        }
-
-        return {
-          courses: {
-            ...state.courses,
-            [courseCode]: { ...course, status },
-          },
-        };
-      });
-    },
-
-    getCourse: courseCode => get().courses[courseCode],
-
+    getCourse: courseId => get().courses[courseId],
     getAllCourses: () => Object.values(get().courses),
-
-    getFavoriteCourses: () =>
-      Object.values(get().courses).filter(course =>
-        get().favoriteCourses.includes(course.code),
-      ),
-
-    isFavorite: courseCode => get().favoriteCourses.includes(courseCode),
+    getFavoriteCourses: () => {
+      const courses = get().courses;
+      return get().favoriteCourses.map(id => courses[id]).filter((course): course is Course => !!course);
+    },
+    isFavorite: courseId => get().favoriteCourses.includes(courseId),
   })),
 );

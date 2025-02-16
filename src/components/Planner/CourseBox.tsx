@@ -1,12 +1,15 @@
 'use client';
 
 import type { Course } from '@/types/course';
+import type { DraggedCourseBox } from '@/types/dnd';
+import type { SessionName } from '@/types/session';
 import type { FC } from 'react';
-
 import type { CourseStatus } from '../../types/courseStatus';
-import { useState } from 'react';
+import { DND_TYPES } from '@/types/dnd';
+
+import { useCallback, useState } from 'react';
+import { useDrag } from 'react-dnd';
 import { FaTrash } from 'react-icons/fa';
-import { useDraggableCourse } from '../../hooks/course/useDraggableCourse';
 import BaseButton from '../atoms/buttons/BaseButton';
 import CourseHeader from '../atoms/CourseHeader';
 import StatusTag from './StatusTag';
@@ -17,7 +20,7 @@ type CourseBoxProps = {
   credits: number;
   onDelete?: () => void;
   fromYear: number;
-  fromSession: string;
+  fromSession: SessionName;
   course: Course;
   isDraggable?: boolean;
 };
@@ -32,19 +35,30 @@ const CourseBox: FC<CourseBoxProps> = ({
   course,
   isDraggable = true,
 }) => {
-  const { isDragging, dragRef } = useDraggableCourse({
-    course,
-    type: 'COURSE_BOX',
-    fromYear,
-    fromSession,
-    isDraggable,
-  });
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: DND_TYPES.COURSE_BOX,
+    item: {
+      type: DND_TYPES.COURSE_BOX,
+      courseId: course.id,
+      course,
+      fromYear,
+      fromSession,
+    } as DraggedCourseBox,
+    collect: monitor => ({
+      isDragging: monitor.isDragging(),
+    }),
+    canDrag: () => isDraggable,
+  }), [course, fromYear, fromSession, isDraggable]);
 
   const [isHovered, setIsHovered] = useState(false);
 
+  const dragRef = useCallback((node: HTMLDivElement | null) => {
+    drag(node);
+  }, [drag]);
+
   return (
     <div
-      ref={dragRef as any}
+      ref={dragRef}
       className={`
         relative
         mb-2 cursor-pointer rounded-lg bg-sessionCourse

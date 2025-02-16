@@ -1,22 +1,15 @@
-import type { SessionName } from '@/context/planner/types/Session';
-
-export type CourseStatus =
-  | 'Completed'
-  | 'In Progress'
-  | 'Failed'
-  | 'Not Offered'
-  | 'Planned';
+export type CourseStatus = 'Planned' | 'In Progress' | 'Completed' | 'Failed' | 'Not Offered';
 
 export type Course = {
+  id: number;
   code: string;
   title: string;
   credits: number;
   prerequisites: string[];
-  availability: SessionName[];
-  status?: CourseStatus;
+  availability: string[];
 };
 
-export type CourseInstance = Course & {
+export type CourseInstance = {
+  courseId: number;
   status: CourseStatus;
-  sessionKey: string; // Format: "YEAR-SESSION" (e.g., "2024-AUTOMNE")
 };

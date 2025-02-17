@@ -1,8 +1,7 @@
-import type { TimeInfo } from '@/context/planner/types/TimeInfo';
 import type { CourseStatus } from '@/types/course';
-import type { SessionName } from '@/types/session';
+import type { SessionName, SessionTiming } from '@/types/session';
 import { useSessionStore } from '@/store/sessionStore';
-import { generateSessionKey } from '@/types/session';
+import { generateSessionKey } from '@/utils/sessionUtils';
 import { determineStatus } from './courseStatusUtils';
 
 export const useCourseStatus = () => {
@@ -12,11 +11,11 @@ export const useCourseStatus = () => {
     courseId: number,
     year: number,
     sessionName: SessionName,
-    timeInfo: TimeInfo,
+    sessionTiming: SessionTiming,
   ): CourseStatus => {
     const sessionKey = generateSessionKey(year, sessionName);
     const session = sessionStore.getSessionByKey?.(sessionKey);
-    return determineStatus(session, courseId, timeInfo);
+    return determineStatus(session, courseId, sessionTiming);
   };
 
   return { getCourseStatus };

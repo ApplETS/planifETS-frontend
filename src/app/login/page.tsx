@@ -26,7 +26,6 @@ export default function LoginPage() {
     // ) {
     login();
 
-    // Redirect to /planner
     router.push('/planner');
     // } else {
     //   // Show error message

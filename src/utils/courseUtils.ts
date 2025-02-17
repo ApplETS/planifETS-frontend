@@ -1,22 +1,19 @@
-import type { TimeInfo } from '@/context/planner/types/TimeInfo';
 import type { CourseInstance, CourseStatus } from '@/types/course';
 import type { YearData } from '@/types/planner';
-import type { SessionName } from '@/types/session';
+import type { SessionName, SessionTiming } from '@/types/session';
 
-// Status determination
-export const determineInitialStatus = (timeInfo: TimeInfo): CourseStatus => {
-  if (timeInfo.isCurrentSession) {
+export const determineInitialStatus = (sessionTiming: SessionTiming): CourseStatus => {
+  if (sessionTiming.isCurrent) {
     return 'In Progress';
   }
 
-  if (timeInfo.isPastSession) {
+  if (sessionTiming.isPast) {
     return 'Completed';
   }
 
   return 'Planned';
 };
 
-// Course location utilities
 export const findCourseInPlanner = (
   plannerData: YearData[],
   courseId: number,
@@ -32,7 +29,6 @@ export const findCourseInPlanner = (
   return null;
 };
 
-// Session update utilities
 type SessionUpdate = (courseInstances: CourseInstance[]) => CourseInstance[];
 
 const updateYearSession = (

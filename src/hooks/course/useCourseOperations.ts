@@ -13,8 +13,8 @@ export const useCourseOperations = () => {
 
   const validateSessionOperation = useCallback(
     (year: number, sessionName: SessionName, operation: string) => {
-      const timeInfo = getSessionTiming(year, sessionName);
-      const error = validateSession(timeInfo, operation);
+      const sessionTiming = getSessionTiming(year, sessionName);
+      const error = validateSession(sessionTiming, operation);
       if (error) {
         enqueueSnackbar(error, { variant: 'error' });
         return false;

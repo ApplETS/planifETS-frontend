@@ -1,10 +1,8 @@
-import type { TimeInfo } from '@/context/planner/types/TimeInfo';
-import type { CourseInstance } from '@/types/course';
-import { coursesData } from '@/app/planner/courses-data';
+import type { Course, CourseInstance } from '@/types/course';
 
-import { type Session, SessionEnum, type SessionName } from '@/types/session';
+import type { Session, SessionName, SessionTiming } from '@/types/session';
+import { SessionEnum } from '@/types/session';
 
-// Session-related constants
 const SESSION_MONTH_RANGES = {
   [SessionEnum.HIVER]: { start: 0, end: 3 }, // January - April
   [SessionEnum.ETE]: { start: 4, end: 7 }, // May - August
@@ -25,7 +23,7 @@ export const getCurrentSession = (month: number = new Date().getMonth()): Sessio
   return SessionEnum.AUTOMNE;
 };
 
-export const getSessionTiming = (year: number, sessionName: SessionName): TimeInfo => {
+export const getSessionTiming = (year: number, sessionName: SessionName): SessionTiming => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentSession = getCurrentSession();
@@ -41,28 +39,31 @@ export const getSessionTiming = (year: number, sessionName: SessionName): TimeIn
   const isPast = !isFuture && !isCurrent;
 
   return {
-    isPastSession: isPast,
-    isCurrentSession: isCurrent,
-    isFutureSession: isFuture,
+    isPast,
+    isCurrent,
+    isFuture,
   };
 };
 
 export const validateSessionOperation = (
-  timing: TimeInfo,
+  timing: SessionTiming,
   operation: string,
 ): string | null => {
-  if (timing.isPastSession) {
+  if (timing.isPast) {
     return `Cannot ${operation} courses in past sessions`;
   }
   return null;
 };
 
+type CourseFinder = (id: number) => Course | undefined;
+
 export const isCourseAvailableInSession = (
   courseId: number,
   sessionName: SessionName,
   year: number,
+  findCourse: CourseFinder,
 ): boolean => {
-  const course = coursesData.courses.find((c: { id: number }) => c.id === courseId);
+  const course = findCourse(courseId);
   if (!course) {
     return false;
   }
@@ -71,14 +72,16 @@ export const isCourseAvailableInSession = (
   return course.availability.includes(sessionCode);
 };
 
-// Session utilities
 export const generateSessionKey = (year: number, sessionName: SessionName): string => {
   return `${year}-${sessionName}`;
 };
 
-export const calculateTotalCredits = (courseInstances: CourseInstance[]): number => {
+export const calculateTotalCredits = (
+  courseInstances: CourseInstance[],
+  findCourse: CourseFinder,
+): number => {
   return courseInstances.reduce((total, instance) => {
-    const course = coursesData.courses.find(c => c.id === instance.courseId);
+    const course = findCourse(instance.courseId);
     return total + (course?.credits || 0);
   }, 0);
 };

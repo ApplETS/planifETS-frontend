@@ -1,5 +1,5 @@
 import type { CourseInstance } from '@/types/course';
-import type { SessionName } from '@/types/session';
+import type { SessionName, SessionTiming } from '@/types/session';
 import type { FC } from 'react';
 import { useCourseStatus } from '@/hooks/course/useCourseStatus';
 import { useCourseStore } from '@/store/courseStore';
@@ -8,11 +8,7 @@ import CourseBox from './CourseBox';
 type CoursesListProps = {
   hasCourses: boolean;
   courseInstances: CourseInstance[];
-  timeInfo: {
-    isCurrentSession: boolean;
-    isFutureSession: boolean;
-    isPastSession: boolean;
-  };
+  sessionTiming: SessionTiming;
   onRemoveCourse: (courseId: number) => void;
   onMoveCourse: (toYear: number, toSession: SessionName, courseId: number) => void;
   year: number;
@@ -23,7 +19,7 @@ type CoursesListProps = {
 const CoursesList: FC<CoursesListProps> = ({
   hasCourses,
   courseInstances,
-  timeInfo,
+  sessionTiming,
   onRemoveCourse,
   year,
   sessionName,
@@ -47,7 +43,7 @@ const CoursesList: FC<CoursesListProps> = ({
                 <CourseBox
                   key={course.code}
                   code={course.code}
-                  status={getCourseStatus(instance.courseId, year, sessionName, timeInfo)}
+                  status={getCourseStatus(instance.courseId, year, sessionName, sessionTiming)}
                   isDraggable={canDragCourses}
                   credits={course.credits}
                   onDelete={() => onRemoveCourse(instance.courseId)}
@@ -61,7 +57,7 @@ const CoursesList: FC<CoursesListProps> = ({
         )
         : (
           <div className="flex h-full items-center justify-center text-sm text-gray-400">
-            {timeInfo.isPastSession
+            {sessionTiming.isPast
               ? 'Aucune modification autorisée pour cette session passée.'
               : 'Glissez les cours ici pour les ajouter à cette session.'}
           </div>

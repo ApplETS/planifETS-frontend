@@ -16,10 +16,6 @@ export type Session = {
   totalCredits: number;
 };
 
-export const generateSessionKey = (year: number, sessionName: SessionName): string => {
-  return `${year}-${sessionName}`;
-};
-
 export type SessionTiming = {
   isFuture: boolean;
   isCurrent: boolean;

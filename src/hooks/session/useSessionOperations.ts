@@ -13,10 +13,10 @@ export const useSessionOperations = (year: number, sessionName: SessionName) => 
   const sessionKey = generateSessionKey(year, sessionName);
   const session = sessionStore.getSessionByKey(sessionKey);
   const courseInstances = sessionStore.getSessionCourses(sessionKey);
-  const timeInfo = getSessionTiming(year, sessionName);
+  const sessionTiming = getSessionTiming(year, sessionName);
 
   const handleOperation = (operation: string, callback: () => void) => {
-    const error = validateSessionOperation(timeInfo, operation);
+    const error = validateSessionOperation(sessionTiming, operation);
     if (error) {
       enqueueSnackbar(error, { variant: 'error' });
       return;
@@ -49,7 +49,7 @@ export const useSessionOperations = (year: number, sessionName: SessionName) => 
 
   return {
     courseInstances,
-    timing: timeInfo,
+    sessionTiming,
     handleAddCourse,
     handleRemoveCourse,
     handleMoveCourse,

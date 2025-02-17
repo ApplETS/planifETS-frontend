@@ -1,5 +1,5 @@
 import type { DraggedItem } from '@/types/dnd';
-import type { SessionName } from '@/types/session';
+import type { SessionName, SessionTiming } from '@/types/session';
 import { DND_TYPES } from '@/types/dnd';
 import { useDrop } from 'react-dnd';
 import { useSessionOperations } from '../session/useSessionOperations';
@@ -7,11 +7,7 @@ import { useSessionOperations } from '../session/useSessionOperations';
 type UseSessionDropProps = {
   year: number;
   sessionName: SessionName;
-  timeInfo: {
-    isPastSession: boolean;
-    isCurrentSession: boolean;
-    isFutureSession: boolean;
-  };
+  sessionTiming: SessionTiming;
 };
 
 /**
@@ -19,17 +15,17 @@ type UseSessionDropProps = {
  * @param {UseSessionDropProps} props - Props containing session information and handlers
  * @param {number} props.year - The academic year
  * @param {SessionName} props.sessionName
- * @param {object} props.timeInfo - Information about the session's timing
- * @param {boolean} props.timeInfo.isPastSession - Whether the session is in the past
+ * @param {object} props.sessionTiming - Information about the session's timing
+ * @param {boolean} props.sessionTiming.isPast - Whether the session is in the past
  * @returns {object} Drop target props and confirmation dialog state
  */
-export const useSessionDrop = ({ year, sessionName, timeInfo }: UseSessionDropProps) => {
+export const useSessionDrop = ({ year, sessionName, sessionTiming }: UseSessionDropProps) => {
   const { handleAddCourse, handleMoveCourse } = useSessionOperations(year, sessionName);
 
   const [{ isOver, canDrop }, drop] = useDrop(() => ({
     accept: [DND_TYPES.COURSE, DND_TYPES.COURSE_BOX],
     canDrop: (item: DraggedItem) => {
-      if (!item || timeInfo.isPastSession) {
+      if (!item || sessionTiming.isPast) {
         return false;
       }
 
@@ -53,7 +49,7 @@ export const useSessionDrop = ({ year, sessionName, timeInfo }: UseSessionDropPr
         handleMoveCourse(item.fromYear, item.fromSession, item.courseId);
       } else if (item.type === DND_TYPES.COURSE) {
         // eslint-disable-next-line no-console
-        console.log('Adding course:', item.courseId);
+        console.log('Adding course:', item.courseId || item.course.id);
         const courseId = item.courseId || item.course.id;
         handleAddCourse(courseId);
       }
@@ -62,7 +58,7 @@ export const useSessionDrop = ({ year, sessionName, timeInfo }: UseSessionDropPr
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
     }),
-  }), [year, sessionName, timeInfo, handleAddCourse, handleMoveCourse]);
+  }), [year, sessionName, sessionTiming, handleAddCourse, handleMoveCourse]);
 
   return { drop, isOver, canDrop };
 };

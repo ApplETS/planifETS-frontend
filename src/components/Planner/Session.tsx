@@ -16,7 +16,7 @@ type SessionProps = {
 const Session: FC<SessionProps> = ({ year, sessionName }) => {
   const {
     courseInstances,
-    timing,
+    sessionTiming,
     handleRemoveCourse,
     handleMoveCourse,
     sessionTotalCredits,
@@ -25,7 +25,7 @@ const Session: FC<SessionProps> = ({ year, sessionName }) => {
   const { drop, isOver, canDrop } = useSessionDrop({
     year,
     sessionName,
-    timeInfo: timing,
+    sessionTiming,
   });
 
   const dropRef = useCallback((node: HTMLDivElement | null) => {
@@ -49,7 +49,7 @@ const Session: FC<SessionProps> = ({ year, sessionName }) => {
       <CoursesList
         hasCourses={courseInstances.length > 0}
         courseInstances={courseInstances}
-        timeInfo={timing}
+        sessionTiming={sessionTiming}
         onRemoveCourse={handleRemoveCourse}
         onMoveCourse={handleMoveCourse}
         year={year}

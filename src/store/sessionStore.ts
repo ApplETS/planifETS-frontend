@@ -2,10 +2,12 @@ import type { CourseInstance } from '@/types/course';
 import type { Session, SessionName } from '@/types/session';
 import { determineInitialStatus } from '@/utils/courseUtils';
 import {
+  calculateTotalCredits,
   createSessionsForYear,
   getSessionTiming,
 } from '@/utils/sessionUtils';
 import { persistConfig } from 'lib/persistConfig';
+import { enqueueSnackbar } from 'notistack';
 import { create } from 'zustand';
 import { useCourseStore } from './courseStore';
 import { usePlannerStore } from './plannerStore';
@@ -43,10 +45,7 @@ export const useSessionStore = create<SessionState & SessionActions>()(
 
     calculateSessionCredits: (courseInstances) => {
       const courseStore = useCourseStore.getState();
-      return courseInstances.reduce((total, instance) => {
-        const course = courseStore.getCourse(instance.courseId);
-        return total + (course?.credits || 0);
-      }, 0);
+      return calculateTotalCredits(courseInstances, courseStore.getCourse);
     },
 
     updateSessionTotalCredits: (sessionKey: string) => {
@@ -79,6 +78,22 @@ export const useSessionStore = create<SessionState & SessionActions>()(
 
       set((state) => {
         const session = state.sessions[sessionKey];
+        if (!session) {
+          console.error(`Session not found${sessionKey}`);
+          return state;
+        }
+
+        const courseExists = session.courseInstances.some(
+          instance => instance.courseId === courseId,
+        );
+        if (courseExists) {
+          const course = useCourseStore.getState().getCourse(courseId);
+          enqueueSnackbar(`${course?.code || 'Course'} is already in this session`, {
+            variant: 'warning',
+          });
+          return state;
+        }
+
         const timing = getSessionTiming(Number(year), sessionName as SessionName);
 
         const newCourseInstance: CourseInstance = {
@@ -87,7 +102,7 @@ export const useSessionStore = create<SessionState & SessionActions>()(
         };
 
         const updatedCourseInstances = [
-          ...(session?.courseInstances || []),
+          ...(session.courseInstances || []),
           newCourseInstance,
         ];
 
@@ -169,7 +184,6 @@ export const useSessionStore = create<SessionState & SessionActions>()(
         };
       });
 
-      // Update both sessions' total credits
       get().updateSessionTotalCredits(fromKey);
       get().updateSessionTotalCredits(toKey);
     },

@@ -1,7 +1,7 @@
 'use client';
 
 import YearSection from '@/components/Planner/YearSection';
-import ProgramSection from '@/components/ProgramSection';
+import { ProgramSection } from '@/components/ProgramSection';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
 import Button from '@mui/material/Button';

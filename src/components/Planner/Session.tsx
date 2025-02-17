@@ -4,6 +4,8 @@ import type { SessionName } from '@/types/session';
 import type { FC } from 'react';
 import { useSessionDrop } from '@/hooks/planner/useSessionDrop';
 import { useSessionOperations } from '@/hooks/session/useSessionOperations';
+import { useCourseStore } from '@/store/courseStore';
+import { isCourseAvailableInSession } from '@/utils/sessionUtils';
 import { useCallback } from 'react';
 import CoursesList from './CoursesList';
 import SessionHeader from './SessionHeader';
@@ -22,11 +24,35 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionName }) => {
     sessionTotalCredits,
   } = useSessionOperations(sessionYear, sessionName);
 
-  const { drop, isOver, canDrop } = useSessionDrop({
+  const { getCourse } = useCourseStore();
+  const { drop, isOver, canDrop, draggedItem } = useSessionDrop({
     sessionYear,
     sessionName,
     sessionTiming,
   });
+
+  const getSessionBorderStyle = () => {
+    if (!draggedItem) {
+      return 'border-transparent';
+    }
+
+    const isAvailable = isCourseAvailableInSession(
+      draggedItem.course.id,
+      sessionName,
+      sessionYear,
+      getCourse,
+    );
+
+    if (isAvailable) {
+      return isOver && canDrop
+        ? 'border-sessionAvailable-borderHover bg-sessionAvailable-bgHover/5'
+        : 'border-sessionAvailable-border/40';
+    }
+
+    return isOver
+      ? 'border-sessionUnavailable-borderHover bg-sessionUnavailable-bgHover/5'
+      : 'border-transparent';
+  };
 
   const dropRef = useCallback((node: HTMLDivElement | null) => {
     drop(node);
@@ -35,9 +61,9 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionName }) => {
   return (
     <div
       ref={dropRef}
-      className={`rounded-lg border ${
-        isOver && canDrop ? 'border-buttonTags bg-sessions/50' : 'border-transparent'
-      } bg-sessions p-4 transition-colors duration-200`}
+      className={`rounded-lg border-2 ${getSessionBorderStyle()} 
+        bg-sessions p-4 transition-all duration-300
+        ${isOver && canDrop ? 'bg-sessions/90' : ''}`}
       data-testid={`session-${sessionName}-${sessionYear}-drop-target`}
     >
       <SessionHeader

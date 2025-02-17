@@ -21,5 +21,3 @@ export const ProgramSection: FC = () => {
     </header>
   );
 };
-
-export default ProgramSection;

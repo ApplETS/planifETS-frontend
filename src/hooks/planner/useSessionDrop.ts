@@ -1,3 +1,5 @@
+'use client';
+
 import type { DraggedItem } from '@/types/dnd';
 import type { SessionName, SessionTiming } from '@/types/session';
 import { useSessionStore } from '@/store/sessionStore';
@@ -17,7 +19,7 @@ export const useSessionDrop = ({ sessionYear, sessionName, sessionTiming }: UseS
   const sessionStore = useSessionStore();
   const sessionKey = generateSessionKey(sessionYear, sessionName);
 
-  const [{ isOver, canDrop }, drop] = useDrop(() => ({
+  const [{ isOver, canDrop, draggedItem }, drop] = useDrop(() => ({
     accept: [DragType.COURSE_CARD, DragType.COURSE_BOX],
     canDrop: (item: DraggedItem) => {
       if (!item || sessionTiming.isPast) {
@@ -25,8 +27,8 @@ export const useSessionDrop = ({ sessionYear, sessionName, sessionTiming }: UseS
       }
 
       const courseId = item.course.id;
-
       const sessionCourses = sessionStore.getSessionCourses(sessionKey);
+
       if (sessionCourses.some(c => c.courseId === courseId)) {
         return false;
       }
@@ -45,7 +47,6 @@ export const useSessionDrop = ({ sessionYear, sessionName, sessionTiming }: UseS
       if (item.type === DragType.COURSE_BOX) {
         const fromSessionKey = generateSessionKey(item.fromSessionYear, item.fromSessionName);
         const toSessionKey = generateSessionKey(sessionYear, sessionName);
-
         sessionStore.moveCourse(fromSessionKey, toSessionKey, item.course.id);
       } else {
         handleAddCourse(item.course.id);
@@ -54,8 +55,9 @@ export const useSessionDrop = ({ sessionYear, sessionName, sessionTiming }: UseS
     collect: monitor => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
+      draggedItem: monitor.getItem() as DraggedItem | null,
     }),
   }), [sessionYear, sessionName, sessionTiming, handleAddCourse, handleMoveCourse, sessionStore, sessionKey]);
 
-  return { drop, isOver, canDrop };
+  return { drop, isOver, canDrop, draggedItem };
 };

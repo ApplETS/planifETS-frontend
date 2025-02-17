@@ -81,9 +81,6 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
         </div>
         <div className="mt-2 flex items-center gap-2">
           <CreditsBadge credits={course.credits} />
-          {course.prerequisites.length > 0 && (
-            <Tag text={`${course.prerequisites.length} prérequis`} />
-          )}
         </div>
       </div>
 

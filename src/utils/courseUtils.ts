@@ -14,21 +14,6 @@ export const determineInitialStatus = (sessionTiming: SessionTiming): CourseStat
   return 'Planned';
 };
 
-export const findCourseInPlanner = (
-  plannerData: YearData[],
-  courseId: number,
-): { yearData: YearData; sessionName: SessionName; courseInstance: CourseInstance } | null => {
-  for (const yearData of plannerData) {
-    for (const session of yearData.sessions) {
-      const courseInstance = session.courseInstances.find(ci => ci.courseId === courseId);
-      if (courseInstance) {
-        return { yearData, sessionName: session.sessionName, courseInstance };
-      }
-    }
-  }
-  return null;
-};
-
 type SessionUpdate = (courseInstances: CourseInstance[]) => CourseInstance[];
 
 const updateYearSession = (

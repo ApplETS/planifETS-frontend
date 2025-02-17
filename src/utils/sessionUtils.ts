@@ -103,3 +103,26 @@ export const createSessionsForYear = (sessionYear: number): Record<string, Sessi
 
   return sessions;
 };
+
+type BorderStyle = 'border-green-500' | 'border-red-500' | '';
+
+export const getSessionBorderStyle = (
+  courseId: number | null,
+  sessionName: SessionName,
+  sessionYear: number,
+  findCourse: CourseFinder,
+  isDragging: boolean,
+): BorderStyle => {
+  if (!isDragging || !courseId) {
+    return '';
+  }
+
+  const isAvailable = isCourseAvailableInSession(
+    courseId,
+    sessionName,
+    sessionYear,
+    findCourse,
+  );
+
+  return isAvailable ? 'border-green-500' : 'border-red-500';
+};

@@ -8,14 +8,14 @@ import CreditsBadge from '../atoms/CreditsBadge';
 
 type SessionHeaderProps = {
   sessionName: string;
-  year: number;
+  sessionYear: number;
   totalCredits: number;
   isNoAvailabilityData: boolean;
 };
 
 const SessionHeader: FC<SessionHeaderProps> = ({
   sessionName,
-  year,
+  sessionYear: year,
   totalCredits,
   isNoAvailabilityData,
 }) => {

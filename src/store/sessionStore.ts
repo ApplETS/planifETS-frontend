@@ -71,8 +71,8 @@ export const useSessionStore = create<SessionState & SessionActions>()(
     },
 
     addCourseToSession: (sessionKey, courseId) => {
-      const [year = '', sessionName = ''] = sessionKey.split('-');
-      if (!year || !sessionName) {
+      const [sessionYear = '', sessionName = ''] = sessionKey.split('-');
+      if (!sessionYear || !sessionName) {
         return;
       }
 
@@ -94,7 +94,7 @@ export const useSessionStore = create<SessionState & SessionActions>()(
           return state;
         }
 
-        const timing = getSessionTiming(Number(year), sessionName as SessionName);
+        const timing = getSessionTiming(Number(sessionYear), sessionName as SessionName);
 
         const newCourseInstance: CourseInstance = {
           courseId,
@@ -111,8 +111,8 @@ export const useSessionStore = create<SessionState & SessionActions>()(
             ...state.sessions,
             [sessionKey]: {
               key: sessionKey,
-              name: sessionName as SessionName,
-              year: Number.parseInt(year, 10),
+              sessionName: sessionName as SessionName,
+              sessionYear: Number.parseInt(sessionYear, 10),
               courseInstances: updatedCourseInstances,
               totalCredits: get().calculateSessionCredits(updatedCourseInstances),
             },
@@ -149,34 +149,34 @@ export const useSessionStore = create<SessionState & SessionActions>()(
 
     moveCourse: (fromKey, toKey, courseId) => {
       set((state) => {
-        const fromSession = state.sessions[fromKey];
-        const toSession = state.sessions[toKey];
-        if (!fromSession || !toSession) {
+        const fromSessionName = state.sessions[fromKey];
+        const toSessionName = state.sessions[toKey];
+        if (!fromSessionName || !toSessionName) {
           return state;
         }
 
-        const courseInstance = fromSession.courseInstances.find(
+        const courseInstance = fromSessionName.courseInstances.find(
           instance => instance.courseId === courseId,
         );
         if (!courseInstance) {
           return state;
         }
 
-        const updatedFromCourseInstances = fromSession.courseInstances.filter(
+        const updatedFromCourseInstances = fromSessionName.courseInstances.filter(
           instance => instance.courseId !== courseId,
         );
-        const updatedToCourseInstances = [...toSession.courseInstances, courseInstance];
+        const updatedToCourseInstances = [...toSessionName.courseInstances, courseInstance];
 
         return {
           sessions: {
             ...state.sessions,
             [fromKey]: {
-              ...fromSession,
+              ...fromSessionName,
               courseInstances: updatedFromCourseInstances,
               totalCredits: get().calculateSessionCredits(updatedFromCourseInstances),
             },
             [toKey]: {
-              ...toSession,
+              ...toSessionName,
               courseInstances: updatedToCourseInstances,
               totalCredits: get().calculateSessionCredits(updatedToCourseInstances),
             },
@@ -199,7 +199,7 @@ export const useSessionStore = create<SessionState & SessionActions>()(
 
     getSessionsByYear: (year: number) => {
       const { sessions } = get();
-      return Object.values(sessions).filter(session => session.year === year);
+      return Object.values(sessions).filter(session => session.sessionYear === year);
     },
 
     getSessionByKey: (sessionKey: string) => {

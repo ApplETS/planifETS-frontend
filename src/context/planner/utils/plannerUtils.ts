@@ -11,7 +11,7 @@ export const convertCoursesToSessions = (data: typeof coursesData): YearData[] =
     ...yearData,
     sessions: yearData.sessions.map(session => ({
       ...session,
-      key: generateSessionKey(yearData.year, session.name),
+      key: generateSessionKey(yearData.year, session.sessionName),
       courseInstances: session.courseInstances,
       totalCredits: session.courseInstances.reduce((total, ci) => {
         const course = data.courses.find(c => c.id === ci.courseId);

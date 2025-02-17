@@ -10,8 +10,8 @@ type CoursesListProps = {
   courseInstances: CourseInstance[];
   sessionTiming: SessionTiming;
   onRemoveCourse: (courseId: number) => void;
-  onMoveCourse: (toYear: number, toSession: SessionName, courseId: number) => void;
-  year: number;
+  onMoveCourse: (toSessionYear: number, toSessionName: SessionName, courseId: number) => void;
+  sessionYear: number;
   sessionName: SessionName;
   canDragCourses?: boolean;
 };
@@ -21,7 +21,7 @@ const CoursesList: FC<CoursesListProps> = ({
   courseInstances,
   sessionTiming,
   onRemoveCourse,
-  year,
+  sessionYear,
   sessionName,
   canDragCourses = true,
 }) => {
@@ -43,12 +43,12 @@ const CoursesList: FC<CoursesListProps> = ({
                 <CourseBox
                   key={course.code}
                   code={course.code}
-                  status={getCourseStatus(instance.courseId, year, sessionName, sessionTiming)}
+                  status={getCourseStatus(instance.courseId, sessionYear, sessionName, sessionTiming)}
                   isDraggable={canDragCourses}
                   credits={course.credits}
                   onDelete={() => onRemoveCourse(instance.courseId)}
-                  fromYear={year}
-                  fromSession={sessionName}
+                  fromSessionYear={sessionYear}
+                  fromSessionName={sessionName}
                   course={course}
                 />
               );

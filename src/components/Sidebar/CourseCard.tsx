@@ -5,6 +5,7 @@ import type { FC } from 'react';
 import FavoriteButton from '@/components/Sidebar/FavoriteButton';
 import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
 import { useCourseStore } from '@/store/courseStore';
+import { DragType } from '@/types/dnd';
 import { useState } from 'react';
 import CreditsBadge from '../atoms/CreditsBadge';
 import Tag from '../atoms/Tag';
@@ -29,7 +30,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
   const { toggleFavorite, isFavorite } = useCourseStore();
   const { dragRef, isDragging } = useDraggableCourse({
     course,
-    type: 'COURSE',
+    type: DragType.COURSE_CARD,
   });
   const [isHovered, setIsHovered] = useState(false);
 

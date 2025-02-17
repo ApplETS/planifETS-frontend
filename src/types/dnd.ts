@@ -1,23 +1,22 @@
 import type { Course } from './course';
 import type { SessionName } from './session';
 
-export const DND_TYPES = {
-  COURSE: 'COURSE',
-  COURSE_BOX: 'COURSE_BOX',
-} as const;
+export enum DragType {
+  COURSE_CARD = 'COURSE_CARD',
+  COURSE_BOX = 'COURSE_BOX',
+}
 
-export type DraggedCourse = {
-  type: typeof DND_TYPES.COURSE;
-  courseId: number;
+export type DraggedCourseCard = {
+  type: DragType.COURSE_CARD;
   course: Course;
 };
 
 export type DraggedCourseBox = {
-  type: typeof DND_TYPES.COURSE_BOX;
+  type: DragType.COURSE_BOX;
   courseId: number;
   course: Course;
-  fromYear?: number;
-  fromSession?: SessionName;
+  fromSessionYear: number;
+  fromSessionName: SessionName;
 };
 
-export type DraggedItem = DraggedCourse | DraggedCourseBox;
+export type DraggedItem = DraggedCourseCard | DraggedCourseBox;

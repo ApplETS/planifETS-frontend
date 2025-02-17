@@ -9,21 +9,21 @@ import CoursesList from './CoursesList';
 import SessionHeader from './SessionHeader';
 
 type SessionProps = {
-  year: number;
+  sessionYear: number;
   sessionName: SessionName;
 };
 
-const Session: FC<SessionProps> = ({ year, sessionName }) => {
+const Session: FC<SessionProps> = ({ sessionYear, sessionName }) => {
   const {
     courseInstances,
     sessionTiming,
     handleRemoveCourse,
     handleMoveCourse,
     sessionTotalCredits,
-  } = useSessionOperations(year, sessionName);
+  } = useSessionOperations(sessionYear, sessionName);
 
   const { drop, isOver, canDrop } = useSessionDrop({
-    year,
+    sessionYear,
     sessionName,
     sessionTiming,
   });
@@ -38,11 +38,11 @@ const Session: FC<SessionProps> = ({ year, sessionName }) => {
       className={`rounded-lg border ${
         isOver && canDrop ? 'border-buttonTags bg-sessions/50' : 'border-transparent'
       } bg-sessions p-4 transition-colors duration-200`}
-      data-testid={`session-${sessionName}-${year}-drop-target`}
+      data-testid={`session-${sessionName}-${sessionYear}-drop-target`}
     >
       <SessionHeader
         sessionName={sessionName}
-        year={year}
+        sessionYear={sessionYear}
         totalCredits={sessionTotalCredits}
         isNoAvailabilityData={false}
       />
@@ -52,7 +52,7 @@ const Session: FC<SessionProps> = ({ year, sessionName }) => {
         sessionTiming={sessionTiming}
         onRemoveCourse={handleRemoveCourse}
         onMoveCourse={handleMoveCourse}
-        year={year}
+        sessionYear={sessionYear}
         sessionName={sessionName}
       />
     </div>

@@ -39,8 +39,8 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
       const sessionKeys: string[] = [];
 
       for (let year = currentYear; year < currentYear + 4; year++) {
-        Object.values(SessionEnum).forEach((session: SessionName) => {
-          sessionKeys.push(generateSessionKey(year, session));
+        Object.values(SessionEnum).forEach((sessionName: SessionName) => {
+          sessionKeys.push(generateSessionKey(year, sessionName));
         });
         useSessionStore.getState().initializeSessions(year);
       }
@@ -58,8 +58,8 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
 
         const maxYear = Math.max(...years, 0);
         const newYear = maxYear + 1;
-        const newKeys = Object.values(SessionEnum).map((session: SessionName) =>
-          generateSessionKey(newYear, session),
+        const newKeys = Object.values(SessionEnum).map((sessionName: SessionName) =>
+          generateSessionKey(newYear, sessionName),
         );
 
         useSessionStore.getState().initializeSessions(newYear);

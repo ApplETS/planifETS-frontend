@@ -22,7 +22,7 @@ export const findCourseInPlanner = (
     for (const session of yearData.sessions) {
       const courseInstance = session.courseInstances.find(ci => ci.courseId === courseId);
       if (courseInstance) {
-        return { yearData, sessionName: session.name, courseInstance };
+        return { yearData, sessionName: session.sessionName, courseInstance };
       }
     }
   }
@@ -38,7 +38,7 @@ const updateYearSession = (
 ): YearData => ({
   ...yearData,
   sessions: yearData.sessions.map(session =>
-    session.name === sessionName
+    session.sessionName === sessionName
       ? {
         ...session,
         courseInstances: updateFn(session.courseInstances),
@@ -84,13 +84,13 @@ export const updateCourseStatus = (
 
 export const moveCourseToSession = (
   yearData: YearData,
-  fromSession: SessionName,
-  toSession: SessionName,
+  fromSessionName: SessionName,
+  toSessionName: SessionName,
   courseId: number,
   newStatus: CourseStatus,
 ): YearData => {
-  const updatedYearData = removeCourseFromSession(yearData, fromSession, courseId);
-  return updateYearSession(updatedYearData, toSession, courseInstances => [
+  const updatedYearData = removeCourseFromSession(yearData, fromSessionName, courseId);
+  return updateYearSession(updatedYearData, toSessionName, courseInstances => [
     ...courseInstances,
     { courseId, status: newStatus },
   ]);

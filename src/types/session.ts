@@ -10,8 +10,8 @@ export type SessionName = SessionEnum;
 
 export type Session = {
   key: string; // Example: "2024-AUTOMNE"
-  name: SessionName;
-  year: number;
+  sessionName: SessionName;
+  sessionYear: number;
   courseInstances: CourseInstance[];
   totalCredits: number;
 };

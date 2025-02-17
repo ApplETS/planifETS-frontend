@@ -40,9 +40,9 @@ export const useSessionOperations = (year: number, sessionName: SessionName) => 
     });
   };
 
-  const handleMoveCourse = (toYear: number, toSession: SessionName, courseId: number) => {
+  const handleMoveCourse = (toSessionYear: number, toSessionName: SessionName, courseId: number) => {
     handleOperation('move', () => {
-      const toSessionKey = generateSessionKey(toYear, toSession);
+      const toSessionKey = generateSessionKey(toSessionYear, toSessionName);
       sessionStore.moveCourse(sessionKey, toSessionKey, courseId);
     });
   };

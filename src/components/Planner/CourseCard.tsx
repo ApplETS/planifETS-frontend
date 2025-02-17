@@ -1,7 +1,6 @@
 import type { Course } from '@/types/course';
-import type { DraggedCourse } from '@/types/dnd';
 import type { FC } from 'react';
-import { DND_TYPES } from '@/types/dnd';
+import { type DraggedCourseCard, DragType } from '@/types/dnd';
 import { useCallback } from 'react';
 import { useDrag } from 'react-dnd';
 
@@ -11,12 +10,11 @@ type CourseCardProps = {
 
 const CourseCard: FC<CourseCardProps> = ({ course }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
-    type: DND_TYPES.COURSE,
+    type: DragType.COURSE_CARD,
     item: {
-      type: DND_TYPES.COURSE,
-      courseId: course.id,
+      type: DragType.COURSE_CARD,
       course,
-    } as DraggedCourse,
+    } as DraggedCourseCard,
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),

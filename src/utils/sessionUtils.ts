@@ -23,19 +23,19 @@ export const getCurrentSession = (month: number = new Date().getMonth()): Sessio
   return SessionEnum.AUTOMNE;
 };
 
-export const getSessionTiming = (year: number, sessionName: SessionName): SessionTiming => {
+export const getSessionTiming = (sessionYear: number, sessionName: SessionName): SessionTiming => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentSession = getCurrentSession();
 
-  const isFuture = year > currentYear || (
-    year === currentYear && (
+  const isFuture = sessionYear > currentYear || (
+    sessionYear === currentYear && (
       (currentSession === SessionEnum.HIVER && sessionName !== SessionEnum.HIVER)
       || (currentSession === SessionEnum.ETE && sessionName === SessionEnum.AUTOMNE)
     )
   );
 
-  const isCurrent = year === currentYear && sessionName === currentSession;
+  const isCurrent = sessionYear === currentYear && sessionName === currentSession;
   const isPast = !isFuture && !isCurrent;
 
   return {
@@ -60,7 +60,7 @@ type CourseFinder = (id: number) => Course | undefined;
 export const isCourseAvailableInSession = (
   courseId: number,
   sessionName: SessionName,
-  year: number,
+  sessionYear: number,
   findCourse: CourseFinder,
 ): boolean => {
   const course = findCourse(courseId);
@@ -68,12 +68,12 @@ export const isCourseAvailableInSession = (
     return false;
   }
 
-  const sessionCode = generateSessionCode(sessionName, year);
+  const sessionCode = generateSessionCode(sessionName, sessionYear);
   return course.availability.includes(sessionCode);
 };
 
-export const generateSessionKey = (year: number, sessionName: SessionName): string => {
-  return `${year}-${sessionName}`;
+export const generateSessionKey = (sessionYear: number, sessionName: SessionName): string => {
+  return `${sessionYear}-${sessionName}`;
 };
 
 export const calculateTotalCredits = (
@@ -86,16 +86,16 @@ export const calculateTotalCredits = (
   }, 0);
 };
 
-export const createSessionsForYear = (year: number): Record<string, Session> => {
+export const createSessionsForYear = (sessionYear: number): Record<string, Session> => {
   const sessions: Record<string, Session> = {};
   const sessionNames = Object.values(SessionEnum);
 
   sessionNames.forEach((name) => {
-    const key = generateSessionKey(year, name);
+    const key = generateSessionKey(sessionYear, name);
     sessions[key] = {
       key,
-      name,
-      year,
+      sessionName: name,
+      sessionYear,
       courseInstances: [],
       totalCredits: 0,
     };

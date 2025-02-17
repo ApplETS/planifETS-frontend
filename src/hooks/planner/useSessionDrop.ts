@@ -1,40 +1,40 @@
 import type { DraggedItem } from '@/types/dnd';
 import type { SessionName, SessionTiming } from '@/types/session';
-import { DND_TYPES } from '@/types/dnd';
+import { useSessionStore } from '@/store/sessionStore';
+import { DragType } from '@/types/dnd';
+import { generateSessionKey } from '@/utils/sessionUtils';
 import { useDrop } from 'react-dnd';
 import { useSessionOperations } from '../session/useSessionOperations';
 
 type UseSessionDropProps = {
-  year: number;
+  sessionYear: number;
   sessionName: SessionName;
   sessionTiming: SessionTiming;
 };
 
-/**
- * Hook for managing drag and drop functionality of courses into sessions
- * @param {UseSessionDropProps} props - Props containing session information and handlers
- * @param {number} props.year - The academic year
- * @param {SessionName} props.sessionName
- * @param {object} props.sessionTiming - Information about the session's timing
- * @param {boolean} props.sessionTiming.isPast - Whether the session is in the past
- * @returns {object} Drop target props and confirmation dialog state
- */
-export const useSessionDrop = ({ year, sessionName, sessionTiming }: UseSessionDropProps) => {
-  const { handleAddCourse, handleMoveCourse } = useSessionOperations(year, sessionName);
+export const useSessionDrop = ({ sessionYear, sessionName, sessionTiming }: UseSessionDropProps) => {
+  const { handleAddCourse, handleMoveCourse } = useSessionOperations(sessionYear, sessionName);
+  const sessionStore = useSessionStore();
+  const sessionKey = generateSessionKey(sessionYear, sessionName);
 
   const [{ isOver, canDrop }, drop] = useDrop(() => ({
-    accept: [DND_TYPES.COURSE, DND_TYPES.COURSE_BOX],
+    accept: [DragType.COURSE_CARD, DragType.COURSE_BOX],
     canDrop: (item: DraggedItem) => {
       if (!item || sessionTiming.isPast) {
         return false;
       }
 
-      // For course box (moving between sessions), always allow
-      if (item.type === DND_TYPES.COURSE_BOX) {
-        return true;
+      const courseId = item.course.id;
+
+      const sessionCourses = sessionStore.getSessionCourses(sessionKey);
+      if (sessionCourses.some(c => c.courseId === courseId)) {
+        return false;
       }
 
-      // For new courses, always allow for now
+      if (item.type === DragType.COURSE_BOX) {
+        return !(item.fromSessionYear === sessionYear && item.fromSessionName === sessionName);
+      }
+
       return true;
     },
     drop: (item: DraggedItem) => {
@@ -42,23 +42,21 @@ export const useSessionDrop = ({ year, sessionName, sessionTiming }: UseSessionD
         return;
       }
 
-      // eslint-disable-next-line no-console
-      console.log('Dropping item:', item);
-
-      if (item.type === DND_TYPES.COURSE_BOX && item.fromYear && item.fromSession) {
-        handleMoveCourse(item.fromYear, item.fromSession, item.courseId);
-      } else if (item.type === DND_TYPES.COURSE) {
-        // eslint-disable-next-line no-console
-        console.log('Adding course:', item.courseId || item.course.id);
-        const courseId = item.courseId || item.course.id;
-        handleAddCourse(courseId);
+      if (item.type === DragType.COURSE_BOX) {
+        handleMoveCourse(
+          item.fromSessionYear,
+          item.fromSessionName,
+          item.course.id,
+        );
+      } else {
+        handleAddCourse(item.course.id);
       }
     },
     collect: monitor => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
     }),
-  }), [year, sessionName, sessionTiming, handleAddCourse, handleMoveCourse]);
+  }), [sessionYear, sessionName, sessionTiming, handleAddCourse, handleMoveCourse, sessionStore, sessionKey]);
 
   return { drop, isOver, canDrop };
 };

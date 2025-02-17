@@ -1,3 +1,4 @@
+import type { Course } from '@/types/course';
 import type { YearData } from '@/types/planner';
 import { SessionEnum } from '@/types/session';
 
@@ -6,14 +7,7 @@ const generateSessionKey_courseData = (year: number, sessionName: string): strin
 
 // Initial data to populate the stores
 export const coursesData: {
-  courses: Array<{
-    id: number;
-    code: string;
-    title: string;
-    credits: number;
-    prerequisites: string[];
-    availability: string[];
-  }>;
+  courses: Array<Course>;
   sessions: YearData[];
 } = {
   courses: [
@@ -49,8 +43,8 @@ export const coursesData: {
       sessions: [
         {
           key: generateSessionKey_courseData(2023, SessionEnum.HIVER),
-          year: 2023,
-          name: SessionEnum.HIVER,
+          sessionYear: 2023,
+          sessionName: SessionEnum.HIVER,
           courseInstances: [
             {
               courseId: 342343,
@@ -61,15 +55,15 @@ export const coursesData: {
         },
         {
           key: generateSessionKey_courseData(2023, SessionEnum.ETE),
-          year: 2023,
-          name: SessionEnum.ETE,
+          sessionYear: 2023,
+          sessionName: SessionEnum.ETE,
           courseInstances: [],
           totalCredits: 0,
         },
         {
           key: generateSessionKey_courseData(2023, SessionEnum.AUTOMNE),
-          year: 2023,
-          name: SessionEnum.AUTOMNE,
+          sessionYear: 2023,
+          sessionName: SessionEnum.AUTOMNE,
           courseInstances: [],
           totalCredits: 0,
         },

@@ -149,39 +149,55 @@ export const useSessionStore = create<SessionState & SessionActions>()(
 
     moveCourse: (fromKey, toKey, courseId) => {
       set((state) => {
-        const fromSessionName = state.sessions[fromKey];
-        const toSessionName = state.sessions[toKey];
-        if (!fromSessionName || !toSessionName) {
+        const fromSession = state.sessions[fromKey];
+        const toSession = state.sessions[toKey];
+
+        if (!fromSession || !toSession) {
+          console.error('Session not found:', { fromKey, toKey });
           return state;
         }
 
-        const courseInstance = fromSessionName.courseInstances.find(
+        const isCourseInDestination = toSession.courseInstances.some(
           instance => instance.courseId === courseId,
         );
-        if (!courseInstance) {
+
+        if (isCourseInDestination) {
+          // TODO: Add snackbar
           return state;
         }
 
-        const updatedFromCourseInstances = fromSessionName.courseInstances.filter(
+        const courseInstance = fromSession.courseInstances.find(
+          instance => instance.courseId === courseId,
+        );
+
+        if (!courseInstance) {
+          console.error('Course instance not found:', courseId);
+          return state;
+        }
+
+        const updatedFromCourseInstances = fromSession.courseInstances.filter(
           instance => instance.courseId !== courseId,
         );
-        const updatedToCourseInstances = [...toSessionName.courseInstances, courseInstance];
 
-        return {
+        const updatedToCourseInstances = [...toSession.courseInstances, courseInstance];
+
+        const newState = {
           sessions: {
             ...state.sessions,
             [fromKey]: {
-              ...fromSessionName,
+              ...fromSession,
               courseInstances: updatedFromCourseInstances,
               totalCredits: get().calculateSessionCredits(updatedFromCourseInstances),
             },
             [toKey]: {
-              ...toSessionName,
+              ...toSession,
               courseInstances: updatedToCourseInstances,
               totalCredits: get().calculateSessionCredits(updatedToCourseInstances),
             },
           },
         };
+
+        return newState;
       });
 
       get().updateSessionTotalCredits(fromKey);

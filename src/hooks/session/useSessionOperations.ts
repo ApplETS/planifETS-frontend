@@ -42,8 +42,10 @@ export const useSessionOperations = (year: number, sessionName: SessionName) => 
 
   const handleMoveCourse = (toSessionYear: number, toSessionName: SessionName, courseId: number) => {
     handleOperation('move', () => {
+      const fromSessionKey = generateSessionKey(year, sessionName);
       const toSessionKey = generateSessionKey(toSessionYear, toSessionName);
-      sessionStore.moveCourse(sessionKey, toSessionKey, courseId);
+
+      sessionStore.moveCourse(fromSessionKey, toSessionKey, courseId);
     });
   };
 

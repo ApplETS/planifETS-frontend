@@ -43,11 +43,10 @@ export const useSessionDrop = ({ sessionYear, sessionName, sessionTiming }: UseS
       }
 
       if (item.type === DragType.COURSE_BOX) {
-        handleMoveCourse(
-          item.fromSessionYear,
-          item.fromSessionName,
-          item.course.id,
-        );
+        const fromSessionKey = generateSessionKey(item.fromSessionYear, item.fromSessionName);
+        const toSessionKey = generateSessionKey(sessionYear, sessionName);
+
+        sessionStore.moveCourse(fromSessionKey, toSessionKey, item.course.id);
       } else {
         handleAddCourse(item.course.id);
       }

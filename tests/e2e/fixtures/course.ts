@@ -10,7 +10,7 @@ export const addCourseToSession = async (
 ) => {
   const courseCard = await setupProgramAndSearch(page, course.code);
   const dropTarget = page.locator(
-    selectors.sessionDropTarget(course.sessionName, course.year),
+    selectors.sessionDropTarget(course.sessionName, course.sessionYear),
   );
 
   await expect(dropTarget).toBeVisible({ timeout: 15000 });
@@ -28,7 +28,7 @@ export const deleteCourse = async (
   await courseBox.hover();
 
   const deleteButton = page.locator(
-    selectors.courseDeleteButton(course.code, course.sessionName, course.year),
+    selectors.courseDeleteButton(course.code, course.sessionName, course.sessionYear),
   );
 
   await expect(deleteButton).toBeVisible({ timeout: 15000 });

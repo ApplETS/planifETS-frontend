@@ -1,35 +1,54 @@
 'use client';
 
+import type { Course } from '@/types/course';
+import type { DraggedItem } from '@/types/dnd';
+import type { SessionName } from '@/types/session';
 import type { DragSourceMonitor } from 'react-dnd';
-import type { DragItem } from '../../types/drag';
-
+import { DragType } from '@/types/dnd';
 import { useDrag } from 'react-dnd';
 
-export function useDraggableCourse({
-  course,
-  type,
-  fromYear,
-  fromSession,
-  isDraggable = true,
-}: DragItem & { isDraggable?: boolean }) {
-  const [{ isDragging }, dragRef] = useDrag<DragItem, void, { isDragging: boolean }>(
+type BaseProps = {
+  course: Course;
+  isDraggable?: boolean;
+};
+
+type CourseCardProps = BaseProps & {
+  type: DragType.COURSE_CARD;
+};
+
+type CourseBoxProps = BaseProps & {
+  type: DragType.COURSE_BOX;
+  fromSessionYear: number;
+  fromSessionName: SessionName;
+};
+
+type UseDraggableCourseProps = CourseCardProps | CourseBoxProps;
+
+export function useDraggableCourse(props: UseDraggableCourseProps) {
+  const { course, isDraggable = true } = props;
+
+  const [{ isDragging }, dragRef] = useDrag<DraggedItem, void, { isDragging: boolean }>(
     () => ({
-      type,
+      type: props.type,
       item:
-        type === 'COURSE'
-          ? { type: 'COURSE', course }
-          : {
-            type: 'COURSE_BOX',
+        props.type === DragType.COURSE_CARD
+          ? {
+            type: DragType.COURSE_CARD,
             course,
-            fromYear,
-            fromSession,
+          }
+          : {
+            type: DragType.COURSE_BOX,
+            courseId: course.id,
+            course,
+            fromSessionYear: props.fromSessionYear,
+            fromSessionName: props.fromSessionName,
           },
       collect: (monitor: DragSourceMonitor) => ({
         isDragging: monitor.isDragging(),
       }),
       canDrag: () => isDraggable,
     }),
-    [course, type, fromYear, fromSession, isDraggable],
+    [props, course, isDraggable],
   );
 
   return {

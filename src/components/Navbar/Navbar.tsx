@@ -72,9 +72,7 @@ export default function Navbar() {
       data-testid="navbar"
     >
       <div className="flex items-center justify-between">
-        {/* Logo and Tabs */}
         <div className="flex items-center space-x-4">
-          {/* Logo */}
           <Link href="/">
             <div className="flex cursor-pointer items-center">
               <span className="text-2xl font-bold text-textDarkBackground">Planif</span>

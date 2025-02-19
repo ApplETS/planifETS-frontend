@@ -1,79 +1,63 @@
+import type { CourseInstance } from '@/types/course';
+import type { SessionName, SessionTiming } from '@/types/session';
 import type { FC } from 'react';
-import type { Course } from '../../context/planner/types/Course';
-import type { SessionName } from '../../context/planner/types/Session';
-import type { CourseStatus } from '../../types/courseStatus';
-
-import React from 'react';
+import { useCourseStatus } from '@/hooks/course/useCourseStatus';
+import { useCourseStore } from '@/store/courseStore';
 import CourseBox from './CourseBox';
 
 type CoursesListProps = {
   hasCourses: boolean;
-  visibleCourses: Course[];
-  timeInfo: {
-    isCurrentSession: boolean;
-    isFutureSession: boolean;
-    isPastSession: boolean;
-  };
-  removeCourseFromSession: (
-    year: number,
-    sessionName: SessionName,
-    courseCode: string
-  ) => void;
-  year: number;
+  courseInstances: CourseInstance[];
+  sessionTiming: SessionTiming;
+  onRemoveCourse: (courseId: number) => void;
+  onMoveCourse: (toSessionYear: number, toSessionName: SessionName, courseId: number) => void;
+  sessionYear: number;
   sessionName: SessionName;
   canDragCourses?: boolean;
 };
 
-const getCourseStatus = (
-  courseStatus: string | undefined,
-  timeInfo: {
-    isCurrentSession: boolean;
-    isPastSession: boolean;
-  },
-): CourseStatus => {
-  if (timeInfo.isCurrentSession) {
-    return 'In Progress';
-  }
-
-  if (timeInfo.isPastSession) {
-    return courseStatus === 'Failed' ? 'Failed' : 'Completed';
-  }
-
-  return (courseStatus as CourseStatus) || 'Planned';
-};
-
 const CoursesList: FC<CoursesListProps> = ({
   hasCourses,
-  visibleCourses,
-  timeInfo,
-  removeCourseFromSession,
-  year,
+  courseInstances,
+  sessionTiming,
+  onRemoveCourse,
+  sessionYear,
   sessionName,
   canDragCourses = true,
 }) => {
+  const { getCourseStatus } = useCourseStatus();
+  const { getCourse } = useCourseStore();
+
   return (
     <div className="flex-1 overflow-y-auto">
       {hasCourses
         ? (
           <div className="space-y-2">
-            {visibleCourses.map(course => (
-              <CourseBox
-                key={course.code}
-                code={course.code}
-                status={getCourseStatus(course.status, timeInfo)}
-                isDraggable={canDragCourses}
-                credits={course.credits}
-                onDelete={timeInfo.isPastSession ? undefined : () => removeCourseFromSession(year, sessionName, course.code)}
-                fromYear={year}
-                fromSession={sessionName}
-                course={course}
-              />
-            ))}
+            {courseInstances.map((instance) => {
+              const course = getCourse(instance.courseId);
+              if (!course) {
+                return null;
+              }
+
+              return (
+                <CourseBox
+                  key={course.code}
+                  code={course.code}
+                  status={getCourseStatus(instance.courseId, sessionYear, sessionName, sessionTiming)}
+                  isDraggable={canDragCourses}
+                  credits={course.credits}
+                  onDelete={() => onRemoveCourse(instance.courseId)}
+                  fromSessionYear={sessionYear}
+                  fromSessionName={sessionName}
+                  course={course}
+                />
+              );
+            })}
           </div>
         )
         : (
           <div className="flex h-full items-center justify-center text-sm text-gray-400">
-            {timeInfo.isPastSession
+            {sessionTiming.isPast
               ? 'Aucune modification autorisée pour cette session passée.'
               : 'Glissez les cours ici pour les ajouter à cette session.'}
           </div>

@@ -1,12 +1,14 @@
 'use client';
 
+import type { Course } from '@/types/course';
+import type { SessionName } from '@/types/session';
 import type { FC } from 'react';
-import type { Course } from '../../context/planner/types/Course';
 import type { CourseStatus } from '../../types/courseStatus';
+import { DragType } from '@/types/dnd';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useDrag } from 'react-dnd';
 import { FaTrash } from 'react-icons/fa';
-import { useDraggableCourse } from '../../hooks/course/useDraggableCourse';
 import BaseButton from '../atoms/buttons/BaseButton';
 import CourseHeader from '../atoms/CourseHeader';
 import StatusTag from './StatusTag';
@@ -16,8 +18,8 @@ type CourseBoxProps = {
   status: CourseStatus;
   credits: number;
   onDelete?: () => void;
-  fromYear: number;
-  fromSession: string;
+  fromSessionYear: number;
+  fromSessionName: SessionName;
   course: Course;
   isDraggable?: boolean;
 };
@@ -27,24 +29,35 @@ const CourseBox: FC<CourseBoxProps> = ({
   status,
   credits,
   onDelete,
-  fromYear,
-  fromSession,
+  fromSessionYear,
+  fromSessionName,
   course,
   isDraggable = true,
 }) => {
-  const { isDragging, dragRef } = useDraggableCourse({
-    course,
-    type: 'COURSE_BOX',
-    fromYear,
-    fromSession,
-    isDraggable,
-  });
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: DragType.COURSE_BOX,
+    item: {
+      type: DragType.COURSE_BOX,
+      courseId: course.id,
+      course,
+      fromSessionYear,
+      fromSessionName,
+    },
+    collect: monitor => ({
+      isDragging: monitor.isDragging(),
+    }),
+    canDrag: () => isDraggable,
+  }), [course, fromSessionYear, fromSessionName, isDraggable]);
 
   const [isHovered, setIsHovered] = useState(false);
 
+  const dragRef = useCallback((node: HTMLDivElement | null) => {
+    drag(node);
+  }, [drag]);
+
   return (
     <div
-      ref={dragRef as any}
+      ref={dragRef}
       className={`
         relative
         mb-2 cursor-pointer rounded-lg bg-sessionCourse
@@ -67,7 +80,7 @@ const CourseBox: FC<CourseBoxProps> = ({
             onDelete();
           }}
           aria-label="Supprimer le cours"
-          data-testid={`delete-course-${code}-${fromSession}-${fromYear}`}
+          data-testid={`delete-course-${code}-${fromSessionName}-${fromSessionYear}`}
         >
           <FaTrash />
         </BaseButton>

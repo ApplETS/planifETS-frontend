@@ -8,14 +8,14 @@ import CreditsBadge from '../atoms/CreditsBadge';
 
 type SessionHeaderProps = {
   sessionName: string;
-  year: number;
+  sessionYear: number;
   totalCredits: number;
   isNoAvailabilityData: boolean;
 };
 
 const SessionHeader: FC<SessionHeaderProps> = ({
   sessionName,
-  year,
+  sessionYear,
   totalCredits,
   isNoAvailabilityData,
 }) => {
@@ -28,7 +28,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
         <h3 className="text-lg font-bold">
           {sessionName}
           {' '}
-          {year}
+          {sessionYear}
         </h3>
         {isNoAvailabilityData && (
           <Tooltip
@@ -49,7 +49,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
       <div className="flex w-auto justify-end sm:mt-0">
         <CreditsBadge
           credits={totalCredits}
-          testId={`session-${sessionName}-${year}-credits`}
+          testId={`session-${sessionName}-${sessionYear}-credits`}
         />
       </div>
     </div>

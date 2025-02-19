@@ -54,7 +54,8 @@
     "./out/**/*",
     "./node_modules/**/*",
     "**/*.spec.ts",
-    "**/*.e2e.ts"
+    "**/*.e2e.ts",
+    "./.next/**/*"
   ],
   "include": [
     "new-types.d.ts",

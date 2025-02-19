@@ -1,4 +1,4 @@
-import type { Session } from './Session';
+import type { Session } from '@/types/session';
 
 export type YearData = {
   year: number;

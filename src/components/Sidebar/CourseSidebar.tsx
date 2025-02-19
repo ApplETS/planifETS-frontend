@@ -1,58 +1,45 @@
 'use client';
 
-import type { Course } from '@/context/planner/types/Course';
+import type { Course } from '@/types/course';
 import { programCourses } from '@/data/program-courses';
+import { useCourseStore } from '@/store/courseStore';
+import { useProgramStore } from '@/store/programStore';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { Typography } from '@mui/material';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useEffect, useState } from 'react';
-import { LISTE_COURS_LABEL } from '../../constants';
-import { useProgramStore } from '../../store/programStore';
 import CourseCard from './CourseCard';
 import SearchBar from './CourseSearchBar';
-
-let allCourses: Course[] = [];
-
-const getEmptyStateMessage = (activeTab: number, selectedProgram: string | null): string => {
-  if (activeTab === 1) {
-    return 'Vous n\'avez aucun favori.';
-  }
-
-  return selectedProgram
-    ? 'Aucun cours disponible pour ce programme.'
-    : 'Veuillez sélectionner un programme.';
-};
 
 export default function CourseSidebar() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState(0);
   const [displayedCourses, setDisplayedCourses] = useState<Course[]>([]);
+
   const selectedProgram = useProgramStore(state => state.selectedProgram);
+  const {
+    setCourses,
+    getAllCourses,
+    getFavoriteCourses,
+  } = useCourseStore();
 
   useEffect(() => {
-    // Update allCourses when selectedProgram changes
     if (selectedProgram && programCourses[selectedProgram]) {
-      // Get saved favorites from localStorage
-      const savedFavorites = localStorage.getItem('favoriteCourses');
-      const favoritedCourses = savedFavorites ? JSON.parse(savedFavorites) : [];
-
-      // Update allCourses with saved favorites and default status
-      allCourses = programCourses[selectedProgram].map(course => ({
+      const initialCourses = programCourses[selectedProgram].map(course => ({
         ...course,
-        isFavorited: favoritedCourses.includes(course.code),
-        status: 'Planned' as const, // Set default status for all courses
       }));
-    } else {
-      allCourses = [];
-    }
 
-    // Update displayed courses
-    let coursesToDisplay = allCourses;
+      setCourses(initialCourses);
+    }
+  }, [selectedProgram, setCourses]);
+
+  useEffect(() => {
+    let coursesToDisplay = getAllCourses();
 
     if (activeTab === 1) {
-      coursesToDisplay = allCourses.filter(course => course.isFavorited);
+      coursesToDisplay = getFavoriteCourses();
     }
 
     if (searchQuery.trim() !== '') {
@@ -65,7 +52,7 @@ export default function CourseSidebar() {
     }
 
     setDisplayedCourses(coursesToDisplay);
-  }, [selectedProgram, searchQuery, activeTab]);
+  }, [searchQuery, activeTab, getAllCourses, getFavoriteCourses]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -73,29 +60,6 @@ export default function CourseSidebar() {
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
-  };
-
-  const handleToggleFavorite = (courseCode: string) => {
-    const updatedCourses = allCourses.map(course =>
-      course.code === courseCode
-        ? { ...course, isFavorited: !course.isFavorited }
-        : course,
-    );
-
-    allCourses = updatedCourses;
-
-    // Save favorites to localStorage
-    const favoritedCourses = updatedCourses
-      .filter(course => course.isFavorited)
-      .map(course => course.code);
-    localStorage.setItem('favoriteCourses', JSON.stringify(favoritedCourses));
-
-    // Update displayed courses
-    let coursesToDisplay = updatedCourses;
-    if (activeTab === 1) {
-      coursesToDisplay = updatedCourses.filter(course => course.isFavorited);
-    }
-    setDisplayedCourses(coursesToDisplay);
   };
 
   return (
@@ -118,7 +82,7 @@ export default function CourseSidebar() {
         aria-label="Tabs for course list and favorites"
         selectionFollowsFocus
       >
-        <Tab icon={<MenuBookIcon />} label={LISTE_COURS_LABEL} iconPosition="start" />
+        <Tab icon={<MenuBookIcon />} label="Cours" iconPosition="start" />
         <Tab icon={<FavoriteIcon />} label="Favoris" iconPosition="start" />
       </Tabs>
 
@@ -128,7 +92,11 @@ export default function CourseSidebar() {
         {displayedCourses.length === 0
           ? (
             <Typography variant="body1" color="textSecondary" align="center">
-              {getEmptyStateMessage(activeTab, selectedProgram)}
+              {activeTab === 1
+                ? 'Vous n\'avez aucun favori.'
+                : selectedProgram
+                  ? 'Aucun cours disponible pour ce programme.'
+                  : 'Veuillez sélectionner un programme.'}
             </Typography>
           )
           : (
@@ -137,7 +105,6 @@ export default function CourseSidebar() {
                 <CourseCard
                   key={course.code}
                   course={course}
-                  onToggleFavorite={() => handleToggleFavorite(course.code)}
                 />
               ))}
             </div>

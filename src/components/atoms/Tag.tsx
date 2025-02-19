@@ -1,14 +1,14 @@
 'use client';
 
-import type { FC, ReactNode } from 'react';
+import type { FC } from 'react';
 
 type TagProps = {
-  children: ReactNode;
+  text: string;
 };
 
-const Tag: FC<TagProps> = ({ children }) => (
+const Tag: FC<TagProps> = ({ text }) => (
   <span className="rounded-[5px] border border-favoris bg-buttonTags px-2 py-1 text-xs text-textLightBackground">
-    {children}
+    {text}
   </span>
 );
 

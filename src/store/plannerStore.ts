@@ -19,6 +19,8 @@ type PlannerActions = {
   recalculateTotalCredits: () => void;
 };
 
+const NUMBER_OF_YEARS_TO_CREATE = 4;
+
 export const usePlannerStore = create<PlannerState & PlannerActions>()(
   persistConfig('planner-store', (set, get) => ({
     name: 'Default Planner',
@@ -38,7 +40,7 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
       const currentYear = new Date().getFullYear();
       const sessionKeys: string[] = [];
 
-      for (let year = currentYear; year < currentYear + 4; year++) {
+      for (let year = currentYear; year < currentYear + NUMBER_OF_YEARS_TO_CREATE; year++) {
         Object.values(SessionEnum).forEach((sessionName: SessionName) => {
           sessionKeys.push(generateSessionKey(year, sessionName));
         });

@@ -26,7 +26,7 @@ const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIO
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {isHovered && !isLastYear && (
+      {isHovered && isLastYear && (
         <BaseButton
           variant="danger"
           size="sm"

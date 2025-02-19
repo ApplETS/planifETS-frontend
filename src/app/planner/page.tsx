@@ -15,14 +15,16 @@ export default function PlannerPage() {
   useEffect(() => {
     const sessionStore = useSessionStore.getState();
 
-    initializePlanner();
+    if (Object.keys(sessionStore.sessions).length === 0) {
+      initializePlanner();
 
-    getYears().forEach((year) => {
-      const yearSessions = sessionStore.getSessionsByYear(year);
-      if (yearSessions.length === 0) {
-        initializeSessions(year);
-      }
-    });
+      getYears().forEach((year) => {
+        const yearSessions = sessionStore.getSessionsByYear(year);
+        if (yearSessions.length === 0) {
+          initializeSessions(year);
+        }
+      });
+    }
   }, [initializePlanner, getYears, initializeSessions]);
 
   const years = getYears();
@@ -44,7 +46,7 @@ export default function PlannerPage() {
         ))}
       </div>
 
-      <div className="mt-8 flex justify-center">
+      <div className="mt-4 flex justify-center">
         <Button
           variant="contained"
           color="primary"

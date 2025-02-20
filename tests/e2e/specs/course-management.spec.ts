@@ -53,7 +53,7 @@ test.describe('Course Management', () => {
 
     // Verify course remains in original session
     const originalSessionDropTarget = page.locator(
-      selectors.sessionDropTarget(course.sessionName, course.year),
+      selectors.sessionDropTarget(course.sessionName, course.sessionYear),
     );
 
     await expect(originalSessionDropTarget).toContainText(course.code);

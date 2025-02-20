@@ -3,23 +3,23 @@ import Tooltip from '@mui/material/Tooltip';
 import React from 'react';
 import { FaInfoCircle } from 'react-icons/fa';
 
-import { getSeason } from '../../utils/seasonUtils';
+import { getSeasonStyle } from '../../utils/seasonUtils';
 import CreditsBadge from '../atoms/CreditsBadge';
 
 type SessionHeaderProps = {
   sessionName: string;
-  year: number;
+  sessionYear: number;
   totalCredits: number;
   isNoAvailabilityData: boolean;
 };
 
 const SessionHeader: FC<SessionHeaderProps> = ({
   sessionName,
-  year,
+  sessionYear,
   totalCredits,
   isNoAvailabilityData,
 }) => {
-  const { SeasonIcon, color } = getSeason(sessionName) || {};
+  const { SeasonIcon, color } = getSeasonStyle(sessionName) ?? {};
 
   return (
     <div className="mb-2 flex select-none flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -28,7 +28,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
         <h3 className="text-lg font-bold">
           {sessionName}
           {' '}
-          {year}
+          {sessionYear}
         </h3>
         {isNoAvailabilityData && (
           <Tooltip
@@ -49,7 +49,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
       <div className="flex w-auto justify-end sm:mt-0">
         <CreditsBadge
           credits={totalCredits}
-          testId={`session-${sessionName}-${year}-credits`}
+          dataTestId={`session-${sessionName}-${sessionYear}-credits`}
         />
       </div>
     </div>

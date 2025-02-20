@@ -1,11 +1,12 @@
 'use client';
 
+import type { Course } from '@/types/course';
 import type { FC } from 'react';
-import type { Course } from '../../context/planner/types/Course';
-
 import FavoriteButton from '@/components/Sidebar/FavoriteButton';
+import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
+import { useCourseStore } from '@/store/courseStore';
+import { DragType } from '@/types/dnd';
 import { useState } from 'react';
-import { useDraggableCourse } from '../../hooks/course/useDraggableCourse';
 import CreditsBadge from '../atoms/CreditsBadge';
 import Tag from '../atoms/Tag';
 
@@ -23,15 +24,14 @@ const Section: FC<SectionProps> = ({ title, children }) => (
 
 type CourseCardProps = {
   course: Course;
-  onToggleFavorite: () => void;
 };
 
-const CourseCard: FC<CourseCardProps> = ({ course, onToggleFavorite }) => {
-  const { isDragging, dragRef } = useDraggableCourse({
+const CourseCard: FC<CourseCardProps> = ({ course }) => {
+  const { toggleFavorite, isFavorite } = useCourseStore();
+  const { dragRef, isDragging } = useDraggableCourse({
     course,
-    type: 'COURSE',
+    type: DragType.COURSE_CARD,
   });
-
   const [isHovered, setIsHovered] = useState(false);
 
   const renderPrerequisites = () => {
@@ -42,7 +42,7 @@ const CourseCard: FC<CourseCardProps> = ({ course, onToggleFavorite }) => {
     return (
       <Section title="Prérequis:">
         {course.prerequisites.map(preq => (
-          <Tag key={preq}>{preq}</Tag>
+          <Tag key={preq} text={preq} />
         ))}
       </Section>
     );
@@ -51,7 +51,7 @@ const CourseCard: FC<CourseCardProps> = ({ course, onToggleFavorite }) => {
   const renderAvailability = () => (
     <Section title="Disponible:">
       {course.availability.map(session => (
-        <Tag key={session}>{session}</Tag>
+        <Tag key={session} text={session} />
       ))}
     </Section>
   );
@@ -63,24 +63,26 @@ const CourseCard: FC<CourseCardProps> = ({ course, onToggleFavorite }) => {
           dragRef(node);
         }
       }}
-      className={`relative w-full cursor-grab rounded-md bg-sessions p-4 text-textDarkBackground shadow-md ${isDragging ? 'opacity-50' : 'opacity-100'
-      }`}
+      className={`relative w-full cursor-grab rounded-md bg-sessions p-4 shadow-md 
+        ${isDragging ? 'opacity-50' : 'opacity-100'}`}
       data-testid={`course-card-${course.code}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      style={{ overflow: 'visible' }}
     >
       <FavoriteButton
-        isFavorited={course.isFavorited ?? false}
-        onToggleFavorite={onToggleFavorite}
+        isFavorited={isFavorite(course.id)}
+        onToggle={() => toggleFavorite(course.id)}
         isHovered={isHovered}
       />
-
-      <h3 className="flex items-center justify-between text-lg">
-        <span>{course.code}</span>
-        <CreditsBadge credits={course.credits} />
-      </h3>
-      <p className="mt-1 text-sm">{course.title}</p>
+      <div className="flex items-start justify-between">
+        <div className="flex-1">
+          <h3 className="text-lg font-semibold">{course.code}</h3>
+          <p className="text-sm">{course.title}</p>
+        </div>
+        <div className="mt-2 flex items-center gap-2">
+          <CreditsBadge credits={course.credits} dataTestId={`course-card-${course.code}-credits`} />
+        </div>
+      </div>
 
       {renderPrerequisites()}
       {renderAvailability()}

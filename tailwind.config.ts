@@ -19,6 +19,18 @@ const tailwindConfig = {
         notOfferedCourseTag: '#d15656',
         buttonTags: '#A5A1FF',
 
+        // Session availability
+        sessionAvailable: {
+          border: '#4ade80',
+          borderHover: '#22c55e',
+          bgHover: '#bbf7d0',
+        },
+        sessionUnavailable: {
+          border: '#f87171',
+          borderHover: '#ef4444',
+          bgHover: '#fecaca',
+        },
+
         // Buttons
         navbarButton: '#EFE3DE',
         navbarButtonHover: '#7D90ED',

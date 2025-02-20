@@ -1,10 +1,10 @@
-import type { Course } from './planner';
+import type { Course } from './course';
 
-type DragItemType = 'COURSE' | 'COURSE_BOX';
+type DragItemType = 'COURSE_CARD' | 'COURSE_BOX';
 
 export type DragItem = {
   course: Course;
   type: DragItemType;
-  fromYear?: number;
-  fromSession?: string;
+  fromSessionYear?: number;
+  fromSessionName?: string;
 };

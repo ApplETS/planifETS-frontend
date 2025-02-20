@@ -7,7 +7,7 @@ type ProgramState = {
 };
 
 export const useProgramStore = create<ProgramState>()(
-  persistConfig('programStore', set => ({
+  persistConfig('program-store', set => ({
     selectedProgram: null,
     setSelectedProgram: program => set({ selectedProgram: program }),
   })),

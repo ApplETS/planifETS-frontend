@@ -1,37 +1,36 @@
 import type { IconType } from 'react-icons';
+import { SessionEnum } from '@/types/session';
 import { FaSnowflake, FaSun } from 'react-icons/fa';
 import { GiMapleLeaf } from 'react-icons/gi';
 
-export type SeasonParams = {
+export type SeasonStyle = {
   SeasonIcon: IconType;
   color: string;
 };
 
-type seasonIconsType = {
-  [key: string]: SeasonParams;
-};
-// TODO: change this logic to be more modular (need to implement language support)
-// Maybe use a (0 - 1 - 2) sessions index
-export const seasonIcons: seasonIconsType = {
-  hiver: { SeasonIcon: FaSnowflake, color: 'text-blue-400' },
-  été: { SeasonIcon: FaSun, color: 'text-yellow-400' },
-  automne: { SeasonIcon: GiMapleLeaf, color: 'text-orange-500' },
+type SeasonIconsType = {
+  [key in SessionEnum]: SeasonStyle;
 };
 
-export const getSeason = (sessionName: string): SeasonParams => {
-  const normalizedSession = sessionName.toLowerCase();
-  const season = Object.keys(seasonIcons).find(s =>
-    normalizedSession.includes(s),
+export const seasonIcons: SeasonIconsType = {
+  [SessionEnum.HIVER]: { SeasonIcon: FaSnowflake, color: 'text-blue-400' },
+  [SessionEnum.ETE]: { SeasonIcon: FaSun, color: 'text-yellow-400' },
+  [SessionEnum.AUTOMNE]: { SeasonIcon: GiMapleLeaf, color: 'text-orange-500' },
+};
+
+export const getSeasonStyle = (sessionName: string): SeasonStyle => {
+  const season = Object.values(SessionEnum).find(s =>
+    sessionName.includes(s),
   );
 
   if (!season) {
-    throw new Error('Season is undefined');
+    throw new Error('Session is undefined');
   }
 
   const seasonConfig = seasonIcons[season];
 
-  if (!seasonConfig || !seasonConfig.SeasonIcon || !seasonConfig.color) {
-    throw new Error('SeasonConfig is undefined');
+  if (!seasonConfig?.SeasonIcon || !seasonConfig?.color) {
+    throw new Error('SessionConfig is undefined');
   }
 
   return seasonConfig;

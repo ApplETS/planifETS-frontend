@@ -5,6 +5,6 @@ import dynamic from 'next/dynamic';
 
 const SnackbarProvider = dynamic(() => import('./SnackbarProvider'), { ssr: false });
 
-export default function ClientProviders({ children }: { children: ReactNode }) {
+export default function ClientProviders({ children }: { readonly children: ReactNode }) {
   return <SnackbarProvider>{children}</SnackbarProvider>;
 }

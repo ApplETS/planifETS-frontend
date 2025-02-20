@@ -1,23 +1,10 @@
 'use client';
 
-import type { SnackbarKey } from 'notistack';
-import type { ReactNode } from 'react';
-import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
+import type { SnackbarProviderProps } from 'notistack';
 import { SnackbarProvider as NotistackProvider } from 'notistack';
 import React from 'react';
 
-type SnackbarProviderProps = {
-  children: ReactNode;
-};
-
-export default function SnackbarProvider({ children }: SnackbarProviderProps) {
-  const notistackRef = React.useRef<NotistackProvider>(null);
-
-  const handleCloseSnackbar = (key: SnackbarKey) => {
-    notistackRef.current?.closeSnackbar(key);
-  };
-
+export default function SnackbarProvider({ children }: Readonly<SnackbarProviderProps>) {
   return (
     <NotistackProvider
       maxSnack={3}
@@ -26,17 +13,9 @@ export default function SnackbarProvider({ children }: SnackbarProviderProps) {
         vertical: 'bottom',
         horizontal: 'right',
       }}
-      ref={notistackRef}
-      action={key => (
-        <IconButton
-          onClick={() => handleCloseSnackbar(key)}
-          sx={{ color: 'white', padding: '4px' }}
-          size="small"
-          aria-label="close notification"
-        >
-          <CloseIcon fontSize="small" />
-        </IconButton>
-      )}
+      hideIconVariant={false}
+      autoHideDuration={3000}
+      dense
     >
       {children}
     </NotistackProvider>

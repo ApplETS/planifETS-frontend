@@ -3,7 +3,7 @@ import Tooltip from '@mui/material/Tooltip';
 import React from 'react';
 import { FaInfoCircle } from 'react-icons/fa';
 
-import { getSeason } from '../../utils/seasonUtils';
+import { getSeasonStyle } from '../../utils/seasonUtils';
 import CreditsBadge from '../atoms/CreditsBadge';
 
 type SessionHeaderProps = {
@@ -19,7 +19,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
   totalCredits,
   isNoAvailabilityData,
 }) => {
-  const { SeasonIcon, color } = getSeason(sessionName) || {};
+  const { SeasonIcon, color } = getSeasonStyle(sessionName) ?? {};
 
   return (
     <div className="mb-2 flex select-none flex-col sm:flex-row sm:items-center sm:justify-between">

@@ -38,13 +38,15 @@ export const useCourseStore = create<CourseState & CourseActions>()(
     },
 
     setCourses: (courses) => {
-      const coursesRecord = courses.reduce<Record<number, Course>>((acc, course) => {
-        if (course.id) {
-          acc[course.id] = course;
-        }
-        return acc;
-      }, {});
-      set({ courses: coursesRecord });
+      set((state) => {
+        const coursesRecord = courses.reduce<Record<number, Course>>((acc, course) => {
+          if (course.id) {
+            acc[course.id] = course;
+          }
+          return acc;
+        }, { ...state.courses });
+        return { courses: coursesRecord };
+      });
     },
 
     getAllCourses: () => Object.values(get().courses),

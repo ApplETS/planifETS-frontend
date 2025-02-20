@@ -80,7 +80,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
           <p className="text-sm">{course.title}</p>
         </div>
         <div className="mt-2 flex items-center gap-2">
-          <CreditsBadge credits={course.credits} />
+          <CreditsBadge credits={course.credits} dataTestId={`course-card-${course.code}-credits`} />
         </div>
       </div>
 

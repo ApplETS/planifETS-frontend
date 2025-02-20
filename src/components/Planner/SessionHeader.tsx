@@ -49,7 +49,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
       <div className="flex w-auto justify-end sm:mt-0">
         <CreditsBadge
           credits={totalCredits}
-          testId={`session-${sessionName}-${sessionYear}-credits`}
+          dataTestId={`session-${sessionName}-${sessionYear}-credits`}
         />
       </div>
     </div>

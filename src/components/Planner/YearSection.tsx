@@ -11,12 +11,13 @@ import Session from './Session';
 type YearSectionProps = {
   year: number;
   sessions: SessionType[];
+  isFirstYear: boolean;
   isLastYear: boolean;
 };
 
 const EMPTY_SESSIONS: SessionType[] = [];
 
-const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIONS, isLastYear }) => {
+const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIONS, isFirstYear, isLastYear }) => {
   const [isHovered, setIsHovered] = useState(false);
   const deleteYear = usePlannerStore(state => state.deleteYear);
 
@@ -26,7 +27,7 @@ const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIO
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {isHovered && isLastYear && (
+      {isHovered && isLastYear && !isFirstYear && (
         <BaseButton
           variant="danger"
           size="sm"

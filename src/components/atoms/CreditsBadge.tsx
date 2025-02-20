@@ -5,13 +5,13 @@ import * as React from 'react';
 
 type CreditsBadgeProps = {
   credits: number;
-  testId?: string;
+  dataTestId: string;
 };
 
-const CreditsBadge: FC<CreditsBadgeProps> = ({ credits, testId }) => (
+const CreditsBadge: FC<CreditsBadgeProps> = ({ credits, dataTestId }) => (
   <span
     className="rounded-[5px] border bg-creditsTag px-1 py-0.5 text-xs text-black"
-    data-testid={testId}
+    data-testid={dataTestId}
   >
     {credits}
     {' '}

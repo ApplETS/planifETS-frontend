@@ -41,6 +41,7 @@ export default function PlannerPage() {
             key={year}
             year={year}
             sessions={getSessionsByYear(year)}
+            isFirstYear={year === Math.min(...years)}
             isLastYear={year === Math.max(...years)}
           />
         ))}

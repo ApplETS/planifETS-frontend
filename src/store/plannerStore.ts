@@ -31,7 +31,7 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
       const sessionStore = useSessionStore.getState();
       const totalCredits = get().sessionKeys.reduce((total, sessionKey) => {
         const session = sessionStore.getSessionByKey(sessionKey);
-        return total + (session?.totalCredits || 0);
+        return total + (session?.totalCredits ?? 0);
       }, 0);
       set({ totalCredits });
     },
@@ -93,8 +93,9 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
     },
 
     getYears: () => {
-      return [...new Set(get().sessionKeys.map(key => key.split('-')[0]).filter((year): year is string => year !== undefined).map(year => Number.parseInt(year, 10)),
-      )].sort();
+      return [...new Set(
+        get().sessionKeys.map(key => key.split('-')[0]).filter((year): year is string => year !== undefined).map(year => Number.parseInt(year, 10)),
+      )].sort((a, b) => a - b);
     },
   })),
 );

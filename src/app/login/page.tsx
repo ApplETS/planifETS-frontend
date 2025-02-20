@@ -12,25 +12,13 @@ export default function LoginPage() {
   const { login } = useAuthStore();
   const [codeUniversel, setCodeUniversel] = useState('');
   const [motDePasse, setMotDePasse] = useState('');
-  // const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // FIXME: hardcoded credentials
-    // TODO: implement SOAP call using libs or smth
-    // Validate credentials
-    // if (
-    // (codeUniversel.toUpperCase() === 'AS12345') &&
-    // motDePasse === '12345678'
-    // ) {
     login();
 
     router.push('/planner');
-    // } else {
-    //   // Show error message
-    //   setErrorMessage("Code universel ou mot de passe incorrect.");
-    // }
   };
 
   return (

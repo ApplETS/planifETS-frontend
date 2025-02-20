@@ -88,7 +88,7 @@ export const useSessionStore = create<SessionState & SessionActions>()(
         );
         if (courseExists) {
           const course = useCourseStore.getState().getCourse(courseId);
-          enqueueSnackbar(`${course?.code || 'Course'} is already in this session`, {
+          enqueueSnackbar(`${course?.code ?? 'Course'} is already in this session`, {
             variant: 'warning',
           });
           return state;
@@ -162,7 +162,6 @@ export const useSessionStore = create<SessionState & SessionActions>()(
         );
 
         if (isCourseInDestination) {
-          // TODO: Add snackbar
           return state;
         }
 

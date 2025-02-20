@@ -122,30 +122,23 @@ export const useSessionStore = create<SessionState & SessionActions>()(
       get().updateSessionTotalCredits(sessionKey);
     },
 
-    removeCourseFromSession: (sessionKey, courseId) => {
-      set((state) => {
-        const session = state.sessions[sessionKey];
-        if (!session) {
-          return state;
-        }
-
-        const updatedCourseInstances = session.courseInstances.filter(
-          instance => instance.courseId !== courseId,
-        );
-
-        return {
-          sessions: {
-            ...state.sessions,
-            [sessionKey]: {
-              ...session,
-              courseInstances: updatedCourseInstances,
-              totalCredits: get().calculateSessionCredits(updatedCourseInstances),
-            },
-          },
-        };
-      });
-      get().updateSessionTotalCredits(sessionKey);
+    getSessionCourses: (sessionKey) => {
+      const session = get().sessions[sessionKey];
+      return session?.courseInstances || [];
     },
+
+    getSessionsByYear: (year: number) => {
+      const { sessions } = get();
+      return Object.values(sessions).filter(session => session.sessionYear === year);
+    },
+
+    getSessionByKey: (sessionKey: string) => {
+      return get().sessions[sessionKey];
+    },
+
+    setSessions: sessions => set({ sessions }),
+
+    clearAllSessions: () => set({ sessions: {} }),
 
     moveCourse: (fromKey, toKey, courseId) => {
       set((state) => {
@@ -203,22 +196,30 @@ export const useSessionStore = create<SessionState & SessionActions>()(
       get().updateSessionTotalCredits(toKey);
     },
 
-    getSessionCourses: (sessionKey) => {
-      const session = get().sessions[sessionKey];
-      return session?.courseInstances || [];
+    removeCourseFromSession: (sessionKey, courseId) => {
+      set((state) => {
+        const session = state.sessions[sessionKey];
+        if (!session) {
+          return state;
+        }
+
+        const updatedCourseInstances = session.courseInstances.filter(
+          instance => instance.courseId !== courseId,
+        );
+
+        return {
+          sessions: {
+            ...state.sessions,
+            [sessionKey]: {
+              ...session,
+              courseInstances: updatedCourseInstances,
+              totalCredits: get().calculateSessionCredits(updatedCourseInstances),
+            },
+          },
+        };
+      });
+      get().updateSessionTotalCredits(sessionKey);
     },
 
-    setSessions: sessions => set({ sessions }),
-
-    clearAllSessions: () => set({ sessions: {} }),
-
-    getSessionsByYear: (year: number) => {
-      const { sessions } = get();
-      return Object.values(sessions).filter(session => session.sessionYear === year);
-    },
-
-    getSessionByKey: (sessionKey: string) => {
-      return get().sessions[sessionKey];
-    },
   })),
 );

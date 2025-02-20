@@ -1,5 +1,5 @@
 import { SessionEnum, type SessionName } from '@/types/session';
-import { generateSessionKey } from '@/utils/sessionUtils';
+import { extractYearFromSessionKey, generateSessionKey } from '@/utils/sessionUtils';
 import { persistConfig } from 'lib/persistConfig';
 import { create } from 'zustand';
 import { useSessionStore } from './sessionStore';
@@ -73,6 +73,18 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
       get().recalculateTotalCredits();
     },
 
+    getSessionKeysForYear: (year: number) => {
+      return get().sessionKeys.filter(key => key.startsWith(`${year}-`));
+    },
+
+    getYears: () => {
+      const state = get();
+      const years = state.sessionKeys
+        .map(extractYearFromSessionKey);
+
+      return [...new Set(years)].sort((a, b) => a - b);
+    },
+
     deleteYear: (year: number) => {
       const keysToDelete = get().sessionKeys.filter(key => key.startsWith(`${year}-`));
       const sessionStore = useSessionStore.getState();
@@ -86,16 +98,6 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
         sessionKeys: state.sessionKeys.filter(key => !key.startsWith(`${year}-`)),
       }));
       get().recalculateTotalCredits();
-    },
-
-    getSessionKeysForYear: (year: number) => {
-      return get().sessionKeys.filter(key => key.startsWith(`${year}-`));
-    },
-
-    getYears: () => {
-      return [...new Set(
-        get().sessionKeys.map(key => key.split('-')[0]).filter((year): year is string => year !== undefined).map(year => Number.parseInt(year, 10)),
-      )].sort((a, b) => a - b);
     },
   })),
 );

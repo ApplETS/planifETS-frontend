@@ -23,15 +23,7 @@ export const useCourseStore = create<CourseState & CourseActions>()(
     courses: {},
     favoriteCourses: [],
 
-    setCourses: (courses) => {
-      const coursesRecord = courses.reduce<Record<number, Course>>((acc, course) => {
-        if (course.id) {
-          acc[course.id] = course;
-        }
-        return acc;
-      }, {});
-      set({ courses: coursesRecord });
-    },
+    getCourse: courseId => get().courses[courseId],
 
     addCourse: (course) => {
       if (!course.id) {
@@ -45,12 +37,24 @@ export const useCourseStore = create<CourseState & CourseActions>()(
       }));
     },
 
-    removeCourse: (courseId) => {
-      set((state) => {
-        const { [courseId]: _, ...rest } = state.courses;
-        return { courses: rest };
-      });
+    setCourses: (courses) => {
+      const coursesRecord = courses.reduce<Record<number, Course>>((acc, course) => {
+        if (course.id) {
+          acc[course.id] = course;
+        }
+        return acc;
+      }, {});
+      set({ courses: coursesRecord });
     },
+
+    getAllCourses: () => Object.values(get().courses),
+
+    getFavoriteCourses: () => {
+      const courses = get().courses;
+      return get().favoriteCourses.map(id => courses[id]).filter((course): course is Course => !!course);
+    },
+
+    isFavorite: courseId => get().favoriteCourses.includes(courseId),
 
     toggleFavorite: (courseId) => {
       set((state) => {
@@ -67,12 +71,11 @@ export const useCourseStore = create<CourseState & CourseActions>()(
       });
     },
 
-    getCourse: courseId => get().courses[courseId],
-    getAllCourses: () => Object.values(get().courses),
-    getFavoriteCourses: () => {
-      const courses = get().courses;
-      return get().favoriteCourses.map(id => courses[id]).filter((course): course is Course => !!course);
+    removeCourse: (courseId) => {
+      set((state) => {
+        const { [courseId]: _, ...rest } = state.courses;
+        return { courses: rest };
+      });
     },
-    isFavorite: courseId => get().favoriteCourses.includes(courseId),
   })),
 );

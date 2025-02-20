@@ -76,13 +76,22 @@ export const generateSessionKey = (sessionYear: number, sessionName: SessionName
   return `${sessionYear}-${sessionName}`;
 };
 
+export const extractYearFromSessionKey = (sessionKey: string): number => {
+  const [year] = sessionKey.split('-');
+  if (!year) {
+    throw new Error(`Invalid session key format: ${sessionKey}`);
+  }
+
+  return Number.parseInt(year, 10);
+};
+
 export const calculateTotalCredits = (
   courseInstances: CourseInstance[],
   findCourse: CourseFinder,
 ): number => {
   return courseInstances.reduce((total, instance) => {
     const course = findCourse(instance.courseId);
-    return total + (course?.credits || 0);
+    return total + (course?.credits ?? 0);
   }, 0);
 };
 

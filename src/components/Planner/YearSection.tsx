@@ -39,7 +39,11 @@ const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIO
         </BaseButton>
       )}
       <div className="rounded-lg border border-buttonTags bg-yearSection p-4 shadow-lg">
-        <h2 className="mb-4 text-xl font-semibold">{year}</h2>
+        <h2 className="mb-1 text-xl font-semibold">
+          Année
+          {' '}
+          {year}
+        </h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {sessions.map(session => (
             <Session

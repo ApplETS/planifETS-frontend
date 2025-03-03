@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { TEST_COURSES } from '../../assets/courses';
 import { selectors } from '../../assets/selectors';
-import { addCourseToSession, deleteCourse } from '../fixtures/course';
+import { addCourseToSession, deleteCourse, searchCourseInSidebar } from '../fixtures/course';
+import { selectProgram } from '../fixtures/program';
 import { setupTestPage } from '../fixtures/setup';
 
 const CREDITS_LABEL = 'crédits';
@@ -9,10 +10,13 @@ const CREDITS_LABEL = 'crédits';
 test.describe('Credits Management', () => {
   test.beforeEach(async ({ page }) => {
     await setupTestPage(page);
+    await selectProgram(page);
   });
 
   test('should update session credits', async ({ page }) => {
     const course = TEST_COURSES.LOG240;
+
+    await searchCourseInSidebar(page, course.code);
     await addCourseToSession(page, course);
 
     const sessionCredits = page.locator(

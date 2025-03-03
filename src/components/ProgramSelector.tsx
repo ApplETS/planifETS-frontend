@@ -49,7 +49,7 @@ const ProgramSelector: React.FC = () => {
         <TextField
           {...params}
           label="Programmes"
-          data-testid="program-select"
+          data-testid="programs-select"
         />
       )}
       renderTags={(tagValue, getTagProps) =>
@@ -58,6 +58,7 @@ const ProgramSelector: React.FC = () => {
             label={option.value}
             {...getTagProps({ index })}
             key={option.key}
+            data-testid={`program-chip-${option.key}`}
           />
         ))}
       renderOption={(props, option) => {
@@ -66,7 +67,6 @@ const ProgramSelector: React.FC = () => {
           <li
             key={key}
             {...otherProps}
-            data-testid={`program-option-${option.key}`}
             role="option"
             aria-selected={props['aria-selected']}
             tabIndex={0}

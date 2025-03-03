@@ -1,10 +1,7 @@
 export const selectors = {
   // Program selection
-  programSelect: '[data-testid="program-select"]',
-  programOption: (program: string) => `[data-testid="program-option-${program}"]`,
-
-  // Course sidebar
-  courseSidebar: '[data-testid="course-sidebar"]',
+  programChip: (programCode: string) => `[data-testid="program-chip-${programCode}"]`,
+  programsSelect: '[data-testid="programs-select"]',
 
   // Course search and display
   searchInput: '[data-testid="course-search-input"]',

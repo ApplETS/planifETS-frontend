@@ -67,7 +67,6 @@ export default function CourseSidebar() {
             md:overflow-y-auto
             md:bg-courseSidebar 
            `}
-      data-testid="course-sidebar"
     >
       <Tabs
         value={activeTab}

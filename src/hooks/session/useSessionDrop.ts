@@ -6,7 +6,7 @@ import { useSessionStore } from '@/store/sessionStore';
 import { DragType } from '@/types/dnd';
 import { generateSessionKey } from '@/utils/sessionUtils';
 import { useDrop } from 'react-dnd';
-import { useSessionOperations } from '../session/useSessionOperations';
+import { useSessionOperations } from './useSessionOperations';
 
 type UseSessionDropProps = {
   sessionYear: number;

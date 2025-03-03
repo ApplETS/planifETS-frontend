@@ -2,7 +2,7 @@
 
 import type { SessionName } from '@/types/session';
 import type { FC } from 'react';
-import { useSessionDrop } from '@/hooks/planner/useSessionDrop';
+import { useSessionDrop } from '@/hooks/session/useSessionDrop';
 import { useSessionOperations } from '@/hooks/session/useSessionOperations';
 import { useCourseStore } from '@/store/courseStore';
 import { isCourseAvailableInSession } from '@/utils/sessionUtils';

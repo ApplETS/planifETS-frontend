@@ -1,58 +1,23 @@
 'use client';
 
-import type { Course } from '@/types/course';
-import { programCourses } from '@/data/program-courses';
-import { useCourseStore } from '@/store/courseStore';
-import { useProgramStore } from '@/store/programStore';
+import { useProgramCoursesOperations } from '@/hooks/course/useProgramCoursesOperations';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { Typography } from '@mui/material';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import CourseCard from './CourseCard';
 import SearchBar from './CourseSearchBar';
 
 export default function CourseSidebar() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState(0);
-  const [displayedCourses, setDisplayedCourses] = useState<Course[]>([]);
 
-  const selectedProgram = useProgramStore(state => state.selectedProgram);
-  const {
-    setCourses,
-    getAllCourses,
-    getFavoriteCourses,
-  } = useCourseStore();
-
-  useEffect(() => {
-    if (selectedProgram && programCourses[selectedProgram]) {
-      const initialCourses = programCourses[selectedProgram].map(course => ({
-        ...course,
-      }));
-
-      setCourses(initialCourses);
-    }
-  }, [selectedProgram, setCourses]);
-
-  useEffect(() => {
-    let coursesToDisplay = getAllCourses();
-
-    if (activeTab === 1) {
-      coursesToDisplay = getFavoriteCourses();
-    }
-
-    if (searchQuery.trim() !== '') {
-      const lowerQuery = searchQuery.toLowerCase();
-      coursesToDisplay = coursesToDisplay.filter(
-        course =>
-          course.code.toLowerCase().includes(lowerQuery)
-          || course.title.toLowerCase().includes(lowerQuery),
-      );
-    }
-
-    setDisplayedCourses(coursesToDisplay);
-  }, [searchQuery, activeTab, getAllCourses, getFavoriteCourses]);
+  const { displayedCourses, hasSelectedPrograms } = useProgramCoursesOperations(
+    searchQuery,
+    activeTab,
+  );
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -60,6 +25,36 @@ export default function CourseSidebar() {
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
+  };
+
+  const renderCoursesContent = () => {
+    if (displayedCourses.length > 0) {
+      return (
+        <div className="space-y-4">
+          {displayedCourses.map(course => (
+            <CourseCard
+              key={course.code}
+              course={course}
+            />
+          ))}
+        </div>
+      );
+    }
+
+    let message = 'Chargement des cours...';
+    if (activeTab === 1) {
+      message = 'Vous n\'avez aucun favori.';
+    } else if (hasSelectedPrograms !== undefined) {
+      message = hasSelectedPrograms
+        ? 'Aucun cours trouvé.'
+        : 'Veuillez sélectionner un programme.';
+    }
+
+    return (
+      <Typography variant="body1" color="textSecondary" align="center">
+        {message}
+      </Typography>
+    );
   };
 
   return (
@@ -89,26 +84,7 @@ export default function CourseSidebar() {
       <SearchBar onSearch={handleSearch} />
 
       <div className="no-scrollbar mt-4 flex-1 overflow-y-auto">
-        {displayedCourses.length === 0
-          ? (
-            <Typography variant="body1" color="textSecondary" align="center">
-              {activeTab === 1
-                ? 'Vous n\'avez aucun favori.'
-                : selectedProgram
-                  ? 'Aucun cours disponible pour ce programme.'
-                  : 'Veuillez sélectionner un programme.'}
-            </Typography>
-          )
-          : (
-            <div className="space-y-4">
-              {displayedCourses.map(course => (
-                <CourseCard
-                  key={course.code}
-                  course={course}
-                />
-              ))}
-            </div>
-          )}
+        {renderCoursesContent()}
       </div>
     </aside>
   );

@@ -2,92 +2,67 @@ import type { Course } from '@/types/course';
 import { programCourses } from '@/data/program-courses';
 import { useCourseStore } from '@/store/courseStore';
 import { useProgramStore } from '@/store/programStore';
+import { FAVORITE_TAB_INDEX } from '@/utils/constants';
 import { useEffect, useMemo } from 'react';
 
 export const useProgramCoursesOperations = (searchQuery: string, activeTab: number) => {
-  const programStore = useProgramStore();
-  const { setCourses, getCoursesById, getFavoriteCourses, courses } = useCourseStore();
+  const selectedPrograms = useProgramStore(state => state.getSelectedPrograms());
+  const { setCourses, courses, getFavoriteCourses } = useCourseStore();
 
+  // Step 1: Get program courses and sync with store
   const programCoursesData = useMemo(() => {
-    const selectedPrograms = programStore.getSelectedPrograms();
-    const hasPrograms = selectedPrograms.length > 0;
-
-    if (!hasPrograms) {
-      return {
-        uniqueCourses: [] as Course[],
-        allCourseIds: [] as number[],
-        hasSelectedPrograms: false,
-      };
+    if (!selectedPrograms.length) {
+      return { courses: [], courseIds: [], hasSelectedPrograms: false };
     }
 
-    const coursesByCode: Record<string, Course> = {};
-    const allCourseIds: number[] = [];
+    const uniqueCoursesMap = new Map<string, Course>();
+    const courseIds: number[] = [];
 
-    selectedPrograms.forEach((program) => {
-      if (programCourses[program]) {
-        const validCourses = programCourses[program].filter(course => course?.id && course?.code);
-        validCourses.forEach((course) => {
-          coursesByCode[course.code] = course;
-          allCourseIds.push(course.id);
-        });
-      }
+    selectedPrograms.forEach((programId) => {
+      const programCourseList = programCourses[programId] || [];
+
+      programCourseList.forEach((course) => {
+        if (course?.id && course?.code) {
+          uniqueCoursesMap.set(course.code, course);
+          courseIds.push(course.id);
+        }
+      });
     });
 
     return {
-      uniqueCourses: Object.values(coursesByCode),
-      allCourseIds: [...new Set(allCourseIds)],
+      courses: Array.from(uniqueCoursesMap.values()),
+      courseIds: [...new Set(courseIds)],
       hasSelectedPrograms: true,
     };
-  }, [programStore]);
+  }, [selectedPrograms]);
 
   useEffect(() => {
-    const selectedPrograms = programStore.getSelectedPrograms();
-    if (selectedPrograms.length > 0) {
-      setCourses(programCoursesData.uniqueCourses);
+    if (programCoursesData.courses.length > 0) {
+      setCourses(programCoursesData.courses);
     }
-  }, [programStore, programCoursesData.uniqueCourses, setCourses]);
+  }, [programCoursesData.courses, setCourses]);
 
   const displayedCourses = useMemo(() => {
-    let baseCourses: Course[] = [];
+    let coursesToDisplay: Course[];
 
-    if (activeTab === 1) {
-      baseCourses = getFavoriteCourses();
-    } else if (programCoursesData.allCourseIds.length > 0) {
-      const coursesById = getCoursesById(programCoursesData.allCourseIds);
-
-      baseCourses = Object.values(
-        coursesById.reduce((acc, course) => {
-          if (course.code) {
-            acc[course.code] = course;
-          }
-          return acc;
-        }, {} as Record<string, Course>),
-      );
-
-      // Fallback if courses are not yet in the store but we have computed them
-      if (baseCourses.length === 0 && programCoursesData.uniqueCourses.length > 0) {
-        baseCourses = programCoursesData.uniqueCourses;
-      }
+    if (activeTab === FAVORITE_TAB_INDEX) {
+      coursesToDisplay = getFavoriteCourses();
+    } else {
+      coursesToDisplay = programCoursesData.courses;
     }
 
-    if (searchQuery.trim() !== '') {
+    if (searchQuery.trim()) {
       const lowerQuery = searchQuery.toLowerCase();
-      return baseCourses.filter(course =>
+      return coursesToDisplay.filter(course =>
         course.code.toLowerCase().includes(lowerQuery)
         || course.title.toLowerCase().includes(lowerQuery),
       );
     }
 
-    return baseCourses;
-  }, [
-    programCoursesData,
-    activeTab,
-    searchQuery,
-    getCoursesById,
-    getFavoriteCourses,
-  ]);
+    return coursesToDisplay;
+  }, [programCoursesData.courses, activeTab, searchQuery, getFavoriteCourses]);
 
-  const hasCoursesInStore = Object.values(courses).length > 0 && programStore.getSelectedPrograms().length > 0;
+  const hasCoursesInStore = Object.values(courses).length > 0 && selectedPrograms.length > 0;
 
   return {
     displayedCourses,

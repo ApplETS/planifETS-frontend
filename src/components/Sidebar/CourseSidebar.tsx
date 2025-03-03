@@ -1,6 +1,7 @@
 'use client';
 
 import { useProgramCoursesOperations } from '@/hooks/course/useProgramCoursesOperations';
+import { COURSES_TAB_INDEX, FAVORITE_TAB_INDEX } from '@/utils/constants';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { Typography } from '@mui/material';
@@ -12,7 +13,7 @@ import SearchBar from './CourseSearchBar';
 
 export default function CourseSidebar() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(COURSES_TAB_INDEX);
 
   const { displayedCourses, hasSelectedPrograms } = useProgramCoursesOperations(
     searchQuery,
@@ -42,7 +43,7 @@ export default function CourseSidebar() {
     }
 
     let message = 'Chargement des cours...';
-    if (activeTab === 1) {
+    if (activeTab === FAVORITE_TAB_INDEX) {
       message = 'Vous n\'avez aucun favori.';
     } else if (hasSelectedPrograms !== undefined) {
       message = hasSelectedPrograms

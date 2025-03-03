@@ -9,29 +9,28 @@ export const useProgramCoursesOperations = (searchQuery: string, activeTab: numb
   const selectedPrograms = useProgramStore(state => state.getSelectedPrograms());
   const { setCourses, courses, getFavoriteCourses } = useCourseStore();
 
-  // Step 1: Get program courses and sync with store
   const programCoursesData = useMemo(() => {
     if (!selectedPrograms.length) {
       return { courses: [], courseIds: [], hasSelectedPrograms: false };
     }
 
-    const uniqueCoursesMap = new Map<string, Course>();
-    const courseIds: number[] = [];
+    const uniqueCourseIds = new Set<number>();
+    const coursesMap = new Map<string, Course>();
 
     selectedPrograms.forEach((programId) => {
-      const programCourseList = programCourses[programId] || [];
-
-      programCourseList.forEach((course) => {
+      (programCourses[programId] || []).forEach((course) => {
         if (course?.id && course?.code) {
-          uniqueCoursesMap.set(course.code, course);
-          courseIds.push(course.id);
+          coursesMap.set(course.code, course);
+          uniqueCourseIds.add(course.id);
+        } else {
+          console.error('Invalid course data:', course);
         }
       });
     });
 
     return {
-      courses: Array.from(uniqueCoursesMap.values()),
-      courseIds: [...new Set(courseIds)],
+      courses: Array.from(coursesMap.values()),
+      courseIds: Array.from(uniqueCourseIds),
       hasSelectedPrograms: true,
     };
   }, [selectedPrograms]);
@@ -51,15 +50,18 @@ export const useProgramCoursesOperations = (searchQuery: string, activeTab: numb
       coursesToDisplay = programCoursesData.courses;
     }
 
-    if (searchQuery.trim()) {
-      const lowerQuery = searchQuery.toLowerCase();
-      return coursesToDisplay.filter(course =>
-        course.code.toLowerCase().includes(lowerQuery)
-        || course.title.toLowerCase().includes(lowerQuery),
-      );
+    if (!searchQuery.trim()) {
+      return coursesToDisplay;
     }
 
-    return coursesToDisplay;
+    const lowerQuery = searchQuery.toLowerCase();
+
+    const filteredCourses = coursesToDisplay.filter(course =>
+      course.code.toLowerCase().includes(lowerQuery)
+      || course.title.toLowerCase().includes(lowerQuery),
+    );
+
+    return filteredCourses;
   }, [programCoursesData.courses, activeTab, searchQuery, getFavoriteCourses]);
 
   const hasCoursesInStore = Object.values(courses).length > 0 && selectedPrograms.length > 0;

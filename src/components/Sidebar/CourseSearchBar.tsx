@@ -12,7 +12,7 @@ export default function CourseSearchbar({ onSearch }: CourseSearchProps) {
     // Debounce search input to optimize performance
     const delayDebounceFn = setTimeout(() => {
       onSearch(searchQuery);
-    }, 300); // 300ms delay
+    }, 300);
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchQuery, onSearch]);

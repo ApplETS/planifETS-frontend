@@ -13,7 +13,7 @@ type CourseActions = {
   removeCourse: (courseId: number) => void;
   toggleFavorite: (courseId: number) => void;
   getCourse: (courseId: number) => Course | undefined;
-  getAllCourses: () => Course[];
+  getCoursesById: (courseIds: number[]) => Course[];
   getFavoriteCourses: () => Course[];
   isFavorite: (courseId: number) => boolean;
 };
@@ -24,6 +24,13 @@ export const useCourseStore = create<CourseState & CourseActions>()(
     favoriteCourses: [],
 
     getCourse: courseId => get().courses[courseId],
+
+    getCoursesById: (courseIds) => {
+      const courses = get().courses;
+      return courseIds
+        .map(id => courses[id])
+        .filter((course): course is Course => !!course);
+    },
 
     addCourse: (course) => {
       if (!course.id) {
@@ -48,8 +55,6 @@ export const useCourseStore = create<CourseState & CourseActions>()(
         return { courses: coursesRecord };
       });
     },
-
-    getAllCourses: () => Object.values(get().courses),
 
     getFavoriteCourses: () => {
       const courses = get().courses;

@@ -134,7 +134,6 @@ export default function Navbar() {
               onClick={toggleNavbarMobileMenu}
               className="text-textDarkBackground hover:text-buttonTags focus:outline-none"
               aria-label="Toggle mobile menu"
-              data-testid="navbar-button"
             >
               <MenuIcon className="text-2xl" />
             </button>

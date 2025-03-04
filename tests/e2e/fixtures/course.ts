@@ -2,13 +2,29 @@ import type { Page } from '@playwright/test';
 import type { TestCourse } from '../../assets/courses';
 import { expect } from '@playwright/test';
 import { selectors } from '../../assets/selectors';
-import { setupProgramAndSearch } from './setup';
+
+export async function searchCourseInSidebar(page: Page, courseCode: string) {
+  const searchInput = page.locator(selectors.searchInput);
+
+  await expect(searchInput).toBeVisible({ timeout: 15000 });
+
+  await searchInput.fill(courseCode);
+}
+
+export async function getCourseCard(page: Page, courseCode: string) {
+  const courseCard = page.locator(selectors.courseCard(courseCode));
+
+  await expect(courseCard).toBeVisible({ timeout: 15000 });
+
+  return courseCard;
+}
 
 export const addCourseToSession = async (
   page: Page,
   course: TestCourse,
 ) => {
-  const courseCard = await setupProgramAndSearch(page, course.code);
+  const courseCard = await getCourseCard(page, course.code);
+
   const dropTarget = page.locator(
     selectors.sessionDropTarget(course.sessionName, course.sessionYear),
   );

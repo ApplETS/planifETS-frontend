@@ -1,10 +1,18 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import dynamic from 'next/dynamic';
+import { SnackbarProvider } from 'notistack';
 
-const SnackbarProvider = dynamic(() => import('./SnackbarProvider'), { ssr: false });
+type ClientProvidersProps = {
+  children: ReactNode;
+};
 
-export default function ClientProviders({ children }: { readonly children: ReactNode }) {
-  return <SnackbarProvider>{children}</SnackbarProvider>;
-}
+const ClientProviders = ({ children }: ClientProvidersProps) => {
+  return (
+    <SnackbarProvider maxSnack={3}>
+      {children}
+    </SnackbarProvider>
+  );
+};
+
+export default ClientProviders;

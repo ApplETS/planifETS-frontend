@@ -3,6 +3,7 @@ import type { SessionName, SessionTiming } from '@/types/session';
 import type { FC } from 'react';
 import { useCourseStatus } from '@/hooks/course/useCourseStatus';
 import { useCourseStore } from '@/store/courseStore';
+import { useTranslations } from 'next-intl';
 import CourseBox from './CourseBox';
 
 type CoursesListProps = {
@@ -10,7 +11,7 @@ type CoursesListProps = {
   courseInstances: CourseInstance[];
   sessionTiming: SessionTiming;
   onRemoveCourse: (courseId: number) => void;
-  onMoveCourse: (toSessionYear: number, toSessionName: SessionName, courseId: number) => void;
+  onMoveCourse: (toSessionYear: number, toSessionName: SessionName, courseId: number) => void; // FIXME: This might not be used?
   sessionYear: number;
   sessionName: SessionName;
   canDragCourses?: boolean;
@@ -25,6 +26,8 @@ const CoursesList: FC<CoursesListProps> = ({
   sessionName,
   canDragCourses = true,
 }) => {
+  const t = useTranslations('PlannerPage');
+
   const { getCourseStatus } = useCourseStatus();
   const { getCourse } = useCourseStore();
 
@@ -58,8 +61,8 @@ const CoursesList: FC<CoursesListProps> = ({
         : (
           <div className="flex h-full items-center justify-center text-sm text-gray-400">
             {sessionTiming.isPast
-              ? 'Aucune modification autorisée pour cette session passée.'
-              : 'Glissez les cours ici pour les ajouter à cette session.'}
+              ? t('no-course-modif-past-session')
+              : t('drag-courses-to-add-course')}
           </div>
         )}
     </div>

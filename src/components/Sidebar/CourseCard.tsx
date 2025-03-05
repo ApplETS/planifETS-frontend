@@ -6,6 +6,7 @@ import FavoriteButton from '@/components/Sidebar/FavoriteButton';
 import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
 import { useCourseStore } from '@/store/courseStore';
 import { DragType } from '@/types/dnd';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import CreditsBadge from '../atoms/CreditsBadge';
 import Tag from '../atoms/Tag';
@@ -33,6 +34,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
     type: DragType.COURSE_CARD,
   });
   const [isHovered, setIsHovered] = useState(false);
+  const t = useTranslations('PlannerPage');
 
   const renderPrerequisites = () => {
     if (course.prerequisites.length === 0) {
@@ -40,7 +42,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
     }
 
     return (
-      <Section title="Prérequis:">
+      <Section title={t('prerequisites')}>
         {course.prerequisites.map(preq => (
           <Tag key={preq} text={preq} />
         ))}
@@ -49,7 +51,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
   };
 
   const renderAvailability = () => (
-    <Section title="Disponible:">
+    <Section title={t('available')}>
       {course.availability.map(session => (
         <Tag key={session} text={session} />
       ))}

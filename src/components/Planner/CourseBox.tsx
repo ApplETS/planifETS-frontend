@@ -6,6 +6,7 @@ import type { FC } from 'react';
 import type { CourseStatus } from '../../types/courseStatus';
 import { DragType } from '@/types/dnd';
 
+import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
 import { useDrag } from 'react-dnd';
 import { FaTrash } from 'react-icons/fa';
@@ -34,6 +35,8 @@ const CourseBox: FC<CourseBoxProps> = ({
   course,
   isDraggable = true,
 }) => {
+  const t = useTranslations('PlannerPage');
+
   const [{ isDragging }, drag] = useDrag(() => ({
     type: DragType.COURSE_BOX,
     item: {
@@ -79,7 +82,7 @@ const CourseBox: FC<CourseBoxProps> = ({
             e.stopPropagation();
             onDelete();
           }}
-          aria-label="Supprimer le cours"
+          aria-label={t('delete-course')}
           data-testid={`delete-course-${code}-${fromSessionName}-${fromSessionYear}`}
         >
           <FaTrash />
@@ -96,7 +99,7 @@ const CourseBox: FC<CourseBoxProps> = ({
       <div className="text-sm text-gray-500">
         {credits}
         {' '}
-        cr.
+        {t('credits-short')}
       </div>
     </div>
   );

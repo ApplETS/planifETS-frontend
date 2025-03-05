@@ -1,0 +1,48 @@
+{
+  "Commons": {
+    "credits": "crédits"
+  },
+  "LoginPage": {
+    "title": "Se connecter avec Signets",
+    "description": "Accédez à tous vos cours complétés!",
+    "universal-code": "Code universel",
+    "universal-code-placeholder": "Ex: AS12345",
+    "password": "Mot de passe",
+    "password-placeholder": "Votre mot de passe",
+    "login": "SE CONNECTER",
+    "or": "OU",
+    "continue-as-guest": "Continuer en tant qu'invité"
+  },
+  "PlannerPage": {
+    "year-with-value": "Année {value}",
+    "add-a-year": "Ajouter une année",
+    "sessionNames": {
+      "AUTOMNE": "Automne",
+      "HIVER": "Hiver",
+      "ETE": "Été"
+    },
+    "delete-course": "Supprimer le cours",
+    "credits-short": "cr.",
+    "course": {
+      "Completed": "Complété",
+      "In Progress": "En progrès",
+      "Failed": "Échoué",
+      "Not Offered": "Non offert",
+      "Planned": "Planifié"
+    },
+    "no-course-modif-past-session": "Aucune modification autorisée pour cette session passée.",
+    "drag-courses-to-add-course": "Glissez les cours ici pour les ajouter à cette session.",
+    "information-course-availability": "Informations sur la disponibilité des cours",
+    "courses-availability-not-yet-published": "Les informations sur la disponibilité des cours pour cette session ne sont pas encore publiées par l'école.",
+    "prerequisites": "Prérequis: ",
+    "available": "Disponible: ",
+    "programs": "Programmes",
+    "search-course": "Chercher un cours",
+    "loading-courses": "Chargement des cours...",
+    "no-favorite-courses": "Vous n'avez aucun cours favori.",
+    "no-courses-found": "Aucun cours trouvé.",
+    "select-program": "Veuillez sélectionner un programme.",
+    "courses": "Cours",
+    "favorite-courses": "Favoris"
+  }
+}

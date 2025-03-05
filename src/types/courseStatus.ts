@@ -5,14 +5,6 @@ export type CourseStatus =
   | 'Not Offered'
   | 'Planned';
 
-export const statusTranslations: Record<CourseStatus, string> = {
-  'Completed': 'Complété',
-  'In Progress': 'En progrès',
-  'Failed': 'Échoué',
-  'Not Offered': 'Non offert',
-  'Planned': 'Planifié',
-};
-
 export const statusTagClasses: Record<CourseStatus, string> = {
   'Completed': 'bg-completedCourseTag text-textLightBackground border-favoris',
   'In Progress': 'bg-inProgressCourseTag text-textLightBackground border-favoris',

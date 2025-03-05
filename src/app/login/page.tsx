@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -8,6 +9,7 @@ import { useAuthStore } from '../../store/authStore';
 
 export default function LoginPage() {
   const router = useRouter();
+  const t = useTranslations('LoginPage');
 
   const { login } = useAuthStore();
   const [codeUniversel, setCodeUniversel] = useState('');
@@ -24,15 +26,15 @@ export default function LoginPage() {
   return (
     <div className="mx-auto w-full max-w-md rounded-[27px] border-2 border-textDarkBackground bg-yearSection p-6 shadow-md md:p-8">
       <h1 className="mb-2 text-2xl font-medium text-textDarkBackground underline">
-        Se connecter avec Signets
+        {t('title')}
       </h1>
       <p className="mb-4 text-base text-textDarkBackground">
-        Accédez à tous vos cours complétés!
+        {t('description')}
       </p>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField
           id="codeUniversel"
-          label="Code universel"
+          label={t('universal-code')}
           type="text"
           value={codeUniversel}
           placeholder="AS12345"
@@ -40,26 +42,24 @@ export default function LoginPage() {
         />
         <InputField
           id="motDePasse"
-          label="Mot de passe"
+          label={t('password')}
           type="password"
           value={motDePasse}
-          placeholder="Votre mot de passe"
+          placeholder={t('password-placeholder')}
           onChange={e => setMotDePasse(e.target.value)}
         />
-        {/* Error Message */}
-        {/* errorMessage && <div className="mb-4 text-sm text-red-500">{errorMessage}</div> */}
 
         <button
           type="submit"
           className="w-full rounded-md bg-buttonTags py-3 font-bold uppercase text-background transition-colors duration-200 hover:bg-loginButtonHover"
         >
-          SE CONNECTER
+          {t('login')}
         </button>
       </form>
       <div className="my-4 flex items-center">
         {/* FIXME: hardcoded color */}
         <hr className="grow border-t border-[#D5C8EE]" />
-        <span className="mx-4 text-sm text-textDarkBackground">OU</span>
+        <span className="mx-4 text-sm text-textDarkBackground">{t('or')}</span>
         {/* FIXME: hardcoded color */}
         <hr className="grow border-t border-[#D5C8EE]" />
       </div>
@@ -71,7 +71,7 @@ export default function LoginPage() {
             useAuthStore.getState().logout();
           }}
         >
-          Continuer en tant qu&apos;invité
+          {t('continue-as-guest')}
         </button>
       </Link>
     </div>

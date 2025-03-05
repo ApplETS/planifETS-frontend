@@ -1,5 +1,6 @@
 import type { FC } from 'react';
 import Tooltip from '@mui/material/Tooltip';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import { FaInfoCircle } from 'react-icons/fa';
 
@@ -19,6 +20,9 @@ const SessionHeader: FC<SessionHeaderProps> = ({
   totalCredits,
   isNoAvailabilityData,
 }) => {
+  const t = useTranslations('PlannerPage');
+
+  const translatedSessionName = t(sessionName);
   const { SeasonIcon, color } = getSeasonStyle(sessionName) ?? {};
 
   return (
@@ -26,7 +30,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
       <div className="flex items-center gap-2">
         <SeasonIcon className={color} />
         <h3 className="text-lg font-bold">
-          {sessionName}
+          {translatedSessionName}
           {' '}
           {sessionYear}
         </h3>
@@ -34,13 +38,12 @@ const SessionHeader: FC<SessionHeaderProps> = ({
           <Tooltip
             title={(
               <p className="text-base">
-                Les informations sur la disponibilité des cours pour cette session ne sont
-                pas encore publiées par l&apos;école.
+                t('courses-availability-not-yet-published')
               </p>
             )}
             arrow
           >
-            <div className="group relative" aria-label="Information about course availability">
+            <div className="group relative" aria-label={t('information-course-availability')}>
               <FaInfoCircle className="text-amber-400 hover:text-orange-600" />
             </div>
           </Tooltip>

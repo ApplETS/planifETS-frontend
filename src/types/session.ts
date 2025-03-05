@@ -1,9 +1,9 @@
 import type { CourseInstance } from './course';
 
 export enum SessionEnum {
-  AUTOMNE = 'Automne',
-  HIVER = 'Hiver',
-  ETE = 'Été',
+  AUTOMNE = 'sessionNames.AUTOMNE',
+  HIVER = 'sessionNames.HIVER',
+  ETE = 'sessionNames.ETE',
 }
 
 export type SessionName = SessionEnum;

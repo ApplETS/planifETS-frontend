@@ -11,7 +11,6 @@ type CoursesListProps = {
   courseInstances: CourseInstance[];
   sessionTiming: SessionTiming;
   onRemoveCourse: (courseId: number) => void;
-  onMoveCourse: (toSessionYear: number, toSessionName: SessionName, courseId: number) => void; // FIXME: This might not be used?
   sessionYear: number;
   sessionName: SessionName;
   canDragCourses?: boolean;

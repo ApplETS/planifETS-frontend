@@ -20,7 +20,6 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionName }) => {
     courseInstances,
     sessionTiming,
     handleRemoveCourse,
-    handleMoveCourse,
     sessionTotalCredits,
   } = useSessionOperations(sessionYear, sessionName);
 
@@ -77,7 +76,6 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionName }) => {
         courseInstances={courseInstances}
         sessionTiming={sessionTiming}
         onRemoveCourse={handleRemoveCourse}
-        onMoveCourse={handleMoveCourse}
         sessionYear={sessionYear}
         sessionName={sessionName}
       />

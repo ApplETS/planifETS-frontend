@@ -55,7 +55,7 @@ export const useSessionDrop = ({ sessionYear, sessionName, sessionTiming }: UseS
     collect: monitor => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
-      draggedItem: monitor.getItem() as DraggedItem | null,
+      draggedItem: monitor.getItem(),
     }),
   }), [sessionYear, sessionName, sessionTiming, handleAddCourse, handleMoveCourse, sessionStore, sessionKey]);
 

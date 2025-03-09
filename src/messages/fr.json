@@ -1,6 +1,9 @@
 {
   "Commons": {
-    "credits": "crédits"
+    "credits": "crédits",
+    "login": "Se connecter",
+    "logout": "Se déconnecter",
+    "settings": "Paramètres"
   },
   "LoginPage": {
     "title": "Se connecter avec Signets",

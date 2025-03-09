@@ -10,7 +10,7 @@ type BaseDialogProps = {
 
 const BaseDialog: React.FC<BaseDialogProps> = ({ isOpen, title, onClose, children }) => {
   return (
-    <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
+    <Dialog open={isOpen} onClose={onClose} fullWidth>
       <DialogTitle className="rounded-t-md bg-navbar text-lg font-bold text-textDarkBackground">
         {title}
       </DialogTitle>

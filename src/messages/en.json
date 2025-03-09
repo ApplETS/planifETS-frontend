@@ -1,6 +1,9 @@
 {
   "Commons": {
-    "credits": "credits"
+    "credits": "credits",
+    "login": "Sign in",
+    "logout": "Sign out",
+    "settings": "Settings"
   },
   "LoginPage": {
     "title": "Login with Signets",

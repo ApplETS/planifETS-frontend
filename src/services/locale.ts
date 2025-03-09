@@ -8,13 +8,17 @@ import { cookies } from 'next/headers';
 const COOKIE_NAME = 'NEXT_LOCALE';
 
 export async function getUserLocale() {
-  const browserLanguage = navigator.language || navigator.languages[0];
-  const userLocale: Locale = locales.includes(browserLanguage as Locale) ? (browserLanguage as Locale) : defaultLocale;
-
   const cookieValue = (await cookies()).get(COOKIE_NAME)?.value;
-  return cookieValue ?? userLocale;
-}
+  if (cookieValue) {
+    return cookieValue;
+  }
 
-export async function setUserLocale(locale: Locale) {
-  (await cookies()).set(COOKIE_NAME, locale);
+  if (typeof navigator !== 'undefined') {
+    const browserLanguage = navigator.language || navigator.languages[0];
+    return locales.includes(browserLanguage as Locale)
+      ? (browserLanguage as Locale)
+      : defaultLocale;
+  }
+
+  return defaultLocale;
 }

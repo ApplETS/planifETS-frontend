@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { SessionEnum } from '../../../src/types/session';
 import { TEST_COURSES } from '../../assets/courses';
 import { selectors } from '../../assets/selectors';
 import { addCourseToSession, deleteCourse, moveCourseToSession, searchCourseInSidebar } from '../fixtures/course';
@@ -32,7 +33,7 @@ test.describe('Course Management', () => {
     await searchCourseInSidebar(page, course.code);
     await addCourseToSession(page, course);
 
-    const targetSession = 'Automne';
+    const targetSession = SessionEnum.A;
     const targetYear = 2025;
 
     await moveCourseToSession(page, course, targetSession, targetYear);

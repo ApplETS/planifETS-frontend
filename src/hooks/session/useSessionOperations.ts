@@ -25,11 +25,7 @@ export const useSessionOperations = (year: number, sessionName: SessionName) => 
   };
 
   const handleAddCourse = (courseId: number) => {
-    // eslint-disable-next-line no-console
-    console.log('handleAddCourse called with:', courseId);
     handleOperation('add', () => {
-      // eslint-disable-next-line no-console
-      console.log('Adding course to session:', sessionKey, courseId);
       sessionStore.addCourseToSession(sessionKey, courseId);
     });
   };

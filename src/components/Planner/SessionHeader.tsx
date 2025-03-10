@@ -1,9 +1,10 @@
 import type { FC } from 'react';
+import { getTranslationKey } from '@/utils/sessionUtils';
 import Tooltip from '@mui/material/Tooltip';
 import { useTranslations } from 'next-intl';
+
 import React from 'react';
 import { FaInfoCircle } from 'react-icons/fa';
-
 import { getSeasonStyle } from '../../utils/seasonUtils';
 import CreditsBadge from '../atoms/CreditsBadge';
 
@@ -22,7 +23,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
 }) => {
   const t = useTranslations('PlannerPage');
 
-  const translatedSessionName = t(sessionName);
+  const translatedSessionName = t(getTranslationKey(sessionName));
   const { SeasonIcon, color } = getSeasonStyle(sessionName) ?? {};
 
   return (
@@ -38,7 +39,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
           <Tooltip
             title={(
               <p className="text-base">
-                t('courses-availability-not-yet-published')
+                {t('courses-availability-not-yet-published')}
               </p>
             )}
             arrow

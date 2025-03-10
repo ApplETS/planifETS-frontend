@@ -9,11 +9,11 @@ export const useCourseStatus = () => {
 
   const getCourseStatus = (
     courseId: number,
-    year: number,
+    sessionYear: number,
     sessionName: SessionName,
     sessionTiming: SessionTiming,
   ): CourseStatus => {
-    const sessionKey = generateSessionKey(year, sessionName);
+    const sessionKey = generateSessionKey(sessionYear, sessionName);
     const session = sessionStore.getSessionByKey?.(sessionKey);
     return determineStatus(session, courseId, sessionTiming);
   };

@@ -1,5 +1,6 @@
 import type { CourseInstance } from '@/types/course';
 import type { Session, SessionName } from '@/types/session';
+import { SessionEnum } from '@/types/session';
 import { determineInitialStatus } from '@/utils/courseUtils';
 import {
   calculateTotalCredits,
@@ -71,15 +72,19 @@ export const useSessionStore = create<SessionState & SessionActions>()(
     },
 
     addCourseToSession: (sessionKey, courseId) => {
-      const [sessionYear = '', sessionName = ''] = sessionKey.split('-');
-      if (!sessionYear || !sessionName) {
+      const sessionLetter = sessionKey.charAt(0) as SessionName;
+      const sessionYearStr = sessionKey.substring(1);
+      const sessionYear = Number.parseInt(sessionYearStr, 10);
+
+      if (Number.isNaN(sessionYear) || !Object.values(SessionEnum).includes(sessionLetter)) {
+        console.error(`Invalid session key: ${sessionKey}`);
         return;
       }
 
       set((state) => {
         const session = state.sessions[sessionKey];
         if (!session) {
-          console.error(`Session not found${sessionKey}`);
+          console.error(`Session not found: ${sessionKey}`);
           return state;
         }
 
@@ -94,7 +99,7 @@ export const useSessionStore = create<SessionState & SessionActions>()(
           return state;
         }
 
-        const timing = getSessionTiming(Number(sessionYear), sessionName as SessionName);
+        const timing = getSessionTiming(sessionYear, sessionLetter);
 
         const newCourseInstance: CourseInstance = {
           courseId,
@@ -110,9 +115,7 @@ export const useSessionStore = create<SessionState & SessionActions>()(
           sessions: {
             ...state.sessions,
             [sessionKey]: {
-              key: sessionKey,
-              sessionName: sessionName as SessionName,
-              sessionYear: Number.parseInt(sessionYear, 10),
+              ...session,
               courseInstances: updatedCourseInstances,
               totalCredits: get().calculateSessionCredits(updatedCourseInstances),
             },

@@ -4,7 +4,6 @@ import { useProgramCoursesOperations } from '@/hooks/course/useProgramCoursesOpe
 import { COURSES_TAB_INDEX, FAVORITE_TAB_INDEX } from '@/utils/constants';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import { Typography } from '@mui/material';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useTranslations } from 'next-intl';
@@ -31,7 +30,7 @@ export default function CourseSidebar() {
     setActiveTab(newValue);
   };
 
-  const renderCoursesContent = () => {
+  function renderCoursesContent() {
     if (displayedCourses.length > 0) {
       return (
         <div className="space-y-4">
@@ -55,9 +54,9 @@ export default function CourseSidebar() {
     }
 
     return (
-      <Typography variant="body1" color="textSecondary" align="center">
+      <div className="text-center text-gray-500">
         {message}
-      </Typography>
+      </div>
     );
   };
 

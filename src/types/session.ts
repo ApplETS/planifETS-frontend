@@ -1,15 +1,15 @@
 import type { CourseInstance } from './course';
 
 export enum SessionEnum {
-  AUTOMNE = 'sessionNames.AUTOMNE',
-  HIVER = 'sessionNames.HIVER',
-  ETE = 'sessionNames.ETE',
+  A = 'A', // AUTOMNE
+  H = 'H', // HIVER
+  E = 'E', // ETE
 }
 
 export type SessionName = SessionEnum;
 
 export type Session = {
-  key: string; // Example: "2024-AUTOMNE"
+  key: string; // Example: "A2024"
   sessionName: SessionName;
   sessionYear: number;
   courseInstances: CourseInstance[];

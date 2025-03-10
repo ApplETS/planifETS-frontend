@@ -5,7 +5,7 @@ import { addCourseToSession, deleteCourse, searchCourseInSidebar } from '../fixt
 import { selectProgram } from '../fixtures/program';
 import { setupTestPage } from '../fixtures/setup';
 
-const CREDITS_LABEL = 'crédits';
+const CREDITS_LABEL = 'credits';
 
 test.describe('Credits Management', () => {
   test.beforeEach(async ({ page }) => {

@@ -9,29 +9,29 @@ import { getSeasonStyle } from '../../utils/seasonUtils';
 import CreditsBadge from '../atoms/CreditsBadge';
 
 type SessionHeaderProps = {
-  sessionName: string;
+  sessionTerm: string;
   sessionYear: number;
   totalCredits: number;
   isNoAvailabilityData: boolean;
 };
 
 const SessionHeader: FC<SessionHeaderProps> = ({
-  sessionName,
+  sessionTerm,
   sessionYear,
   totalCredits,
   isNoAvailabilityData,
 }) => {
   const t = useTranslations('PlannerPage');
 
-  const translatedSessionName = t(getTranslationKey(sessionName));
-  const { SeasonIcon, color } = getSeasonStyle(sessionName) ?? {};
+  const translatedSessionTerm = t(getTranslationKey(sessionTerm));
+  const { SeasonIcon, color } = getSeasonStyle(sessionTerm) ?? {};
 
   return (
     <div className="mb-2 flex select-none flex-col sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-center gap-2">
         <SeasonIcon className={color} />
         <h3 className="text-lg font-bold">
-          {translatedSessionName}
+          {translatedSessionTerm}
           {' '}
           {sessionYear}
         </h3>
@@ -53,7 +53,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
       <div className="flex w-auto justify-end sm:mt-0">
         <CreditsBadge
           credits={totalCredits}
-          dataTestId={`session-${sessionName}-${sessionYear}-credits`}
+          dataTestId={`session-${sessionTerm}-${sessionYear}-credits`}
         />
       </div>
     </div>

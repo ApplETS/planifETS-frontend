@@ -1,5 +1,5 @@
 import type { CourseInstance } from '@/types/course';
-import type { SessionName, SessionTiming } from '@/types/session';
+import type { SessionEnum, SessionTiming } from '@/types/session';
 import type { FC } from 'react';
 import { useCourseStatus } from '@/hooks/course/useCourseStatus';
 import { useCourseStore } from '@/store/courseStore';
@@ -12,7 +12,7 @@ type CoursesListProps = {
   sessionTiming: SessionTiming;
   onRemoveCourse: (courseId: number) => void;
   sessionYear: number;
-  sessionName: SessionName;
+  sessionTerm: SessionEnum;
   canDragCourses?: boolean;
 };
 
@@ -22,7 +22,7 @@ const CoursesList: FC<CoursesListProps> = ({
   sessionTiming,
   onRemoveCourse,
   sessionYear,
-  sessionName,
+  sessionTerm,
   canDragCourses = true,
 }) => {
   const t = useTranslations('PlannerPage');
@@ -45,12 +45,12 @@ const CoursesList: FC<CoursesListProps> = ({
                 <CourseBox
                   key={course.code}
                   code={course.code}
-                  status={getCourseStatus(instance.courseId, sessionYear, sessionName, sessionTiming)}
+                  status={getCourseStatus(instance.courseId, sessionYear, sessionTerm, sessionTiming)}
                   isDraggable={canDragCourses}
                   credits={course.credits}
                   onDelete={() => onRemoveCourse(instance.courseId)}
                   fromSessionYear={sessionYear}
-                  fromSessionName={sessionName}
+                  fromSessionTerm={sessionTerm}
                   course={course}
                 />
               );

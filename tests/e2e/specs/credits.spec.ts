@@ -20,7 +20,7 @@ test.describe('Credits Management', () => {
     await addCourseToSession(page, course);
 
     const sessionCredits = page.locator(
-      selectors.sessionCredits(course.sessionName, course.sessionYear),
+      selectors.sessionCredits(course.sessionTerm, course.sessionYear),
     );
 
     await expect(sessionCredits).toHaveText(

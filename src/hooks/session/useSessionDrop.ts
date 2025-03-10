@@ -1,7 +1,7 @@
 'use client';
 
 import type { DraggedItem } from '@/types/dnd';
-import type { SessionName, SessionTiming } from '@/types/session';
+import type { SessionEnum, SessionTiming } from '@/types/session';
 import { useSessionStore } from '@/store/sessionStore';
 import { DragType } from '@/types/dnd';
 import { generateSessionKey } from '@/utils/sessionUtils';
@@ -10,14 +10,14 @@ import { useSessionOperations } from './useSessionOperations';
 
 type UseSessionDropProps = {
   sessionYear: number;
-  sessionName: SessionName;
+  sessionTerm: SessionEnum;
   sessionTiming: SessionTiming;
 };
 
-export const useSessionDrop = ({ sessionYear, sessionName, sessionTiming }: UseSessionDropProps) => {
-  const { handleAddCourse, handleMoveCourse } = useSessionOperations(sessionYear, sessionName);
+export const useSessionDrop = ({ sessionYear, sessionTerm, sessionTiming }: UseSessionDropProps) => {
+  const { handleAddCourse, handleMoveCourse } = useSessionOperations(sessionYear, sessionTerm);
   const sessionStore = useSessionStore();
-  const sessionKey = generateSessionKey(sessionYear, sessionName);
+  const sessionKey = generateSessionKey(sessionYear, sessionTerm);
 
   const [{ isOver, canDrop, draggedItem }, drop] = useDrop(() => ({
     accept: [DragType.COURSE_CARD, DragType.COURSE_BOX],
@@ -34,7 +34,7 @@ export const useSessionDrop = ({ sessionYear, sessionName, sessionTiming }: UseS
       }
 
       if (item.type === DragType.COURSE_BOX) {
-        return !(item.fromSessionYear === sessionYear && item.fromSessionName === sessionName);
+        return !(item.fromSessionYear === sessionYear && item.fromSessionTerm === sessionTerm);
       }
 
       return true;
@@ -45,8 +45,8 @@ export const useSessionDrop = ({ sessionYear, sessionName, sessionTiming }: UseS
       }
 
       if (item.type === DragType.COURSE_BOX) {
-        const fromSessionKey = generateSessionKey(item.fromSessionYear, item.fromSessionName);
-        const toSessionKey = generateSessionKey(sessionYear, sessionName);
+        const fromSessionKey = generateSessionKey(item.fromSessionYear, item.fromSessionTerm);
+        const toSessionKey = generateSessionKey(sessionYear, sessionTerm);
         sessionStore.moveCourse(fromSessionKey, toSessionKey, item.course.id);
       } else {
         handleAddCourse(item.course.id);
@@ -57,7 +57,7 @@ export const useSessionDrop = ({ sessionYear, sessionName, sessionTiming }: UseS
       canDrop: monitor.canDrop(),
       draggedItem: monitor.getItem(),
     }),
-  }), [sessionYear, sessionName, sessionTiming, handleAddCourse, handleMoveCourse, sessionStore, sessionKey]);
+  }), [sessionYear, sessionTerm, sessionTiming, handleAddCourse, handleMoveCourse, sessionStore, sessionKey]);
 
   return { drop, isOver, canDrop, draggedItem };
 };

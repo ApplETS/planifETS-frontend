@@ -1,7 +1,7 @@
 'use client';
 
 import type { Course } from '@/types/course';
-import type { SessionName } from '@/types/session';
+import type { SessionEnum } from '@/types/session';
 import type { FC } from 'react';
 import type { CourseStatus } from '../../types/courseStatus';
 import { DragType } from '@/types/dnd';
@@ -20,7 +20,7 @@ type CourseBoxProps = {
   credits: number;
   onDelete?: () => void;
   fromSessionYear: number;
-  fromSessionName: SessionName;
+  fromSessionTerm: SessionEnum;
   course: Course;
   isDraggable?: boolean;
 };
@@ -31,7 +31,7 @@ const CourseBox: FC<CourseBoxProps> = ({
   credits,
   onDelete,
   fromSessionYear,
-  fromSessionName,
+  fromSessionTerm,
   course,
   isDraggable = true,
 }) => {
@@ -44,13 +44,13 @@ const CourseBox: FC<CourseBoxProps> = ({
       courseId: course.id,
       course,
       fromSessionYear,
-      fromSessionName,
+      fromSessionTerm,
     },
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
     canDrag: () => isDraggable,
-  }), [course, fromSessionYear, fromSessionName, isDraggable]);
+  }), [course, fromSessionYear, fromSessionTerm, isDraggable]);
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -83,7 +83,7 @@ const CourseBox: FC<CourseBoxProps> = ({
             onDelete();
           }}
           aria-label={t('delete-course')}
-          data-testid={`delete-course-${code}-${fromSessionName}-${fromSessionYear}`}
+          data-testid={`delete-course-${code}-${fromSessionTerm}-${fromSessionYear}`}
         >
           <FaTrash />
         </BaseButton>

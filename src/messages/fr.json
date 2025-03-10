@@ -19,7 +19,7 @@
   "PlannerPage": {
     "year-with-value": "Année {value}",
     "add-a-year": "Ajouter une année",
-    "sessionNames": {
+    "sessionTerms": {
       "AUTOMNE": "Automne",
       "HIVER": "Hiver",
       "ETE": "Été"

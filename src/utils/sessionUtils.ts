@@ -1,5 +1,5 @@
 import type { Course, CourseInstance } from '@/types/course';
-import type { Session, SessionName, SessionTiming } from '@/types/session';
+import type { Session, SessionTiming } from '@/types/session';
 import { SessionEnum } from '@/types/session';
 
 const SESSION_MONTH_RANGES = {
@@ -8,11 +8,11 @@ const SESSION_MONTH_RANGES = {
   [SessionEnum.A]: { start: 8, end: 11 }, // September - December (AUTOMNE)
 } as const;
 
-export const generateSessionCode = (sessionName: SessionName, year: number): string => {
-  return `${sessionName}${year.toString().slice(-2)}`;
+export const generateSessionCode = (sessionTerm: SessionEnum, year: number): string => {
+  return `${sessionTerm}${year.toString().slice(-2)}`;
 };
 
-export const getCurrentSession = (month: number = new Date().getMonth()): SessionName => {
+export const getCurrentSession = (month: number = new Date().getMonth()): SessionEnum => {
   if (month <= SESSION_MONTH_RANGES[SessionEnum.H].end) {
     return SessionEnum.H;
   }
@@ -22,19 +22,19 @@ export const getCurrentSession = (month: number = new Date().getMonth()): Sessio
   return SessionEnum.A;
 };
 
-export const getSessionTiming = (sessionYear: number, sessionName: SessionName): SessionTiming => {
+export const getSessionTiming = (sessionYear: number, sessionTerm: SessionEnum): SessionTiming => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentSession = getCurrentSession();
 
   const isFuture = sessionYear > currentYear || (
     sessionYear === currentYear && (
-      (currentSession === SessionEnum.H && sessionName !== SessionEnum.H)
-      || (currentSession === SessionEnum.E && sessionName === SessionEnum.A)
+      (currentSession === SessionEnum.H && sessionTerm !== SessionEnum.H)
+      || (currentSession === SessionEnum.E && sessionTerm === SessionEnum.A)
     )
   );
 
-  const isCurrent = sessionYear === currentYear && sessionName === currentSession;
+  const isCurrent = sessionYear === currentYear && sessionTerm === currentSession;
   const isPast = !isFuture && !isCurrent;
 
   return {
@@ -58,7 +58,7 @@ type CourseFinder = (id: number) => Course | undefined;
 
 export const isCourseAvailableInSession = (
   courseId: number,
-  sessionName: SessionName,
+  sessionTerm: SessionEnum,
   sessionYear: number,
   findCourse: CourseFinder,
 ): boolean => {
@@ -67,17 +67,17 @@ export const isCourseAvailableInSession = (
     return false;
   }
 
-  const sessionCode = generateSessionCode(sessionName, sessionYear);
+  const sessionCode = generateSessionCode(sessionTerm, sessionYear);
   return course.availability.includes(sessionCode);
 };
 
-export const generateSessionKey = (sessionYear: number, sessionName: SessionName): string => {
-  if (!sessionYear || !sessionName) {
-    console.error(`Invalid session key parameters: ${sessionYear}, ${sessionName}`);
+export const generateSessionKey = (sessionYear: number, sessionTerm: SessionEnum): string => {
+  if (!sessionYear || !sessionTerm) {
+    console.error(`Invalid session key parameters: ${sessionYear}, ${sessionTerm}`);
     return '';
   }
 
-  return `${sessionName}${sessionYear}`;
+  return `${sessionTerm}${sessionYear}`;
 };
 
 export const extractYearFromSessionKey = (sessionKey: string): number => {
@@ -89,20 +89,20 @@ export const extractYearFromSessionKey = (sessionKey: string): number => {
   return Number.parseInt(yearStr, 10);
 };
 
-export const getTranslationKey = (sessionName: string) => {
+export const getTranslationKey = (sessionTerm: string) => {
   // Map the single letter session names to their translation keys
   const sessionMap: Record<string, string> = {
-    [SessionEnum.A]: 'sessionNames.AUTOMNE',
-    [SessionEnum.H]: 'sessionNames.HIVER',
-    [SessionEnum.E]: 'sessionNames.ETE',
+    [SessionEnum.A]: 'sessionTerms.AUTOMNE',
+    [SessionEnum.H]: 'sessionTerms.HIVER',
+    [SessionEnum.E]: 'sessionTerms.ETE',
   };
 
-  if (sessionMap[sessionName]) {
-    return sessionMap[sessionName];
+  if (sessionMap[sessionTerm]) {
+    return sessionMap[sessionTerm];
   }
 
-  console.error(`Invalid session name while translating key: ${sessionName}`);
-  return sessionName;
+  console.error(`Invalid session name while translating key: ${sessionTerm}`);
+  return sessionTerm;
 };
 
 export const calculateTotalCredits = (
@@ -117,13 +117,13 @@ export const calculateTotalCredits = (
 
 export const createSessionsForYear = (sessionYear: number): Record<string, Session> => {
   const sessions: Record<string, Session> = {};
-  const sessionNames = Object.values(SessionEnum);
+  const sessionTerms = Object.values(SessionEnum);
 
-  sessionNames.forEach((name) => {
+  sessionTerms.forEach((name) => {
     const key = generateSessionKey(sessionYear, name);
     sessions[key] = {
       key,
-      sessionName: name,
+      sessionTerm: name,
       sessionYear,
       courseInstances: [],
       totalCredits: 0,
@@ -137,7 +137,7 @@ type BorderStyle = 'border-green-500' | 'border-red-500' | '';
 
 export const getSessionBorderStyle = (
   courseId: number | null,
-  sessionName: SessionName,
+  sessionTerm: SessionEnum,
   sessionYear: number,
   findCourse: CourseFinder,
   isDragging: boolean,
@@ -148,7 +148,7 @@ export const getSessionBorderStyle = (
 
   const isAvailable = isCourseAvailableInSession(
     courseId,
-    sessionName,
+    sessionTerm,
     sessionYear,
     findCourse,
   );

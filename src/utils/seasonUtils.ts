@@ -18,9 +18,9 @@ export const seasonIcons: SeasonIconsType = {
   [SessionEnum.A]: { SeasonIcon: GiMapleLeaf, color: 'text-orange-500' },
 };
 
-export const getSeasonStyle = (sessionName: string): SeasonStyle => {
+export const getSeasonStyle = (sessionTerm: string): SeasonStyle => {
   const season = Object.values(SessionEnum).find(s =>
-    sessionName.includes(s),
+    sessionTerm.includes(s),
   );
 
   if (!season) {

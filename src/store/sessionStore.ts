@@ -1,5 +1,5 @@
 import type { CourseInstance } from '@/types/course';
-import type { Session, SessionName } from '@/types/session';
+import type { Session } from '@/types/session';
 import { SessionEnum } from '@/types/session';
 import { determineInitialStatus } from '@/utils/courseUtils';
 import {
@@ -72,7 +72,7 @@ export const useSessionStore = create<SessionState & SessionActions>()(
     },
 
     addCourseToSession: (sessionKey, courseId) => {
-      const sessionLetter = sessionKey.charAt(0) as SessionName;
+      const sessionLetter = sessionKey.charAt(0) as SessionEnum;
       const sessionYearStr = sessionKey.substring(1);
       const sessionYear = Number.parseInt(sessionYearStr, 10);
 

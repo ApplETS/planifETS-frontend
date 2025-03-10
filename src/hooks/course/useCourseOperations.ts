@@ -1,5 +1,5 @@
 import type { Course } from '@/types/course';
-import type { SessionName } from '@/types/session';
+import type { SessionEnum } from '@/types/session';
 import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { generateSessionKey, getSessionTiming, validateSessionOperation as validateSession } from '@/utils/sessionUtils';
@@ -12,8 +12,8 @@ export const useCourseOperations = () => {
   const sessionStore = useSessionStore();
 
   const validateSessionOperation = useCallback(
-    (sessionYear: number, sessionName: SessionName, operation: string) => {
-      const sessionTiming = getSessionTiming(sessionYear, sessionName);
+    (sessionYear: number, sessionTerm: SessionEnum, operation: string) => {
+      const sessionTiming = getSessionTiming(sessionYear, sessionTerm);
       const error = validateSession(sessionTiming, operation);
       if (error) {
         enqueueSnackbar(error, { variant: 'error' });
@@ -25,8 +25,8 @@ export const useCourseOperations = () => {
   );
 
   const addCourseToSession = useCallback(
-    (sessionYear: number, sessionName: SessionName, course: Course | number) => {
-      if (!validateSessionOperation(sessionYear, sessionName, 'add')) {
+    (sessionYear: number, sessionTerm: SessionEnum, course: Course | number) => {
+      if (!validateSessionOperation(sessionYear, sessionTerm, 'add')) {
         return;
       }
 
@@ -37,7 +37,7 @@ export const useCourseOperations = () => {
         courseStore.addCourse(course);
       }
 
-      const sessionKey = generateSessionKey(sessionYear, sessionName);
+      const sessionKey = generateSessionKey(sessionYear, sessionTerm);
       sessionStore.addCourseToSession(sessionKey, courseId);
     },
     [validateSessionOperation, sessionStore, courseStore],
@@ -46,18 +46,18 @@ export const useCourseOperations = () => {
   const moveCourseBetweenSessions = useCallback(
     (
       fromSessionYear: number,
-      fromSessionName: SessionName,
+      fromSessionTerm: SessionEnum,
       toSessionYear: number,
-      toSessionName: SessionName,
+      toSessionTerm: SessionEnum,
       course: Course | number,
     ) => {
-      if (!validateSessionOperation(toSessionYear, toSessionName, 'move')) {
+      if (!validateSessionOperation(toSessionYear, toSessionTerm, 'move')) {
         return;
       }
 
       const courseId = typeof course === 'number' ? course : course.id;
-      const fromSessionKey = generateSessionKey(fromSessionYear, fromSessionName);
-      const toSessionKey = generateSessionKey(toSessionYear, toSessionName);
+      const fromSessionKey = generateSessionKey(fromSessionYear, fromSessionTerm);
+      const toSessionKey = generateSessionKey(toSessionYear, toSessionTerm);
 
       sessionStore.moveCourse(fromSessionKey, toSessionKey, courseId);
     },
@@ -65,12 +65,12 @@ export const useCourseOperations = () => {
   );
 
   const removeCourseFromSession = useCallback(
-    (sessionYear: number, sessionName: SessionName, courseId: number) => {
-      if (!validateSessionOperation(sessionYear, sessionName, 'remove')) {
+    (sessionYear: number, sessionTerm: SessionEnum, courseId: number) => {
+      if (!validateSessionOperation(sessionYear, sessionTerm, 'remove')) {
         return;
       }
 
-      const sessionKey = generateSessionKey(sessionYear, sessionName);
+      const sessionKey = generateSessionKey(sessionYear, sessionTerm);
       sessionStore.removeCourseFromSession(sessionKey, courseId);
     },
     [validateSessionOperation, sessionStore],

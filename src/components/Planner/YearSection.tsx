@@ -49,7 +49,7 @@ const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIO
             <Session
               key={session.key}
               sessionYear={year}
-              sessionName={session.sessionName}
+              sessionTerm={session.sessionTerm}
             />
           ))}
         </div>

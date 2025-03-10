@@ -2,7 +2,7 @@
 
 import type { Course } from '@/types/course';
 import type { DraggedItem } from '@/types/dnd';
-import type { SessionName } from '@/types/session';
+import type { SessionEnum } from '@/types/session';
 import type { DragSourceMonitor } from 'react-dnd';
 import { DragType } from '@/types/dnd';
 import { useDrag } from 'react-dnd';
@@ -19,7 +19,7 @@ type CourseCardProps = BaseProps & {
 type CourseBoxProps = BaseProps & {
   type: DragType.COURSE_BOX;
   fromSessionYear: number;
-  fromSessionName: SessionName;
+  fromSessionTerm: SessionEnum;
 };
 
 type UseDraggableCourseProps = CourseCardProps | CourseBoxProps;
@@ -41,7 +41,7 @@ export function useDraggableCourse(props: UseDraggableCourseProps) {
             courseId: course.id,
             course,
             fromSessionYear: props.fromSessionYear,
-            fromSessionName: props.fromSessionName,
+            fromSessionTerm: props.fromSessionTerm,
           },
       collect: (monitor: DragSourceMonitor) => ({
         isDragging: monitor.isDragging(),

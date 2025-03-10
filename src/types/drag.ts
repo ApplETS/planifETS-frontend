@@ -6,5 +6,5 @@ export type DragItem = {
   course: Course;
   type: DragItemType;
   fromSessionYear?: number;
-  fromSessionName?: string;
+  fromSessionTerm?: string;
 };

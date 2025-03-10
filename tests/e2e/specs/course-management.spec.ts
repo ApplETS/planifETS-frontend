@@ -61,7 +61,7 @@ test.describe('Course Management', () => {
     await courseBox.dragTo(navbar);
 
     const originalSessionDropTarget = page.locator(
-      selectors.sessionDropTarget(course.sessionName, course.sessionYear),
+      selectors.sessionDropTarget(course.sessionTerm, course.sessionYear),
     );
 
     await expect(originalSessionDropTarget).toContainText(course.code);

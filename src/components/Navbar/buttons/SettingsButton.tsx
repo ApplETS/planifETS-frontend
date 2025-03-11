@@ -22,6 +22,7 @@ export default function SettingsButton() {
         onClick={handleOpen}
         size="medium"
         aria-label="settings"
+        data-testid="settings-toggle-button"
         style={{ textTransform: 'none' }}
       >
         {t('settings')}

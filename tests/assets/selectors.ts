@@ -21,4 +21,8 @@ export const selectors = {
 
   // Navigation
   navbar: '[data-testid="navbar"]',
+
+  // Language settings
+  settingsToggleButton: '[data-testid="settings-toggle-button"]',
+  languageOption: (locale: string) => `[data-testid="language-option-${locale}"]`,
 } as const;

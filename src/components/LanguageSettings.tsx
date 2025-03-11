@@ -21,6 +21,7 @@ const LanguageSettings: React.FC<LanguageSettingsProps> = ({ onClose }) => {
           color="primary"
           variant="outlined"
           className="mr-2 w-full"
+          data-testid="language-option-en"
         >
           English
         </Button>
@@ -29,6 +30,7 @@ const LanguageSettings: React.FC<LanguageSettingsProps> = ({ onClose }) => {
           color="primary"
           variant="outlined"
           className="w-full"
+          data-testid="language-option-fr"
         >
           Français
         </Button>

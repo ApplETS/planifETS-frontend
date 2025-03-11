@@ -4,14 +4,16 @@ import { useProgramCoursesOperations } from '@/hooks/course/useProgramCoursesOpe
 import { COURSES_TAB_INDEX, FAVORITE_TAB_INDEX } from '@/utils/constants';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import { Typography } from '@mui/material';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import CourseCard from './CourseCard';
 import SearchBar from './CourseSearchBar';
 
 export default function CourseSidebar() {
+  const t = useTranslations('PlannerPage');
+
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState(COURSES_TAB_INDEX);
 
@@ -28,7 +30,7 @@ export default function CourseSidebar() {
     setActiveTab(newValue);
   };
 
-  const renderCoursesContent = () => {
+  function renderCoursesContent() {
     if (displayedCourses.length > 0) {
       return (
         <div className="space-y-4">
@@ -42,19 +44,19 @@ export default function CourseSidebar() {
       );
     }
 
-    let message = 'Chargement des cours...';
+    let message = t('loading-courses');
     if (activeTab === FAVORITE_TAB_INDEX) {
-      message = 'Vous n\'avez aucun favori.';
+      message = t('no-favorite-courses');
     } else if (hasSelectedPrograms !== undefined) {
       message = hasSelectedPrograms
-        ? 'Aucun cours trouvé.'
-        : 'Veuillez sélectionner un programme.';
+        ? t('no-courses-found')
+        : t('select-program');
     }
 
     return (
-      <Typography variant="body1" color="textSecondary" align="center">
+      <div className="text-center text-gray-500">
         {message}
-      </Typography>
+      </div>
     );
   };
 
@@ -77,8 +79,8 @@ export default function CourseSidebar() {
         aria-label="Tabs for course list and favorites"
         selectionFollowsFocus
       >
-        <Tab icon={<MenuBookIcon />} label="Cours" iconPosition="start" />
-        <Tab icon={<FavoriteIcon />} label="Favoris" iconPosition="start" />
+        <Tab icon={<MenuBookIcon />} label={t('courses')} iconPosition="start" />
+        <Tab icon={<FavoriteIcon />} label={t('favorite-courses')} iconPosition="start" />
       </Tabs>
 
       <SearchBar onSearch={handleSearch} />

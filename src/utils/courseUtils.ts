@@ -1,6 +1,6 @@
 import type { CourseInstance, CourseStatus } from '@/types/course';
 import type { YearData } from '@/types/planner';
-import type { SessionName, SessionTiming } from '@/types/session';
+import type { SessionEnum, SessionTiming } from '@/types/session';
 
 export const determineInitialStatus = (sessionTiming: SessionTiming): CourseStatus => {
   if (sessionTiming.isCurrent) {
@@ -18,12 +18,12 @@ type SessionUpdate = (courseInstances: CourseInstance[]) => CourseInstance[];
 
 const updateYearSession = (
   yearData: YearData,
-  sessionName: SessionName,
+  sessionTerm: SessionEnum,
   updateFn: SessionUpdate,
 ): YearData => ({
   ...yearData,
   sessions: yearData.sessions.map(session =>
-    session.sessionName === sessionName
+    session.sessionTerm === sessionTerm
       ? {
         ...session,
         courseInstances: updateFn(session.courseInstances),
@@ -34,11 +34,11 @@ const updateYearSession = (
 
 export const addCourseToSession = (
   yearData: YearData,
-  sessionName: SessionName,
+  sessionTerm: SessionEnum,
   courseId: number,
   status: CourseStatus = 'Planned',
 ): YearData => {
-  return updateYearSession(yearData, sessionName, (courseInstances) => {
+  return updateYearSession(yearData, sessionTerm, (courseInstances) => {
     if (courseInstances.some(ci => ci.courseId === courseId)) {
       return courseInstances;
     }
@@ -48,20 +48,20 @@ export const addCourseToSession = (
 
 export const removeCourseFromSession = (
   yearData: YearData,
-  sessionName: SessionName,
+  sessionTerm: SessionEnum,
   courseId: number,
 ): YearData => {
-  return updateYearSession(yearData, sessionName, courseInstances =>
+  return updateYearSession(yearData, sessionTerm, courseInstances =>
     courseInstances.filter(ci => ci.courseId !== courseId));
 };
 
 export const updateCourseStatus = (
   yearData: YearData,
-  sessionName: SessionName,
+  sessionTerm: SessionEnum,
   courseId: number,
   status: CourseStatus,
 ): YearData => {
-  return updateYearSession(yearData, sessionName, courseInstances =>
+  return updateYearSession(yearData, sessionTerm, courseInstances =>
     courseInstances.map(ci =>
       ci.courseId === courseId ? { ...ci, status } : ci,
     ));
@@ -69,13 +69,13 @@ export const updateCourseStatus = (
 
 export const moveCourseToSession = (
   yearData: YearData,
-  fromSessionName: SessionName,
-  toSessionName: SessionName,
+  fromSessionTerm: SessionEnum,
+  toSessionTerm: SessionEnum,
   courseId: number,
   newStatus: CourseStatus,
 ): YearData => {
-  const updatedYearData = removeCourseFromSession(yearData, fromSessionName, courseId);
-  return updateYearSession(updatedYearData, toSessionName, courseInstances => [
+  const updatedYearData = removeCourseFromSession(yearData, fromSessionTerm, courseId);
+  return updateYearSession(updatedYearData, toSessionTerm, courseInstances => [
     ...courseInstances,
     { courseId, status: newStatus },
   ]);

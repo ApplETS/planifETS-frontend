@@ -5,12 +5,15 @@ import { useCourseStore } from '@/store/courseStore';
 import { useProgramStore } from '@/store/programStore';
 import { Autocomplete, Chip, TextField, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { useTranslations } from 'next-intl';
 import * as React from 'react';
 import { programs } from '../data/programs-data';
 
 const ProgramSelector: React.FC = () => {
+  const t = useTranslations('PlannerPage');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const programStore = useProgramStore();
   const setCourses = useCourseStore(state => state.setCourses);
 
@@ -48,7 +51,7 @@ const ProgramSelector: React.FC = () => {
       renderInput={params => (
         <TextField
           {...params}
-          label="Programmes"
+          label={t('programs')}
           data-testid="programs-select"
         />
       )}

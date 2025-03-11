@@ -1,8 +1,9 @@
 import type { CourseInstance } from '@/types/course';
-import type { SessionName, SessionTiming } from '@/types/session';
+import type { SessionEnum, SessionTiming } from '@/types/session';
 import type { FC } from 'react';
 import { useCourseStatus } from '@/hooks/course/useCourseStatus';
 import { useCourseStore } from '@/store/courseStore';
+import { useTranslations } from 'next-intl';
 import CourseBox from './CourseBox';
 
 type CoursesListProps = {
@@ -10,9 +11,8 @@ type CoursesListProps = {
   courseInstances: CourseInstance[];
   sessionTiming: SessionTiming;
   onRemoveCourse: (courseId: number) => void;
-  onMoveCourse: (toSessionYear: number, toSessionName: SessionName, courseId: number) => void;
   sessionYear: number;
-  sessionName: SessionName;
+  sessionTerm: SessionEnum;
   canDragCourses?: boolean;
 };
 
@@ -22,9 +22,11 @@ const CoursesList: FC<CoursesListProps> = ({
   sessionTiming,
   onRemoveCourse,
   sessionYear,
-  sessionName,
+  sessionTerm,
   canDragCourses = true,
 }) => {
+  const t = useTranslations('PlannerPage');
+
   const { getCourseStatus } = useCourseStatus();
   const { getCourse } = useCourseStore();
 
@@ -43,12 +45,12 @@ const CoursesList: FC<CoursesListProps> = ({
                 <CourseBox
                   key={course.code}
                   code={course.code}
-                  status={getCourseStatus(instance.courseId, sessionYear, sessionName, sessionTiming)}
+                  status={getCourseStatus(instance.courseId, sessionYear, sessionTerm, sessionTiming)}
                   isDraggable={canDragCourses}
                   credits={course.credits}
                   onDelete={() => onRemoveCourse(instance.courseId)}
                   fromSessionYear={sessionYear}
-                  fromSessionName={sessionName}
+                  fromSessionTerm={sessionTerm}
                   course={course}
                 />
               );
@@ -58,8 +60,8 @@ const CoursesList: FC<CoursesListProps> = ({
         : (
           <div className="flex h-full items-center justify-center text-sm text-gray-400">
             {sessionTiming.isPast
-              ? 'Aucune modification autorisée pour cette session passée.'
-              : 'Glissez les cours ici pour les ajouter à cette session.'}
+              ? t('no-course-modif-past-session')
+              : t('drag-courses-to-add-course')}
           </div>
         )}
     </div>

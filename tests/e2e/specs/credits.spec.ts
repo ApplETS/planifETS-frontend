@@ -5,7 +5,7 @@ import { addCourseToSession, deleteCourse, searchCourseInSidebar } from '../fixt
 import { selectProgram } from '../fixtures/program';
 import { setupTestPage } from '../fixtures/setup';
 
-const CREDITS_LABEL = 'crédits';
+const CREDITS_LABEL = 'credits';
 
 test.describe('Credits Management', () => {
   test.beforeEach(async ({ page }) => {
@@ -20,7 +20,7 @@ test.describe('Credits Management', () => {
     await addCourseToSession(page, course);
 
     const sessionCredits = page.locator(
-      selectors.sessionCredits(course.sessionName, course.sessionYear),
+      selectors.sessionCredits(course.sessionTerm, course.sessionYear),
     );
 
     await expect(sessionCredits).toHaveText(

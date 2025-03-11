@@ -17,7 +17,7 @@ type ConfirmationDialogProps = {
   onConfirm: () => void;
   onCancel: () => void;
 };
-
+// TODO: Use BaseDialog.tsx as a base for this component
 export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   isOpen,
   title,

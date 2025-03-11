@@ -1,32 +1,37 @@
 import type { FC } from 'react';
+import { getTranslationKey } from '@/utils/sessionUtils';
 import Tooltip from '@mui/material/Tooltip';
+import { useTranslations } from 'next-intl';
+
 import React from 'react';
 import { FaInfoCircle } from 'react-icons/fa';
-
 import { getSeasonStyle } from '../../utils/seasonUtils';
 import CreditsBadge from '../atoms/CreditsBadge';
 
 type SessionHeaderProps = {
-  sessionName: string;
+  sessionTerm: string;
   sessionYear: number;
   totalCredits: number;
   isNoAvailabilityData: boolean;
 };
 
 const SessionHeader: FC<SessionHeaderProps> = ({
-  sessionName,
+  sessionTerm,
   sessionYear,
   totalCredits,
   isNoAvailabilityData,
 }) => {
-  const { SeasonIcon, color } = getSeasonStyle(sessionName) ?? {};
+  const t = useTranslations('PlannerPage');
+
+  const translatedSessionTerm = t(getTranslationKey(sessionTerm));
+  const { SeasonIcon, color } = getSeasonStyle(sessionTerm) ?? {};
 
   return (
     <div className="mb-2 flex select-none flex-col sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-center gap-2">
         <SeasonIcon className={color} />
         <h3 className="text-lg font-bold">
-          {sessionName}
+          {translatedSessionTerm}
           {' '}
           {sessionYear}
         </h3>
@@ -34,13 +39,12 @@ const SessionHeader: FC<SessionHeaderProps> = ({
           <Tooltip
             title={(
               <p className="text-base">
-                Les informations sur la disponibilité des cours pour cette session ne sont
-                pas encore publiées par l&apos;école.
+                {t('courses-availability-not-yet-published')}
               </p>
             )}
             arrow
           >
-            <div className="group relative" aria-label="Information about course availability">
+            <div className="group relative" aria-label={t('information-course-availability')}>
               <FaInfoCircle className="text-amber-400 hover:text-orange-600" />
             </div>
           </Tooltip>
@@ -49,7 +53,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
       <div className="flex w-auto justify-end sm:mt-0">
         <CreditsBadge
           credits={totalCredits}
-          dataTestId={`session-${sessionName}-${sessionYear}-credits`}
+          dataTestId={`session-${sessionTerm}-${sessionYear}-credits`}
         />
       </div>
     </div>

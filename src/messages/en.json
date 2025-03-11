@@ -1,0 +1,51 @@
+{
+  "Commons": {
+    "credits": "credits",
+    "login": "Sign in",
+    "logout": "Sign out",
+    "settings": "Settings"
+  },
+  "LoginPage": {
+    "title": "Login with Signets",
+    "description": "Access all your completed courses!",
+    "universal-code": "Universal code",
+    "universal-code-placeholder": "Ex: AS12345",
+    "password": "Password",
+    "password-placeholder": "Your password",
+    "login": "LOGIN",
+    "or": "OR",
+    "continue-as-guest": "Continue as a Guest"
+  },
+  "PlannerPage": {
+    "year-with-value": "Year {value}",
+    "add-a-year": "Add a year",
+    "sessionTerms": {
+      "AUTOMNE": "Autumn",
+      "HIVER": "Winter",
+      "ETE": "Summer"
+    },
+    "delete-course": "Delete the course",
+    "credits-short": "cr.",
+    "course": {
+      "Completed": "Completed",
+      "In Progress": "In Progress",
+      "Failed": "Failed",
+      "Not Offered": "Not Offered",
+      "Planned": "Planned"
+    },
+    "no-course-modif-past-session": "No changes allowed for this past session.",
+    "drag-courses-to-add-course": "Drag courses here to add them to this session.",
+    "information-course-availability": "Information about course availability",
+    "courses-availability-not-yet-published": "Information on course availability for this session is not yet published by the school.",
+    "prerequisites": "Prerequisites: ",
+    "available": "Available: ",
+    "programs": "Programs",
+    "search-course": "Search for a course",
+    "loading-courses": "Loading courses...",
+    "no-favorite-courses": "You have no favorite courses",
+    "no-courses-found": "No courses found.",
+    "select-program": "Please select a program.",
+    "courses": "Courses",
+    "favorite-courses": "Favorites"
+  }
+}

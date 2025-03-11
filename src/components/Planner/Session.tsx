@@ -1,6 +1,6 @@
 'use client';
 
-import type { SessionName } from '@/types/session';
+import type { SessionEnum } from '@/types/session';
 import type { FC } from 'react';
 import { useSessionDrop } from '@/hooks/session/useSessionDrop';
 import { useSessionOperations } from '@/hooks/session/useSessionOperations';
@@ -12,22 +12,21 @@ import SessionHeader from './SessionHeader';
 
 type SessionProps = {
   sessionYear: number;
-  sessionName: SessionName;
+  sessionTerm: SessionEnum;
 };
 
-const Session: FC<SessionProps> = ({ sessionYear, sessionName }) => {
+const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
   const {
     courseInstances,
     sessionTiming,
     handleRemoveCourse,
-    handleMoveCourse,
     sessionTotalCredits,
-  } = useSessionOperations(sessionYear, sessionName);
+  } = useSessionOperations(sessionYear, sessionTerm);
 
   const { getCourse } = useCourseStore();
   const { drop, isOver, canDrop, draggedItem } = useSessionDrop({
     sessionYear,
-    sessionName,
+    sessionTerm,
     sessionTiming,
   });
 
@@ -38,7 +37,7 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionName }) => {
 
     const isAvailable = isCourseAvailableInSession(
       draggedItem.course.id,
-      sessionName,
+      sessionTerm,
       sessionYear,
       getCourse,
     );
@@ -64,10 +63,10 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionName }) => {
       className={`rounded-lg border-2 ${getSessionBorderStyle()} 
         bg-sessions p-4 transition-all duration-300
         ${isOver && canDrop ? 'bg-sessions/90' : ''}`}
-      data-testid={`session-${sessionName}-${sessionYear}-drop-target`}
+      data-testid={`session-${sessionTerm}-${sessionYear}-drop-target`}
     >
       <SessionHeader
-        sessionName={sessionName}
+        sessionTerm={sessionTerm}
         sessionYear={sessionYear}
         totalCredits={sessionTotalCredits}
         isNoAvailabilityData={false}
@@ -77,9 +76,8 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionName }) => {
         courseInstances={courseInstances}
         sessionTiming={sessionTiming}
         onRemoveCourse={handleRemoveCourse}
-        onMoveCourse={handleMoveCourse}
         sessionYear={sessionYear}
-        sessionName={sessionName}
+        sessionTerm={sessionTerm}
       />
     </div>
   );

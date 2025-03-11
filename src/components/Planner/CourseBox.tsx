@@ -1,11 +1,12 @@
 'use client';
 
 import type { Course } from '@/types/course';
-import type { SessionName } from '@/types/session';
+import type { SessionEnum } from '@/types/session';
 import type { FC } from 'react';
 import type { CourseStatus } from '../../types/courseStatus';
 import { DragType } from '@/types/dnd';
 
+import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
 import { useDrag } from 'react-dnd';
 import { FaTrash } from 'react-icons/fa';
@@ -19,7 +20,7 @@ type CourseBoxProps = {
   credits: number;
   onDelete?: () => void;
   fromSessionYear: number;
-  fromSessionName: SessionName;
+  fromSessionTerm: SessionEnum;
   course: Course;
   isDraggable?: boolean;
 };
@@ -30,10 +31,12 @@ const CourseBox: FC<CourseBoxProps> = ({
   credits,
   onDelete,
   fromSessionYear,
-  fromSessionName,
+  fromSessionTerm,
   course,
   isDraggable = true,
 }) => {
+  const t = useTranslations('PlannerPage');
+
   const [{ isDragging }, drag] = useDrag(() => ({
     type: DragType.COURSE_BOX,
     item: {
@@ -41,13 +44,13 @@ const CourseBox: FC<CourseBoxProps> = ({
       courseId: course.id,
       course,
       fromSessionYear,
-      fromSessionName,
+      fromSessionTerm,
     },
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
     canDrag: () => isDraggable,
-  }), [course, fromSessionYear, fromSessionName, isDraggable]);
+  }), [course, fromSessionYear, fromSessionTerm, isDraggable]);
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -79,8 +82,8 @@ const CourseBox: FC<CourseBoxProps> = ({
             e.stopPropagation();
             onDelete();
           }}
-          aria-label="Supprimer le cours"
-          data-testid={`delete-course-${code}-${fromSessionName}-${fromSessionYear}`}
+          aria-label={t('delete-course')}
+          data-testid={`delete-course-${code}-${fromSessionTerm}-${fromSessionYear}`}
         >
           <FaTrash />
         </BaseButton>
@@ -96,7 +99,7 @@ const CourseBox: FC<CourseBoxProps> = ({
       <div className="text-sm text-gray-500">
         {credits}
         {' '}
-        cr.
+        {t('credits-short')}
       </div>
     </div>
   );

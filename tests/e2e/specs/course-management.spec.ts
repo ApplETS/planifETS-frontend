@@ -1,11 +1,12 @@
 import { expect, test } from '@playwright/test';
+import { SessionEnum } from '../../../src/types/session';
 import { TEST_COURSES } from '../../assets/courses';
 import { selectors } from '../../assets/selectors';
 import { addCourseToSession, deleteCourse, moveCourseToSession, searchCourseInSidebar } from '../fixtures/course';
 import { selectProgram } from '../fixtures/program';
 import { setupTestPage } from '../fixtures/setup';
 
-const CREDITS_LABEL = 'crédits';
+const CREDITS_LABEL = 'credits';
 
 test.describe('Course Management', () => {
   test.beforeEach(async ({ page }) => {
@@ -32,7 +33,7 @@ test.describe('Course Management', () => {
     await searchCourseInSidebar(page, course.code);
     await addCourseToSession(page, course);
 
-    const targetSession = 'Automne';
+    const targetSession = SessionEnum.A;
     const targetYear = 2025;
 
     await moveCourseToSession(page, course, targetSession, targetYear);
@@ -60,7 +61,7 @@ test.describe('Course Management', () => {
     await courseBox.dragTo(navbar);
 
     const originalSessionDropTarget = page.locator(
-      selectors.sessionDropTarget(course.sessionName, course.sessionYear),
+      selectors.sessionDropTarget(course.sessionTerm, course.sessionYear),
     );
 
     await expect(originalSessionDropTarget).toContainText(course.code);

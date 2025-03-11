@@ -5,10 +5,13 @@ import { ProgramSection } from '@/components/ProgramSection';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
 import Button from '@mui/material/Button';
+import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
 
 export default function PlannerPage() {
+  const t = useTranslations('PlannerPage');
+
   const { initializePlanner, getYears, addYear } = usePlannerStore();
   const { getSessionsByYear, initializeSessions } = useSessionStore();
 
@@ -54,7 +57,7 @@ export default function PlannerPage() {
           onClick={addYear}
           startIcon={<FaPlus />}
         >
-          Ajouter une année
+          {t('add-a-year')}
         </Button>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import type { SessionName } from '@/types/session';
+import type { SessionEnum } from '@/types/session';
 import { useSessionStore } from '@/store/sessionStore';
 import {
   generateSessionKey,
@@ -7,13 +7,13 @@ import {
 } from '@/utils/sessionUtils';
 import { useSnackbar } from 'notistack';
 
-export const useSessionOperations = (year: number, sessionName: SessionName) => {
+export const useSessionOperations = (year: number, sessionTerm: SessionEnum) => {
   const { enqueueSnackbar } = useSnackbar();
   const sessionStore = useSessionStore();
-  const sessionKey = generateSessionKey(year, sessionName);
+  const sessionKey = generateSessionKey(year, sessionTerm);
   const session = sessionStore.getSessionByKey(sessionKey);
   const courseInstances = sessionStore.getSessionCourses(sessionKey);
-  const sessionTiming = getSessionTiming(year, sessionName);
+  const sessionTiming = getSessionTiming(year, sessionTerm);
 
   const handleOperation = (operation: string, callback: () => void) => {
     const error = validateSessionOperation(sessionTiming, operation);
@@ -25,11 +25,7 @@ export const useSessionOperations = (year: number, sessionName: SessionName) => 
   };
 
   const handleAddCourse = (courseId: number) => {
-    // eslint-disable-next-line no-console
-    console.log('handleAddCourse called with:', courseId);
     handleOperation('add', () => {
-      // eslint-disable-next-line no-console
-      console.log('Adding course to session:', sessionKey, courseId);
       sessionStore.addCourseToSession(sessionKey, courseId);
     });
   };
@@ -40,10 +36,10 @@ export const useSessionOperations = (year: number, sessionName: SessionName) => 
     });
   };
 
-  const handleMoveCourse = (toSessionYear: number, toSessionName: SessionName, courseId: number) => {
+  const handleMoveCourse = (toSessionYear: number, toSessionTerm: SessionEnum, courseId: number) => {
     handleOperation('move', () => {
-      const fromSessionKey = generateSessionKey(year, sessionName);
-      const toSessionKey = generateSessionKey(toSessionYear, toSessionName);
+      const fromSessionKey = generateSessionKey(year, sessionTerm);
+      const toSessionKey = generateSessionKey(toSessionYear, toSessionTerm);
 
       sessionStore.moveCourse(fromSessionKey, toSessionKey, courseId);
     });

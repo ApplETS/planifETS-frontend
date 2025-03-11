@@ -3,6 +3,7 @@
 import type { Session as SessionType } from '@/types/session';
 
 import { usePlannerStore } from '@/store/plannerStore';
+import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import BaseButton from '../atoms/buttons/BaseButton';
@@ -18,6 +19,7 @@ type YearSectionProps = {
 const EMPTY_SESSIONS: SessionType[] = [];
 
 const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIONS, isFirstYear, isLastYear }) => {
+  const t = useTranslations('PlannerPage');
   const [isHovered, setIsHovered] = useState(false);
   const deleteYear = usePlannerStore(state => state.deleteYear);
 
@@ -40,16 +42,14 @@ const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIO
       )}
       <div className="rounded-lg border border-buttonTags bg-yearSection p-4 shadow-lg">
         <h2 className="mb-1 text-xl font-semibold">
-          Année
-          {' '}
-          {year}
+          {t('year-with-value', { value: year })}
         </h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {sessions.map(session => (
             <Session
               key={session.key}
               sessionYear={year}
-              sessionName={session.sessionName}
+              sessionTerm={session.sessionTerm}
             />
           ))}
         </div>

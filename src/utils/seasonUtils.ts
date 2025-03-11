@@ -13,14 +13,14 @@ type SeasonIconsType = {
 };
 
 export const seasonIcons: SeasonIconsType = {
-  [SessionEnum.HIVER]: { SeasonIcon: FaSnowflake, color: 'text-blue-400' },
-  [SessionEnum.ETE]: { SeasonIcon: FaSun, color: 'text-yellow-400' },
-  [SessionEnum.AUTOMNE]: { SeasonIcon: GiMapleLeaf, color: 'text-orange-500' },
+  [SessionEnum.H]: { SeasonIcon: FaSnowflake, color: 'text-blue-400' },
+  [SessionEnum.E]: { SeasonIcon: FaSun, color: 'text-yellow-400' },
+  [SessionEnum.A]: { SeasonIcon: GiMapleLeaf, color: 'text-orange-500' },
 };
 
-export const getSeasonStyle = (sessionName: string): SeasonStyle => {
+export const getSeasonStyle = (sessionTerm: string): SeasonStyle => {
   const season = Object.values(SessionEnum).find(s =>
-    sessionName.includes(s),
+    sessionTerm.includes(s),
   );
 
   if (!season) {

@@ -25,4 +25,12 @@ export const selectors = {
   // Language settings
   settingsToggleButton: '[data-testid="settings-toggle-button"]',
   languageOption: (locale: string) => `[data-testid="language-option-${locale}"]`,
+
+  // Add sessions
+  yearSection: (year?: number) => year
+    ? `[data-testid="year-section-${year}"]`
+    : '[data-testid^="year-section-"]',
+  yearSections: '[data-testid="year-sections"]',
+  addYearButton: '[data-testid="add-year-button"]',
+  extractYearFromSection: /year-section-(\d+)/,
 } as const;

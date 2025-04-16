@@ -56,6 +56,7 @@ export default function PlannerPage() {
           color="primary"
           onClick={addYear}
           startIcon={<FaPlus />}
+          data-testid="add-year-button"
         >
           {t('add-a-year')}
         </Button>

@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 
 export const setupTestPage = async (page: Page) => {
   await page.goto('/planner');
@@ -10,4 +10,17 @@ export const setupTestPage = async (page: Page) => {
       content: `* { transition: none !important; animation: none !important; }`,
     });
   }
+};
+
+export const simulateHover = async (element: Locator, waitTime = 500) => {
+  // Force hover state using JavaScript
+  await element.evaluate((el) => {
+    const mouseenter = new MouseEvent('mouseenter', {
+      bubbles: true,
+      cancelable: true,
+    });
+    el.dispatchEvent(mouseenter);
+  });
+
+  await element.page().waitForTimeout(waitTime);
 };

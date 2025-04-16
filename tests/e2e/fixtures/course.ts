@@ -2,6 +2,7 @@ import type { Page } from '@playwright/test';
 import type { TestCourse } from '../../assets/courses';
 import { expect } from '@playwright/test';
 import { selectors } from '../../assets/selectors';
+import { simulateHover } from './setup';
 
 export async function searchCourseInSidebar(page: Page, courseCode: string) {
   const searchInput = page.locator(selectors.searchInput);
@@ -24,7 +25,6 @@ export const addCourseToSession = async (
   course: TestCourse,
 ) => {
   const courseCard = await getCourseCard(page, course.code);
-
   const dropTarget = page.locator(
     selectors.sessionDropTarget(course.sessionTerm, course.sessionYear),
   );
@@ -41,7 +41,10 @@ export const deleteCourse = async (
   course: TestCourse,
 ) => {
   const courseBox = page.locator(selectors.courseInSession(course.code));
-  await courseBox.hover();
+
+  await expect(courseBox).toBeVisible({ timeout: 15000 });
+
+  await simulateHover(courseBox);
 
   const deleteButton = page.locator(
     selectors.courseDeleteButton(course.code, course.sessionTerm, course.sessionYear),

@@ -28,6 +28,7 @@ const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIO
       className="relative select-none"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      data-testid={`year-section-${year}`}
     >
       {isHovered && isLastYear && !isFirstYear && (
         <BaseButton

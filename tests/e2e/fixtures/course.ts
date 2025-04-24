@@ -50,6 +50,7 @@ export const deleteCourse = async (
     selectors.courseDeleteButton(course.code, course.sessionTerm, course.sessionYear),
   );
 
+  // test
   await expect(deleteButton).toBeVisible({ timeout: 15000 });
 
   await deleteButton.click();

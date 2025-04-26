@@ -19,6 +19,8 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   // Reporter to use. See https://playwright.dev/docs/test-reporters
   reporter: process.env.CI ? 'github' : 'list',
+  // Continue running all tests even when tests fail
+  maxFailures: process.env.CI ? 0 : 1,
   expect: {
     // Set timeout for async expect matchers
     timeout: 60 * 1000,

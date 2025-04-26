@@ -42,7 +42,13 @@ export const deleteCourse = async (
 ) => {
   const courseBox = page.locator(selectors.courseInSession(course.code));
   await courseBox.hover();
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(2000);
+  await page.screenshot({ path: 'debug-hover.png' });
+
+  const deleteButtonSelector = selectors.courseDeleteButton(course.code, course.sessionTerm, course.sessionYear);
+  // eslint-disable-next-line no-console
+  console.log('Looking for:', deleteButtonSelector);
+
   // test
   const deleteButton = page.locator(
     selectors.courseDeleteButton(course.code, course.sessionTerm, course.sessionYear),

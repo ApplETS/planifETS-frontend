@@ -42,6 +42,7 @@ export const deleteCourse = async (
 ) => {
   const courseBox = page.locator(selectors.courseInSession(course.code));
   await courseBox.hover();
+  await page.waitForTimeout(500);
   // test
   const deleteButton = page.locator(
     selectors.courseDeleteButton(course.code, course.sessionTerm, course.sessionYear),

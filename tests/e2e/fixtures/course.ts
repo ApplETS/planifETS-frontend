@@ -55,8 +55,6 @@ export const deleteCourse = async (
   await page.waitForTimeout(300);
 
   await deleteButton.click({ force: true, timeout: 3000 });
-
-  await page.mouse.move(0, 0);
 };
 
 export const moveCourseToSession = async (

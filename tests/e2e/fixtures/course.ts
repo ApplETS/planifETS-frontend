@@ -40,24 +40,23 @@ export const deleteCourse = async (
   page: Page,
   course: TestCourse,
 ) => {
+  await page.mouse.move(0, 0);
+  await page.waitForTimeout(200);
+
   const courseBox = page.locator(selectors.courseInSession(course.code));
   await courseBox.scrollIntoViewIfNeeded();
+
   await courseBox.hover({ force: true, timeout: 2000 });
-  /* eslint-disable no-console */
-  console.log('Hovering over course box:', courseBox);
-  await page.screenshot({ path: 'debug-hover.png' });
 
   const deleteButtonSelector = selectors.courseDeleteButton(course.code, course.sessionTerm, course.sessionYear);
-  console.log('Looking for:', deleteButtonSelector);
 
-  // test
-  const deleteButton = page.locator(
-    selectors.courseDeleteButton(course.code, course.sessionTerm, course.sessionYear),
-  );
+  const deleteButton = page.locator(deleteButtonSelector);
 
-  // await expect(deleteButton).toBeVisible({ timeout: 15000 });
+  await page.waitForTimeout(300);
 
-  await deleteButton.click();
+  await deleteButton.click({ force: true, timeout: 3000 });
+
+  await page.mouse.move(0, 0);
 };
 
 export const moveCourseToSession = async (

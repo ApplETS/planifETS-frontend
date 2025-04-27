@@ -57,7 +57,7 @@ export default function PlannerPage() {
           onClick={addYear}
           startIcon={<FaPlus />}
         >
-          {t('add-a-year')}
+          {t('add-year')}
         </BaseButton>
       </div>
     </div>

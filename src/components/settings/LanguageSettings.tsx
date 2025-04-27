@@ -1,7 +1,7 @@
 import { setUserLocale } from '@/services/locale';
 import { Button } from '@mui/material';
 import React from 'react';
-import { ThemeSelect } from './ThemeSelect';
+import { ThemeSelector } from './ThemeSelector';
 
 type LanguageSettingsProps = {
   onClose: () => void;
@@ -35,7 +35,7 @@ const LanguageSettings: React.FC<LanguageSettingsProps> = ({ onClose }) => {
         >
           Français
         </Button>
-        <ThemeSelect />
+        <ThemeSelector />
       </div>
     </div>
   );

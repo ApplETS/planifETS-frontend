@@ -2,12 +2,13 @@
 
 import { useTheme } from 'next-themes';
 
-export function ThemeSelect() {
-  const { theme, setTheme } = useTheme();
+export function ThemeSelector() {
+  const { theme, resolvedTheme, setTheme } = useTheme();
+  const current = theme === 'system' ? resolvedTheme : theme;
 
   return (
     <select
-      value={theme}
+      value={current}
       onChange={e => setTheme(e.target.value)}
       className="
         p-2
@@ -17,11 +18,10 @@ export function ThemeSelect() {
         bg-[var(--color-navbarButton)]
         text-[var(--color-textLightBackground)]
         hover:bg-[var(--color-navbarButtonHover)]
-        focus:outline-none"
+        focus:outline-hidden"
     >
       <option value="light">Light</option>
       <option value="dark">Dark</option>
-      <option value="system">System</option>
     </select>
   );
 }

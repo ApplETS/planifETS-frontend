@@ -5,7 +5,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import BaseDialog from '../../dialogs/BaseDialog';
-import LanguageSettings from '../../LanguageSettings';
+import LanguageSettings from '../../settings/LanguageSettings';
 
 export default function SettingsButton() {
   const [isOpen, setIsOpen] = useState(false);

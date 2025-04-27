@@ -1,10 +1,10 @@
 'use client';
 
+import BaseButton from '@/components/atoms/buttons/BaseButton';
 import YearSection from '@/components/Planner/YearSection';
 import { ProgramSection } from '@/components/ProgramSection';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
-import Button from '@mui/material/Button';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
@@ -39,7 +39,7 @@ export default function PlannerPage() {
       </div>
 
       <div className="mt-6 w-full flex flex-col gap-4 p-2" data-testid="year-sections">
-        {years.map(year => (
+        {years.map((year) => (
           <YearSection
             key={year}
             year={year}
@@ -51,14 +51,14 @@ export default function PlannerPage() {
       </div>
 
       <div className="mt-4 flex justify-center">
-        <Button
-          variant="contained"
+        <BaseButton
+          variant="primary"
           color="primary"
           onClick={addYear}
           startIcon={<FaPlus />}
         >
           {t('add-a-year')}
-        </Button>
+        </BaseButton>
       </div>
     </div>
   );

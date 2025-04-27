@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import type { ReactNode } from 'react';
-import { SnackbarProvider } from 'notistack';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-import { ThemeProvider, useTheme as useNextTheme } from 'next-themes';
 import { darkTheme, lightTheme } from 'lib/MuiTheme';
+import { useTheme as useNextTheme } from 'next-themes';
+import { SnackbarProvider } from 'notistack';
+import type { ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 
 type ClientProvidersProps = {
   children: ReactNode;

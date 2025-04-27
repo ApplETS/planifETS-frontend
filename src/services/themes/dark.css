@@ -1,4 +1,4 @@
-@layer base {
+@layer theme {
   [data-theme='dark'] {
     --color-navbar: #40314e;
     --color-background: #1f1824;

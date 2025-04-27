@@ -1,38 +1,36 @@
-@layer base {
-  [data-theme='light'] {
-    --color-navbar: #fafafa;
-    --color-background: #ffffff;
-    --color-yearSection: #f5f5f5;
-    --color-sessions: #e0e0e0;
-    --color-courseSidebar: #d9d9d9;
-    --color-login: #e8f5e9;
-    --color-loginButtonHover: #c8e6c9;
+@theme {
+  --color-navbar: #fafafa;
+  --color-background: #ffffff;
+  --color-yearSection: #f5f5f5;
+  --color-sessions: #e0e0e0;
+  --color-courseSidebar: #d9d9d9;
+  --color-login: #e8f5e9;
+  --color-loginButtonHover: #c8e6c9;
 
-    /* Text contrast */
-    --color-textDarkBackground: #111111;
-    --color-textLightBackground: #333333;
-    --color-sessionCourse: #4946464a;
+  /* Text contrast */
+  --color-textDarkBackground: #111111;
+  --color-textLightBackground: #333333;
+  --color-sessionCourse: #4946464a;
 
-    /* Status tags */
-    --color-creditsTag: #ffffff;
-    --color-completedCourseTag: #e8f5e9;
-    --color-inProgressCourseTag: #fff9c4;
-    --color-failedCourseTag: #ffebee;
-    --color-notOfferedCourseTag: #ffcdd2;
-    --color-buttonTags: #ede7f6;
+  /* Status tags */
+  --color-creditsTag: #ffffff;
+  --color-completedCourseTag: #e8f5e9;
+  --color-inProgressCourseTag: #fff9c4;
+  --color-failedCourseTag: #ffebee;
+  --color-notOfferedCourseTag: #ffcdd2;
+  --color-buttonTags: #ede7f6;
 
-    /* Session availability */
-    --color-sessionAvailable-border: #a5d6a7;
-    --color-sessionAvailable-borderHover: #81c784;
-    --color-sessionAvailable-bgHover: #e8f5e9;
-    --color-sessionUnavailable-border: #ef9a9a;
-    --color-sessionUnavailable-borderHover: #e57373;
-    --color-sessionUnavailable-bgHover: #ffebee;
+  /* Session availability */
+  --color-sessionAvailable-border: #a5d6a7;
+  --color-sessionAvailable-borderHover: #81c784;
+  --color-sessionAvailable-bgHover: #e8f5e9;
+  --color-sessionUnavailable-border: #ef9a9a;
+  --color-sessionUnavailable-borderHover: #e57373;
+  --color-sessionUnavailable-bgHover: #ffebee;
 
-    /* Buttons */
-    --color-navbarButton: #f5f5f5;
-    --color-navbarButtonHover: #eeeeee;
-    --color-favoris: #f5f5f5;
-    --color-searchbar: #eeeeee;
-  }
+  /* Buttons */
+  --color-navbarButton: #f5f5f5;
+  --color-navbarButtonHover: #eeeeee;
+  --color-favoris: #f5f5f5;
+  --color-searchbar: #eeeeee;
 }

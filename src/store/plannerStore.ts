@@ -53,10 +53,7 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
 
     addYear: () => {
       set((state) => {
-        const years = state.sessionKeys
-          .map(key => key.split('-')[0])
-          .filter((year): year is string => year !== undefined)
-          .map(year => Number.parseInt(year, 10));
+        const years = state.sessionKeys.map(extractYearFromSessionKey);
 
         const maxYear = Math.max(...years, 0);
         const newYear = maxYear + 1;

@@ -13,12 +13,12 @@ const Container: FC<ContainerProps> = ({
 }) => {
   const variantStyles = {
     default: 'bg-background',
-    session: 'bg-sessions',
+    session: 'bg-[var(--color-sessions)]',
     course: 'bg-sessionCourse',
   };
 
   return (
-    <div className={`rounded-lg p-4 shadow-sm ${variantStyles[variant]} ${className}`}>
+    <div className={`rounded-lg p-4 shadow-xs ${variantStyles[variant]} ${className}`}>
       {children}
     </div>
   );

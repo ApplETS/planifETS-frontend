@@ -27,7 +27,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
   return (
     <div
       ref={dragRef}
-      className={`cursor-pointer rounded-lg bg-white p-4 shadow-sm transition-opacity ${
+      className={`cursor-pointer rounded-lg bg-white p-4 shadow-xs transition-opacity ${
         isDragging ? 'opacity-50' : 'opacity-100'
       }`}
       data-testid={`course-card-${course.code}`}

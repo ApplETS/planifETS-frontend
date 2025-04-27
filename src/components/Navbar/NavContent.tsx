@@ -10,7 +10,7 @@ export default function NavContent() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const navContentClasses = isMobile
-    ? 'flex flex-col items-start space-y-4'
+    ? 'flex flex-col items-start flex flex-col gap-4 p-2'
     : 'flex flex-row items-center space-x-4';
 
   return (

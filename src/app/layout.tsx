@@ -4,23 +4,28 @@ import { Suspense } from 'react';
 import ErrorBoundary from '../components/ErrorBoundary';
 import Navbar from '../components/Navbar/Navbar';
 import ClientProviders from '../components/Providers/ClientProviders';
-import ThemeProvider from '../components/ThemeProvider';
 import DndContext from '../context/dnd/DndContext';
 import './globals.css';
+import { ThemeProvider } from 'next-themes';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const messages = await getMessages();
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <Suspense fallback={null}>
-          <NextIntlClientProvider messages={messages}>
-            <ErrorBoundary>
-              <ThemeProvider>
+        <ThemeProvider
+          attribute="data-theme"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Suspense fallback={null}>
+            <NextIntlClientProvider messages={messages}>
+              <ErrorBoundary>
                 <DndContext>
                   <ClientProviders>
-                    <div className="min-h-screen bg-background pt-16 text-textDarkBackground">
+                    <div className="min-h-screen pt-16">
                       <main>
                         <Navbar />
                         {children}
@@ -28,10 +33,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     </div>
                   </ClientProviders>
                 </DndContext>
-              </ThemeProvider>
-            </ErrorBoundary>
-          </NextIntlClientProvider>
-        </Suspense>
+              </ErrorBoundary>
+            </NextIntlClientProvider>
+          </Suspense>
+        </ThemeProvider>
       </body>
     </html>
   );

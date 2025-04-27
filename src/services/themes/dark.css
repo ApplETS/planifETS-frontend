@@ -1,0 +1,38 @@
+@layer base {
+  [data-theme='dark'] {
+    --color-navbar: #40314e;
+    --color-background: #1f1824;
+    --color-yearSection: #2f2b4b;
+    --color-sessions: #211f33;
+    --color-courseSidebar: #2f2b4b;
+    --color-login: #2f2b4b;
+    --color-loginButtonHover: #8c89f2;
+
+    /* Text contrast */
+    --color-textDarkBackground: #f0f4ff;
+    --color-textLightBackground: #ffffff;
+    --color-sessionCourse: #2f3359;
+
+    /* Status tags */
+    --color-creditsTag: #ffffff;
+    --color-completedCourseTag: #6de9a2;
+    --color-inProgressCourseTag: #eed37e;
+    --color-failedCourseTag: #ffa5a6;
+    --color-notOfferedCourseTag: #d15656;
+    --color-buttonTags: #a5a1ff;
+
+    /* Session availability */
+    --color-sessionAvailable-border: #4ade80;
+    --color-sessionAvailable-borderHover: #22c55e;
+    --color-sessionAvailable-bgHover: #bbf7d0;
+    --color-sessionUnavailable-border: #f87171;
+    --color-sessionUnavailable-borderHover: #ef4444;
+    --color-sessionUnavailable-bgHover: #fecaca;
+
+    /* Buttons */
+    --color-navbarButton: #40314e;
+    --color-navbarButtonHover: #7d90ed;
+    --color-favoris: #40314e;
+    --color-searchbar: #2f3359;
+  }
+}

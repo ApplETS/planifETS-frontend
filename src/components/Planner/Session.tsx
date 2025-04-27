@@ -16,12 +16,8 @@ type SessionProps = {
 };
 
 const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
-  const {
-    courseInstances,
-    sessionTiming,
-    handleRemoveCourse,
-    sessionTotalCredits,
-  } = useSessionOperations(sessionYear, sessionTerm);
+  const { courseInstances, sessionTiming, handleRemoveCourse, sessionTotalCredits } =
+    useSessionOperations(sessionYear, sessionTerm);
 
   const { getCourse } = useCourseStore();
   const { drop, isOver, canDrop, draggedItem } = useSessionDrop({
@@ -53,16 +49,19 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
       : 'border-transparent';
   };
 
-  const dropRef = useCallback((node: HTMLDivElement | null) => {
-    drop(node);
-  }, [drop]);
+  const dropRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      drop(node);
+    },
+    [drop],
+  );
 
   return (
     <div
       ref={dropRef}
       className={`rounded-lg border-2 ${getSessionBorderStyle()} 
-        bg-sessions p-4 transition-all duration-300
-        ${isOver && canDrop ? 'bg-sessions/90' : ''}`}
+        bg-[var(--color-sessions)] p-4 transition-all duration-300
+        ${isOver && canDrop ? 'bg-[var(--color-sessions)]/90' : ''}`}
       data-testid={`session-${sessionTerm}-${sessionYear}-drop-target`}
     >
       <SessionHeader

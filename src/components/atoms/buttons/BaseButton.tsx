@@ -2,23 +2,26 @@ import type { ButtonHTMLAttributes, FC, ReactNode } from 'react';
 
 type BaseButtonProps = {
   children: ReactNode;
-  variant?: 'primary' | 'secondary' | 'danger';
+  variant?: 'primary' | 'secondary' | 'danger' | 'outlined';
   size?: 'sm' | 'md' | 'lg';
+  startIcon?: ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const BaseButton: FC<BaseButtonProps> = ({
   children,
   variant = 'primary',
   size = 'md',
+  startIcon, 
   className = '',
   ...props
 }) => {
-  const baseStyles = 'rounded-md transition-colors duration-200';
+  const baseStyles = 'inline-flex items-center justify-center rounded-md transition-colors duration-200';
 
   const variantStyles = {
-    primary: 'bg-buttonTags text-textLightBackground hover:bg-opacity-90',
-    secondary: 'bg-gray-200 text-textDarkBackground hover:bg-gray-300',
-    danger: 'bg-red-500 text-white hover:bg-red-600',
+    primary: 'bg-[var(--color-buttonTags)] text-[var(--color-textLightBackground)] hover:bg-[var(--color-buttonTags)/90]',
+    secondary: 'bg-[var(--color-yearSection)] text-[var(--color-textDarkBackground)] hover:bg-[var(--color-yearSection)/90]',
+    danger: 'bg-[var(--color-failedCourseTag)] text-[var(--color-textLightBackground)] hover:bg-[var(--color-failedCourseTag)/90]',
+    outlined: 'border border-[var(--color-buttonTags)] text-[var(--color-buttonTags)] hover:bg-[var(--color-buttonTags)/10]',
   };
 
   const sizeStyles = {
@@ -33,6 +36,7 @@ const BaseButton: FC<BaseButtonProps> = ({
       type="button"
       {...props}
     >
+      {startIcon && <span className="inline-flex items-center justify-center mr-2">{startIcon}</span>}
       {children}
     </button>
   );

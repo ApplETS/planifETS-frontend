@@ -38,7 +38,7 @@ export default function PlannerPage() {
         <ProgramSection />
       </div>
 
-      <div className="mt-6 w-full space-y-4" data-testid="year-sections">
+      <div className="mt-6 w-full flex flex-col gap-4 p-2" data-testid="year-sections">
         {years.map(year => (
           <YearSection
             key={year}

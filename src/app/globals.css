@@ -1,13 +1,11 @@
-/* src/styles/globals.css */
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import '../services/themes/light.css';
+@import '../services/themes/dark.css';
 
-/* Custom global styles */
-body {
-  @apply bg-background text-textDarkBackground;
-}
+/*---break---*/
+@custom-variant dark (&:is(.dark *));
 
 /* Scrollbars */
 .no-scrollbar {
@@ -18,7 +16,39 @@ body {
   display: none;
 }
 
-/* Drop target highlight */
-.bg-dropTarget {
-  background-color: rgba(125, 144, 237, 0.2);
+@theme {
+  --color-navbar: #efe3de;
+  --color-background: #ffffff;
+  --color-yearSection: #f1f3f5;
+  --color-sessions: #211f33;
+  --color-courseSidebar: #2f2b4b;
+  --color-login: #2f2b4b;
+  --color-loginButtonHover: #8c89f2;
+
+  /* Status tags */
+  --color-creditsTag: #ffffff;
+  --color-completedCourseTag: #6de9a2;
+  --color-inProgressCourseTag: #eed37e;
+  --color-failedCourseTag: #ffa5a6;
+  --color-notOfferedCourseTag: #d15656;
+  --color-buttonTags: #a5a1ff;
+
+  /* Session availability */
+  --color-sessionAvailable-border: #4ade80;
+  --color-sessionAvailable-borderHover: #22c55e;
+  --color-sessionAvailable-bgHover: #bbf7d0;
+  --color-sessionUnavailable-border: #f87171;
+  --color-sessionUnavailable-borderHover: #ef4444;
+  --color-sessionUnavailable-bgHover: #fecaca;
+
+  /* Buttons */
+  --color-navbarButton: #efe3de;
+  --color-navbarButtonHover: #7d90ed;
+  --color-favoris: #efe3de;
+  --color-searchbar: #d8d2f1;
+
+  /* Text contrast */
+  --color-textDarkBackground: #f0f4ff;
+  --color-textLightBackground: #000000;
+  --color-sessionCourse: #2f3359;
 }

@@ -31,7 +31,7 @@ export default function LoginPage() {
       <p className="mb-4 text-base text-textDarkBackground">
         {t('description')}
       </p>
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="flex flex-col gap-4 p-2" onSubmit={handleSubmit}>
         <InputField
           id="codeUniversel"
           label={t('universal-code')}

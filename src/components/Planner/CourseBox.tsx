@@ -62,9 +62,9 @@ const CourseBox: FC<CourseBoxProps> = ({
     <div
       ref={dragRef}
       className={`
-        relative
-        mb-2 cursor-pointer rounded-lg bg-sessionCourse
-        p-4 shadow-sm transition duration-300 
+        shadow-xs
+        relative mb-2 cursor-pointer rounded-lg
+        bg-sessionCourse p-4 transition duration-300 
         ease-in-out hover:-translate-y-0.5 
         hover:shadow-md
         ${isDragging ? 'opacity-50' : 'opacity-100'}

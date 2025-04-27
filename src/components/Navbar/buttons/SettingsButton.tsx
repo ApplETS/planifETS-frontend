@@ -1,11 +1,11 @@
 'use client';
 
 import SettingsIcon from '@mui/icons-material/Settings';
-import Button from '@mui/material/Button';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import BaseDialog from '../../dialogs/BaseDialog';
 import LanguageSettings from '../../LanguageSettings';
+import BaseButton from '@/components/atoms/buttons/BaseButton';
 
 export default function SettingsButton() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,17 +16,17 @@ export default function SettingsButton() {
 
   return (
     <>
-      <Button
+      <BaseButton
         variant="outlined"
         startIcon={<SettingsIcon />}
         onClick={handleOpen}
-        size="medium"
+        size="md"
         aria-label="settings"
         data-testid="settings-toggle-button"
         style={{ textTransform: 'none' }}
       >
         {t('settings')}
-      </Button>
+      </BaseButton>
 
       <BaseDialog
         isOpen={isOpen}

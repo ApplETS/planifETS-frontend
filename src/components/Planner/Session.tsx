@@ -16,8 +16,8 @@ type SessionProps = {
 };
 
 const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
-  const { courseInstances, sessionTiming, handleRemoveCourse, sessionTotalCredits } =
-    useSessionOperations(sessionYear, sessionTerm);
+  const { courseInstances, sessionTiming, handleRemoveCourse, sessionTotalCredits }
+    = useSessionOperations(sessionYear, sessionTerm);
 
   const { getCourse } = useCourseStore();
   const { drop, isOver, canDrop, draggedItem } = useSessionDrop({

@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles'
+import { createTheme } from '@mui/material/styles';
 
 const baseOptions = {
   components: {
@@ -6,7 +6,7 @@ const baseOptions = {
   },
   palette: {
   },
-}
+};
 
-export const darkTheme  = createTheme({ ...baseOptions, palette: { ...baseOptions.palette, mode: 'dark' } })
-export const lightTheme = createTheme({ ...baseOptions, palette: { ...baseOptions.palette, mode: 'light' } })
+export const darkTheme = createTheme({ ...baseOptions, palette: { ...baseOptions.palette, mode: 'dark' } });
+export const lightTheme = createTheme({ ...baseOptions, palette: { ...baseOptions.palette, mode: 'light' } });

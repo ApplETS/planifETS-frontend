@@ -8,11 +8,11 @@ export function ThemeSelect() {
   return (
     <select
       value={theme}
-      onChange={(e) => setTheme(e.target.value)}
+      onChange={e => setTheme(e.target.value)}
       className="
         p-2
         rounded-md
-        border 
+        border
         border-[var(--color-navbarButton)]
         bg-[var(--color-navbarButton)]
         text-[var(--color-textLightBackground)]

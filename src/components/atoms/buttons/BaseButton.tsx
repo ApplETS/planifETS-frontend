@@ -11,17 +11,22 @@ const BaseButton: FC<BaseButtonProps> = ({
   children,
   variant = 'primary',
   size = 'md',
-  startIcon, 
+  startIcon,
   className = '',
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center rounded-md transition-colors duration-200';
+  const baseStyles
+    = 'inline-flex items-center justify-center rounded-md transition-colors duration-200';
 
   const variantStyles = {
-    primary: 'bg-[var(--color-buttonTags)] text-[var(--color-textLightBackground)] hover:bg-[var(--color-buttonTags)/90]',
-    secondary: 'bg-[var(--color-yearSection)] text-[var(--color-textDarkBackground)] hover:bg-[var(--color-yearSection)/90]',
-    danger: 'bg-[var(--color-failedCourseTag)] text-[var(--color-textLightBackground)] hover:bg-[var(--color-failedCourseTag)/90]',
-    outlined: 'border border-[var(--color-buttonTags)] text-[var(--color-buttonTags)] hover:bg-[var(--color-buttonTags)/10]',
+    primary:
+      'bg-[var(--color-buttonTags)] text-[var(--color-textLightBackground)] hover:bg-[var(--color-buttonTags)/90]',
+    secondary:
+      'bg-[var(--color-yearSection)] text-[var(--color-textDarkBackground)] hover:bg-[var(--color-yearSection)/90]',
+    danger:
+      'bg-[var(--color-failedCourseTag)] text-[var(--color-textLightBackground)] hover:bg-[var(--color-failedCourseTag)/90]',
+    outlined:
+      'border border-[var(--color-buttonTags)] text-[var(--color-buttonTags)] hover:bg-[var(--color-buttonTags)/10]',
   };
 
   const sizeStyles = {
@@ -36,7 +41,9 @@ const BaseButton: FC<BaseButtonProps> = ({
       type="button"
       {...props}
     >
-      {startIcon && <span className="inline-flex items-center justify-center mr-2">{startIcon}</span>}
+      {startIcon && (
+        <span className="inline-flex items-center justify-center mr-2">{startIcon}</span>
+      )}
       {children}
     </button>
   );

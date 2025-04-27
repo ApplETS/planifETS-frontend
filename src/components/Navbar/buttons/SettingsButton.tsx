@@ -1,11 +1,11 @@
 'use client';
 
+import BaseButton from '@/components/atoms/buttons/BaseButton';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import BaseDialog from '../../dialogs/BaseDialog';
 import LanguageSettings from '../../LanguageSettings';
-import BaseButton from '@/components/atoms/buttons/BaseButton';
 
 export default function SettingsButton() {
   const [isOpen, setIsOpen] = useState(false);

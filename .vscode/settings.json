@@ -27,14 +27,5 @@
   },
   "i18n-ally.localesPaths": ["src/i18n", "src/messages"],
   "i18n-ally.keystyle": "nested",
-  "cSpell.ignorePaths": ["**/*", "!src/messages/en.json", "!src/messages/fr.json"],
-  "[typescript]": {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  "cSpell.ignorePaths": ["**/*", "!src/messages/en.json", "!src/messages/fr.json"]
 }

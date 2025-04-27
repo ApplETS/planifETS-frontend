@@ -1,6 +1,7 @@
 import type { Course } from '@/types/course';
+import type { DraggedCourseCard } from '@/types/dnd';
 import type { FC } from 'react';
-import { type DraggedCourseCard, DragType } from '@/types/dnd';
+import { DragType } from '@/types/dnd';
 import { useCallback } from 'react';
 import { useDrag } from 'react-dnd';
 

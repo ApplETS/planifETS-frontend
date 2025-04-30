@@ -40,7 +40,7 @@ const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIO
           <FaTrash />
         </BaseButton>
       )}
-      <div className="rounded-lg border border-buttonTags bg-yearSection p-4 shadow-lg">
+      <div className="rounded-lg border border-buttonTags bg-primary p-4 shadow-lg">
         <h2 className="mb-1 text-xl font-semibold">
           {t('year-with-value', { value: year })}
         </h2>

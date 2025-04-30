@@ -1,7 +1,7 @@
 'use client';
 
 import type { ErrorInfo, ReactNode } from 'react';
-import React, { Component } from 'react';
+import { Component } from 'react';
 
 type Props = {
   children: ReactNode;
@@ -34,7 +34,7 @@ class ErrorBoundary extends Component<Props, State> {
       }
       return (
         <div className="flex min-h-screen items-center justify-center bg-background">
-          <div className="mx-4 w-full max-w-md rounded-lg bg-yearSection p-6 shadow-lg">
+          <div className="mx-4 w-full max-w-md rounded-lg bg-primary p-6 shadow-lg">
             <h2 className="mb-4 text-2xl font-bold text-red-500">
               Oops! Une erreur est survenue
             </h2>

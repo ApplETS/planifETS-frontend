@@ -1,20 +1,29 @@
+/* Dark
+
+*/
 @layer theme {
   [data-theme='dark'] {
-    --color-navbar: #40314e;
+    /* Base colors */
+    --color-primary: #2f2b4b;
+    --color-secondary: #40314e;
+    --color-neutral: #2f3359;
+    --color-white: #ffffff;
+
+    /* Theme variables */
+    --color-navbar: var(--color-secondary);
     --color-background: #1f1824;
-    --color-yearSection: #2f2b4b;
     --color-sessions: #211f33;
-    --color-courseSidebar: #2f2b4b;
-    --color-login: #2f2b4b;
+    --color-courseSidebar: var(--color-primary);
+    --color-login: var(--color-primary);
     --color-loginButtonHover: #8c89f2;
 
     /* Text contrast */
     --color-textDarkBackground: #f0f4ff;
-    --color-textLightBackground: #ffffff;
-    --color-sessionCourse: #2f3359;
+    --color-textLightBackground: var(--color-white);
+    --color-sessionCourse: var(--color-neutral);
 
     /* Status tags */
-    --color-creditsTag: #ffffff;
+    --color-creditsTag: var(--color-white);
     --color-completedCourseTag: #6de9a2;
     --color-inProgressCourseTag: #eed37e;
     --color-failedCourseTag: #ffa5a6;
@@ -30,9 +39,9 @@
     --color-sessionUnavailable-bgHover: #fecaca;
 
     /* Buttons */
-    --color-navbarButton: #40314e;
-    --color-navbarButtonHover: #7d90ed;
-    --color-favoris: #40314e;
-    --color-searchbar: #2f3359;
+    --color-button-bg: var(--color-secondary);
+    --color-button-bg-hover: #7d90ed;
+    --color-button-border: var(--color-secondary);
+    --color-searchbar: var(--color-neutral);
   }
 }

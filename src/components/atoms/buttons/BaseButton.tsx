@@ -22,7 +22,7 @@ const BaseButton: FC<BaseButtonProps> = ({
     primary:
       'bg-[var(--color-buttonTags)] text-[var(--color-textLightBackground)] hover:bg-[var(--color-buttonTags)/90]',
     secondary:
-      'bg-[var(--color-yearSection)] text-[var(--color-textDarkBackground)] hover:bg-[var(--color-yearSection)/90]',
+      'bg-[var(--color-primary)] text-[var(--color-textDarkBackground)] hover:bg-[var(--color-primary)/90]',
     danger:
       'bg-[var(--color-failedCourseTag)] text-[var(--color-textLightBackground)] hover:bg-[var(--color-failedCourseTag)/90]',
     outlined:

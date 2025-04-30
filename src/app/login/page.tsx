@@ -24,7 +24,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-md rounded-[27px] border-2 border-textDarkBackground bg-yearSection p-6 shadow-md md:p-8">
+    <div className="mx-auto w-full max-w-md rounded-[27px] border-2 border-textDarkBackground bg-primary p-6 shadow-md md:p-8">
       <h1 className="mb-2 text-2xl font-medium text-textDarkBackground underline">
         {t('title')}
       </h1>
@@ -58,10 +58,10 @@ export default function LoginPage() {
       </form>
       <div className="my-4 flex items-center">
         {/* FIXME: hardcoded color */}
-        <hr className="grow border-t border-[#D5C8EE]" />
+        <hr className="grow border-t border-textDarkBackground/50" />
         <span className="mx-4 text-sm text-textDarkBackground">{t('or')}</span>
         {/* FIXME: hardcoded color */}
-        <hr className="grow border-t border-[#D5C8EE]" />
+        <hr className="grow border-t border-textDarkBackground/50" />
       </div>
       <Link href="/planner">
         <button

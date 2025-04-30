@@ -11,13 +11,13 @@ type BaseDialogProps = {
 const BaseDialog: React.FC<BaseDialogProps> = ({ isOpen, title, onClose, children }) => {
   return (
     <Dialog open={isOpen} onClose={onClose} fullWidth>
-      <DialogTitle className="rounded-t-md bg-navbar text-lg font-bold text-textDarkBackground">
+      <DialogTitle className="rounded-t-md bg-secondary text-lg font-bold text-textDarkBackground">
         {title}
       </DialogTitle>
       <DialogContent className="rounded-b-md bg-background p-4">
         {children}
       </DialogContent>
-      <DialogActions className="rounded-b-md bg-navbar">
+      <DialogActions className="rounded-b-md bg-secondary">
         <Button onClick={onClose} color="secondary">
           Cancel
         </Button>

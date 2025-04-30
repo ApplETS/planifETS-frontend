@@ -10,15 +10,9 @@ export function ThemeSelector() {
     <select
       value={current}
       onChange={e => setTheme(e.target.value)}
-      className="
-        p-2
-        rounded-md
-        border
-        border-[var(--color-navbarButton)]
-        bg-[var(--color-navbarButton)]
-        text-[var(--color-textLightBackground)]
-        hover:bg-[var(--color-navbarButtonHover)]
-        focus:outline-hidden"
+      className="p-2 rounded-md border border-[var(--color-button-border)]
+        bg-[var(--color-button-bg)] text-[var(--color-textLightBackground)]
+        hover:bg-[var(--color-button-bg-hover)] focus:outline-hidden"
     >
       <option value="light">Light</option>
       <option value="dark">Dark</option>

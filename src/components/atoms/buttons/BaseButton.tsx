@@ -15,18 +15,14 @@ const BaseButton: FC<BaseButtonProps> = ({
   className = '',
   ...props
 }) => {
-  const baseStyles
-    = 'inline-flex items-center justify-center rounded-md transition-colors duration-200';
+  const baseStyles = 'inline-flex items-center justify-center rounded-md transition-colors duration-200';
 
   const variantStyles = {
-    primary:
-      'bg-[var(--color-buttonTags)] text-[var(--color-textLightBackground)] hover:bg-[var(--color-buttonTags)/90]',
-    secondary:
-      'bg-[var(--color-primary)] text-[var(--color-textDarkBackground)] hover:bg-[var(--color-primary)/90]',
-    danger:
-      'bg-[var(--color-failedCourseTag)] text-[var(--color-textLightBackground)] hover:bg-[var(--color-failedCourseTag)/90]',
-    outlined:
-      'border border-[var(--color-buttonTags)] text-[var(--color-buttonTags)] hover:bg-[var(--color-buttonTags)/10]',
+    primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
+
+    secondary: 'bg-background text-foreground hover:bg-background/90',
+    danger: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+    outlined: 'border border-primary text-primary hover:bg-primary/10',
   };
 
   const sizeStyles = {

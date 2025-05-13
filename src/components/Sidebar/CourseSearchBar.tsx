@@ -22,13 +22,13 @@ export default function CourseSearchbar({ onSearch }: CourseSearchProps) {
 
   return (
     <div className="relative mt-4" data-testid="search-bar">
-      <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+      <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
       <input
         type="text"
         placeholder={t('search-course')}
         value={searchQuery}
         onChange={e => setSearchQuery(e.target.value)}
-        className="w-full rounded-md bg-neutral text-black p-2 pl-10 focus:outline-hidden focus:ring-2 focus:ring-buttonTags"
+        className="border border-foreground w-full rounded-md bg-input text-foreground p-2 pl-10 focus:outline-hidden focus:ring-2 focus:ring-primary"
         data-testid="course-search-input"
       />
     </div>

@@ -6,9 +6,9 @@ export type CourseStatus =
   | 'Planned';
 
 export const statusTagClasses: Record<CourseStatus, string> = {
-  'Completed': 'bg-completedCourseTag text-textLightBackground  borderborder-border',
-  'In Progress': 'bg-inProgressCourseTag text-textLightBackground border border-border',
-  'Failed': 'bg-failedCourseTag text-textLightBackground border border-border',
-  'Not Offered': 'bg-notOfferedCourseTag text-textLightBackground border border-border',
-  'Planned': 'bg-buttonTags text-textLightBackground border border-border',
+  'Completed': 'bg-completedCourseTag text--primary-foreground  borderborder-border',
+  'In Progress': 'bg-inProgressCourseTag text--primary-foreground border border-border',
+  'Failed': 'bg-failedCourseTag text--primary-foreground border border-border',
+  'Not Offered': 'bg-notOfferedCourseTag text--primary-foreground border border-border',
+  'Planned': 'bg-primary text--primary-foreground border border-border',
 };

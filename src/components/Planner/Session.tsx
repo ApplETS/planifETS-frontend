@@ -45,7 +45,7 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
     }
 
     return isOver
-      ? 'border-sessionUnavailable-borderHover bg-sessionUnavailable-bgHover/5'
+      ? 'border-destructive bg-sessionUnavailable-bgHover/5'
       : 'border-transparent';
   };
 
@@ -59,9 +59,8 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
   return (
     <div
       ref={dropRef}
-      className={`rounded-lg border-2 ${getSessionBorderStyle()} 
-        bg-[var(--color-sessions)] p-4 transition-all duration-300
-        ${isOver && canDrop ? 'bg-[var(--color-sessions)]/90' : ''}`}
+      className={`rounded-lg border-2 bg-background p-4 transition-all duration-300 ${getSessionBorderStyle()} 
+        ${isOver && canDrop ? 'bg-background/90' : ''}`}
       data-testid={`session-${sessionTerm}-${sessionYear}-drop-target`}
     >
       <SessionHeader

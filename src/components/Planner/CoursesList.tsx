@@ -58,7 +58,7 @@ const CoursesList: FC<CoursesListProps> = ({
           </div>
         )
         : (
-          <div className="flex h-full items-center justify-center text-sm text-gray-400">
+          <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
             {sessionTiming.isPast
               ? t('no-course-modif-past-session')
               : t('drag-courses-to-add-course')}

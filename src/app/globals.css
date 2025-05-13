@@ -4,6 +4,63 @@
 @import '../services/themes/light.css';
 @import '../services/themes/dark.css';
 
+:root {
+  color-scheme: light dark;
+}
+
+@layer utilities {
+  .bg-primary {
+    background-color: var(--primary);
+  }
+  .text-primary {
+    color: var(--primary);
+  }
+  .text-primary-foreground {
+    color: var(--primary-foreground);
+  }
+  .bg-background {
+    background-color: var(--background);
+  }
+  .text-foreground {
+    color: var(--foreground);
+  }
+  .bg-destructive {
+    background-color: var(--destructive);
+  }
+  .text-destructive-foreground {
+    color: var(--destructive-foreground);
+  }
+  .border-primary {
+    border-color: var(--primary);
+  }
+  .bg-secondary {
+    background-color: var(--secondary);
+  }
+  .text-secondary-foreground {
+    color: var(--secondary-foreground);
+  }
+  .hover\:bg-primary\/90:hover {
+    background-color: color-mix(in srgb, var(--primary) 90%, transparent);
+  }
+  .hover\:bg-background\/90:hover {
+    background-color: color-mix(in srgb, var(--background) 90%, transparent);
+  }
+  .hover\:bg-destructive\/90:hover {
+    background-color: color-mix(in srgb, var(--destructive) 90%, transparent);
+  }
+  .hover\:bg-primary\/10:hover {
+    background-color: color-mix(in srgb, var(--primary) 10%, transparent);
+  }
+  .hover\:bg-secondary-hover:hover {
+    background-color: var(--secondary-hover);
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
 /* Scrollbars */
 .no-scrollbar {
   scrollbar-width: none;

@@ -64,7 +64,7 @@ const CourseBox: FC<CourseBoxProps> = ({
       className={`
         shadow-xs
         relative mb-2 cursor-pointer rounded-lg
-        bg-sessionCourse p-4 transition duration-300 
+        bg-muted p-4 transition duration-300 
         ease-in-out hover:-translate-y-0.5 
         hover:shadow-md
         ${isDragging ? 'opacity-50' : 'opacity-100'}

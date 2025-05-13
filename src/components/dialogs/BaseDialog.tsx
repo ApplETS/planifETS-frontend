@@ -11,7 +11,7 @@ type BaseDialogProps = {
 const BaseDialog: React.FC<BaseDialogProps> = ({ isOpen, title, onClose, children }) => {
   return (
     <Dialog open={isOpen} onClose={onClose} fullWidth>
-      <DialogTitle className="rounded-t-md bg-secondary text-lg font-bold text-textDarkBackground">
+      <DialogTitle className="rounded-t-md bg-secondary text-lg font-bold text-foreground ">
         {title}
       </DialogTitle>
       <DialogContent className="rounded-b-md bg-background p-4">

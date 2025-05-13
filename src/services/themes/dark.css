@@ -3,45 +3,45 @@
 */
 @layer theme {
   [data-theme='dark'] {
-    /* Base colors */
-    --color-primary: #2f2b4b;
-    --color-secondary: #40314e;
-    --color-neutral: #2f3359;
-    --color-white: #ffffff;
+    --background: rgba(122, 94, 182, 0.655); /*#2f2b4b;*/
+    --foreground: #b3a7bb;
 
-    /* Theme variables */
-    --color-navbar: var(--color-secondary);
-    --color-background: #1f1824;
-    --color-sessions: #211f33;
-    --color-courseSidebar: var(--color-primary);
-    --color-login: var(--color-primary);
-    --color-loginButtonHover: #8c89f2;
+    --primary: #7d90ed;
+    --primary-foreground: var(--foreground);
 
-    /* Text contrast */
-    --color-textDarkBackground: #f0f4ff;
-    --color-textLightBackground: var(--color-white);
-    --color-sessionCourse: var(--color-neutral);
+    --secondary: #4f435a;
+    --secondary-foreground: #f0f4ff;
+    --secondary-hover: #504060;
+
+    --muted: #2f3359;
+    --muted-foreground: #8c89f2;
+
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+
+    --popover: #2f2b4b;
+    --popover-foreground: #f0f4ff;
+
+    --card: #2f2b4b;
+    --card-foreground: #f0f4ff;
 
     /* Status tags */
-    --color-creditsTag: var(--color-white);
-    --color-completedCourseTag: #6de9a2;
-    --color-inProgressCourseTag: #eed37e;
-    --color-failedCourseTag: #ffa5a6;
-    --color-notOfferedCourseTag: #d15656;
-    --color-buttonTags: #a5a1ff;
+    --completedCourseTag: #6de9a2;
+    --inProgressCourseTag: #eed37e;
+    --failedCourseTag: #ffa5a6;
+    --notOfferedCourseTag: #d15656;
 
     /* Session availability */
-    --color-sessionAvailable-border: #4ade80;
-    --color-sessionAvailable-borderHover: #22c55e;
-    --color-sessionAvailable-bgHover: #bbf7d0;
-    --color-sessionUnavailable-border: #f87171;
-    --color-sessionUnavailable-borderHover: #ef4444;
-    --color-sessionUnavailable-bgHover: #fecaca;
+    --sessionAvailable-border: #4ade80;
+    --sessionAvailable-borderHover: #22c55e;
+    --sessionAvailable-bgHover: #bbf7d0;
+    --sessionUnavailable-border: #f87171;
+    --sessionUnavailable-bgHover: #fecaca;
 
-    /* Buttons */
-    --color-button-bg: var(--color-secondary);
-    --color-button-bg-hover: #7d90ed;
-    --color-button-border: var(--color-secondary);
-    --color-searchbar: var(--color-neutral);
+    /* Extras */
+    --border: var(--secondary);
+    --searchbar: #2f3359;
+    --input: #2f3359;
+    --radius: 0.5rem;
   }
 }

@@ -2,7 +2,6 @@
 
 import type { FC } from 'react';
 import { useTranslations } from 'next-intl';
-import * as React from 'react';
 
 type CreditsBadgeProps = {
   credits: number;
@@ -14,7 +13,7 @@ const CreditsBadge: FC<CreditsBadgeProps> = ({ credits, dataTestId }) => {
 
   return (
     <span
-      className="rounded-[5px] border bg-creditsTag px-1 py-0.5 text-xs text-black"
+      className="rounded-[5px] border bg-primary-foreground px-1 py-0.5 text-xs text-foreground"
       data-testid={dataTestId}
     >
       {credits}

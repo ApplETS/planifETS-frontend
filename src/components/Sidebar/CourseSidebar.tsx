@@ -67,7 +67,6 @@ export default function CourseSidebar() {
             md:bottom-4 md:top-20
             md:mt-0 md:w-80
             md:overflow-y-auto
-            md:bg-background 
            `}
     >
       <Tabs

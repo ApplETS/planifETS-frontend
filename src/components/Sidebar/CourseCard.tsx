@@ -8,7 +8,7 @@ import { useCourseStore } from '@/store/courseStore';
 import { DragType } from '@/types/dnd';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import CreditsBadge from '../atoms/CreditsBadge';
+import CreditsTag from '../atoms/CreditsTag';
 import Tag from '../atoms/Tag';
 
 type SectionProps = {
@@ -82,7 +82,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
           <p className="text-sm">{course.title}</p>
         </div>
         <div className="mt-2 flex items-center gap-2">
-          <CreditsBadge credits={course.credits} dataTestId={`course-card-${course.code}-credits`} />
+          <CreditsTag credits={course.credits} dataTestId={`course-card-${course.code}-credits`} />
         </div>
       </div>
 

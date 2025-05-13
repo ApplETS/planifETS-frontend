@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import CreditsBadge from './atoms/CreditsBadge';
+import CreditsTag from './atoms/CreditsTag';
 import ProgramSelector from './ProgramSelector';
 
 export const ProgramSection: FC = () => {
@@ -16,7 +16,7 @@ export const ProgramSection: FC = () => {
     <header className="w-full">
       <div className={`flex ${isMobile ? 'flex-col space-y-2' : 'items-center space-x-4'}`}>
         <ProgramSelector />
-        <CreditsBadge credits={totalCredits} dataTestId="total-credits" />
+        <CreditsTag credits={totalCredits} dataTestId="total-credits" />
       </div>
     </header>
   );

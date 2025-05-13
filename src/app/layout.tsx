@@ -1,6 +1,6 @@
+import { ThemeProvider } from '@/components/Providers/ThemeProvider';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
-import { ThemeProvider } from 'next-themes';
 import { Suspense } from 'react';
 import ErrorBoundary from '../components/ErrorBoundary';
 import Navbar from '../components/Navbar/Navbar';
@@ -13,19 +13,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
-        <ThemeProvider
-          attribute="data-theme"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+      <body className="min-h-screen  transition-colors duration-300">
+        <ThemeProvider>
           <Suspense fallback={null}>
             <NextIntlClientProvider messages={messages}>
               <ErrorBoundary>
                 <DndContext>
                   <ClientProviders>
-                    <div className="min-h-screen pt-16">
+                    <div className="min-h-screen pt-16 text-foreground bg-background dark:bg-background">
                       <main>
                         <Navbar />
                         {children}

@@ -4,7 +4,6 @@ import { useAuthStore } from '@/store/authStore';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React from 'react';
 import BaseButton from './BaseButton';
 
 export default function AuthButton() {

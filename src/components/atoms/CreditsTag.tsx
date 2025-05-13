@@ -3,17 +3,17 @@
 import type { FC } from 'react';
 import { useTranslations } from 'next-intl';
 
-type CreditsBadgeProps = {
+type CreditsTagProps = {
   credits: number;
   dataTestId: string;
 };
 
-const CreditsBadge: FC<CreditsBadgeProps> = ({ credits, dataTestId }) => {
+const CreditsTag: FC<CreditsTagProps> = ({ credits, dataTestId }) => {
   const t = useTranslations('Commons');
 
   return (
     <span
-      className="rounded-[5px] border bg-primary-foreground px-1 py-0.5 text-xs text-foreground"
+      className="text-sm text-muted-foreground justify-center flex items-center px-2 py-1"
       data-testid={dataTestId}
     >
       {credits}
@@ -23,4 +23,4 @@ const CreditsBadge: FC<CreditsBadgeProps> = ({ credits, dataTestId }) => {
   );
 };
 
-export default CreditsBadge;
+export default CreditsTag;

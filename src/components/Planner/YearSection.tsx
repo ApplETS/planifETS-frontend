@@ -41,8 +41,7 @@ const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIO
         </BaseButton>
       )}
       <div className="rounded-lg border border-primary bg-secondary p-4 shadow-lg">
-        wd
-        <h2 className="mb-1 text-xl font-semibold">
+        <h2 className="mb-2.5 text-xl font-semibold text-foreground">
           {t('year-with-value', { value: year })}
         </h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">

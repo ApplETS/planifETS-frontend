@@ -4,7 +4,7 @@
 @layer theme {
   [data-theme='light'] {
     /* core tokens */
-    --background: #ffffff;
+    --background: #9c9292;
     --foreground: #111111;
 
     --primary: hsl(220, 13%, 91%);

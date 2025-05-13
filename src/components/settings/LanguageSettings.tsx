@@ -1,7 +1,7 @@
 import { setUserLocale } from '@/services/locale';
 import { Button } from '@mui/material';
 import React from 'react';
-import { ThemeSelector } from './ThemeSelector';
+import ThemeSelector from './ThemeSelector';
 
 type LanguageSettingsProps = {
   onClose: () => void;

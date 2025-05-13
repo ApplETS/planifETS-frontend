@@ -31,13 +31,13 @@ export const lightTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: 'hsl(220, 90%, 56%)', // Match --primary in light theme
+      main: 'hsl(220, 90%, 56%)',
     },
     secondary: {
-      main: 'rgba(250, 250, 250, 1)', // Match --secondary in light theme
+      main: 'rgba(250, 250, 250, 1)',
     },
     background: {
-      default: 'rgba(255, 255, 255, 1)', // Match --background in light theme
+      default: 'rgba(255, 255, 255, 1)',
       paper: 'rgba(255, 255, 255, 1)',
     },
     text: {

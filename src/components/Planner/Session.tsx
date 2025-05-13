@@ -59,7 +59,7 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
   return (
     <div
       ref={dropRef}
-      className={`rounded-lg border-2 bg-background p-4 transition-all duration-300 ${getSessionBorderStyle()} 
+      className={`rounded-lg border-2 p-4 transition-all duration-300 bg-background ${getSessionBorderStyle()} 
         ${isOver && canDrop ? 'bg-background/90' : ''}`}
       data-testid={`session-${sessionTerm}-${sessionYear}-drop-target`}
     >

@@ -3,10 +3,9 @@ import { getTranslationKey } from '@/utils/sessionUtils';
 import Tooltip from '@mui/material/Tooltip';
 import { useTranslations } from 'next-intl';
 
-import React from 'react';
 import { FaInfoCircle } from 'react-icons/fa';
 import { getSeasonStyle } from '../../utils/seasonUtils';
-import CreditsBadge from '../atoms/CreditsBadge';
+import CreditsTag from '../atoms/CreditsTag';
 
 type SessionHeaderProps = {
   sessionTerm: string;
@@ -51,7 +50,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
         )}
       </div>
       <div className="flex w-auto justify-end sm:mt-0">
-        <CreditsBadge
+        <CreditsTag
           credits={totalCredits}
           dataTestId={`session-${sessionTerm}-${sessionYear}-credits`}
         />

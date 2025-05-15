@@ -1,7 +1,6 @@
 import { setUserLocale } from '@/services/locale';
 import { Button } from '@mui/material';
 import React from 'react';
-import ThemeSelector from './ThemeSelector';
 
 type LanguageSettingsProps = {
   onClose: () => void;
@@ -15,7 +14,6 @@ const LanguageSettings: React.FC<LanguageSettingsProps> = ({ onClose }) => {
 
   return (
     <div className="flex flex-col gap-4 p-2">
-      <h2 className="mb-2 text-lg font-semibold text-foreground ">Change Language</h2>
       <div className="flex justify-between">
         <Button
           onClick={() => handleLocaleChange('en')}
@@ -35,7 +33,6 @@ const LanguageSettings: React.FC<LanguageSettingsProps> = ({ onClose }) => {
         >
           Français
         </Button>
-        <ThemeSelector />
       </div>
     </div>
   );

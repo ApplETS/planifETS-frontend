@@ -1,6 +1,7 @@
 'use client';
 
 import BaseButton from '@/components/atoms/buttons/BaseButton';
+import ThemeSelector from '@/components/settings/ThemeSelector';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -33,7 +34,25 @@ export default function SettingsButton() {
         title={t('settings')}
         onClose={handleClose}
       >
-        <LanguageSettings onClose={handleClose} />
+        <div className="p-4 max-w-md w-full">
+          <div className="mb-6">
+            <h2 className="text-lg font-medium mb-2">
+              {t('language')}
+            </h2>
+            <div className="ml-2">
+              <LanguageSettings onClose={handleClose} />
+            </div>
+          </div>
+
+          <div className="mb-2">
+            <h2 className="text-lg font-medium mb-2">
+              {t('theme')}
+            </h2>
+            <div className="ml-2">
+              <ThemeSelector />
+            </div>
+          </div>
+        </div>
       </BaseDialog>
     </>
   );

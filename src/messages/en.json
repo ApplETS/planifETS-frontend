@@ -3,7 +3,9 @@
     "credits": "credits",
     "login": "Sign in",
     "logout": "Sign out",
-    "settings": "Settings"
+    "settings": "Settings",
+    "language": "Language",
+    "theme": "Theme"
   },
   "LoginPage": {
     "title": "Login with Signets",

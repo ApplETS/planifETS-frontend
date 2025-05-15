@@ -3,7 +3,9 @@
     "credits": "crédits",
     "login": "Se connecter",
     "logout": "Se déconnecter",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "language": "Language",
+    "theme": "Thème"
   },
   "LoginPage": {
     "title": "Se connecter avec Signets",

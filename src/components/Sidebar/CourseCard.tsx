@@ -44,7 +44,9 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
     return (
       <Section title={t('prerequisites')}>
         {course.prerequisites.map(preq => (
-          <Tag key={preq} text={preq} />
+          <Tag key={preq}>
+            {preq}
+          </Tag>
         ))}
       </Section>
     );
@@ -53,7 +55,9 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
   const renderAvailability = () => (
     <Section title={t('available')}>
       {course.availability.map(session => (
-        <Tag key={session} text={session} />
+        <Tag key={session}>
+          {session}
+        </Tag>
       ))}
     </Section>
   );

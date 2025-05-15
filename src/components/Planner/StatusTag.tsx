@@ -1,6 +1,6 @@
 import type { CourseStatus } from '../../types/courseStatus';
 import { useTranslations } from 'next-intl';
-import { statusTagClasses } from '../../types/courseStatus';
+import Tag from '../atoms/Tag';
 
 type StatusTagProps = {
   status: CourseStatus;
@@ -9,11 +9,19 @@ type StatusTagProps = {
 export default function StatusTag({ status }: StatusTagProps) {
   const t = useTranslations('PlannerPage');
 
+  const statusVariantMap: Record<CourseStatus, 'success' | 'warning' | 'danger' | 'info' | 'primary'> = {
+    'Completed': 'success',
+    'In Progress': 'warning',
+    'Failed': 'danger',
+    'Not Offered': 'info',
+    'Planned': 'primary',
+  };
+
   return (
-    <span
-      className={`inline-block rounded-[5px] p-1 text-xs font-semibold ${statusTagClasses[status]}`}
+    <Tag
+      variant={statusVariantMap[status]}
     >
       {t(`course.${status}`)}
-    </span>
+    </Tag>
   );
 }

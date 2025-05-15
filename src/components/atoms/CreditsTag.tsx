@@ -2,6 +2,7 @@
 
 import type { FC } from 'react';
 import { useTranslations } from 'next-intl';
+import Tag from './Tag';
 
 type CreditsTagProps = {
   credits: number;
@@ -12,14 +13,15 @@ const CreditsTag: FC<CreditsTagProps> = ({ credits, dataTestId }) => {
   const t = useTranslations('Commons');
 
   return (
-    <span
-      className="text-sm text-muted-foreground justify-center flex items-center px-2 py-1"
+    <Tag
+      variant="secondary"
       data-testid={dataTestId}
+      className="font-medium"
     >
       {credits}
       {' '}
       {t('credits')}
-    </span>
+    </Tag>
   );
 };
 

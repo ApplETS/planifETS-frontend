@@ -1,143 +1,66 @@
 'use client';
 
-import type { ThemeColors } from '@/types/themes';
+import type { ThemeColors, ThemeMode } from '@/types/themes';
 import { useTheme } from '@/hooks/useTheme';
-import { Button } from '@/shadcn/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/shadcn/ui/dropdown-menu';
-import { Moon, Palette, Sun } from 'lucide-react';
-import React, { useEffect } from 'react';
+import { COLORS_BY_MODE, getButtonBgStyle, getPrincipalColors } from '@/utils/themeUtils';
 
 export default function ThemeSelector() {
   const { setTheme, theme } = useTheme();
 
-  const lightModeColors: ThemeColors[] = [
-    'zinc',
-    'rose',
-    'green',
-    'orange',
-    'blue',
-    'red',
-  ];
-
-  const darkModeColors: ThemeColors[] = [
-    'zinc',
-    'rose',
-    'blue',
-    'violet',
-    'yellow',
-  ];
-
-  const colors = theme.mode === 'dark' ? darkModeColors : lightModeColors;
-
-  useEffect(() => {
-    const doc = document.documentElement;
-    doc.setAttribute('data-theme', `${theme.color}-${theme.mode}`);
-
-    if (theme.mode === 'dark') {
-      doc.classList.add('dark');
-    } else {
-      doc.classList.remove('dark');
-    }
-  }, [theme]);
-
-  const toggleMode = () => {
-    // When changing modes, select an appropriate color for the new mode
-    const newMode = theme.mode === 'light' ? 'dark' : 'light';
-    const availableColors = newMode === 'dark' ? darkModeColors : lightModeColors;
-
-    setTheme({
-      mode: newMode,
-      color: availableColors.includes(theme.color) ? theme.color : availableColors[0]!,
-    });
-  };
+  const themePresets = Object.entries(COLORS_BY_MODE).flatMap(([mode, colors]) =>
+    colors.map(color => ({
+      mode: mode as ThemeMode,
+      color: color as ThemeColors,
+      label: `${mode === 'light' ? 'Light' : 'Dark'} ${color.charAt(0).toUpperCase() + color.slice(1)}`,
+    })),
+  );
 
   return (
-    <div className="flex items-center gap-2">
-      <Button
-        variant="outline"
-        size="icon"
-        className="h-full titlebar-button focus-visible:ring-0 bg-transparent hover:bg-transparent
-          border-0 hover:brightness-150 hover:shadow-none hover:border-0 duration-500
-          ease-in-out transition-all relative"
-        onClick={toggleMode}
-        data-testid="theme-toggle-button"
-      >
-        <Sun
-          className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all text-foreground
-            dark:-rotate-90 dark:scale-0"
-        />
-        <Moon
-          className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0
-            dark:scale-100 text-foreground"
-        />
-        <span className="sr-only">Toggle theme</span>
-      </Button>
+    <div className="w-full">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+        {themePresets.map((preset) => {
+          const isSelected
+            = theme.mode === preset.mode && theme.color === preset.color;
 
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-full titlebar-button focus-visible:ring-0 bg-transparent hover:bg-transparent
-              border-0 hover:brightness-150 hover:shadow-none hover:border-0 duration-500
-              ease-in-out transition-all"
-            data-testid="theme-color-button"
-          >
-            <Palette className="h-[1.2rem] w-[1.2rem] text-foreground" />
-            <span className="sr-only">Select theme color</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent
-          align="end"
-          className="z-[9999] bg-background border border-border shadow-lg min-w-[160px] p-0"
-        >
-          {colors.map((color, index) => (
-            <React.Fragment key={color}>
-              <DropdownMenuItem
-                onClick={() => {
-                  setTheme({
-                    mode: theme.mode,
-                    color,
-                  });
-                }}
-                className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-muted m-0"
-              >
-                <div
-                  className="w-4 h-4 rounded-full"
-                  style={{ backgroundColor: getColorHex(color) }}
-                />
-                <span className="capitalize">{color}</span>
-                {theme.color === color && (
-                  <span className="ml-auto text-xs text-muted-foreground">✓</span>
-                )}
-              </DropdownMenuItem>
-              {index < colors.length - 1 && (
-                <div className="h-px bg-border w-full mx-0" />
-              )}
-            </React.Fragment>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
+          const bgClass = getButtonBgStyle(preset.color, preset.mode);
+          const textColor = preset.mode === 'dark' ? 'text-white' : 'text-gray-900';
+          const principalColors = getPrincipalColors(preset.color, preset.mode);
+
+          return (
+            <button
+              key={`${preset.mode}-${preset.color}`}
+              type="button"
+              onClick={() => {
+                setTheme({
+                  mode: preset.mode,
+                  color: preset.color,
+                });
+              }}
+              className={`
+                px-4 py-2 rounded-md transition-all duration-200 w-full
+                ${bgClass} ${textColor} relative
+                ${isSelected ? 'ring-2 ring-offset-2 ring-primary' : 'hover:brightness-110'}
+                focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
+                flex flex-col items-center justify-center
+              `}
+              aria-label={`Select ${preset.label} theme`}
+              aria-pressed={isSelected}
+            >
+              <div className="flex items-center gap-1 mb-1">
+                {principalColors.map(color => (
+                  <div
+                    key={`${preset.color}-${preset.mode}-${color.replace('#', '')}`}
+                    className="size-3 rounded-full"
+                    style={{ backgroundColor: color }}
+                    aria-hidden="true"
+                  />
+                ))}
+              </div>
+              <span>{preset.label}</span>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
-}
-
-function getColorHex(color: ThemeColors): string {
-  const colorMap: Record<ThemeColors, string> = {
-    zinc: '#71717a',
-    rose: '#f43f5e',
-    blue: '#3b82f6',
-    green: '#22c55e',
-    orange: '#f97316',
-    red: '#ef4444',
-    yellow: '#eab308',
-    violet: '#8b5cf6',
-  };
-
-  return colorMap[color] || '#71717a';
 }

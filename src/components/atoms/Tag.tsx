@@ -12,9 +12,6 @@ type ContrastTagProps = {
   dataTestId?: string;
 };
 
-/**
- * A tag component with improved contrast for better readability
- */
 const Tag: FC<ContrastTagProps> = ({
   children,
   variant = 'default',
@@ -23,7 +20,7 @@ const Tag: FC<ContrastTagProps> = ({
 }) => {
   const baseStyles = 'inline-flex items-center justify-center rounded-md px-2.5 py-1 text-xs font-medium';
 
-  const variantStyles: Record<TagVariant, string> = {
+  const variantStyles: Record<TagVariant, string> = { // TODO: use theme colors
     default: 'bg-muted text-muted-foreground border border-border',
     primary: 'bg-primary text-primary-foreground border border-primary/30',
     secondary: 'bg-secondary text-secondary-foreground border border-secondary/80',

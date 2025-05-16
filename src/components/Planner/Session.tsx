@@ -27,7 +27,7 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
   });
 
   const getSessionBorderStyle = () => {
-    if (!draggedItem) {
+    if (!draggedItem || !draggedItem.course) {
       return 'border-transparent';
     }
 

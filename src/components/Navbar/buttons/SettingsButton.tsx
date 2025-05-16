@@ -34,7 +34,7 @@ export default function SettingsButton() {
         title={t('settings')}
         onClose={handleClose}
       >
-        <div className="p-4 max-w-md w-full">
+        <div className="p-4 w-full">
           <div className="mb-6">
             <h2 className="text-lg font-medium mb-2">
               {t('language')}

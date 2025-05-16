@@ -38,7 +38,7 @@ class ErrorBoundary extends Component<Props, State> {
             <h2 className="mb-4 text-2xl font-bold text-red-500">
               Oops! Une erreur est survenue
             </h2>
-            <p className="mb-4 text-foreground ">
+            <p className="mb-4 text-foreground">
               Veuillez rafraîchir la page ou réessayer plus tard.
             </p>
             <button
@@ -52,7 +52,6 @@ class ErrorBoundary extends Component<Props, State> {
         </div>
       );
     }
-
     return this.props.children;
   }
 }

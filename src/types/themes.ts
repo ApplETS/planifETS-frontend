@@ -1,25 +1,15 @@
-export type ThemeColors =
-  | 'zinc'
-  | 'rose'
-  | 'blue'
-  | 'green'
-  | 'orange'
-  | 'red'
-  | 'yellow'
-  | 'violet';
-export type ThemeMode = 'dark' | 'light' | 'system';
+import type { THEME_COLORS } from '@/utils/themeUtils';
+
+export type ThemeMode = 'light' | 'dark';
+export type SystemMode = ThemeMode | 'system';
+export type ThemeColors = typeof THEME_COLORS[number];
+
 export type Theme = {
-  mode: ThemeMode;
+  mode: SystemMode;
   color: ThemeColors;
 };
 
 export type ThemeProviderProps = {
   children: React.ReactNode;
   defaultTheme?: Theme;
-  storageKey?: string;
-};
-
-export type ThemeProviderState = {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
 };

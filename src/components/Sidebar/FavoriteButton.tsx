@@ -24,6 +24,7 @@ const FavoriteButton: FC<FavoriteButtonProps> = ({
       e.stopPropagation();
       onToggle();
     }}
+    aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
   >
     {isFavorited || isHovered
       ? (

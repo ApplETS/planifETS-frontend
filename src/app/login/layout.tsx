@@ -1,12 +1,17 @@
-'use client';
-
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import React from 'react';
 import Logo from '../../components/atoms/Logo';
 
+export const metadata: Metadata = {
+  title: 'Login',
+  description: 'Login to your PlanifETS account',
+};
+
 export default function LoginLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative -mt-16 min-h-screen bg-background text-foreground ">
+    <div className="relative -mt-16 min-h-screen bg-background text-foreground">
+      {/* FIXME: remove sidebar + no overflow  */}
       <Logo textSize="text-4xl" position="absolute left-6 top-6 z-10" />
 
       <Image

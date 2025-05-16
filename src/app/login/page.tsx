@@ -24,11 +24,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-md rounded-[27px] border-2 border-foreground  bg-background p-6 shadow-md md:p-8">
+    <div className="mx-auto w-full max-w-md rounded-3xl border-2 border-foreground bg-background p-6 shadow-md md:p-8">
       <h1 className="mb-2 text-2xl font-medium text-foreground underline">
         {t('title')}
       </h1>
-      <p className="mb-4 text-base text-foreground ">
+      <p className="mb-4 text-base text-foreground">
         {t('description')}
       </p>
       <form className="flex flex-col gap-4 p-2" onSubmit={handleSubmit}>
@@ -57,16 +57,16 @@ export default function LoginPage() {
         </button>
       </form>
       <div className="my-4 flex items-center">
-        {/* FIXME: hardcoded color */}
-        <hr className="grow border-t border-foreground /50" />
-        <span className="mx-4 text-sm text-foreground ">{t('or')}</span>
-        {/* FIXME: hardcoded color */}
-        <hr className="grow border-t border-foreground /50" />
+        <hr className="grow border-t border-foreground" />
+        <span className="mx-4 text-sm text-foreground">
+          {t('or')}
+        </span>
+        <hr className="grow border-t border-foreground" />
       </div>
       <Link href="/planner">
         <button
           type="button"
-          className="w-full text-center text-base text-foreground  hover:underline"
+          className="w-full text-center text-base text-foreground hover:underline"
           onClick={() => {
             useAuthStore.getState().logout();
           }}

@@ -63,7 +63,7 @@ export default function CourseSidebar() {
   return (
     <aside
       className={`mt-4 flex w-auto flex-col rounded-lg border-2 border-primary
-            bg-background p-4 md:fixed
+            bg-secondary p-4 md:fixed
             md:bottom-4 md:top-20
             md:mt-0 md:w-80
             md:overflow-y-auto

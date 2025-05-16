@@ -1,6 +1,7 @@
+import type { ThemeMode } from '@/types/themes';
 import { createTheme } from '@mui/material/styles';
 
-const createCssVariableTheme = (mode: 'light' | 'dark') => {
+const createCssVariableTheme = (mode: ThemeMode) => {
   return createTheme({
     components: {
       MuiButtonBase: { defaultProps: { disableRipple: true } },

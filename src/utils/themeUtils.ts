@@ -1,8 +1,30 @@
-import type { SystemMode, ThemeColors, ThemeMode } from '@/types/themes';
+import type { Theme, ThemeColors, ThemeMode } from '@/types/themes';
 
 export const LOCAL_STORAGE_THEME = 'theme-preference';
 
-export function getButtonBgStyle(color: ThemeColors, mode: SystemMode): string {
+// Default theme colors by mode
+export const DEFAULT_COLOR = {
+  dark: 'zinc' as const,
+  light: 'red' as const,
+};
+
+// Theme colors available
+export const THEME_COLORS = ['zinc', 'rose', 'blue', 'violet', 'yellow', 'green', 'orange', 'red'] as const;
+
+// Available colors categorized by theme mode
+export const COLORS_BY_MODE = {
+  dark: ['zinc', 'blue', 'violet', 'yellow', 'green', 'red'] as const,
+  light: ['zinc', 'rose', 'green', 'orange', 'blue', 'red'] as const,
+};
+
+// Default theme object
+export const DEFAULT_THEME: Theme = {
+  mode: 'dark',
+  color: DEFAULT_COLOR.dark,
+};
+
+// UI helper functions
+export function getButtonBgStyle(color: ThemeColors, mode: ThemeMode): string {
   type DarkColors = typeof COLORS_BY_MODE['dark'][number];
   type LightColors = typeof COLORS_BY_MODE['light'][number];
 
@@ -30,7 +52,12 @@ export function getButtonBgStyle(color: ThemeColors, mode: SystemMode): string {
 }
 
 export function getPrincipalColors(color: ThemeColors, mode: ThemeMode): string[] {
-  // create a temporary element to get computed styles
+  // Safe check for browser environment
+  if (typeof window === 'undefined') {
+    return [];
+  }
+
+  // Create a temporary element to get computed theme colors
   const tempElement = document.createElement('div');
   tempElement.setAttribute('data-theme', `${color}-${mode}`);
   document.body.appendChild(tempElement);
@@ -43,20 +70,3 @@ export function getPrincipalColors(color: ThemeColors, mode: ThemeMode): string[
 
   return [primaryColor, backgroundColor].filter(Boolean);
 }
-
-export const DEFAULT_THEME = {
-  mode: 'system' as const,
-  color: 'zinc' as const,
-};
-
-export const SYSTEM_THEME_DEFAULT_COLOR = {
-  dark: 'zinc' as const,
-  light: 'red' as const,
-};
-
-export const THEME_COLORS = ['zinc', 'rose', 'blue', 'violet', 'yellow', 'green', 'orange', 'red'] as const;
-
-export const COLORS_BY_MODE = {
-  dark: ['zinc', 'blue', 'violet', 'yellow', 'green', 'red'] as const,
-  light: ['zinc', 'rose', 'green', 'orange', 'blue', 'red'] as const,
-};

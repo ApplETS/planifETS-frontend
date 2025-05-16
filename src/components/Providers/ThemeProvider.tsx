@@ -1,10 +1,10 @@
 'use client';
 
-import type { Theme, ThemeProviderProps } from '@/types/themes';
+import type { Theme } from '@/types/themes';
 import { ThemeProviderContext } from '@/context/ThemeContext';
 import { darkTheme, lightTheme } from '@/lib/MuiTheme';
 import {
-  detectInitialTheme,
+  DEFAULT_THEME,
   LOCAL_STORAGE_THEME,
 } from '@/utils/themeUtils';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
@@ -16,18 +16,30 @@ import {
 
 export function ThemeProvider({
   children,
-}: ThemeProviderProps) {
+}: { children: React.ReactNode }) {
   const [isMounted, setIsMounted] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState<Theme>({
-    mode: 'dark', // Default fallback for SSR
-    color: 'zinc',
-  });
+  const [currentTheme, setCurrentTheme] = useState<Theme>(DEFAULT_THEME);
 
   // Initialize theme once on mount
   useEffect(() => {
-    setIsMounted(true);
-    const initialTheme = detectInitialTheme();
-    setCurrentTheme(initialTheme);
+    // Use a function to avoid direct setState in useEffect
+    const initTheme = () => {
+      // Get the theme from localStorage or use default
+      const storedTheme = localStorage.getItem(LOCAL_STORAGE_THEME);
+      if (storedTheme) {
+        try {
+          // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
+          setCurrentTheme(JSON.parse(storedTheme));
+        } catch (e) {
+          console.error('Failed to parse stored theme', e);
+        }
+      }
+
+      // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
+      setIsMounted(true);
+    };
+
+    initTheme();
   }, []);
 
   // Update the document theme attribute when theme changes

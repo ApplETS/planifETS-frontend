@@ -1,13 +1,13 @@
 'use client';
 
-import { useProgramCoursesOperations } from '@/hooks/course/useProgramCoursesOperations';
-import { COURSES_TAB_INDEX, FAVORITE_TAB_INDEX } from '@/utils/constants';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { useProgramCoursesOperations } from '@/hooks/course/useProgramCoursesOperations';
+import { COURSES_TAB_INDEX, FAVORITE_TAB_INDEX } from '@/utils/constants';
 import CourseCard from './CourseCard';
 import SearchBar from './CourseSearchBar';
 

@@ -2,10 +2,10 @@
 
 import type { Session as SessionType } from '@/types/session';
 
-import { usePlannerStore } from '@/store/plannerStore';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
+import { usePlannerStore } from '@/store/plannerStore';
 import BaseButton from '../atoms/buttons/BaseButton';
 import Session from './Session';
 

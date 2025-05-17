@@ -1,10 +1,10 @@
 'use client';
 
-import BaseButton from '@/components/atoms/buttons/BaseButton';
-import ThemeSelector from '@/components/settings/ThemeSelector';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import BaseButton from '@/components/atoms/buttons/BaseButton';
+import ThemeSelector from '@/components/settings/ThemeSelector';
 import BaseDialog from '../../dialogs/BaseDialog';
 import LanguageSettings from '../../settings/LanguageSettings';
 

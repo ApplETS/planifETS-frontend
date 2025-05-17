@@ -1,15 +1,15 @@
 'use client';
 
-import type { Course } from '@/types/course';
-import type { SessionEnum } from '@/types/session';
 import type { FC } from 'react';
 import type { CourseStatus } from '../../types/courseStatus';
-import { DragType } from '@/types/dnd';
-
+import type { Course } from '@/types/course';
+import type { SessionEnum } from '@/types/session';
 import { useTranslations } from 'next-intl';
+
 import { useCallback, useState } from 'react';
 import { useDrag } from 'react-dnd';
 import { FaTrash } from 'react-icons/fa';
+import { DragType } from '@/types/dnd';
 import BaseButton from '../atoms/buttons/BaseButton';
 import CourseHeader from '../atoms/CourseHeader';
 import StatusTag from './StatusTag';

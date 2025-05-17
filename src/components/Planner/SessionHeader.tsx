@@ -1,9 +1,9 @@
 import type { FC } from 'react';
-import { getTranslationKey } from '@/utils/sessionUtils';
 import Tooltip from '@mui/material/Tooltip';
 import { useTranslations } from 'next-intl';
-
 import { FaInfoCircle } from 'react-icons/fa';
+
+import { getTranslationKey } from '@/utils/sessionUtils';
 import { getSeasonStyle } from '../../utils/seasonUtils';
 import CreditsTag from '../atoms/CreditsTag';
 

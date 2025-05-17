@@ -1,11 +1,11 @@
 import type { SessionEnum } from '@/types/session';
+import { useSnackbar } from 'notistack';
 import { useSessionStore } from '@/store/sessionStore';
 import {
   generateSessionKey,
   getSessionTiming,
   validateSessionOperation,
 } from '@/utils/sessionUtils';
-import { useSnackbar } from 'notistack';
 
 export const useSessionOperations = (year: number, sessionTerm: SessionEnum) => {
   const { enqueueSnackbar } = useSnackbar();

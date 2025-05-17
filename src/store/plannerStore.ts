@@ -1,7 +1,7 @@
-import { SessionEnum } from '@/types/session';
-import { extractYearFromSessionKey, generateSessionKey } from '@/utils/sessionUtils';
 import { persistConfig } from 'lib/persistConfig';
 import { create } from 'zustand';
+import { SessionEnum } from '@/types/session';
+import { extractYearFromSessionKey, generateSessionKey } from '@/utils/sessionUtils';
 import { useSessionStore } from './sessionStore';
 
 type PlannerState = {

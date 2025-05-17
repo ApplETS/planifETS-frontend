@@ -1,13 +1,13 @@
 'use client';
 
-import type { Course } from '@/types/course';
 import type { FC } from 'react';
+import type { Course } from '@/types/course';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import FavoriteButton from '@/components/Sidebar/FavoriteButton';
 import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
 import { useCourseStore } from '@/store/courseStore';
 import { DragType } from '@/types/dnd';
-import { useTranslations } from 'next-intl';
-import { useState } from 'react';
 import CreditsTag from '../atoms/CreditsTag';
 import Tag from '../atoms/Tag';
 

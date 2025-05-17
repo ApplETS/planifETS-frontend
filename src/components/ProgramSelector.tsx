@@ -1,12 +1,12 @@
 'use client';
 
-import { programCourses } from '@/data/program-courses';
-import { useCourseStore } from '@/store/courseStore';
-import { useProgramStore } from '@/store/programStore';
 import { Autocomplete, Chip, TextField, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
+import { programCourses } from '@/data/program-courses';
+import { useCourseStore } from '@/store/courseStore';
+import { useProgramStore } from '@/store/programStore';
 import { programs } from '../data/programs-data';
 
 const ProgramSelector: React.FC = () => {

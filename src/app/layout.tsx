@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import Loading from '@/components/atoms/Loading';
-import { ThemeProvider } from '@/components/Providers/ThemeProvider';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { Suspense } from 'react';
+import Loading from '@/components/atoms/Loading';
+import { ThemeProvider } from '@/components/Providers/ThemeProvider';
 import ErrorBoundary from '../components/ErrorBoundary';
 import Navbar from '../components/Navbar/Navbar';
 import ClientProviders from '../components/Providers/ClientProviders';

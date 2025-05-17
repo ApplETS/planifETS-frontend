@@ -1,6 +1,6 @@
-import { setUserLocale } from '@/services/locale';
 import { Button } from '@mui/material';
 import React from 'react';
+import { setUserLocale } from '@/services/locale';
 
 type LanguageSettingsProps = {
   onClose: () => void;

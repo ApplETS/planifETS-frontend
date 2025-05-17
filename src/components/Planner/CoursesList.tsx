@@ -1,9 +1,9 @@
+import type { FC } from 'react';
 import type { CourseInstance } from '@/types/course';
 import type { SessionEnum, SessionTiming } from '@/types/session';
-import type { FC } from 'react';
+import { useTranslations } from 'next-intl';
 import { useCourseStatus } from '@/hooks/course/useCourseStatus';
 import { useCourseStore } from '@/store/courseStore';
-import { useTranslations } from 'next-intl';
 import CourseBox from './CourseBox';
 
 type CoursesListProps = {

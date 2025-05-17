@@ -1,10 +1,10 @@
 import type { Course } from '@/types/course';
 import type { SessionEnum } from '@/types/session';
+import { useSnackbar } from 'notistack';
+import { useCallback } from 'react';
 import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { generateSessionKey, getSessionTiming, validateSessionOperation as validateSession } from '@/utils/sessionUtils';
-import { useSnackbar } from 'notistack';
-import { useCallback } from 'react';
 
 export const useCourseOperations = () => {
   const { enqueueSnackbar } = useSnackbar();

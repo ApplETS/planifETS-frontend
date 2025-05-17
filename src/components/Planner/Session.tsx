@@ -1,12 +1,12 @@
 'use client';
 
-import type { SessionEnum } from '@/types/session';
 import type { FC } from 'react';
+import type { SessionEnum } from '@/types/session';
+import { useCallback } from 'react';
 import { useSessionDrop } from '@/hooks/session/useSessionDrop';
 import { useSessionOperations } from '@/hooks/session/useSessionOperations';
 import { useCourseStore } from '@/store/courseStore';
 import { isCourseAvailableInSession } from '@/utils/sessionUtils';
-import { useCallback } from 'react';
 import CoursesList from './CoursesList';
 import SessionHeader from './SessionHeader';
 

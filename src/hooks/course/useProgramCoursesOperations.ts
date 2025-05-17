@@ -1,9 +1,9 @@
 import type { Course } from '@/types/course';
+import { useEffect, useMemo } from 'react';
 import { programCourses } from '@/data/program-courses';
 import { useCourseStore } from '@/store/courseStore';
 import { useProgramStore } from '@/store/programStore';
 import { FAVORITE_TAB_INDEX } from '@/utils/constants';
-import { useEffect, useMemo } from 'react';
 
 export const useProgramCoursesOperations = (searchQuery: string, activeTab: number) => {
   const selectedPrograms = useProgramStore(state => state.getSelectedPrograms());

@@ -1,9 +1,9 @@
 'use client';
 
 import type { FC } from 'react';
-import BaseButton from '@/components/atoms/buttons/BaseButton';
-
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
+
+import BaseButton from '@/components/atoms/buttons/BaseButton';
 
 type FavoriteButtonProps = {
   isFavorited: boolean;

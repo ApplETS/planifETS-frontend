@@ -1,9 +1,9 @@
 'use client';
 
 import type { FC } from 'react';
-import { usePlannerStore } from '@/store/plannerStore';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { usePlannerStore } from '@/store/plannerStore';
 import CreditsTag from './atoms/CreditsTag';
 import ProgramSelector from './ProgramSelector';
 

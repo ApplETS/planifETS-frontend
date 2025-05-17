@@ -1,7 +1,7 @@
 import type { IconType } from 'react-icons';
-import { SessionEnum } from '@/types/session';
 import { FaSnowflake, FaSun } from 'react-icons/fa';
 import { GiMapleLeaf } from 'react-icons/gi';
+import { SessionEnum } from '@/types/session';
 
 export type SeasonStyle = {
   SeasonIcon: IconType;

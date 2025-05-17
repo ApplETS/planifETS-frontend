@@ -1,8 +1,8 @@
 'use client';
 
 import type { Theme } from '@/types/themes';
-import { DEFAULT_THEME } from '@/utils/themeUtils';
 import { createContext } from 'react';
+import { DEFAULT_THEME } from '@/utils/themeUtils';
 
 export type ThemeProviderState = {
   theme: Theme;

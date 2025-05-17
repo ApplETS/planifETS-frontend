@@ -9,12 +9,12 @@ export const DEFAULT_COLOR = {
 };
 
 // Theme colors available
-export const THEME_COLORS = ['zinc', 'rose', 'blue', 'violet', 'yellow', 'green', 'orange', 'red'] as const;
+export const THEME_COLORS = ['zinc', 'blue', 'violet', 'yellow', 'green', 'orange', 'red'] as const;
 
 // Available colors categorized by theme mode
 export const COLORS_BY_MODE = {
   dark: ['zinc', 'blue', 'violet', 'yellow', 'green', 'red'] as const,
-  light: ['zinc', 'rose', 'green', 'orange', 'blue', 'red'] as const,
+  light: ['zinc', 'green', 'orange', 'blue', 'red'] as const,
 };
 
 // Default theme object
@@ -34,12 +34,11 @@ export function getButtonBgStyle(color: ThemeColors, mode: ThemeMode): string {
     violet: 'bg-violet-800',
     yellow: 'bg-yellow-600',
     green: 'bg-green-700',
-    red: 'bg-red-900',
+    red: 'bg-red-800',
   };
 
   const lightThemes: Record<LightColors, string> = {
     zinc: 'bg-zinc-200',
-    rose: 'bg-rose-200',
     green: 'bg-green-200',
     orange: 'bg-orange-200',
     blue: 'bg-blue-200',

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Loading from '@/components/atoms/Loading';
 import { ThemeProvider } from '@/components/Providers/ThemeProvider';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
@@ -7,7 +8,6 @@ import ErrorBoundary from '../components/ErrorBoundary';
 import Navbar from '../components/Navbar/Navbar';
 import ClientProviders from '../components/Providers/ClientProviders';
 import DndContext from '../context/dnd/DndContext';
-
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen transition-colors duration-300">
         <ThemeProvider>
-          <Suspense fallback={null}>
+          <Suspense fallback={<Loading />}>
             <NextIntlClientProvider messages={messages}>
               <ErrorBoundary>
                 <DndContext>

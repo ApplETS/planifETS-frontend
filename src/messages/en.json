@@ -5,7 +5,8 @@
     "logout": "Sign out",
     "settings": "Settings",
     "language": "Language",
-    "theme": "Theme"
+    "theme": "Theme",
+    "loading": "Loading..."
   },
   "LoginPage": {
     "title": "Login with Signets",

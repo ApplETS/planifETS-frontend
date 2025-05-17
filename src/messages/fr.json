@@ -5,7 +5,8 @@
     "logout": "Se déconnecter",
     "settings": "Paramètres",
     "language": "Language",
-    "theme": "Thème"
+    "theme": "Thème",
+    "loading": "Chargement..."
   },
   "LoginPage": {
     "title": "Se connecter avec Signets",

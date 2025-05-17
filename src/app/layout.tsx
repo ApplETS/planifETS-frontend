@@ -1,5 +1,5 @@
-import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/Providers/ThemeProvider';
+import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { Suspense } from 'react';
@@ -27,7 +27,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <ErrorBoundary>
                 <DndContext>
                   <ClientProviders>
-                    <div className="min-h-screen pt-16 text-foreground bg-background dark:bg-background">
+                    <div className="min-h-screen pt-16 text-foreground bg-background">
                       <main>
                         <Navbar />
                         {children}

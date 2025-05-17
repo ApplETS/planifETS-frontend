@@ -16,7 +16,7 @@ export const ProgramSection: FC = () => {
     <header className="w-full">
       <div className={`flex ${isMobile ? 'flex-col space-y-2' : 'items-center space-x-4'}`}>
         <ProgramSelector />
-        <CreditsTag credits={totalCredits} dataTestId="total-credits" />
+        <CreditsTag credits={totalCredits} data-testid="total-credits" />
       </div>
     </header>
   );

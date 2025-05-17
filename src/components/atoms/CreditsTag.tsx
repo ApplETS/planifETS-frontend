@@ -1,22 +1,21 @@
 'use client';
 
-import type { FC } from 'react';
+import type { FC, HTMLAttributes } from 'react';
 import { useTranslations } from 'next-intl';
 import Tag from './Tag';
 
 type CreditsTagProps = {
   credits: number;
-  dataTestId: string;
-};
+} & HTMLAttributes<HTMLDivElement>;
 
-const CreditsTag: FC<CreditsTagProps> = ({ credits, dataTestId }) => {
+const CreditsTag: FC<CreditsTagProps> = ({ credits, ...props }) => {
   const t = useTranslations('Commons');
 
   return (
     <Tag
       variant="secondary"
-      data-testid={dataTestId}
       className="font-medium"
+      {...props}
     >
       {credits}
       {' '}

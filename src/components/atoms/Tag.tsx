@@ -9,14 +9,13 @@ type ContrastTagProps = {
   children: ReactNode;
   variant?: TagVariant;
   className?: string;
-  dataTestId?: string;
 };
 
 const Tag: FC<ContrastTagProps> = ({
   children,
   variant = 'default',
   className = '',
-  dataTestId,
+  ...props
 }) => {
   const baseStyles = 'inline-flex items-center justify-center rounded-md px-2.5 py-1 text-xs font-medium';
 
@@ -33,7 +32,7 @@ const Tag: FC<ContrastTagProps> = ({
   return (
     <span
       className={cn(baseStyles, variantStyles[variant], className)}
-      data-testid={dataTestId}
+      {...props}
     >
       {children}
     </span>

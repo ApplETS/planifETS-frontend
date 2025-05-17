@@ -52,7 +52,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
       <div className="flex w-auto justify-end sm:mt-0">
         <CreditsTag
           credits={totalCredits}
-          dataTestId={`session-${sessionTerm}-${sessionYear}-credits`}
+          data-testid={`session-${sessionTerm}-${sessionYear}-credits`}
         />
       </div>
     </div>

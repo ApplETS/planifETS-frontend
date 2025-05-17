@@ -27,7 +27,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <ErrorBoundary>
                 <DndContext>
                   <ClientProviders>
-                    <div className="min-h-screen pt-16 text-foreground bg-background dark:bg-background">
+                    <div className="min-h-screen pt-16 text-foreground bg-background">
                       <main>
                         <Navbar />
                         {children}

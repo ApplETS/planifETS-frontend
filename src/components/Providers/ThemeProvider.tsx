@@ -1,11 +1,11 @@
 'use client';
 
-import type { Theme } from '@/types/themes';
 import { ThemeProviderContext } from '@/context/ThemeContext';
 import { darkTheme, lightTheme } from '@/lib/MuiTheme';
+import type { Theme } from '@/types/themes';
 import {
-  DEFAULT_THEME,
   LOCAL_STORAGE_THEME,
+  getInitialTheme,
 } from '@/utils/themeUtils';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import {
@@ -18,31 +18,31 @@ export function ThemeProvider({
   children,
 }: { children: React.ReactNode }) {
   const [isMounted, setIsMounted] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState<Theme>(DEFAULT_THEME);
+  const [currentTheme, setCurrentTheme] = useState<Theme>(getInitialTheme());
 
-  // Initialize theme once on mount
   useEffect(() => {
-    // Use a function to avoid direct setState in useEffect
-    const initTheme = () => {
-      // Get the theme from localStorage or use default
-      const storedTheme = localStorage.getItem(LOCAL_STORAGE_THEME);
-      if (storedTheme) {
-        try {
-          // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
-          setCurrentTheme(JSON.parse(storedTheme));
-        } catch (e) {
-          console.error('Failed to parse stored theme', e);
+    // Handle theme initialization and system theme changes
+    setIsMounted(true);
+
+    // Set up listener for system theme changes
+    if (window.matchMedia) {
+      const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      
+      // Only respond to system changes if user hasn't set a preference
+      const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+        if (!localStorage.getItem(LOCAL_STORAGE_THEME)) {
+          setCurrentTheme({
+            mode: e.matches ? 'dark' : 'light',
+            color: e.matches ? 'zinc' : 'zinc',
+          });
         }
-      }
-
-      // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
-      setIsMounted(true);
-    };
-
-    initTheme();
+      };
+      
+      colorSchemeQuery.addEventListener('change', handleSystemThemeChange);
+      return () => colorSchemeQuery.removeEventListener('change', handleSystemThemeChange);
+    }
   }, []);
 
-  // Update the document theme attribute when theme changes
   useEffect(() => {
     if (!isMounted) {
       return;
@@ -58,8 +58,7 @@ export function ThemeProvider({
     }
   }, [currentTheme, isMounted]);
 
-  // Theme context value
-  const value = useMemo(() => ({
+  const contextValue = useMemo(() => ({
     theme: currentTheme,
     setTheme: (theme: Theme) => {
       setCurrentTheme(theme);
@@ -72,7 +71,7 @@ export function ThemeProvider({
   }
 
   return (
-    <ThemeProviderContext value={value}>
+    <ThemeProviderContext value={contextValue}>
       <MuiThemeProvider theme={currentTheme.mode === 'dark' ? darkTheme : lightTheme}>
         <div
           className={currentTheme.mode === 'dark' ? 'dark' : ''}

@@ -23,6 +23,37 @@ export const DEFAULT_THEME: Theme = {
   color: DEFAULT_COLOR.dark,
 };
 
+export function getInitialTheme(): Theme {
+  const defaultTheme: Theme = {
+    mode: 'dark',
+    color: DEFAULT_COLOR.dark,
+  };
+  
+  if (typeof window === 'undefined') {
+    console.warn('Window is undefined, returning default theme');
+    return defaultTheme;
+  }
+
+  try {
+    const storedTheme = localStorage.getItem(LOCAL_STORAGE_THEME);
+    if (storedTheme) {
+      return JSON.parse(storedTheme);
+    }
+    
+    // If no stored preference, check system preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+      return {
+        mode: 'light',
+        color: DEFAULT_COLOR.light,
+      };
+    }
+  } catch (e) {
+    console.error('Error determining theme:', e);
+  }
+  
+  return defaultTheme;
+}
+
 // UI helper functions
 export function getButtonBgStyle(color: ThemeColors, mode: ThemeMode): string {
   type DarkColors = typeof COLORS_BY_MODE['dark'][number];

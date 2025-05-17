@@ -28,7 +28,7 @@ export function getInitialTheme(): Theme {
     mode: 'dark',
     color: DEFAULT_COLOR.dark,
   };
-  
+
   if (typeof window === 'undefined') {
     console.warn('Window is undefined, returning default theme');
     return defaultTheme;
@@ -39,7 +39,7 @@ export function getInitialTheme(): Theme {
     if (storedTheme) {
       return JSON.parse(storedTheme);
     }
-    
+
     // If no stored preference, check system preference
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
       return {
@@ -50,7 +50,7 @@ export function getInitialTheme(): Theme {
   } catch (e) {
     console.error('Error determining theme:', e);
   }
-  
+
   return defaultTheme;
 }
 

@@ -5,19 +5,51 @@ const createCssVariableTheme = (mode: ThemeMode) => {
   return createTheme({
     components: {
       MuiButtonBase: { defaultProps: { disableRipple: true } },
+      MuiDialog: {
+        styleOverrides: {
+          paper: {
+            backgroundColor: mode === 'dark' ? '#1F1824' : '#ffffff',
+            color: mode === 'dark' ? '#F0F4FF' : '#000000',
+          },
+        },
+      },
+      MuiDialogTitle: {
+        styleOverrides: {
+          root: {
+            backgroundColor: mode === 'dark' ? '#4f435a' : '#a5a1ff',
+            color: mode === 'dark' ? '#F0F4FF' : '#000000',
+          },
+        },
+      },
+      MuiDialogContent: {
+        styleOverrides: {
+          root: {
+            backgroundColor: mode === 'dark' ? '#1F1824' : '#ffffff',
+            color: mode === 'dark' ? '#F0F4FF' : '#000000',
+          },
+        },
+      },
+      MuiDialogActions: {
+        styleOverrides: {
+          root: {
+            backgroundColor: mode === 'dark' ? '#4f435a' : '#a5a1ff',
+            color: mode === 'dark' ? '#F0F4FF' : '#000000',
+          },
+        },
+      },
     },
     palette: {
       mode,
       primary: {
         main: mode === 'dark' ? '#7d90ed' : '#7b68ee',
-        light: mode === 'dark' ? '#8c89f2' : '#9281f1',
-        dark: mode === 'dark' ? '#6a5acd' : '#6a5acd',
+        light: '#9281f1',
+        dark: '#6a5acd',
         contrastText: mode === 'dark' ? '#f0f4ff' : '#ffffff',
       },
       secondary: {
         main: mode === 'dark' ? '#4f435a' : '#a5a1ff',
-        light: mode === 'dark' ? '#504060' : '#b8b5ff',
-        dark: mode === 'dark' ? '#2f3359' : '#8c89f2',
+        light: '#b8b5ff',
+        dark: '#2f3359',
         contrastText: mode === 'dark' ? '#f0f4ff' : '#000000',
       },
       background: {

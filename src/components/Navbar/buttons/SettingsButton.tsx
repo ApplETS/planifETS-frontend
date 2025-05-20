@@ -40,7 +40,7 @@ export default function SettingsButton() {
               {t('language')}
             </h2>
             <div className="ml-2">
-              <LanguageSettings onClose={handleClose} />
+              <LanguageSettings />
             </div>
           </div>
 

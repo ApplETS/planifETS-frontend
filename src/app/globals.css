@@ -2,6 +2,10 @@
 @import 'tw-animate-css';
 @custom-variant dark (&:is(.dark *));
 
+@utility no-scrollbar {
+  @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
+}
+
 :root {
   --background: hsl(240 10% 3.9%);
   --foreground: hsl(0 0% 98%);

@@ -6,7 +6,8 @@
     "settings": "Settings",
     "language": "Language",
     "theme": "Theme",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "cancel": "Cancel"
   },
   "LoginPage": {
     "title": "Login with Signets",

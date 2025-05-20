@@ -11,7 +11,7 @@ export const DEFAULT_COLOR = {
 // Theme colors available
 export const THEME_COLORS = ['zinc', 'blue', 'violet', 'yellow', 'green', 'orange', 'red'] as const;
 
-// Available colors categorized by theme mode
+// Available colors in the UI
 export const COLORS_BY_MODE = {
   dark: ['zinc', 'blue', 'violet', 'yellow', 'green', 'red'] as const,
   light: ['zinc', 'green', 'orange', 'blue', 'red'] as const,

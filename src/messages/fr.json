@@ -6,7 +6,8 @@
     "settings": "Paramètres",
     "language": "Language",
     "theme": "Thème",
-    "loading": "Chargement..."
+    "loading": "Chargement...",
+    "cancel": "Annuler"
   },
   "LoginPage": {
     "title": "Se connecter avec Signets",

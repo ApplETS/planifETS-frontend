@@ -1,39 +1,42 @@
-import { Button } from '@mui/material';
-import React from 'react';
+import { useLocale } from 'next-intl';
 import { setUserLocale } from '@/services/locale';
+import { Button } from '@/shadcn/ui/button';
 
-type LanguageSettingsProps = {
-  onClose: () => void;
-};
+const LanguageSettings = () => {
+  const locale = useLocale();
 
-const LanguageSettings: React.FC<LanguageSettingsProps> = ({ onClose }) => {
   const handleLocaleChange = async (locale: 'en' | 'fr') => {
     await setUserLocale(locale);
-    onClose();
   };
 
+  const getButtonStyles = (isSelected: boolean) =>
+    [
+      'flex-1 px-4 py-2 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+      isSelected
+        ? 'bg-primary text-primary-foreground font-semibold shadow cursor-default pointer-events-none'
+        : 'bg-muted text-muted-foreground hover:bg-accent hover:text-foreground cursor-pointer',
+    ].join(' ');
+
   return (
-    <div className="flex flex-col gap-4 p-2">
-      <div className="flex justify-between">
-        <Button
-          onClick={() => handleLocaleChange('en')}
-          color="primary"
-          variant="outlined"
-          className="mr-2 w-full"
-          data-testid="language-option-en"
-        >
-          English
-        </Button>
-        <Button
-          onClick={() => handleLocaleChange('fr')}
-          color="primary"
-          variant="outlined"
-          className="w-full"
-          data-testid="language-option-fr"
-        >
-          Français
-        </Button>
-      </div>
+    <div className="flex flex-row gap-2 p-2 bg-muted rounded-md">
+      <Button
+        variant="ghost"
+        onClick={() => handleLocaleChange('en')}
+        className={getButtonStyles(locale === 'en')}
+        tabIndex={0}
+        aria-label="Switch to English"
+      >
+        English
+      </Button>
+      <Button
+        variant="ghost"
+        onClick={() => handleLocaleChange('fr')}
+        className={getButtonStyles(locale === 'fr')}
+        tabIndex={0}
+        aria-label="Passer en français"
+      >
+        Français
+      </Button>
     </div>
   );
 };

@@ -49,12 +49,10 @@ const SessionHeader: FC<SessionHeaderProps> = ({
           </Tooltip>
         )}
       </div>
-      <div className="flex w-auto justify-end sm:mt-0">
-        <CreditsTag
-          credits={totalCredits}
-          data-testid={`session-${sessionTerm}-${sessionYear}-credits`}
-        />
-      </div>
+      <CreditsTag
+        credits={totalCredits}
+        data-testid={`session-${sessionTerm}-${sessionYear}-credits`}
+      />
     </div>
   );
 };

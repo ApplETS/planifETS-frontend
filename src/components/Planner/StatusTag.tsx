@@ -12,9 +12,9 @@ export default function StatusTag({ status }: StatusTagProps) {
 
   const VARIANT_STATUS: Record<CourseStatus, TagVariant> = {
     'Completed': 'success',
-    'In Progress': 'warning',
+    'In Progress': 'primary',
     'Failed': 'danger',
-    'Not Offered': 'default',
+    'Not Offered': 'danger',
     'Planned': 'info',
   };
 

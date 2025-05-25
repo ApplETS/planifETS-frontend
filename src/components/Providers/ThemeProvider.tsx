@@ -72,6 +72,7 @@ export function ThemeProvider({
           suppressHydrationWarning
           className={currentTheme.mode === 'dark' ? 'dark' : ''}
           data-theme={`${currentTheme.color}-${currentTheme.mode}`}
+          data-testid="theme-container"
         >
           {isMounted ? children : <Loading />}
         </div>

@@ -25,6 +25,7 @@ export default function ThemeSelector() {
           const bgClass = getButtonBgStyle(preset.color, preset.mode);
           const textColor = preset.mode === 'dark' ? 'text-white' : 'text-gray-900';
           const principalColors = getPrincipalColors(preset.color, preset.mode);
+          const themeId = `${preset.color}-${preset.mode}`;
 
           return (
             <button
@@ -44,6 +45,7 @@ export default function ThemeSelector() {
                 flex flex-col items-center justify-center
               `}
               aria-label={`Select ${preset.label} theme`}
+              data-testid={`theme-option-${themeId}`}
               aria-pressed={isSelected}
             >
               <div className="flex items-center gap-1 mb-1">

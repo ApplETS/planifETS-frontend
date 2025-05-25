@@ -20,20 +20,20 @@ const LanguageSelector = () => {
   return (
     <div className="flex flex-row gap-2 p-2 bg-muted rounded-md">
       <Button
-        variant="ghost"
         onClick={() => handleLocaleChange('en')}
         className={getButtonStyles(locale === 'en')}
         tabIndex={0}
         aria-label="Switch to English"
+        data-testid="language-option-en"
       >
         English
       </Button>
       <Button
-        variant="ghost"
         onClick={() => handleLocaleChange('fr')}
         className={getButtonStyles(locale === 'fr')}
         tabIndex={0}
         aria-label="Passer en français"
+        data-testid="language-option-fr"
       >
         Français
       </Button>

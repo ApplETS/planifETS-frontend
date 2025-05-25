@@ -3,7 +3,7 @@
 import { useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
 import AuthButton from '../atoms/buttons/AuthButton';
-import SettingsButton from './buttons/SettingsButton';
+import SettingsDialog from './buttons/SettingsDialog';
 
 export default function NavContent() {
   const theme = useTheme();
@@ -15,7 +15,7 @@ export default function NavContent() {
 
   return (
     <div className={navContentClasses}>
-      <SettingsButton />
+      <SettingsDialog />
       <AuthButton />
     </div>
   );

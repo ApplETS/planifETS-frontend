@@ -6,9 +6,9 @@ import { useState } from 'react';
 import BaseButton from '@/components/atoms/buttons/BaseButton';
 import ThemeSelector from '@/components/settings/ThemeSelector';
 import BaseDialog from '../../dialogs/BaseDialog';
-import LanguageSettings from '../../settings/LanguageSettings';
+import LanguageSelector from '../../settings/LanguageSelector';
 
-export default function SettingsButton() {
+export default function SettingsDialog() {
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations('Commons');
 
@@ -40,7 +40,7 @@ export default function SettingsButton() {
               {t('language')}
             </h2>
             <div className="ml-2">
-              <LanguageSettings />
+              <LanguageSelector />
             </div>
           </div>
 

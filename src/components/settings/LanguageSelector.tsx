@@ -2,7 +2,7 @@ import { useLocale } from 'next-intl';
 import { setUserLocale } from '@/services/locale';
 import { Button } from '@/shadcn/ui/button';
 
-const LanguageSettings = () => {
+const LanguageSelector = () => {
   const locale = useLocale();
 
   const handleLocaleChange = async (locale: 'en' | 'fr') => {
@@ -41,4 +41,4 @@ const LanguageSettings = () => {
   );
 };
 
-export default LanguageSettings;
+export default LanguageSelector;

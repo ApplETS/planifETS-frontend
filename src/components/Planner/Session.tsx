@@ -40,13 +40,13 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
 
     if (isAvailable) {
       return isOver && canDrop
-        ? 'border-sessionAvailable-borderHover bg-sessionAvailable-bgHover/5'
-        : 'border-sessionAvailable-border/40';
+        ? 'bg-green-500/20 border border-green-500'
+        : 'border border-green-500/40';
     }
 
     return isOver
-      ? 'border-destructive bg-sessionUnavailable-bgHover/5'
-      : 'border-transparent';
+      ? 'bg-destructive/20 border border-destructive'
+      : 'border border-transparent';
   };
 
   const dropRef = useCallback(

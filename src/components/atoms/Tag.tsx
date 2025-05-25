@@ -3,35 +3,33 @@
 import type { FC, ReactNode } from 'react';
 import { cn } from '@/shadcn/lib/utils';
 
-type TagVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
+export type TagVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
 
 type ContrastTagProps = {
   children: ReactNode;
   variant?: TagVariant;
-  className?: string;
 };
 
 const Tag: FC<ContrastTagProps> = ({
   children,
   variant = 'default',
-  className = '',
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center rounded-md px-2.5 py-1 text-xs font-medium';
+  const baseStyles = 'inline-flex items-center justify-center rounded-md px-2.5 py-1 text-xs font-medium border border-red-500';
 
-  const variantStyles: Record<TagVariant, string> = { // TODO: use theme colors
-    default: 'bg-muted text-muted-foreground border border-border',
+  const VARIANT_STYLES: Record<TagVariant, string> = {
+    default: 'bg-muted text-muted-foreground border border-primary',
     primary: 'bg-primary text-primary-foreground border border-primary/30',
     secondary: 'bg-secondary text-secondary-foreground border border-secondary/80',
-    success: 'bg-emerald-100 text-emerald-800 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-200 dark:border-emerald-800',
-    warning: 'bg-amber-100 text-amber-800 border border-amber-200 dark:bg-amber-950 dark:text-amber-200 dark:border-amber-800',
-    danger: 'bg-rose-100 text-rose-800 border border-rose-200 dark:bg-rose-950 dark:text-rose-200 dark:border-rose-800',
-    info: 'bg-blue-100 text-blue-800 border border-blue-200 dark:bg-blue-950 dark:text-blue-200 dark:border-blue-800',
+    success: 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border border-green-300/40',
+    info: 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border border-blue-300/40',
+    warning: 'bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 border border-amber-300/40',
+    danger: 'bg-destructive/10 text-destructive border border-destructive/20',
   };
 
   return (
     <span
-      className={cn(baseStyles, variantStyles[variant], className)}
+      className={cn(baseStyles, VARIANT_STYLES[variant])}
       {...props}
     >
       {children}

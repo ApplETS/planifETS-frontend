@@ -12,7 +12,7 @@ type InputFieldProps = {
 const InputField: React.FC<InputFieldProps> = ({ id, label, type, value, placeholder, onChange }) => {
   return (
     <div>
-      <label htmlFor={id} className="mb-1 block text-textDarkBackground">
+      <label htmlFor={id} className="mb-1 block text-foreground">
         {label}
       </label>
       <input
@@ -22,7 +22,7 @@ const InputField: React.FC<InputFieldProps> = ({ id, label, type, value, placeho
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className="w-full rounded-md border border-textDarkBackground bg-login p-3 text-textDarkBackground placeholder:text-opacity-40 focus:outline-none focus:ring-2 focus:ring-buttonTags"
+        className="w-full rounded-md border border-border bg-input p-3 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary"
         required
       />
     </div>

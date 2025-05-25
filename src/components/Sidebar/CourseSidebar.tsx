@@ -1,13 +1,13 @@
 'use client';
 
-import { useProgramCoursesOperations } from '@/hooks/course/useProgramCoursesOperations';
-import { COURSES_TAB_INDEX, FAVORITE_TAB_INDEX } from '@/utils/constants';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { useProgramCoursesOperations } from '@/hooks/course/useProgramCoursesOperations';
+import { COURSES_TAB_INDEX, FAVORITE_TAB_INDEX } from '@/utils/constants';
 import CourseCard from './CourseCard';
 import SearchBar from './CourseSearchBar';
 
@@ -33,7 +33,7 @@ export default function CourseSidebar() {
   function renderCoursesContent() {
     if (displayedCourses.length > 0) {
       return (
-        <div className="space-y-4">
+        <div className="flex flex-col gap-4 p-2">
           {displayedCourses.map(course => (
             <CourseCard
               key={course.code}
@@ -62,12 +62,11 @@ export default function CourseSidebar() {
 
   return (
     <aside
-      className={`mt-4 flex w-auto flex-col rounded-lg border-2 border-buttonTags
-            bg-courseSidebar p-4 md:fixed
+      className={`mt-4 flex w-auto flex-col rounded-lg border-2 border-primary
+            bg-secondary p-4 md:fixed
             md:bottom-4 md:top-20
             md:mt-0 md:w-80
             md:overflow-y-auto
-            md:bg-courseSidebar 
            `}
     >
       <Tabs

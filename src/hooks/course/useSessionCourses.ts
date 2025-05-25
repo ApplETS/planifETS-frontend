@@ -1,7 +1,7 @@
 import type { Course, CourseInstance, CourseStatus } from '@/types/course';
+import { useCallback } from 'react';
 import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
-import { useCallback } from 'react';
 
 export const useSessionCourses = () => {
   const sessionStore = useSessionStore();

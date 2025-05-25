@@ -8,10 +8,15 @@ type ClientProvidersProps = {
 };
 
 const ClientProviders = ({ children }: ClientProvidersProps) => {
+  // const { theme: nextTheme } = useNextTheme();
+  // const muiTheme = nextTheme === 'dark' ? darkTheme : lightTheme;
+
   return (
-    <SnackbarProvider maxSnack={3}>
-      {children}
-    </SnackbarProvider>
+    <div
+    // theme={muiTheme}
+    >
+      <SnackbarProvider maxSnack={3}>{children}</SnackbarProvider>
+    </div>
   );
 };
 

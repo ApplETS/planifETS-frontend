@@ -1,14 +1,14 @@
 'use client';
 
-import type { Course } from '@/types/course';
 import type { FC } from 'react';
+import type { Course } from '@/types/course';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import FavoriteButton from '@/components/Sidebar/FavoriteButton';
 import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
 import { useCourseStore } from '@/store/courseStore';
 import { DragType } from '@/types/dnd';
-import { useTranslations } from 'next-intl';
-import { useState } from 'react';
-import CreditsBadge from '../atoms/CreditsBadge';
+import CreditsTag from '../atoms/CreditsTag';
 import Tag from '../atoms/Tag';
 
 type SectionProps = {
@@ -44,7 +44,9 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
     return (
       <Section title={t('prerequisites')}>
         {course.prerequisites.map(preq => (
-          <Tag key={preq} text={preq} />
+          <Tag key={preq}>
+            {preq}
+          </Tag>
         ))}
       </Section>
     );
@@ -53,7 +55,9 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
   const renderAvailability = () => (
     <Section title={t('available')}>
       {course.availability.map(session => (
-        <Tag key={session} text={session} />
+        <Tag key={session}>
+          {session}
+        </Tag>
       ))}
     </Section>
   );
@@ -65,7 +69,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
           dragRef(node);
         }
       }}
-      className={`relative w-full cursor-grab rounded-md bg-sessions p-4 shadow-md 
+      className={`relative w-full cursor-grab rounded-md bg-background p-4 shadow-md 
         ${isDragging ? 'opacity-50' : 'opacity-100'}`}
       data-testid={`course-card-${course.code}`}
       onMouseEnter={() => setIsHovered(true)}
@@ -82,7 +86,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
           <p className="text-sm">{course.title}</p>
         </div>
         <div className="mt-2 flex items-center gap-2">
-          <CreditsBadge credits={course.credits} dataTestId={`course-card-${course.code}-credits`} />
+          <CreditsTag credits={course.credits} data-testid={`course-card-${course.code}-credits`} />
         </div>
       </div>
 

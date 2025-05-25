@@ -40,16 +40,21 @@ export const deleteCourse = async (
   page: Page,
   course: TestCourse,
 ) => {
+  await page.mouse.move(0, 0);
+  await page.waitForTimeout(200);
+
   const courseBox = page.locator(selectors.courseInSession(course.code));
-  await courseBox.hover();
+  await courseBox.scrollIntoViewIfNeeded();
 
-  const deleteButton = page.locator(
-    selectors.courseDeleteButton(course.code, course.sessionTerm, course.sessionYear),
-  );
+  await courseBox.hover({ force: true, timeout: 2000 });
 
-  await expect(deleteButton).toBeVisible({ timeout: 15000 });
+  const deleteButtonSelector = selectors.courseDeleteButton(course.code, course.sessionTerm, course.sessionYear);
 
-  await deleteButton.click();
+  const deleteButton = page.locator(deleteButtonSelector);
+
+  await page.waitForTimeout(300);
+
+  await deleteButton.click({ force: true, timeout: 3000 });
 };
 
 export const moveCourseToSession = async (

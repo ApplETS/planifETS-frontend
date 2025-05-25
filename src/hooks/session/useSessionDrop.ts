@@ -2,10 +2,10 @@
 
 import type { DraggedItem } from '@/types/dnd';
 import type { SessionEnum, SessionTiming } from '@/types/session';
+import { useDrop } from 'react-dnd';
 import { useSessionStore } from '@/store/sessionStore';
 import { DragType } from '@/types/dnd';
 import { generateSessionKey } from '@/utils/sessionUtils';
-import { useDrop } from 'react-dnd';
 import { useSessionOperations } from './useSessionOperations';
 
 type UseSessionDropProps = {

@@ -1,13 +1,10 @@
 {
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.addMissingImports": "explicit",
+    "source.fixAll": "explicit",
     "source.fixAll.eslint": "explicit"
   },
   "eslint.nodePath": "./node_modules/eslint",
-
-  "eslint.format.enable": true,
   "eslint.validate": [
     "javascript",
     "typescript",
@@ -26,5 +23,10 @@
     "yarn.lock": true
   },
   "i18n-ally.localesPaths": ["src/i18n", "src/messages"],
-  "i18n-ally.keystyle": "nested"
+  "i18n-ally.keystyle": "nested",
+  "cSpell.ignorePaths": [
+    "**/*",
+    "!src/messages/en.json",
+    "!src/messages/fr.json"
+  ]
 }

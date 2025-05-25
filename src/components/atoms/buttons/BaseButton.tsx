@@ -2,23 +2,27 @@ import type { ButtonHTMLAttributes, FC, ReactNode } from 'react';
 
 type BaseButtonProps = {
   children: ReactNode;
-  variant?: 'primary' | 'secondary' | 'danger';
+  variant?: 'primary' | 'secondary' | 'danger' | 'outlined';
   size?: 'sm' | 'md' | 'lg';
+  startIcon?: ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const BaseButton: FC<BaseButtonProps> = ({
   children,
   variant = 'primary',
   size = 'md',
+  startIcon,
   className = '',
   ...props
 }) => {
-  const baseStyles = 'rounded-md transition-colors duration-200';
+  const baseStyles = 'inline-flex items-center justify-center rounded-md transition-colors duration-200';
 
   const variantStyles = {
-    primary: 'bg-buttonTags text-textLightBackground hover:bg-opacity-90',
-    secondary: 'bg-gray-200 text-textDarkBackground hover:bg-gray-300',
-    danger: 'bg-red-500 text-white hover:bg-red-600',
+    primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
+
+    secondary: 'bg-background text-foreground hover:bg-background/90',
+    danger: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+    outlined: 'border border-primary text-primary hover:bg-primary/10',
   };
 
   const sizeStyles = {
@@ -33,6 +37,9 @@ const BaseButton: FC<BaseButtonProps> = ({
       type="button"
       {...props}
     >
+      {startIcon && (
+        <span className="inline-flex items-center justify-center mr-2">{startIcon}</span>
+      )}
       {children}
     </button>
   );

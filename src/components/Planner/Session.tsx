@@ -1,12 +1,12 @@
 'use client';
 
-import type { SessionEnum } from '@/types/session';
 import type { FC } from 'react';
+import type { SessionEnum } from '@/types/session';
+import { useCallback } from 'react';
 import { useSessionDrop } from '@/hooks/session/useSessionDrop';
 import { useSessionOperations } from '@/hooks/session/useSessionOperations';
 import { useCourseStore } from '@/store/courseStore';
 import { isCourseAvailableInSession } from '@/utils/sessionUtils';
-import { useCallback } from 'react';
 import CoursesList from './CoursesList';
 import SessionHeader from './SessionHeader';
 
@@ -16,12 +16,8 @@ type SessionProps = {
 };
 
 const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
-  const {
-    courseInstances,
-    sessionTiming,
-    handleRemoveCourse,
-    sessionTotalCredits,
-  } = useSessionOperations(sessionYear, sessionTerm);
+  const { courseInstances, sessionTiming, handleRemoveCourse, sessionTotalCredits }
+    = useSessionOperations(sessionYear, sessionTerm);
 
   const { getCourse } = useCourseStore();
   const { drop, isOver, canDrop, draggedItem } = useSessionDrop({
@@ -31,7 +27,7 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
   });
 
   const getSessionBorderStyle = () => {
-    if (!draggedItem) {
+    if (!draggedItem || !draggedItem.course) {
       return 'border-transparent';
     }
 
@@ -44,25 +40,27 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
 
     if (isAvailable) {
       return isOver && canDrop
-        ? 'border-sessionAvailable-borderHover bg-sessionAvailable-bgHover/5'
-        : 'border-sessionAvailable-border/40';
+        ? 'bg-green-500/20 border border-green-500'
+        : 'border border-green-500/40';
     }
 
     return isOver
-      ? 'border-sessionUnavailable-borderHover bg-sessionUnavailable-bgHover/5'
-      : 'border-transparent';
+      ? 'bg-destructive/20 border border-destructive'
+      : 'border border-transparent';
   };
 
-  const dropRef = useCallback((node: HTMLDivElement | null) => {
-    drop(node);
-  }, [drop]);
+  const dropRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      drop(node);
+    },
+    [drop],
+  );
 
   return (
     <div
       ref={dropRef}
-      className={`rounded-lg border-2 ${getSessionBorderStyle()} 
-        bg-sessions p-4 transition-all duration-300
-        ${isOver && canDrop ? 'bg-sessions/90' : ''}`}
+      className={`rounded-lg border-2 p-4 transition-all duration-300 bg-background ${getSessionBorderStyle()} 
+        ${isOver && canDrop ? 'bg-background/90' : ''}`}
       data-testid={`session-${sessionTerm}-${sessionYear}-drop-target`}
     >
       <SessionHeader

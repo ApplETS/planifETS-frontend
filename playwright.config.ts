@@ -19,6 +19,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   // Reporter to use. See https://playwright.dev/docs/test-reporters
   reporter: process.env.CI ? 'github' : 'list',
+  retries: process.env.CI ? 3 : 0,
   expect: {
     // Set timeout for async expect matchers
     timeout: 60 * 1000,
@@ -50,13 +51,10 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    ...(process.env.CI
-      ? [
-        {
-          name: 'firefox',
-          use: { ...devices['Desktop Firefox'] },
-        },
-      ]
-      : []),
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
   ],
+
 });

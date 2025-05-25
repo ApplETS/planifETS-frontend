@@ -3,7 +3,11 @@
     "credits": "credits",
     "login": "Sign in",
     "logout": "Sign out",
-    "settings": "Settings"
+    "settings": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "loading": "Loading...",
+    "cancel": "Cancel"
   },
   "LoginPage": {
     "title": "Login with Signets",
@@ -18,7 +22,7 @@
   },
   "PlannerPage": {
     "year-with-value": "Year {value}",
-    "add-a-year": "Add a year",
+    "add-year": "Add Year",
     "sessionTerms": {
       "AUTOMNE": "Autumn",
       "HIVER": "Winter",

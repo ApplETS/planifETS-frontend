@@ -40,7 +40,13 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@/public/*": ["./public/*"]
+      "@/public/*": ["./public/*"],
+      "@/lib/*": ["./lib/*"]
+      // "@/ui/*": ["lib/components/ui/*"],
+      // "@/components/*": ["lib/components/*"],
+      // "@/utils/*": ["lib/utils/*"],
+      // "@lib/*": ["./lib/*"],
+      // "@/hooks/*": ["lib/hooks/*"]
     },
 
     // Editor support
@@ -62,6 +68,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "tailwind.config.ts"
   ]
 }

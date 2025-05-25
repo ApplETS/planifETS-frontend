@@ -1,9 +1,9 @@
+import type { FC } from 'react';
 import type { CourseInstance } from '@/types/course';
 import type { SessionEnum, SessionTiming } from '@/types/session';
-import type { FC } from 'react';
+import { useTranslations } from 'next-intl';
 import { useCourseStatus } from '@/hooks/course/useCourseStatus';
 import { useCourseStore } from '@/store/courseStore';
-import { useTranslations } from 'next-intl';
 import CourseBox from './CourseBox';
 
 type CoursesListProps = {
@@ -58,7 +58,7 @@ const CoursesList: FC<CoursesListProps> = ({
           </div>
         )
         : (
-          <div className="flex h-full items-center justify-center text-sm text-gray-400">
+          <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
             {sessionTiming.isPast
               ? t('no-course-modif-past-session')
               : t('drag-courses-to-add-course')}

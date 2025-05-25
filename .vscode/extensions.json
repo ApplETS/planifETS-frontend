@@ -4,8 +4,6 @@
     "bradlc.vscode-tailwindcss",
     "yoavbls.pretty-ts-errors",
     "ms-playwright.playwright",
-    "github.vscode-github-actions",
-    "rvest.vs-code-prettier-eslint",
     "lokalise.i18n-ally"
   ]
 }

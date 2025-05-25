@@ -25,4 +25,8 @@ export const selectors = {
   // Language settings
   settingsToggleButton: '[data-testid="settings-toggle-button"]',
   languageOption: (locale: string) => `[data-testid="language-option-${locale}"]`,
+
+  // Theme settings
+  themeOption: (themeName: string) => `[data-testid="theme-option-${themeName}"]`,
+  themeContainer: '[data-testid="theme-container"]',
 } as const;

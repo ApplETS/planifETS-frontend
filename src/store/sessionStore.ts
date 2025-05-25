@@ -1,5 +1,8 @@
 import type { CourseInstance } from '@/types/course';
 import type { Session } from '@/types/session';
+import { persistConfig } from 'lib/persistConfig';
+import { enqueueSnackbar } from 'notistack';
+import { create } from 'zustand';
 import { SessionEnum } from '@/types/session';
 import { determineInitialStatus } from '@/utils/courseUtils';
 import {
@@ -7,9 +10,6 @@ import {
   createSessionsForYear,
   getSessionTiming,
 } from '@/utils/sessionUtils';
-import { persistConfig } from 'lib/persistConfig';
-import { enqueueSnackbar } from 'notistack';
-import { create } from 'zustand';
 import { useCourseStore } from './courseStore';
 import { usePlannerStore } from './plannerStore';
 

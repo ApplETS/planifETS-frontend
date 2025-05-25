@@ -133,7 +133,7 @@ export const createSessionsForYear = (sessionYear: number): Record<string, Sessi
   return sessions;
 };
 
-type BorderStyle = 'border-green-500' | 'border-red-500' | '';
+type BorderStyle = 'border-destructive' | 'border-primary' | '';
 
 export const getSessionBorderStyle = (
   courseId: number | null,
@@ -153,5 +153,5 @@ export const getSessionBorderStyle = (
     findCourse,
   );
 
-  return isAvailable ? 'border-green-500' : 'border-red-500';
+  return isAvailable ? 'border-primary' : 'border-destructive';
 };

@@ -1,12 +1,11 @@
 import type { FC } from 'react';
-import { getTranslationKey } from '@/utils/sessionUtils';
 import Tooltip from '@mui/material/Tooltip';
 import { useTranslations } from 'next-intl';
-
-import React from 'react';
 import { FaInfoCircle } from 'react-icons/fa';
+
+import { getTranslationKey } from '@/utils/sessionUtils';
 import { getSeasonStyle } from '../../utils/seasonUtils';
-import CreditsBadge from '../atoms/CreditsBadge';
+import CreditsTag from '../atoms/CreditsTag';
 
 type SessionHeaderProps = {
   sessionTerm: string;
@@ -50,12 +49,10 @@ const SessionHeader: FC<SessionHeaderProps> = ({
           </Tooltip>
         )}
       </div>
-      <div className="flex w-auto justify-end sm:mt-0">
-        <CreditsBadge
-          credits={totalCredits}
-          dataTestId={`session-${sessionTerm}-${sessionYear}-credits`}
-        />
-      </div>
+      <CreditsTag
+        credits={totalCredits}
+        data-testid={`session-${sessionTerm}-${sessionYear}-credits`}
+      />
     </div>
   );
 };

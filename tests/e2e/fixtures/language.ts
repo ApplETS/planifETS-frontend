@@ -1,5 +1,6 @@
 import type { Page } from '@playwright/test';
 import { selectors } from '../../assets/selectors';
+import { closeDialog } from './dialog';
 
 export type TranslationKey = 'searchPlaceholder';
 type SupportedLocale = 'en' | 'fr';
@@ -20,6 +21,8 @@ export async function changeLanguage(page: Page, locale: SupportedLocale): Promi
   await page.waitForSelector(selectors.settingsToggleButton, { state: 'visible' });
 
   await page.click(selectors.languageOption(locale));
+
+  await closeDialog(page);
 
   await page.waitForLoadState('networkidle');
 }

@@ -1,11 +1,11 @@
 'use client';
 
+import type { DragSourceMonitor } from 'react-dnd';
 import type { Course } from '@/types/course';
 import type { DraggedItem } from '@/types/dnd';
 import type { SessionEnum } from '@/types/session';
-import type { DragSourceMonitor } from 'react-dnd';
-import { DragType } from '@/types/dnd';
 import { useDrag } from 'react-dnd';
+import { DragType } from '@/types/dnd';
 
 type BaseProps = {
   course: Course;

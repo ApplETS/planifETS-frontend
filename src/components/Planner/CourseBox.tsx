@@ -1,15 +1,15 @@
 'use client';
 
-import type { Course } from '@/types/course';
-import type { SessionEnum } from '@/types/session';
 import type { FC } from 'react';
 import type { CourseStatus } from '../../types/courseStatus';
-import { DragType } from '@/types/dnd';
-
+import type { Course } from '@/types/course';
+import type { SessionEnum } from '@/types/session';
 import { useTranslations } from 'next-intl';
+
 import { useCallback, useState } from 'react';
 import { useDrag } from 'react-dnd';
 import { FaTrash } from 'react-icons/fa';
+import { DragType } from '@/types/dnd';
 import BaseButton from '../atoms/buttons/BaseButton';
 import CourseHeader from '../atoms/CourseHeader';
 import StatusTag from './StatusTag';
@@ -62,9 +62,9 @@ const CourseBox: FC<CourseBoxProps> = ({
     <div
       ref={dragRef}
       className={`
-        relative
-        mb-2 cursor-pointer rounded-lg bg-sessionCourse
-        p-4 shadow-sm transition duration-300 
+        shadow-xs
+        relative mb-2 cursor-pointer rounded-lg
+        bg-muted p-4 transition duration-300 
         ease-in-out hover:-translate-y-0.5 
         hover:shadow-md
         ${isDragging ? 'opacity-50' : 'opacity-100'}

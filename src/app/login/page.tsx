@@ -24,14 +24,14 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-md rounded-[27px] border-2 border-textDarkBackground bg-yearSection p-6 shadow-md md:p-8">
-      <h1 className="mb-2 text-2xl font-medium text-textDarkBackground underline">
+    <div className="mx-auto w-full max-w-md rounded-3xl border-2 border-foreground bg-background p-6 shadow-md md:p-8">
+      <h1 className="mb-2 text-2xl font-medium text-foreground underline">
         {t('title')}
       </h1>
-      <p className="mb-4 text-base text-textDarkBackground">
+      <p className="mb-4 text-base text-foreground">
         {t('description')}
       </p>
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="flex flex-col gap-4 p-2" onSubmit={handleSubmit}>
         <InputField
           id="codeUniversel"
           label={t('universal-code')}
@@ -51,22 +51,22 @@ export default function LoginPage() {
 
         <button
           type="submit"
-          className="w-full rounded-md bg-buttonTags py-3 font-bold uppercase text-background transition-colors duration-200 hover:bg-loginButtonHover"
+          className="w-full rounded-md bg-primary py-3 font-bold uppercase text-background transition-colors duration-200 hover:bg-muted-foreground"
         >
           {t('login')}
         </button>
       </form>
       <div className="my-4 flex items-center">
-        {/* FIXME: hardcoded color */}
-        <hr className="grow border-t border-[#D5C8EE]" />
-        <span className="mx-4 text-sm text-textDarkBackground">{t('or')}</span>
-        {/* FIXME: hardcoded color */}
-        <hr className="grow border-t border-[#D5C8EE]" />
+        <hr className="grow border-t border-foreground" />
+        <span className="mx-4 text-sm text-foreground">
+          {t('or')}
+        </span>
+        <hr className="grow border-t border-foreground" />
       </div>
       <Link href="/planner">
         <button
           type="button"
-          className="w-full text-center text-base text-textDarkBackground hover:underline"
+          className="w-full text-center text-base text-foreground hover:underline"
           onClick={() => {
             useAuthStore.getState().logout();
           }}

@@ -1,8 +1,9 @@
-import type { Course } from '@/types/course';
 import type { FC } from 'react';
-import { type DraggedCourseCard, DragType } from '@/types/dnd';
+import type { Course } from '@/types/course';
+import type { DraggedCourseCard } from '@/types/dnd';
 import { useCallback } from 'react';
 import { useDrag } from 'react-dnd';
+import { DragType } from '@/types/dnd';
 
 type CourseCardProps = {
   course: Course;
@@ -27,7 +28,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
   return (
     <div
       ref={dragRef}
-      className={`cursor-pointer rounded-lg bg-white p-4 shadow-sm transition-opacity ${
+      className={`cursor-pointer rounded-lg bg-white p-4 shadow-xs transition-opacity ${
         isDragging ? 'opacity-50' : 'opacity-100'
       }`}
       data-testid={`course-card-${course.code}`}

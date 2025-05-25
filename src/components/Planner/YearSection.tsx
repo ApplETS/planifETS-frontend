@@ -2,10 +2,10 @@
 
 import type { Session as SessionType } from '@/types/session';
 
-import { usePlannerStore } from '@/store/plannerStore';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
+import { usePlannerStore } from '@/store/plannerStore';
 import BaseButton from '../atoms/buttons/BaseButton';
 import Session from './Session';
 
@@ -40,8 +40,8 @@ const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIO
           <FaTrash />
         </BaseButton>
       )}
-      <div className="rounded-lg border border-buttonTags bg-yearSection p-4 shadow-lg">
-        <h2 className="mb-1 text-xl font-semibold">
+      <div className="rounded-lg border border-primary bg-secondary p-4 shadow-lg">
+        <h2 className="mb-2.5 text-xl font-semibold text-foreground">
           {t('year-with-value', { value: year })}
         </h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">

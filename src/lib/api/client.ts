@@ -8,8 +8,8 @@ class ApiClient {
   private baseURL: string;
   private defaultHeaders: HeadersInit;
 
-  constructor(baseURL?: string) {
-    this.baseURL = baseURL || process.env.NEXT_PUBLIC_API_BASE_URL || '';
+  constructor() {
+    this.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:3001';
     this.defaultHeaders = {
       'Content-Type': 'application/json',
     };

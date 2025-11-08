@@ -1,11 +1,41 @@
-/**
- * Course Service
- * Handles course-related API calls
- */
-
+import type { CourseSearchParams, SearchCoursesDto } from '../types';
 import type { ApiResponse } from '@/types/api';
 import { apiClient } from '../client';
 import { API_ENDPOINTS } from '../endpoints';
+
+export type Availability = 'JOUR' | 'SOIR';
+export type Trimester = 'HIVER' | 'ETE' | 'AUTOMNE';
+
+export type Session = {
+  trimester: Trimester;
+  year: number;
+};
+
+export type CourseInstance = {
+  availability: Availability[];
+  sessionYear: number;
+  sessionTrimester: Trimester;
+  session: Session;
+};
+
+export type CourseDetail = {
+  code: string;
+  title: string;
+  credits: number;
+  description: string;
+  cycle: number;
+  courseInstances: CourseInstance[];
+};
+
+export type ProgramCourse = {
+  courseId: number;
+  programId: number;
+  type: string;
+  typicalSessionIndex: number;
+  unstructuredPrerequisite: string;
+  course: CourseDetail;
+  prerequisites: unknown[];
+};
 
 export type Course = {
   id: string;
@@ -17,31 +47,51 @@ export type Course = {
   corequisites?: string[];
 };
 
-export type CourseSearchParams = {
-  query?: string;
-  programId?: string;
-  credits?: number;
+export type GetCourseParams = {
+  courseId: number;
+  programCode: string;
 };
 
 export const courseService = {
   /**
-   * Get all courses
+   * Search courses by query string
+   * @param params - Search parameters including query, programCodes, limit, and offset
+   * @returns Paginated search results with courses, total count, and hasMore flag
    */
+  async searchCourses(params: CourseSearchParams): Promise<ApiResponse<SearchCoursesDto>> {
+    const queryParams = new URLSearchParams();
+
+    queryParams.append('query', params.query);
+
+    // programCodes is optional - only add if provided and not empty
+    if (params.programCodes && params.programCodes.trim()) {
+      queryParams.append('programCodes', params.programCodes.trim());
+    }
+
+    if (params.limit !== undefined) {
+      queryParams.append('limit', params.limit.toString());
+    }
+
+    if (params.offset !== undefined) {
+      queryParams.append('offset', params.offset.toString());
+    }
+
+    return apiClient.get<SearchCoursesDto>(
+      `${API_ENDPOINTS.COURSES.SEARCH}?${queryParams.toString()}`,
+    );
+  },
+
   async getCourses(): Promise<ApiResponse<Course[]>> {
-    return apiClient.get<Course[]>(API_ENDPOINTS.COURSES.LIST);
+    return apiClient.get<Course[]>(API_ENDPOINTS.COURSES.SEARCH);
   },
 
-  /**
-   * Get course by ID
-   */
-  async getCourseById(id: string): Promise<ApiResponse<Course>> {
-    return apiClient.get<Course>(API_ENDPOINTS.COURSES.BY_ID(id));
-  },
-
-  /**
-   * Get course prerequisites
-   */
-  async getCoursePrerequisites(courseId: string): Promise<ApiResponse<Course[]>> {
-    return apiClient.get<Course[]>(API_ENDPOINTS.COURSES.PREREQUISITES(courseId));
+  async getCourse(params: GetCourseParams): Promise<ApiResponse<ProgramCourse>> {
+    const queryParams = new URLSearchParams({
+      courseId: params.courseId.toString(),
+      programCode: params.programCode,
+    });
+    return apiClient.get<ProgramCourse>(
+      `${API_ENDPOINTS.PROGRAM_COURSES.COURSE_DETAILS}?${queryParams.toString()}`,
+    );
   },
 };

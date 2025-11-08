@@ -4,12 +4,14 @@ export const API_ENDPOINTS = {
     BY_ID: (id: string) => `/programs/${id}`,
     COURSES: (id: string) => `/programs/${id}/courses`,
   },
+  PROGRAM_COURSES: {
+    BY_PROGRAM_CODES: '/program-courses',
+    COURSE_DETAILS: '/program-courses/details',
+  },
   COURSES: {
-    LIST: '/courses',
-    BY_ID: (id: string) => `/courses/${id}`,
-    PREREQUISITES: (id: string) => `/courses/${id}/prerequisites`,
+    SEARCH: '/courses/search',
   },
   SESSIONS: {
-    BY_ID: (id: string) => `/sessions/${id}`,
+    LATEST_AVAILABLE: () => `/sessions/latest-available`,
   },
 } as const;

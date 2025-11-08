@@ -1,8 +1,3 @@
-/**
- * useApi Hook
- * Simple hook for handling API calls with loading and error states
- */
-
 'use client';
 
 import type { ApiResponse } from '@/types/api';

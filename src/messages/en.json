@@ -1,24 +1,12 @@
 {
   "Commons": {
     "credits": "credits",
-    "login": "Sign in",
     "logout": "Sign out",
     "settings": "Settings",
     "language": "Language",
     "theme": "Theme",
     "loading": "Loading...",
     "cancel": "Cancel"
-  },
-  "LoginPage": {
-    "title": "Login with Signets",
-    "description": "Access all your completed courses!",
-    "universal-code": "Universal code",
-    "universal-code-placeholder": "Ex: AS12345",
-    "password": "Password",
-    "password-placeholder": "Your password",
-    "login": "LOGIN",
-    "or": "OR",
-    "continue-as-guest": "Continue as a Guest"
   },
   "PlannerPage": {
     "year-with-value": "Year {value}",

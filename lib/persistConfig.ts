@@ -19,7 +19,7 @@ export const persistConfig = <T>(
     partialize: (state: T) => {
       const serializedState: Partial<T> = {};
       Object.keys(state as object).forEach((key) => {
-        const value = (state as any)[key];
+        const value = state[key as keyof T];
         if (typeof value !== 'function') {
           serializedState[key as keyof T] = value;
         }

@@ -1,3 +1,4 @@
+// TODO: use proper API endpoint (/programs)
 export const programs = [
   {
     label: 'Baccalauréat en génie logiciel',

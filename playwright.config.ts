@@ -14,15 +14,21 @@ export default defineConfig({
   // Look for files with the .spec.js or .e2e.js extension
   testMatch: '*.@(spec|e2e).?(c|m)[jt]s?(x)',
   // Timeout per test
-  timeout: 120 * 1000,
+  timeout: 60 * 1000,
   // Fail the build on CI if you accidentally left test.only in the source code.
   forbidOnly: !!process.env.CI,
   // Reporter to use. See https://playwright.dev/docs/test-reporters
   reporter: process.env.CI ? 'github' : 'list',
-  retries: process.env.CI ? 3 : 0,
+  retries: process.env.CI ? 2 : 0,
+  // Use more workers in CI
+  workers: process.env.CI ? '100%' : undefined,
+  // Limit failures in CI to fail fast
+  maxFailures: process.env.CI ? 10 : undefined,
+  // Enable fully parallel execution
+  fullyParallel: true,
   expect: {
     // Set timeout for async expect matchers
-    timeout: 60 * 1000,
+    timeout: 30 * 1000,
   },
 
   // Run your local dev server before starting the tests:
@@ -41,20 +47,32 @@ export default defineConfig({
     baseURL,
 
     // Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer
-    trace: process.env.CI ? 'retain-on-failure' : undefined,
+    trace: process.env.CI ? 'on-first-retry' : undefined,
 
-    // Record videos when retrying the failed test.
-    video: process.env.CI ? 'retain-on-failure' : undefined,
+    // Record videos only on first retry to save time
+    video: process.env.CI ? 'on-first-retry' : undefined,
+
+    // Take screenshots only on failure
+    screenshot: 'only-on-failure',
+
+    // Reduce action timeout in CI for faster failure detection
+    actionTimeout: process.env.CI ? 15 * 1000 : 0,
+
+    // Increase navigation timeout slightly
+    navigationTimeout: process.env.CI ? 30 * 1000 : 30 * 1000,
   },
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
+    // Run Firefox tests only locally, not in CI
+    ...(!process.env.CI
+      ? [{
+        name: 'firefox',
+        use: { ...devices['Desktop Firefox'] },
+      }]
+      : []),
   ],
 
 });

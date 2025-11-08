@@ -4,6 +4,8 @@
     "source.fixAll": "explicit",
     "source.fixAll.eslint": "explicit"
   },
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
   "eslint.nodePath": "./node_modules/eslint",
   "eslint.validate": [
     "javascript",
@@ -22,7 +24,10 @@
   "search.exclude": {
     "yarn.lock": true
   },
-  "i18n-ally.localesPaths": ["src/i18n", "src/messages"],
+  "i18n-ally.localesPaths": [
+    "src/i18n",
+    "src/messages"
+  ],
   "i18n-ally.keystyle": "nested",
   "cSpell.ignorePaths": [
     "**/*",

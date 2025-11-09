@@ -1,7 +1,11 @@
 /* eslint-disable jsonc/sort-keys */
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
@@ -11,7 +15,6 @@
     "alwaysStrict": true,
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
-
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -19,35 +22,37 @@
     "noUnusedParameters": true,
     "allowUnreachableCode": false,
     "noFallthroughCasesInSwitch": true,
-
     "target": "es2017",
     "outDir": "out",
     "sourceMap": true,
-
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "checkJs": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-
     "jsx": "preserve",
     "noEmit": true,
     "isolatedModules": true,
     "incremental": true,
-
+    "types": [],
     // Path aliases
     "paths": {
-      "@/*": ["./src/*"],
-      "@/public/*": ["./public/*"],
-      "@/lib/*": ["./lib/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@/public/*": [
+        "./public/*"
+      ],
+      "@/lib/*": [
+        "./lib/*"
+      ]
       // "@/ui/*": ["lib/components/ui/*"],
       // "@/components/*": ["lib/components/*"],
       // "@/utils/*": ["lib/utils/*"],
       // "@lib/*": ["./lib/*"],
       // "@/hooks/*": ["lib/hooks/*"]
     },
-
     // Editor support
     "plugins": [
       {

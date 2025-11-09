@@ -22,7 +22,7 @@ export const useSessionDrop = ({ sessionYear, sessionTerm, sessionTiming }: UseS
   const [{ isOver, canDrop, draggedItem }, drop] = useDrop(() => ({
     accept: [DragType.COURSE_CARD, DragType.COURSE_BOX],
     canDrop: (item: DraggedItem) => {
-      if (!item || sessionTiming.isPast) {
+      if (!item) {
         return false;
       }
 

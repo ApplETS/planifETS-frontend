@@ -1,8 +1,8 @@
 import type { CourseInstance } from '@/types/course';
 import type { Session } from '@/types/session';
-import { persistConfig } from 'lib/persistConfig';
 import { enqueueSnackbar } from 'notistack';
 import { create } from 'zustand';
+import { persistConfig } from '@/lib/persistConfig';
 import { SessionEnum } from '@/types/session';
 import { determineInitialStatus } from '@/utils/courseUtils';
 import {

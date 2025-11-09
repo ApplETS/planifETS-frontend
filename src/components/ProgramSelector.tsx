@@ -1,5 +1,6 @@
 'use client';
 
+import type { Course } from '@/types/course';
 import { Autocomplete, Chip, TextField, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useTranslations } from 'next-intl';
@@ -8,6 +9,8 @@ import { programCourses } from '@/data/program-courses';
 import { useCourseStore } from '@/store/courseStore';
 import { useProgramStore } from '@/store/programStore';
 import { programs } from '../data/programs-data';
+
+type Program = typeof programs[number];
 
 const ProgramSelector: React.FC = () => {
   const t = useTranslations('PlannerPage');
@@ -22,10 +25,10 @@ const ProgramSelector: React.FC = () => {
     return programs.filter(program => selectedPrograms.includes(program.key));
   }, [programStore]);
 
-  const handleProgramChange = (_event: any, values: any[]) => {
+  const handleProgramChange = (_event: React.SyntheticEvent, values: Program[]) => {
     const programKeys = values.map(value => value.key);
 
-    const coursesByCode: Record<string, any> = {};
+    const coursesByCode: Record<string, Course> = {};
 
     programKeys.forEach((programId) => {
       if (programCourses[programId]) {

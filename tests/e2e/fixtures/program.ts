@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { selectors } from 'tests/assets/selectors';
+import { selectors } from '../../assets/selectors';
 
 const PROGRAM_CODE_LOG = '7084';
 const PROGRAM_TITLE_LOG = 'Baccalauréat en génie logiciel';

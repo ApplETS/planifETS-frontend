@@ -1,6 +1,7 @@
 import type { Course } from '@/types/course';
-import { persistConfig } from 'lib/persistConfig';
 import { create } from 'zustand';
+
+import { persistConfig } from '@/lib/persistConfig';
 
 type CourseState = {
   courses: Record<number, Course>;

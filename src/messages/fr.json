@@ -1,24 +1,11 @@
 {
   "Commons": {
     "credits": "crédits",
-    "login": "Se connecter",
-    "logout": "Se déconnecter",
     "settings": "Paramètres",
     "language": "Language",
     "theme": "Thème",
     "loading": "Chargement...",
     "cancel": "Annuler"
-  },
-  "LoginPage": {
-    "title": "Se connecter avec Signets",
-    "description": "Accédez à tous vos cours complétés!",
-    "universal-code": "Code universel",
-    "universal-code-placeholder": "Ex: AS12345",
-    "password": "Mot de passe",
-    "password-placeholder": "Votre mot de passe",
-    "login": "SE CONNECTER",
-    "or": "OU",
-    "continue-as-guest": "Continuer en tant qu'invité"
   },
   "PlannerPage": {
     "year-with-value": "Année {value}",

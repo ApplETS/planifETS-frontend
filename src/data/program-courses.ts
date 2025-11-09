@@ -1,5 +1,6 @@
 import type { Course } from '@/types/course';
 
+// TODO: use proper API endpoint (/program-courses)
 export const programCourses: { [key: string]: Course[] }
 = {
   7084: [

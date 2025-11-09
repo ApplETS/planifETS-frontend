@@ -37,7 +37,6 @@
     "incremental": true,
 
     // Path aliases
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "@/public/*": ["./public/*"],

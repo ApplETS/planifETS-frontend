@@ -5,7 +5,7 @@ export const API_ENDPOINTS = {
     COURSES: (id: string) => `/programs/${id}/courses`,
   },
   PROGRAM_COURSES: {
-    BY_PROGRAM_CODES: '/program-courses',
+    DEFAULT: '/program-courses',
     COURSE_DETAILS: '/program-courses/details',
   },
   COURSES: {

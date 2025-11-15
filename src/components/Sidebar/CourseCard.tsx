@@ -18,7 +18,7 @@ type SectionProps = {
 
 const Section: FC<SectionProps> = ({ title, children }) => (
   <div className="mt-2">
-    <p className="text-sm font-semibold">{title}</p>
+    <p className="text-sm font-semibold text-foreground">{title}</p>
     <div className="mt-1 flex flex-wrap gap-2">{children}</div>
   </div>
 );
@@ -69,7 +69,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
           dragRef(node);
         }
       }}
-      className={`relative w-full cursor-grab rounded-md bg-background p-4 shadow-md 
+      className={`relative w-full cursor-grab rounded-md bg-background p-4 shadow-md
         ${isDragging ? 'opacity-50' : 'opacity-100'}`}
       data-testid={`course-card-${course.code}`}
       onMouseEnter={() => setIsHovered(true)}
@@ -82,8 +82,8 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
       />
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <h3 className="text-lg font-semibold">{course.code}</h3>
-          <p className="text-sm">{course.title}</p>
+          <h3 className="text-lg font-semibold text-foreground">{course.code}</h3>
+          <p className="text-sm text-muted-foreground">{course.title}</p>
         </div>
         <div className="mt-2 flex items-center gap-2">
           <CreditsTag credits={course.credits} data-testid={`course-card-${course.code}-credits`} />

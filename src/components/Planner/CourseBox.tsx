@@ -64,9 +64,9 @@ const CourseBox: FC<CourseBoxProps> = ({
       className={`
         shadow-xs
         relative mb-2 cursor-pointer rounded-lg
-        bg-muted p-4 transition duration-300 
-        ease-in-out hover:-translate-y-0.5 
-        hover:shadow-md
+        bg-muted p-4 transition duration-300
+        ease-in-out hover:-translate-y-0.5
+        hover:shadow-md text-foreground
         ${isDragging ? 'opacity-50' : 'opacity-100'}
       `}
       onMouseEnter={() => setIsHovered(true)}
@@ -96,7 +96,7 @@ const CourseBox: FC<CourseBoxProps> = ({
           <StatusTag status={status} />
         </div>
       </div>
-      <div className="text-sm text-gray-500">
+      <div className="text-sm text-muted-foreground">
         {credits}
         {' '}
         {t('credits-short')}

@@ -12,16 +12,16 @@ export const programService = {
     return apiClient.get<ProgramDto>(API_ENDPOINTS.PROGRAMS.BY_ID(id));
   },
 
-  async getProgramCourses(programCodes: string[]): Promise<
+  async getProgramCourses(programIds: string[]): Promise<
     ApiResponse<ProgramCoursesResponseDto>
   > {
     const params = new URLSearchParams();
-    for (const code of programCodes) {
-      params.append('programCodes', code);
+    for (const code of programIds) {
+      params.append('programIds', code);
     }
 
     return apiClient.get<ProgramCoursesResponseDto>(
-      `${API_ENDPOINTS.PROGRAM_COURSES.BY_PROGRAM_CODES}?${params.toString()}`,
+      `${API_ENDPOINTS.PROGRAM_COURSES.DEFAULT}?${params.toString()}`,
     );
   },
 };

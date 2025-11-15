@@ -1,7 +1,7 @@
 export type ProgramDto = {
   id: string;
   code: string;
-  name: string;
+  title: string;
   description?: string;
   credits: number;
   duration: number;

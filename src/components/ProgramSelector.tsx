@@ -1,89 +1,104 @@
 'use client';
 
+import type {
+  CoursePrerequisiteDto,
+  ProgramCourseDetailedDto,
+  ProgramCoursesDto,
+  ProgramDto,
+} from '../lib/api/types/program';
 import type { Course } from '@/types/course';
-import { Autocomplete, Chip, TextField, useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
-import { programCourses } from '@/data/program-courses';
+
 import { useCourseStore } from '@/store/courseStore';
 import { useProgramStore } from '@/store/programStore';
-import { programs } from '../data/programs-data';
-
-type Program = typeof programs[number];
+import { useProgramCoursesApi } from '../lib/api/hooks/useProgramCoursesApi';
+import { useProgramsApi } from '../lib/api/hooks/useProgramsApi';
+import { MultiSelect } from './atoms/multi-select';
 
 const ProgramSelector: React.FC = () => {
   const t = useTranslations('PlannerPage');
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const programStore = useProgramStore();
   const setCourses = useCourseStore(state => state.setCourses);
 
-  const defaultPrograms = React.useMemo(() => {
-    const selectedPrograms = programStore.getSelectedPrograms();
-    return programs.filter(program => selectedPrograms.includes(program.key));
-  }, [programStore]);
+  // Fetch programs from API
+  const { data: programsData } = useProgramsApi();
+  const programs = React.useMemo(() => programsData || [], [programsData]);
 
-  const handleProgramChange = (_event: React.SyntheticEvent, values: Program[]) => {
-    const programKeys = values.map(value => value.key);
+  // Get selected program codes
+  const selectedProgramCodes = programStore.getSelectedPrograms();
 
-    const coursesByCode: Record<string, Course> = {};
+  // Fetch courses for selected programs
+  const { data: programCoursesData } = useProgramCoursesApi(selectedProgramCodes);
 
-    programKeys.forEach((programId) => {
-      if (programCourses[programId]) {
-        programCourses[programId].forEach((course) => {
-          if (course?.id && course?.code) {
-            coursesByCode[course.code] = course;
+  // Update courses in store when program courses data changes
+  React.useEffect(() => {
+    if (programCoursesData?.data) {
+      const coursesByCode: Record<string, Course> = {};
+
+      programCoursesData.data.forEach((programCourses: ProgramCoursesDto) => {
+        programCourses.courses.forEach((course: ProgramCourseDetailedDto) => {
+          if (course?.code) {
+            // Map API course to app Course type
+            coursesByCode[course.code] = {
+              id: Number.parseInt(course.code.replace(/\D/g, ''), 10) || 0,
+              code: course.code,
+              title: course.title,
+              credits: course.credits,
+              prerequisites: course.prerequisites.map((p: CoursePrerequisiteDto) => p.code),
+              availability: [],
+            };
           }
         });
-      }
-    });
+      });
 
-    const allCourses = Object.values(coursesByCode);
-    setCourses(allCourses);
+      const allCourses = Object.values(coursesByCode);
+      setCourses(allCourses);
+    }
+  }, [programCoursesData, setCourses]);
 
-    programStore.setSelectedPrograms(programKeys);
+  // Helper function to strip HTML tags from text
+  const stripHtmlTags = (html: string): string => {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    return div.textContent || '';
+  };
+
+  // Convert programs to options format and sort alphabetically
+  // Use both code and name to ensure uniqueness in case of duplicate codes
+  const options = React.useMemo(
+    () =>
+      programs
+        .map((program: ProgramDto, index: number) => ({
+          value: `${program.code}-${index}`, // Make value unique by adding index
+          label: stripHtmlTags(program.title || program.code || program.id || 'Unknown Program'),
+          id: program.id,
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: 'base' })),
+    [programs],
+  );
+
+  // Convert selected codes to selected options
+  const selected = React.useMemo(
+    () => options.filter(option => selectedProgramCodes.includes(option.id)),
+    [options, selectedProgramCodes],
+  );
+
+  const handleProgramChange = (newSelected: Array<{ value: string; label: string; id?: string }>) => {
+    const codes = newSelected.map(item => item.id || item.value.split('-')[0]).filter((code): code is string => Boolean(code));
+    programStore.setSelectedPrograms(codes);
   };
 
   return (
-    <Autocomplete
-      multiple
-      options={programs}
-      sx={{ width: isMobile ? '100%' : 400 }}
-      renderInput={params => (
-        <TextField
-          {...params}
-          label={t('programs')}
-          data-testid="programs-select"
-        />
-      )}
-      renderTags={(tagValue, getTagProps) =>
-        tagValue.map((option, index) => (
-          <Chip
-            label={option.value}
-            {...getTagProps({ index })}
-            key={option.key}
-            data-testid={`program-chip-${option.key}`}
-          />
-        ))}
-      renderOption={(props, option) => {
-        const { key, ...otherProps } = props;
-        return (
-          <li
-            key={key}
-            {...otherProps}
-            role="option"
-            aria-selected={props['aria-selected']}
-            tabIndex={0}
-          >
-            {option.value}
-          </li>
-        );
-      }}
-      onChange={handleProgramChange}
-      value={defaultPrograms}
-    />
+    <div className="" data-testid="programs-select">
+      <MultiSelect
+        options={options}
+        selected={selected}
+        onChange={handleProgramChange}
+        placeholder={t('programs')}
+      />
+    </div>
   );
 };
 

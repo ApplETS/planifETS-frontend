@@ -28,14 +28,14 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
   return (
     <div
       ref={dragRef}
-      className={`cursor-pointer rounded-lg bg-white p-4 shadow-xs transition-opacity ${
+      className={`cursor-pointer rounded-lg bg-card text-card-foreground p-4 shadow-xs transition-opacity ${
         isDragging ? 'opacity-50' : 'opacity-100'
       }`}
       data-testid={`course-card-${course.code}`}
     >
-      <div className="font-medium">{course.code}</div>
-      <div className="text-sm text-gray-600">{course.title}</div>
-      <div className="mt-1 text-sm text-gray-500">
+      <div className="font-medium text-foreground">{course.code}</div>
+      <div className="text-sm text-muted-foreground">{course.title}</div>
+      <div className="mt-1 text-sm text-muted-foreground">
         {course.credits}
         {' '}
         cr.

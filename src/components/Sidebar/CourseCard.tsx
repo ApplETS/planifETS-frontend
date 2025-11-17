@@ -8,6 +8,7 @@ import FavoriteButton from '@/components/Sidebar/FavoriteButton';
 import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
 import { usePlannerStore } from '@/store/plannerStore';
 import { DragType } from '@/types/dnd';
+import CourseHeader from '../atoms/CourseHeader';
 import CreditsTag from '../atoms/CreditsTag';
 import Tag from '../atoms/Tag';
 
@@ -82,7 +83,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
       />
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <h3 className="text-lg font-semibold text-foreground">{course.code}</h3>
+          <CourseHeader code={course.code} />
           <p className="text-sm text-muted-foreground">{course.title}</p>
         </div>
         <div className="mt-2 flex items-center gap-2">

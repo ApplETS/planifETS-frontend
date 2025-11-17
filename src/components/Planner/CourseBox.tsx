@@ -12,6 +12,7 @@ import { FaTrash } from 'react-icons/fa';
 import { DragType } from '@/types/dnd';
 import BaseButton from '../atoms/buttons/BaseButton';
 import CourseHeader from '../atoms/CourseHeader';
+import CreditsTag from '../atoms/CreditsTag';
 import StatusTag from './StatusTag';
 
 type CourseBoxProps = {
@@ -97,9 +98,7 @@ const CourseBox: FC<CourseBoxProps> = ({
         </div>
       </div>
       <div className="text-sm text-muted-foreground">
-        {credits}
-        {' '}
-        {t('credits-short')}
+        <CreditsTag credits={credits} shortText={true} data-testid={`course-box-${code}-credits`} />
       </div>
     </div>
   );

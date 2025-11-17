@@ -70,9 +70,9 @@ const ProgramSelector: React.FC = () => {
   const options = React.useMemo(
     () =>
       programs
-        .map((program: ProgramDto, index: number) => ({
-          value: `${program.code}-${index}`, // Make value unique by adding index
-          label: program.title || program.code || program.id || 'Unknown Program',
+        .map((program: ProgramDto) => ({
+          value: program.id,
+          label: program.title || program.code || program.id,
           id: program.id,
         }))
         .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: 'base' })),

@@ -1,26 +1,49 @@
 'use client';
 
-import { useEffect } from 'react';
+import type { ProgramCoursesResponseDto } from '../types/program';
+import type { ApiError } from '@/types/api';
+import { useEffect, useRef, useState } from 'react';
 import { programService } from '../services/program.service';
-import { useApi } from './useApi';
 
 /**
- * Hook for fetching program courses by program codes
- * Automatically fetches courses when programCodes change
- * @param programIds - Array of program codes to fetch courses for
- * @returns Object with program courses data, loading, error states and execute function
- *
- * @example
- * const { data, loading, error } = useProgramCoursesApi(['7625', '7365']);
+ * Hook for fetching program courses by program IDs
+ * @param programIds Array of program IDs
+ * @returns Object with data, loading, error states
  */
 export function useProgramCoursesApi(programIds: string[]) {
-  const result = useApi(() => programService.getProgramCourses(programIds));
+  const [data, setData] = useState<ProgramCoursesResponseDto | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const previousProgramIds = useRef<string>('');
 
   useEffect(() => {
-    if (programIds.length > 0) {
-      result.execute();
-    }
-  }, [programIds.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
+    const currentProgramIds = programIds.join(',');
 
-  return result;
+    // Skip if no programs or same as previous fetch
+    if (programIds.length === 0 || currentProgramIds === previousProgramIds.current) {
+      return;
+    }
+
+    previousProgramIds.current = currentProgramIds;
+
+    const fetchProgramCourses = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await programService.getProgramCourses(programIds);
+        setData(response.data);
+      } catch (err) {
+        const apiError = err as ApiError;
+        setError(apiError.message || 'An error occurred');
+        setData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProgramCourses();
+  }, [programIds]);
+
+  return { data, loading, error };
 }

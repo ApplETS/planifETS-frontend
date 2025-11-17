@@ -10,11 +10,11 @@ import ProgramSelector from './ProgramSelector';
 export const ProgramSection: FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const totalCredits = usePlannerStore(state => state.totalCredits);
+  const totalCredits = usePlannerStore(state => state.getTotalCredits());
 
   return (
     <header className="w-full">
-      <div className={`flex ${isMobile ? 'flex-col space-y-2' : 'items-center space-x-4'}`}>
+      <div className={`flex ${isMobile ? 'flex-col space-y-2' : 'items-center space-x-4 pl-2'}`}>
         <ProgramSelector />
         <CreditsTag credits={totalCredits} data-testid="total-credits" />
       </div>

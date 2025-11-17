@@ -8,8 +8,8 @@ export const programService = {
     return apiClient.get<ProgramDto[]>(API_ENDPOINTS.PROGRAMS.LIST);
   },
 
-  async getProgramById(id: string): Promise<ApiResponse<ProgramDto>> {
-    return apiClient.get<ProgramDto>(API_ENDPOINTS.PROGRAMS.BY_ID(id));
+  async getProgramById(programId: string): Promise<ApiResponse<ProgramDto>> {
+    return apiClient.get<ProgramDto>(API_ENDPOINTS.PROGRAMS.BY_ID(programId));
   },
 
   async getProgramCourses(programIds: string[]): Promise<
@@ -21,7 +21,20 @@ export const programService = {
     }
 
     return apiClient.get<ProgramCoursesResponseDto>(
-      `${API_ENDPOINTS.PROGRAM_COURSES.DEFAULT}?${params.toString()}`,
+      `${API_ENDPOINTS.PROGRAM_COURSES.PROGRAMS}?${params.toString()}`,
+    );
+  },
+
+  async getCoursesByIds(courseIds: number[]): Promise<
+    ApiResponse<ProgramCoursesResponseDto>
+  > {
+    const params = new URLSearchParams();
+    for (const id of courseIds) {
+      params.append('courseIds', id.toString());
+    }
+
+    return apiClient.get<ProgramCoursesResponseDto>(
+      `${API_ENDPOINTS.PROGRAM_COURSES.IDS}?${params.toString()}`,
     );
   },
 };

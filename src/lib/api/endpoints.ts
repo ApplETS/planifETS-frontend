@@ -1,11 +1,12 @@
 export const API_ENDPOINTS = {
   PROGRAMS: {
     LIST: '/programs',
-    BY_ID: (id: string) => `/programs/${id}`,
-    COURSES: (id: string) => `/programs/${id}/courses`,
+    BY_ID: (programId: string) => `/programs/${programId}`,
+    COURSES: (programId: string) => `/programs/${programId}/courses`,
   },
   PROGRAM_COURSES: {
-    DEFAULT: '/program-courses',
+    IDS: '/program-courses/ids',
+    PROGRAMS: '/program-courses/programs',
     COURSE_DETAILS: '/program-courses/details',
   },
   COURSES: {

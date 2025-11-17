@@ -1,89 +1,73 @@
+/**
+ * Course Store - (sort of cache, not persisted)
+ *
+ * What it stores (cleared on restart to always have up-to-date data):
+ * - courses: Record<number, Course>
+ *   - Contains: id, code, title, credits, prerequisites, availability
+ */
+
 import type { Course } from '@/types/course';
 import { create } from 'zustand';
-
-import { persistConfig } from '@/lib/persistConfig';
+import { safeGetNumber } from '@/utils/safeAccess';
 
 type CourseState = {
   courses: Record<number, Course>;
-  favoriteCourses: number[];
 };
 
 type CourseActions = {
   setCourses: (courses: Course[]) => void;
   addCourse: (course: Course) => void;
   removeCourse: (courseId: number) => void;
-  toggleFavorite: (courseId: number) => void;
   getCourse: (courseId: number) => Course | undefined;
   getCoursesById: (courseIds: number[]) => Course[];
-  getFavoriteCourses: () => Course[];
-  isFavorite: (courseId: number) => boolean;
+  clearCourses: () => void;
 };
 
-export const useCourseStore = create<CourseState & CourseActions>()(
-  persistConfig('course-store', (set, get) => ({
-    courses: {},
-    favoriteCourses: [],
+export const useCourseStore = create<CourseState & CourseActions>()((set, get) => ({
+  courses: {},
 
-    getCourse: courseId => get().courses[courseId],
+  getCourse: courseId => safeGetNumber(get().courses, courseId),
 
-    getCoursesById: (courseIds) => {
-      const courses = get().courses;
-      return courseIds
-        .map(id => courses[id])
-        .filter((course): course is Course => !!course);
-    },
+  getCoursesById: (courseIds) => {
+    const courses = get().courses;
+    return courseIds
+      .map(id => safeGetNumber(courses, id))
+      .filter((course): course is Course => !!course);
+  },
 
-    addCourse: (course) => {
-      if (!course.id) {
-        return;
-      }
-      set(state => ({
-        courses: {
-          ...state.courses,
-          [course.id]: course,
-        },
-      }));
-    },
+  addCourse: (course) => {
+    if (!course.id) {
+      return;
+    }
+    set(state => ({
+      courses: {
+        ...state.courses,
+        [course.id]: course,
+      },
+    }));
+  },
 
-    setCourses: (courses) => {
-      set((state) => {
-        const coursesRecord = courses.reduce<Record<number, Course>>((acc, course) => {
-          if (course.id) {
-            acc[course.id] = course;
-          }
-          return acc;
-        }, { ...state.courses });
-        return { courses: coursesRecord };
-      });
-    },
-
-    getFavoriteCourses: () => {
-      const courses = get().courses;
-      return get().favoriteCourses.map(id => courses[id]).filter((course): course is Course => !!course);
-    },
-
-    isFavorite: courseId => get().favoriteCourses.includes(courseId),
-
-    toggleFavorite: (courseId) => {
-      set((state) => {
-        const favorites = [...state.favoriteCourses];
-        const index = favorites.indexOf(courseId);
-
-        if (index !== -1) {
-          favorites.splice(index, 1);
-        } else {
-          favorites.push(courseId);
+  setCourses: (courses) => {
+    set((state) => {
+      // Merge new courses with existing cache (don't replace)
+      const coursesRecord = courses.reduce<Record<number, Course>>((acc, course) => {
+        if (course.id) {
+          acc[course.id] = course;
         }
+        return acc;
+      }, { ...state.courses });
+      return { courses: coursesRecord };
+    });
+  },
 
-        return { favoriteCourses: favorites };
-      });
-    },
+  removeCourse: (courseId) => {
+    set((state) => {
+      const { [courseId]: _, ...rest } = state.courses;
+      return { courses: rest };
+    });
+  },
 
-    removeCourse: (courseId) => {
-      set((state) => {
-        const { [courseId]: _, ...rest } = state.courses;
-        return { courses: rest };
-      });
-    },
-  })),
-);
+  clearCourses: () => {
+    set({ courses: {} });
+  },
+}));

@@ -55,7 +55,7 @@ export function MultiSelect({ options, selected, onChange, placeholder }: MultiS
       <div className="group rounded-md border border-input px-3 py-2 text-sm text-foreground ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
         <div className="flex flex-wrap gap-1">
           {selected.map(option => (
-            <Badge key={option.value} variant="secondary" className="!text-foreground font-semibold">
+            <Badge key={option.value} variant="secondary" className="text-foreground font-semibold py-1">
               {option.label || option.value || 'No name'}
               <button
                 type="button"
@@ -83,7 +83,7 @@ export function MultiSelect({ options, selected, onChange, placeholder }: MultiS
             onBlur={() => setOpen(false)}
             onFocus={() => setOpen(true)}
             placeholder={placeholder || 'Select options...'}
-            className="ml-2 flex-1 bg-transparent text-foreground outline-none placeholder:text-muted-foreground"
+            className="ml-2 flex-1 bg-transparent text-foreground text-xs outline-none"
           />
         </div>
       </div>
@@ -92,7 +92,7 @@ export function MultiSelect({ options, selected, onChange, placeholder }: MultiS
           {open && selectables.length > 0
             ? (
               <div className="absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-                <CommandGroup className="h-full overflow-auto">
+                <CommandGroup className="max-h-80 overflow-auto">
                   {selectables.map(option => (
                     <CommandItem
                       key={option.value}

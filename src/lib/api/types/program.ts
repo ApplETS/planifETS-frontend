@@ -28,6 +28,7 @@ export type CoursePrerequisiteDto = {
 };
 
 export type ProgramCourseDetailedDto = {
+  id: number;
   code: string;
   title: string;
   credits: number;

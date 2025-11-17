@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import FavoriteButton from '@/components/Sidebar/FavoriteButton';
 import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
-import { useCourseStore } from '@/store/courseStore';
+import { usePlannerStore } from '@/store/plannerStore';
 import { DragType } from '@/types/dnd';
 import CreditsTag from '../atoms/CreditsTag';
 import Tag from '../atoms/Tag';
@@ -28,7 +28,7 @@ type CourseCardProps = {
 };
 
 const CourseCard: FC<CourseCardProps> = ({ course }) => {
-  const { toggleFavorite, isFavorite } = useCourseStore();
+  const { toggleFavorite, isFavorite } = usePlannerStore();
   const { dragRef, isDragging } = useDraggableCourse({
     course,
     type: DragType.COURSE_CARD,

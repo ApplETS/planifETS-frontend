@@ -1,7 +1,6 @@
 'use client';
 
 import type {
-  CoursePrerequisiteDto,
   ProgramCourseDetailedDto,
   ProgramCoursesDto,
   ProgramDto,
@@ -11,7 +10,9 @@ import { useTranslations } from 'next-intl';
 import * as React from 'react';
 
 import { useCourseStore } from '@/store/courseStore';
+import { usePlannerStore } from '@/store/plannerStore';
 import { useProgramStore } from '@/store/programStore';
+import { mapApiCourseToAppCourse } from '@/utils/courseUtils';
 import { useProgramCoursesApi } from '../lib/api/hooks/useProgramCoursesApi';
 import { useProgramsApi } from '../lib/api/hooks/useProgramsApi';
 import { MultiSelect } from './atoms/multi-select';
@@ -35,35 +36,34 @@ const ProgramSelector: React.FC = () => {
   // Update courses in store when program courses data changes
   React.useEffect(() => {
     if (programCoursesData?.data) {
-      const coursesByCode: Record<string, Course> = {};
+      // Get current state from stores
+      const currentCourses = useCourseStore.getState().courses;
+      const favoriteCourseIds = usePlannerStore.getState().favoriteCourses;
+
+      const coursesByCode = new Map<string, Course>();
 
       programCoursesData.data.forEach((programCourses: ProgramCoursesDto) => {
         programCourses.courses.forEach((course: ProgramCourseDetailedDto) => {
-          if (course?.code) {
-            // Map API course to app Course type
-            coursesByCode[course.code] = {
-              id: Number.parseInt(course.code.replace(/\D/g, ''), 10) || 0,
-              code: course.code,
-              title: course.title,
-              credits: course.credits,
-              prerequisites: course.prerequisites.map((p: CoursePrerequisiteDto) => p.code),
-              availability: [],
-            };
+          const mappedCourse = mapApiCourseToAppCourse(course);
+          if (mappedCourse) {
+            coursesByCode.set(mappedCourse.code, mappedCourse);
           }
         });
       });
 
-      const allCourses = Object.values(coursesByCode);
+      // Preserve favorite courses that aren't in the new data
+      const existingFavorites = Object.values(currentCourses).filter(
+        course => favoriteCourseIds.includes(course.id) && !coursesByCode.has(course.code),
+      );
+
+      existingFavorites.forEach((course) => {
+        coursesByCode.set(course.code, course);
+      });
+
+      const allCourses = Array.from(coursesByCode.values());
       setCourses(allCourses);
     }
   }, [programCoursesData, setCourses]);
-
-  // Helper function to strip HTML tags from text
-  const stripHtmlTags = (html: string): string => {
-    const div = document.createElement('div');
-    div.innerHTML = html;
-    return div.textContent || '';
-  };
 
   // Convert programs to options format and sort alphabetically
   // Use both code and name to ensure uniqueness in case of duplicate codes
@@ -72,7 +72,7 @@ const ProgramSelector: React.FC = () => {
       programs
         .map((program: ProgramDto, index: number) => ({
           value: `${program.code}-${index}`, // Make value unique by adding index
-          label: stripHtmlTags(program.title || program.code || program.id || 'Unknown Program'),
+          label: program.title || program.code || program.id || 'Unknown Program',
           id: program.id,
         }))
         .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: 'base' })),
@@ -91,7 +91,7 @@ const ProgramSelector: React.FC = () => {
   };
 
   return (
-    <div className="" data-testid="programs-select">
+    <div className="w-xl" data-testid="programs-select">
       <MultiSelect
         options={options}
         selected={selected}

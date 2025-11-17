@@ -1,23 +1,48 @@
 'use client';
 
-import { useEffect } from 'react';
+import type { ProgramDto } from '../types/program';
+import type { ApiError } from '@/types/api';
+import { useEffect, useRef, useState } from 'react';
 import { programService } from '../services/program.service';
-import { useApi } from './useApi';
 
 /**
  * Hook for fetching all programs
  * Automatically fetches programs on mount
- * @returns Object with programs data, loading, error states and execute function
+ * @returns Object with programs data, loading, error states
  *
  * @example
  * const { data: programs, loading, error } = useProgramsApi();
  */
 export function useProgramsApi() {
-  const result = useApi(() => programService.getPrograms());
+  const [data, setData] = useState<ProgramDto[] | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const hasFetched = useRef(false);
 
   useEffect(() => {
-    result.execute();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (hasFetched.current) {
+      return;
+    }
+    hasFetched.current = true;
 
-  return result;
+    const fetchPrograms = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await programService.getPrograms();
+        setData(response.data);
+      } catch (err) {
+        const apiError = err as ApiError;
+        setError(apiError.message || 'An error occurred');
+        setData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPrograms();
+  }, []);
+
+  return { data, loading, error };
 }

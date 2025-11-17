@@ -1,5 +1,16 @@
 import type { ApiError, BackendErrorDto } from '@/types/api';
 
+export class ApiNetworkError extends Error {
+  statusCode: number;
+  raw: unknown;
+  constructor(message: string, raw?: unknown) {
+    super(message);
+    this.name = 'ApiNetworkError';
+    this.statusCode = 0;
+    this.raw = raw;
+  }
+}
+
 export class ApiErrorHandler {
   static formatErrorMessage(error: ApiError): string {
     const statusCode = error.statusCode;
@@ -51,7 +62,7 @@ export class ApiErrorHandler {
    * Check if error is network error
    */
   static isNetworkError(error: unknown): boolean {
-    return error instanceof TypeError && error.message.includes('fetch');
+    return error instanceof ApiNetworkError;
   }
 
   /**
@@ -86,7 +97,7 @@ export class ApiErrorHandler {
  */
 export function handleApiError(error: unknown): string {
   if (ApiErrorHandler.isNetworkError(error)) {
-    return 'Network error. Please check your connection.';
+    return (error as ApiNetworkError).message;
   }
 
   if (typeof error === 'object' && error !== null && 'statusCode' in error) {

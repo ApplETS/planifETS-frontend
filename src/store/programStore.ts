@@ -1,5 +1,14 @@
+/**
+ * Program Store
+ * Purpose: Store which programs the user has selected to view and track course associations
+ * Key principle: Store only user's program choices (IDs/codes), not the program catalog data
+ * What it stores (user's persistent data):
+ * - selectedPrograms: string[] - Array of selected program codes/IDs
+ * - programCourseIds: Record<string, number[]> - Maps program codes/IDs to arrays of associated course IDs
+ */
+
 import { create } from 'zustand';
-import { persistConfig } from '../../lib/persistConfig';
+import { persistConfig } from '@/lib/persistConfig';
 
 type ProgramState = {
   selectedPrograms: string[];

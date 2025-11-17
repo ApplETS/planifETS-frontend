@@ -7,6 +7,7 @@ import Tabs from '@mui/material/Tabs';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useProgramCoursesOperations } from '@/hooks/course/useProgramCoursesOperations';
+import { ScrollArea } from '@/shadcn/ui/scroll-area';
 import { COURSES_TAB_INDEX, FAVORITE_TAB_INDEX } from '@/utils/constants';
 import CourseCard from './CourseCard';
 import SearchBar from './CourseSearchBar';
@@ -33,7 +34,7 @@ export default function CourseSidebar() {
   function renderCoursesContent() {
     if (displayedCourses.length > 0) {
       return (
-        <div className="flex flex-col gap-4 p-2">
+        <div className="flex flex-col gap-4 pl-1">
           {displayedCourses.map(course => (
             <CourseCard
               key={course.code}
@@ -63,10 +64,9 @@ export default function CourseSidebar() {
   return (
     <aside
       className={`mt-4 flex w-auto flex-col rounded-lg border-2 border-primary
-            bg-secondary p-4 md:fixed
+            bg-secondary p-3 md:fixed
             md:bottom-4 md:top-20
             md:mt-0 md:w-80
-            md:overflow-y-auto
            `}
     >
       <Tabs
@@ -84,8 +84,10 @@ export default function CourseSidebar() {
 
       <SearchBar onSearch={handleSearch} />
 
-      <div className="no-scrollbar mt-4 flex-1 overflow-y-auto">
-        {renderCoursesContent()}
+      <div className="mt-4 flex-1 overflow-hidden">
+        <ScrollArea className="h-full rounded-md">
+          {renderCoursesContent()}
+        </ScrollArea>
       </div>
     </aside>
   );

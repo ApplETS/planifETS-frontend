@@ -26,7 +26,7 @@ export const useSessionDrop = ({ sessionYear, sessionTerm, sessionTiming }: UseS
         return false;
       }
 
-      const courseId = item.course.id;
+      const courseId = item.type === DragType.COURSE_BOX ? item.courseId : item.course.id;
       const sessionCourses = sessionStore.getSessionCourses(sessionKey);
 
       if (sessionCourses.some(c => c.courseId === courseId)) {
@@ -47,7 +47,7 @@ export const useSessionDrop = ({ sessionYear, sessionTerm, sessionTiming }: UseS
       if (item.type === DragType.COURSE_BOX) {
         const fromSessionKey = generateSessionKey(item.fromSessionYear, item.fromSessionTerm);
         const toSessionKey = generateSessionKey(sessionYear, sessionTerm);
-        sessionStore.moveCourse(fromSessionKey, toSessionKey, item.course.id);
+        sessionStore.moveCourse(fromSessionKey, toSessionKey, item.courseId);
       } else {
         handleAddCourse(item.course.id);
       }

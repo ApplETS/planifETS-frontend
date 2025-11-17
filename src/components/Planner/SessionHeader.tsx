@@ -29,7 +29,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
     <div className="mb-2 flex select-none flex-col sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-center gap-2">
         <SeasonIcon className={color} />
-        <h3 className="text-lg font-bold text-foreground">
+        <h3 className="text-lg font-bold">
           {translatedSessionTerm}
           {' '}
           {sessionYear}

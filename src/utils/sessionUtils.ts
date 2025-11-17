@@ -9,7 +9,7 @@ const SESSION_MONTH_RANGES = {
 } as const;
 
 export const generateSessionCode = (sessionTerm: SessionEnum, year: number): string => {
-  return `${sessionTerm}${year.toString().slice(-2)}`;
+  return `${sessionTerm}${year}`;
 };
 
 export const getCurrentSession = (month: number = new Date().getMonth()): SessionEnum => {
@@ -117,20 +117,62 @@ export const calculateTotalCredits = (
 
 export const createSessionsForYear = (sessionYear: number): Record<string, Session> => {
   const sessions: Record<string, Session> = {};
-  const sessionTerms = Object.values(SessionEnum);
+  const orderedSessionTerms = [SessionEnum.H, SessionEnum.E, SessionEnum.A];
 
-  sessionTerms.forEach((name) => {
+  orderedSessionTerms.forEach((name) => {
     const key = generateSessionKey(sessionYear, name);
     sessions[key] = {
       key,
       sessionTerm: name,
       sessionYear,
       courseInstances: [],
-      totalCredits: 0,
     };
   });
 
   return sessions;
+};
+
+export const updateSessionCourseInstances = (
+  sessions: Record<string, Session>,
+  sessionKey: string,
+  courseInstances: CourseInstance[],
+): Record<string, Session> => {
+  const session = sessions[sessionKey];
+  if (!session) {
+    return sessions;
+  }
+
+  return {
+    ...sessions,
+    [sessionKey]: {
+      ...session,
+      courseInstances,
+    },
+  };
+};
+
+export const updateMultipleSessions = (
+  sessions: Record<string, Session>,
+  updates: Array<{ sessionKey: string; courseInstances: CourseInstance[] }>,
+): Record<string, Session> => {
+  let updatedSessions = { ...sessions };
+
+  updates.forEach(({ sessionKey, courseInstances }) => {
+    updatedSessions = updateSessionCourseInstances(updatedSessions, sessionKey, courseInstances);
+  });
+
+  return updatedSessions;
+};
+
+export const hasCourseInSession = (session: Session, courseId: number): boolean => {
+  return session.courseInstances.some(instance => instance.courseId === courseId);
+};
+
+export const findCourseInSession = (
+  session: Session,
+  courseId: number,
+): CourseInstance | undefined => {
+  return session.courseInstances.find(instance => instance.courseId === courseId);
 };
 
 type BorderStyle = 'border-destructive' | 'border-primary' | '';

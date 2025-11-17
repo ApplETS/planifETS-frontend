@@ -4,6 +4,8 @@ import type { SessionEnum, SessionTiming } from '@/types/session';
 import { useTranslations } from 'next-intl';
 import { useCourseStatus } from '@/hooks/course/useCourseStatus';
 import { useCourseStore } from '@/store/courseStore';
+import { safeGetNumber } from '@/utils/safeAccess';
+import CourseCardSkeleton from '../skeletons/CourseCardSkeleton';
 import CourseBox from './CourseBox';
 
 type CoursesListProps = {
@@ -28,7 +30,7 @@ const CoursesList: FC<CoursesListProps> = ({
   const t = useTranslations('PlannerPage');
 
   const { getCourseStatus } = useCourseStatus();
-  const { getCourse } = useCourseStore();
+  const courses = useCourseStore(state => state.courses);
 
   return (
     <div className="flex-1 overflow-y-auto">
@@ -36,14 +38,14 @@ const CoursesList: FC<CoursesListProps> = ({
         ? (
           <div className="space-y-2">
             {courseInstances.map((instance) => {
-              const course = getCourse(instance.courseId);
+              const course = safeGetNumber(courses, instance.courseId);
               if (!course) {
-                return null;
+                return <CourseCardSkeleton key={instance.courseId} />;
               }
 
               return (
                 <CourseBox
-                  key={course.code}
+                  key={`${sessionTerm}-${sessionYear}-${instance.courseId}`}
                   code={course.code}
                   status={getCourseStatus(instance.courseId, sessionYear, sessionTerm, sessionTiming)}
                   isDraggable={canDragCourses}

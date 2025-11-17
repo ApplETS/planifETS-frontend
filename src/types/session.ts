@@ -11,7 +11,6 @@ export type Session = {
   sessionTerm: SessionEnum;
   sessionYear: number;
   courseInstances: CourseInstance[];
-  totalCredits: number;
 };
 
 export type SessionTiming = {

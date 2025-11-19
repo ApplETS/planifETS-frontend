@@ -1,6 +1,6 @@
 export const selectors = {
   // Program
-  programChip: (programCode: string) => `[data-testid="program-chip-${programCode}"]`,
+  programChip: (programId: string) => `[data-testid="program-chip-${programId}"]`,
   programsSelect: '[data-testid="programs-select"]',
 
   // Course

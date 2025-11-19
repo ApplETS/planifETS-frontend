@@ -7,7 +7,7 @@ import * as React from 'react';
 import { Badge } from '@/shadcn/ui/badge';
 import { Command, CommandGroup, CommandItem, CommandList } from '@/shadcn/ui/command';
 
-type Option = Record<'value' | 'label', string> & { code?: string };
+type Option = Record<'value' | 'label', string> & { code?: string; id?: string };
 
 export type MultiSelectProps = {
   options: Option[];
@@ -55,7 +55,12 @@ export function MultiSelect({ options, selected, onChange, placeholder }: MultiS
       <div className="group rounded-md border border-input px-3 py-2 text-sm text-foreground ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
         <div className="flex flex-wrap gap-1">
           {selected.map(option => (
-            <Badge key={option.value} variant="secondary" className="text-foreground font-semibold py-1">
+            <Badge
+              key={option.value}
+              variant="secondary"
+              className="text-foreground font-semibold py-1"
+              data-testid={`program-chip-${option.id}`}
+            >
               {option.label || option.value || 'No name'}
               <button
                 type="button"
@@ -95,6 +100,7 @@ export function MultiSelect({ options, selected, onChange, placeholder }: MultiS
                 <CommandGroup className="max-h-80 overflow-auto">
                   {selectables.map(option => (
                     <CommandItem
+                      role="option"
                       key={option.value}
                       onMouseDown={(e) => {
                         e.preventDefault();

@@ -10,7 +10,7 @@ import { programService } from '../services/program.service';
  * @param programIds Array of program IDs
  * @returns Object with data, loading, error states
  */
-export function useProgramCoursesApi(programIds: string[]) {
+export function useProgramCoursesApi(programIds: number[]) {
   const [data, setData] = useState<ProgramCoursesResponseDto | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

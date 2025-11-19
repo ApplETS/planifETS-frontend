@@ -1,10 +1,17 @@
 export type ProgramDto = {
-  id: string;
+  id: number;
   code: string;
   title: string;
   description?: string;
-  credits: number;
-  duration: number;
+  credits: string;
+  cycle: number;
+  url: string;
+  isHorairePdfParsable: boolean;
+  isPlanificationPdfParsable: boolean;
+  horaireCoursPdfJson: string | null;
+  planificationPdfJson: string | null;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type ProgramCourseDto = {

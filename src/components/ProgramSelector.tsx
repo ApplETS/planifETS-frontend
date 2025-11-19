@@ -72,7 +72,7 @@ const ProgramSelector: React.FC = () => {
       programs
         .map((program: ProgramDto) => ({
           value: program.id,
-          label: program.title || program.code || program.id,
+          label: program.title || program.code,
           id: program.id,
         }))
         .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: 'base' })),
@@ -85,9 +85,9 @@ const ProgramSelector: React.FC = () => {
     [options, selectedProgramCodes],
   );
 
-  const handleProgramChange = (newSelected: Array<{ value: string; label: string; id?: string }>) => {
-    const codes = newSelected.map(item => item.id || item.value.split('-')[0]).filter((code): code is string => Boolean(code));
-    programStore.setSelectedPrograms(codes);
+  const handleProgramChange = (newSelected: Array<{ value: number; label: string; id: number }>) => {
+    const ids = newSelected.map(item => item.id);
+    programStore.setSelectedPrograms(ids);
   };
 
   return (

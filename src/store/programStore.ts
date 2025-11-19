@@ -11,18 +11,18 @@ import { create } from 'zustand';
 import { persistConfig } from '@/lib/persistConfig';
 
 type ProgramState = {
-  selectedPrograms: string[];
-  programCourseIds: Record<string, number[]>;
+  selectedPrograms: number[];
+  programCourseIds: Record<number, number[]>;
 };
 
 type ProgramActions = {
-  getSelectedPrograms: () => string[];
-  getProgramCourseIds: (program: string | null) => number[];
-  setSelectedPrograms: (programs: string[]) => void;
-  setProgramCourses: (program: string, courseIds: number[]) => void;
-  addProgramCourse: (program: string, courseId: number) => void;
-  removeProgramCourse: (program: string, courseId: number) => void;
-  clearProgramCourseIds: (program?: string) => void;
+  getSelectedPrograms: () => number[];
+  getProgramCourseIds: (program: number | null) => number[];
+  setSelectedPrograms: (programs: number[]) => void;
+  setProgramCourses: (program: number, courseIds: number[]) => void;
+  addProgramCourse: (program: number, courseId: number) => void;
+  removeProgramCourse: (program: number, courseId: number) => void;
+  clearProgramCourseIds: (program?: number) => void;
 };
 
 export const useProgramStore = create<ProgramState & ProgramActions>()(

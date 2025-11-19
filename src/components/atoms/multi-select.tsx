@@ -7,7 +7,12 @@ import * as React from 'react';
 import { Badge } from '@/shadcn/ui/badge';
 import { Command, CommandGroup, CommandItem, CommandList } from '@/shadcn/ui/command';
 
-type Option = Record<'value' | 'label', string> & { code?: string; id?: string };
+type Option = {
+  value: number;
+  label: string;
+  id: number;
+  code?: string;
+};
 
 export type MultiSelectProps = {
   options: Option[];

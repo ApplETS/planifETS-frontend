@@ -2,6 +2,24 @@ import type { Course, CourseInstance } from '@/types/course';
 import type { Session, SessionTiming } from '@/types/session';
 import { SessionEnum } from '@/types/session';
 
+/**
+ * Formats a session code like 'A2025' to 'A25' for UI display.
+ * If the input does not match the expected format, returns it unchanged.
+ */
+export const formatSessionShort = (sessionCode: string): string => {
+  // Match session codes like 'A2025', 'H2024', etc.
+  const match = sessionCode.match(/^([AHE])(\d{4})$/);
+  if (!match) {
+    return sessionCode;
+  }
+  const term = match[1];
+  const year = match[2];
+  if (!year) {
+    return sessionCode;
+  }
+  return `${term}${year.slice(2)}`;
+};
+
 const SESSION_MONTH_RANGES = {
   [SessionEnum.H]: { start: 0, end: 3 }, // January - April (HIVER)
   [SessionEnum.E]: { start: 4, end: 7 }, // May - August (ETE)

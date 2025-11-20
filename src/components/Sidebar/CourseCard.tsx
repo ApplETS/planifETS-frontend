@@ -8,6 +8,7 @@ import FavoriteButton from '@/components/Sidebar/FavoriteButton';
 import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
 import { usePlannerStore } from '@/store/plannerStore';
 import { DragType } from '@/types/dnd';
+import { formatSessionShort } from '@/utils/sessionUtils';
 import CourseHeader from '../atoms/CourseHeader';
 import CreditsTag from '../atoms/CreditsTag';
 import Tag from '../atoms/Tag';
@@ -57,7 +58,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
     <Section title={t('available')}>
       {course.availability.map(session => (
         <Tag key={session}>
-          {session}
+          {formatSessionShort(session)}
         </Tag>
       ))}
     </Section>

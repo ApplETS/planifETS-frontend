@@ -82,5 +82,9 @@
     "tailwindcss": "4.1.4",
     "tw-animate-css": "^1.2.8",
     "typescript": "^5"
+  },
+  "resolutions": {
+    "glob": "^11.1.0",
+    "js-yaml": "^4.1.1"
   }
 }

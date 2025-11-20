@@ -9,6 +9,9 @@ on:
 env:
   NODE_VERSION: 22.x
 
+permissions:
+  contents: read
+
 jobs:
   lint-and-typecheck:
     name: Lint & Type Check

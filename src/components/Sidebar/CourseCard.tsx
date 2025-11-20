@@ -56,6 +56,9 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
 
   const renderAvailability = () => {
     const filteredSessions = filterCurrentAndFutureSessions(course.availability);
+    if (!filteredSessions || filteredSessions.length === 0) {
+      return null;
+    }
     return (
       <Section title={t('available')}>
         {filteredSessions.map((session: string) => (

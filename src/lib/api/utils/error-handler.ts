@@ -1,12 +1,12 @@
 import type { ApiError, BackendErrorDto } from '@/types/api';
 
 export class ApiNetworkError extends Error {
-  statusCode: number;
+  statusCode: number | null;
   raw: unknown;
   constructor(message: string, raw?: unknown) {
     super(message);
     this.name = 'ApiNetworkError';
-    this.statusCode = 0;
+    this.statusCode = null;
     this.raw = raw;
   }
 }

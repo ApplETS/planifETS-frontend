@@ -69,6 +69,7 @@ export default function CourseSidebar() {
             md:mt-0 md:w-80
            `}
     >
+
       <Tabs
         value={activeTab}
         onChange={handleTabChange}

@@ -1,5 +1,5 @@
 import type { ApiError, ApiResponse } from '@/types/api';
-import { showError } from '../toast';
+import { ApiNetworkError } from './utils/error-handler';
 
 type RequestConfig = RequestInit & {
   params?: Record<string, string | number | boolean>;
@@ -78,15 +78,6 @@ class ApiClient {
     }
 
     if (error) {
-      if (typeof window !== 'undefined') {
-        try {
-          showError(error!.message);
-        } catch (e) {
-          // swallow - toast helper internally handles fallbacks
-          console.error('Failed to show error toast', e);
-        }
-      }
-
       throw error;
     }
 
@@ -114,21 +105,7 @@ class ApiClient {
     } catch (err) {
       const message = 'Unable to reach backend. Please check your network connection.';
 
-      if (typeof window !== 'undefined') {
-        try {
-          showError(message);
-        } catch {
-          // swallow
-        }
-      }
-
-      const apiError: ApiError = {
-        statusCode: null,
-        message,
-        raw: err,
-      };
-
-      throw apiError;
+      throw new ApiNetworkError(message, err);
     }
 
     return this.handleResponse<T>(response);

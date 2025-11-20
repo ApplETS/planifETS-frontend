@@ -25,8 +25,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Suspense fallback={<Loading />}>
             <NextIntlClientProvider messages={messages}>
               <ErrorBoundary>
+                <Toaster richColors />
                 <DndContext>
-                  <Toaster richColors />
                   <div className="min-h-screen pt-16 text-foreground bg-background">
                     <main>
                       <Navbar />

@@ -1,4 +1,4 @@
-import type { ProgramDto } from '../../../../../src/lib/api/types/program';
+import type { ProgramDto } from '@/api/types/program';
 
 export const PROGRAMS: ProgramDto[] = [
   {

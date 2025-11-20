@@ -1,14 +1,15 @@
 import type {
   ProgramCourseDetailedDto,
   ProgramCoursesDto,
-} from '../../lib/api/types/program';
+} from '@/api/types/program';
 import type { Course } from '@/types/course';
 import { useEffect, useRef, useState } from 'react';
+
+import { programService } from '@/api/services/program.service';
 import { useCourseStore } from '@/store/courseStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { mapApiCourseToAppCourse } from '@/utils/courseUtils';
-import { programService } from '../../lib/api/services/program.service';
 
 /**
  * Hook to preload courses that are in sessions or favorites

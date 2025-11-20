@@ -4,17 +4,18 @@ import type {
   ProgramCourseDetailedDto,
   ProgramCoursesDto,
   ProgramDto,
-} from '../lib/api/types/program';
+} from '@/api/types/program';
 import type { Course } from '@/types/course';
+
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
 
+import { useProgramCoursesApi } from '@/api/hooks/useProgramCoursesApi';
+import { useProgramsApi } from '@/api/hooks/useProgramsApi';
 import { useCourseStore } from '@/store/courseStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useProgramStore } from '@/store/programStore';
 import { mapApiCourseToAppCourse } from '@/utils/courseUtils';
-import { useProgramCoursesApi } from '../lib/api/hooks/useProgramCoursesApi';
-import { useProgramsApi } from '../lib/api/hooks/useProgramsApi';
 import { MultiSelect } from './atoms/multi-select';
 
 const ProgramSelector: React.FC = () => {

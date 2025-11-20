@@ -4,7 +4,7 @@ import { showError } from '../../toast';
 import { courseService } from '../services';
 import { handleApiError } from '../utils/error-handler';
 
-export function useCourseSearch() {
+export function useCourseSearchApi() {
   const [data, setData] = useState<SearchCoursesDto | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

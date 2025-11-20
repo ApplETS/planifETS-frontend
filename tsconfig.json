@@ -41,12 +41,15 @@
       "@/*": [
         "./src/*"
       ],
+      "@/api/*": [
+        "./src/lib/api/*"
+      ],
       "@/public/*": [
         "./public/*"
       ],
       "@/lib/*": [
         "./lib/*"
-      ]
+      ],
       // "@/ui/*": ["lib/components/ui/*"],
       // "@/components/*": ["lib/components/*"],
       // "@/utils/*": ["lib/utils/*"],

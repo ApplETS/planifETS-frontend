@@ -1,4 +1,4 @@
-import type { ProgramCoursesResponseDto } from '../../../../../src/lib/api/types/program';
+import type { ProgramCoursesResponseDto } from '@/api/types/program';
 
 export const PROGRAM_COURSES_RESPONSE: ProgramCoursesResponseDto = {
   data: [

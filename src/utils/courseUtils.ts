@@ -1,4 +1,4 @@
-import type { CoursePrerequisiteDto, ProgramCourseDetailedDto } from '../lib/api/types/program';
+import type { CoursePrerequisiteDto, ProgramCourseDetailedDto } from '@/api/types/program';
 import type { Course, CourseInstance, CourseStatus } from '@/types/course';
 import type { YearData } from '@/types/planner';
 import type { SessionEnum, SessionTiming } from '@/types/session';

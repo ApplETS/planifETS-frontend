@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import type { SessionDto } from '../../../../src/lib/api/types/session';
+import type { SessionDto } from '@/api/types/session';
 
 function jsonResponse(status: number, body: unknown) {
   return {

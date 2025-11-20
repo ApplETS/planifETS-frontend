@@ -13,7 +13,7 @@ export default function PlannerLayout({ children }: { children: React.ReactNode 
         </div>
       </aside>
       <main className="w-full md:pl-[340px]">
-        <div className="p-4">
+        <div className="pl-2 pr-4 py-4">
           {children}
         </div>
       </main>

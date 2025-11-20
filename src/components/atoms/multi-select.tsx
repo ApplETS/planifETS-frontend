@@ -17,18 +17,18 @@ type Option = {
 export type MultiSelectProps = {
   options: Option[];
   selected: Option[];
-  onChange: (selected: Option[]) => void;
+  onChangeAction: (selected: Option[]) => void;
   placeholder?: string;
 };
 
-export function MultiSelect({ options, selected, onChange, placeholder }: MultiSelectProps) {
+export function MultiSelect({ options, selected, onChangeAction, placeholder }: MultiSelectProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
 
   const handleUnselect = React.useCallback((option: Option) => {
-    onChange(selected.filter(s => s.value !== option.value));
-  }, [selected, onChange]);
+    onChangeAction(selected.filter(s => s.value !== option.value));
+  }, [selected, onChangeAction]);
 
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -36,7 +36,7 @@ export function MultiSelect({ options, selected, onChange, placeholder }: MultiS
       if (input) {
         if (e.key === 'Delete' || e.key === 'Backspace') {
           if (input.value === '') {
-            onChange(selected.slice(0, -1));
+            onChangeAction(selected.slice(0, -1));
           }
         }
         // This is not a default behaviour of the <input /> field
@@ -45,7 +45,7 @@ export function MultiSelect({ options, selected, onChange, placeholder }: MultiS
         }
       }
     },
-    [selected, onChange],
+    [selected, onChangeAction],
   );
 
   const selectables = options.filter(
@@ -57,8 +57,14 @@ export function MultiSelect({ options, selected, onChange, placeholder }: MultiS
       onKeyDown={handleKeyDown}
       className="overflow-visible bg-transparent"
     >
-      <div className="group rounded-md border border-input px-3 py-2 text-sm text-foreground ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
-        <div className="flex flex-wrap gap-1">
+      <div
+        className="group rounded-md border border-input ring-offset-background
+        focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2
+        text-sm text-foreground
+        px-3 py-2 w-full max-w-full"
+        style={{ boxSizing: 'border-box' }}
+      >
+        <div className="flex flex-wrap gap-1 w-full">
           {selected.map(option => (
             <Badge
               key={option.value}
@@ -69,7 +75,8 @@ export function MultiSelect({ options, selected, onChange, placeholder }: MultiS
               {option.label || option.value || 'No name'}
               <button
                 type="button"
-                className="ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                className="ml-1 rounded-full outline-none ring-offset-background
+                focus:ring-2 focus:ring-ring focus:ring-offset-2"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     handleUnselect(option);
@@ -93,15 +100,18 @@ export function MultiSelect({ options, selected, onChange, placeholder }: MultiS
             onBlur={() => setOpen(false)}
             onFocus={() => setOpen(true)}
             placeholder={placeholder || 'Select options...'}
-            className="ml-2 flex-1 bg-transparent text-foreground text-xs outline-none"
+            className="ml-2 flex-1 min-w-[120px] bg-transparent text-foreground text-xs outline-none"
+            style={{ width: 'auto', minWidth: 0 }}
           />
         </div>
       </div>
-      <div className="relative mt-2">
+      <div className="relative mt-2 w-full">
         <CommandList>
           {open && selectables.length > 0
             ? (
-              <div className="absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
+              <div className="absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground
+                shadow-md outline-none animate-in"
+              >
                 <CommandGroup className="max-h-80 overflow-auto">
                   {selectables.map(option => (
                     <CommandItem
@@ -113,7 +123,7 @@ export function MultiSelect({ options, selected, onChange, placeholder }: MultiS
                       }}
                       onSelect={() => {
                         setInputValue('');
-                        onChange([...selected, option]);
+                        onChangeAction([...selected, option]);
                       }}
                       className="cursor-pointer text-foreground"
                     >

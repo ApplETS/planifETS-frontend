@@ -12,6 +12,7 @@ import { FaTrash } from 'react-icons/fa';
 import { DragType } from '@/types/dnd';
 import BaseButton from '../atoms/buttons/BaseButton';
 import CourseHeader from '../atoms/CourseHeader';
+import CreditsTag from '../atoms/CreditsTag';
 import StatusTag from './StatusTag';
 
 type CourseBoxProps = {
@@ -64,9 +65,9 @@ const CourseBox: FC<CourseBoxProps> = ({
       className={`
         shadow-xs
         relative mb-2 cursor-pointer rounded-lg
-        bg-muted p-4 transition duration-300 
-        ease-in-out hover:-translate-y-0.5 
-        hover:shadow-md
+        bg-muted p-4 transition duration-300
+        ease-in-out hover:-translate-y-0.5
+        hover:shadow-md text-foreground
         ${isDragging ? 'opacity-50' : 'opacity-100'}
       `}
       onMouseEnter={() => setIsHovered(true)}
@@ -96,10 +97,8 @@ const CourseBox: FC<CourseBoxProps> = ({
           <StatusTag status={status} />
         </div>
       </div>
-      <div className="text-sm text-gray-500">
-        {credits}
-        {' '}
-        {t('credits-short')}
+      <div className="text-sm text-muted-foreground">
+        <CreditsTag credits={credits} shortText={true} data-testid={`course-box-${code}-credits`} />
       </div>
     </div>
   );

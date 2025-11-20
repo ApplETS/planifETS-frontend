@@ -1,6 +1,7 @@
 {
   "Commons": {
     "credits": "credits",
+    "credits-short": "cr.",
     "logout": "Sign out",
     "settings": "Settings",
     "language": "Language",
@@ -17,6 +18,7 @@
       "ETE": "Summer"
     },
     "delete-course": "Delete the course",
+    "credits": "credits",
     "credits-short": "cr.",
     "course": {
       "Completed": "Completed",

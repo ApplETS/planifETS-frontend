@@ -6,6 +6,7 @@ import { FaPlus } from 'react-icons/fa';
 import BaseButton from '@/components/atoms/buttons/BaseButton';
 import YearSection from '@/components/Planner/YearSection';
 import { ProgramSection } from '@/components/ProgramSection';
+import { usePreloadCourses } from '@/hooks/course/usePreloadCourses';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
 
@@ -14,6 +15,8 @@ export default function PlannerPage() {
 
   const { initializePlanner, getYears, addYear } = usePlannerStore();
   const { getSessionsByYear, initializeSessions } = useSessionStore();
+
+  usePreloadCourses();
 
   useEffect(() => {
     const sessionStore = useSessionStore.getState();
@@ -38,7 +41,7 @@ export default function PlannerPage() {
         <ProgramSection />
       </div>
 
-      <div className="mt-6 w-full flex flex-col gap-4 p-2" data-testid="year-sections">
+      <div className="w-full flex flex-col gap-4 p-2" data-testid="year-sections">
         {years.map(year => (
           <YearSection
             key={year}

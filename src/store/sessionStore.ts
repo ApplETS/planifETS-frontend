@@ -1,17 +1,30 @@
+/**
+ * Session Store
+ * What it stores (user's persistent data):
+ * - sessions: Record<string, Session> - Maps session keys to session data
+ *   - Each session contains:
+ *     - key: string (e.g., 'A2024')
+ *     - sessionTerm: SessionEnum (A/H/E)
+ *     - sessionYear: number
+ *     - courseInstances: CourseInstance[]
+ *        Array of { courseId: number, status: CourseStatus }
+ */
+
 import type { CourseInstance } from '@/types/course';
 import type { Session } from '@/types/session';
-import { enqueueSnackbar } from 'notistack';
 import { create } from 'zustand';
 import { persistConfig } from '@/lib/persistConfig';
 import { SessionEnum } from '@/types/session';
 import { determineInitialStatus } from '@/utils/courseUtils';
+import { safeGet } from '@/utils/safeAccess';
 import {
-  calculateTotalCredits,
   createSessionsForYear,
+  findCourseInSession,
   getSessionTiming,
+  hasCourseInSession,
+  updateMultipleSessions,
+  updateSessionCourseInstances,
 } from '@/utils/sessionUtils';
-import { useCourseStore } from './courseStore';
-import { usePlannerStore } from './plannerStore';
 
 type SessionState = {
   sessions: Record<string, Session>;
@@ -22,207 +35,146 @@ type SessionActions = {
   removeCourseFromSession: (sessionKey: string, courseId: number) => void;
   moveCourse: (fromKey: string, toKey: string, courseId: number) => void;
   getSessionCourses: (sessionKey: string) => CourseInstance[];
-  calculateSessionCredits: (courseInstances: CourseInstance[]) => number;
   setSessions: (sessions: Record<string, Session>) => void;
   clearAllSessions: () => void;
   getSessionsByYear: (year: number) => Session[];
   initializeSessions: (year: number) => void;
   getSessionByKey: (sessionKey: string) => Session | undefined;
-  updateSessionTotalCredits: (sessionKey: string) => void;
 };
 
 export const useSessionStore = create<SessionState & SessionActions>()(
-  persistConfig('session-store', (set, get) => ({
-    sessions: {},
+  persistConfig(
+    'session-store',
+    (set, get) => ({
+      sessions: {},
 
-    initializeSessions: (year: number) => {
-      set(state => ({
-        sessions: {
-          ...state.sessions,
-          ...createSessionsForYear(year),
-        },
-      }));
-    },
+      initializeSessions: (year: number) => {
+        set((state) => {
+          const yearSessions = createSessionsForYear(year);
 
-    calculateSessionCredits: (courseInstances) => {
-      const courseStore = useCourseStore.getState();
-      return calculateTotalCredits(courseInstances, courseStore.getCourse);
-    },
-
-    updateSessionTotalCredits: (sessionKey: string) => {
-      set((state) => {
-        const session = state.sessions[sessionKey];
-        if (!session) {
-          return state;
-        }
-
-        const totalCredits = get().calculateSessionCredits(session.courseInstances);
-
-        return {
-          sessions: {
-            ...state.sessions,
-            [sessionKey]: {
-              ...session,
-              totalCredits,
+          return {
+            sessions: {
+              ...state.sessions,
+              ...yearSessions,
             },
-          },
-        };
-      });
-      usePlannerStore.getState().recalculateTotalCredits();
-    },
+          };
+        });
+      },
 
-    addCourseToSession: (sessionKey, courseId) => {
-      const sessionLetter = sessionKey.charAt(0) as SessionEnum;
-      const sessionYearStr = sessionKey.substring(1);
-      const sessionYear = Number.parseInt(sessionYearStr, 10);
+      addCourseToSession: (sessionKey, courseId) => {
+        const sessionLetter = sessionKey.charAt(0) as SessionEnum;
+        const sessionYearStr = sessionKey.substring(1);
+        const sessionYear = Number.parseInt(sessionYearStr, 10);
 
-      if (Number.isNaN(sessionYear) || !Object.values(SessionEnum).includes(sessionLetter)) {
-        console.error(`Invalid session key: ${sessionKey}`);
-        return;
-      }
-
-      set((state) => {
-        const session = state.sessions[sessionKey];
-        if (!session) {
-          console.error(`Session not found: ${sessionKey}`);
-          return state;
+        if (Number.isNaN(sessionYear) || !Object.values(SessionEnum).includes(sessionLetter)) {
+          console.error(`Invalid session key: ${sessionKey}`);
+          return;
         }
 
-        const courseExists = session.courseInstances.some(
-          instance => instance.courseId === courseId,
-        );
-        if (courseExists) {
-          const course = useCourseStore.getState().getCourse(courseId);
-          enqueueSnackbar(`${course?.code ?? 'Course'} is already in this session`, {
-            variant: 'warning',
-          });
-          return state;
-        }
+        set((state) => {
+          const session = safeGet(state.sessions, sessionKey);
+          if (!session) {
+            console.error(`Session not found: ${sessionKey}`);
+            return state;
+          }
 
-        const timing = getSessionTiming(sessionYear, sessionLetter);
+          if (hasCourseInSession(session, courseId)) {
+            console.warn(`Course ${courseId} is already in this session`);
+            return state;
+          }
 
-        const newCourseInstance: CourseInstance = {
-          courseId,
-          status: determineInitialStatus(timing),
-        };
+          const timing = getSessionTiming(sessionYear, sessionLetter);
 
-        const updatedCourseInstances = [
-          ...(session.courseInstances || []),
-          newCourseInstance,
-        ];
+          const newCourseInstance: CourseInstance = {
+            courseId,
+            status: determineInitialStatus(timing),
+          };
 
-        return {
-          sessions: {
-            ...state.sessions,
-            [sessionKey]: {
-              ...session,
-              courseInstances: updatedCourseInstances,
-              totalCredits: get().calculateSessionCredits(updatedCourseInstances),
-            },
-          },
-        };
-      });
-      get().updateSessionTotalCredits(sessionKey);
-    },
+          const updatedCourseInstances = [...session.courseInstances, newCourseInstance];
 
-    getSessionCourses: (sessionKey) => {
-      const session = get().sessions[sessionKey];
-      return session?.courseInstances || [];
-    },
+          return {
+            sessions: updateSessionCourseInstances(state.sessions, sessionKey, updatedCourseInstances),
+          };
+        });
+      },
 
-    getSessionsByYear: (year: number) => {
-      const { sessions } = get();
-      return Object.values(sessions).filter(session => session.sessionYear === year);
-    },
+      getSessionCourses: (sessionKey) => {
+        const session = safeGet(get().sessions, sessionKey);
+        return session?.courseInstances || [];
+      },
 
-    getSessionByKey: (sessionKey: string) => {
-      return get().sessions[sessionKey];
-    },
+      getSessionsByYear: (year: number) => {
+        const { sessions } = get();
+        return Object.values(sessions).filter(session => session.sessionYear === year);
+      },
 
-    setSessions: sessions => set({ sessions }),
+      getSessionByKey: (sessionKey: string) => {
+        return safeGet(get().sessions, sessionKey);
+      },
 
-    clearAllSessions: () => set({ sessions: {} }),
+      setSessions: sessions => set({ sessions }),
 
-    moveCourse: (fromKey, toKey, courseId) => {
-      set((state) => {
-        const fromSession = state.sessions[fromKey];
-        const toSession = state.sessions[toKey];
+      clearAllSessions: () => set({ sessions: {} }),
 
-        if (!fromSession || !toSession) {
-          console.error('Session not found:', { fromKey, toKey });
-          return state;
-        }
+      moveCourse: (fromKey, toKey, courseId) => {
+        set((state) => {
+          const fromSession = safeGet(state.sessions, fromKey);
+          const toSession = safeGet(state.sessions, toKey);
 
-        const isCourseInDestination = toSession.courseInstances.some(
-          instance => instance.courseId === courseId,
-        );
+          if (!fromSession || !toSession) {
+            console.error('Session not found:', { fromKey, toKey });
+            return state;
+          }
 
-        if (isCourseInDestination) {
-          return state;
-        }
+          if (hasCourseInSession(toSession, courseId)) {
+            return state;
+          }
 
-        const courseInstance = fromSession.courseInstances.find(
-          instance => instance.courseId === courseId,
-        );
+          const courseInstance = findCourseInSession(fromSession, courseId);
 
-        if (!courseInstance) {
-          console.error('Course instance not found:', courseId);
-          return state;
-        }
+          if (!courseInstance) {
+            console.error('Course instance not found:', courseId);
+            return state;
+          }
 
-        const updatedFromCourseInstances = fromSession.courseInstances.filter(
-          instance => instance.courseId !== courseId,
-        );
+          // Calculate new status based on destination session timing
+          const timing = getSessionTiming(toSession.sessionYear, toSession.sessionTerm);
+          const updatedCourseInstance: CourseInstance = {
+            ...courseInstance,
+            status: determineInitialStatus(timing),
+          };
 
-        const updatedToCourseInstances = [...toSession.courseInstances, courseInstance];
+          const updatedFromCourseInstances = fromSession.courseInstances.filter(
+            instance => instance.courseId !== courseId,
+          );
 
-        const newState = {
-          sessions: {
-            ...state.sessions,
-            [fromKey]: {
-              ...fromSession,
-              courseInstances: updatedFromCourseInstances,
-              totalCredits: get().calculateSessionCredits(updatedFromCourseInstances),
-            },
-            [toKey]: {
-              ...toSession,
-              courseInstances: updatedToCourseInstances,
-              totalCredits: get().calculateSessionCredits(updatedToCourseInstances),
-            },
-          },
-        };
+          const updatedToCourseInstances = [...toSession.courseInstances, updatedCourseInstance];
 
-        return newState;
-      });
+          return {
+            sessions: updateMultipleSessions(state.sessions, [
+              { sessionKey: fromKey, courseInstances: updatedFromCourseInstances },
+              { sessionKey: toKey, courseInstances: updatedToCourseInstances },
+            ]),
+          };
+        });
+      },
 
-      get().updateSessionTotalCredits(fromKey);
-      get().updateSessionTotalCredits(toKey);
-    },
+      removeCourseFromSession: (sessionKey, courseId) => {
+        set((state) => {
+          const session = safeGet(state.sessions, sessionKey);
+          if (!session) {
+            return state;
+          }
 
-    removeCourseFromSession: (sessionKey, courseId) => {
-      set((state) => {
-        const session = state.sessions[sessionKey];
-        if (!session) {
-          return state;
-        }
+          const updatedCourseInstances = session.courseInstances.filter(
+            instance => instance.courseId !== courseId,
+          );
 
-        const updatedCourseInstances = session.courseInstances.filter(
-          instance => instance.courseId !== courseId,
-        );
-
-        return {
-          sessions: {
-            ...state.sessions,
-            [sessionKey]: {
-              ...session,
-              courseInstances: updatedCourseInstances,
-              totalCredits: get().calculateSessionCredits(updatedCourseInstances),
-            },
-          },
-        };
-      });
-      get().updateSessionTotalCredits(sessionKey);
-    },
-
-  })),
+          return {
+            sessions: updateSessionCourseInstances(state.sessions, sessionKey, updatedCourseInstances),
+          };
+        });
+      },
+    }),
+  ),
 );

@@ -1,5 +1,8 @@
 {
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "prettier.tabWidth": 2,
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit",
     "source.fixAll.eslint": "explicit"
@@ -33,5 +36,6 @@
     "**/*",
     "!src/messages/en.json",
     "!src/messages/fr.json"
-  ]
+  ],
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }

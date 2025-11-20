@@ -1,4 +1,5 @@
 import type { ApiError, ApiResponse } from '@/types/api';
+import { ApiNetworkError } from './utils/error-handler';
 
 type RequestConfig = RequestInit & {
   params?: Record<string, string | number | boolean>;
@@ -90,14 +91,22 @@ class ApiClient {
   async get<T>(endpoint: string, config?: RequestConfig): Promise<ApiResponse<T>> {
     const url = this.buildURL(endpoint, config?.params);
 
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        ...this.defaultHeaders,
-        ...config?.headers,
-      },
-      ...config,
-    });
+    let response: Response;
+
+    try {
+      response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          ...this.defaultHeaders,
+          ...config?.headers,
+        },
+        ...config,
+      });
+    } catch (err) {
+      const message = 'Unable to reach backend. Please check your network connection.';
+
+      throw new ApiNetworkError(message, err);
+    }
 
     return this.handleResponse<T>(response);
   }

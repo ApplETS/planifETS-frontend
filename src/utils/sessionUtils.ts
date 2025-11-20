@@ -2,6 +2,24 @@ import type { Course, CourseInstance } from '@/types/course';
 import type { Session, SessionTiming } from '@/types/session';
 import { SessionEnum } from '@/types/session';
 
+/**
+ * Formats a session code like 'A2025' to 'A25' for UI display.
+ * If the input does not match the expected format, returns it unchanged.
+ */
+export const formatSessionShort = (sessionCode: string): string => {
+  // Match session codes like 'A2025', 'H2024', etc.
+  const match = sessionCode.match(/^([AHE])(\d{4})$/);
+  if (!match) {
+    return sessionCode;
+  }
+  const term = match[1];
+  const year = match[2];
+  if (!year) {
+    return sessionCode;
+  }
+  return `${term}${year.slice(2)}`;
+};
+
 const SESSION_MONTH_RANGES = {
   [SessionEnum.H]: { start: 0, end: 3 }, // January - April (HIVER)
   [SessionEnum.E]: { start: 4, end: 7 }, // May - August (ETE)
@@ -9,7 +27,7 @@ const SESSION_MONTH_RANGES = {
 } as const;
 
 export const generateSessionCode = (sessionTerm: SessionEnum, year: number): string => {
-  return `${sessionTerm}${year.toString().slice(-2)}`;
+  return `${sessionTerm}${year}`;
 };
 
 export const getCurrentSession = (month: number = new Date().getMonth()): SessionEnum => {
@@ -42,6 +60,23 @@ export const getSessionTiming = (sessionYear: number, sessionTerm: SessionEnum):
     isCurrent,
     isFuture,
   };
+};
+
+export const filterCurrentAndFutureSessions = (sessionCodes: string[]): string[] => {
+  return sessionCodes.filter((code) => {
+    const match = code.match(/^([AHE])(\d{4})$/);
+    if (!match) {
+      return false;
+    }
+    const term = match[1] as SessionEnum;
+    const yearStr = match[2];
+    if (!yearStr) {
+      return false;
+    }
+    const year = Number.parseInt(yearStr, 10);
+    const timing = getSessionTiming(year, term);
+    return timing.isCurrent || timing.isFuture;
+  });
 };
 
 export const validateSessionOperation = (
@@ -117,20 +152,62 @@ export const calculateTotalCredits = (
 
 export const createSessionsForYear = (sessionYear: number): Record<string, Session> => {
   const sessions: Record<string, Session> = {};
-  const sessionTerms = Object.values(SessionEnum);
+  const orderedSessionTerms = [SessionEnum.H, SessionEnum.E, SessionEnum.A];
 
-  sessionTerms.forEach((name) => {
+  orderedSessionTerms.forEach((name) => {
     const key = generateSessionKey(sessionYear, name);
     sessions[key] = {
       key,
       sessionTerm: name,
       sessionYear,
       courseInstances: [],
-      totalCredits: 0,
     };
   });
 
   return sessions;
+};
+
+export const updateSessionCourseInstances = (
+  sessions: Record<string, Session>,
+  sessionKey: string,
+  courseInstances: CourseInstance[],
+): Record<string, Session> => {
+  const session = sessions[sessionKey];
+  if (!session) {
+    return sessions;
+  }
+
+  return {
+    ...sessions,
+    [sessionKey]: {
+      ...session,
+      courseInstances,
+    },
+  };
+};
+
+export const updateMultipleSessions = (
+  sessions: Record<string, Session>,
+  updates: Array<{ sessionKey: string; courseInstances: CourseInstance[] }>,
+): Record<string, Session> => {
+  let updatedSessions = { ...sessions };
+
+  updates.forEach(({ sessionKey, courseInstances }) => {
+    updatedSessions = updateSessionCourseInstances(updatedSessions, sessionKey, courseInstances);
+  });
+
+  return updatedSessions;
+};
+
+export const hasCourseInSession = (session: Session, courseId: number): boolean => {
+  return session.courseInstances.some(instance => instance.courseId === courseId);
+};
+
+export const findCourseInSession = (
+  session: Session,
+  courseId: number,
+): CourseInstance | undefined => {
+  return session.courseInstances.find(instance => instance.courseId === courseId);
 };
 
 type BorderStyle = 'border-destructive' | 'border-primary' | '';

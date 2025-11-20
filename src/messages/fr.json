@@ -1,8 +1,10 @@
 {
   "Commons": {
     "credits": "crédits",
+    "credits-short": "cr.",
+    "logout": "Se déconnecter",
     "settings": "Paramètres",
-    "language": "Language",
+    "language": "Langue",
     "theme": "Thème",
     "loading": "Chargement...",
     "cancel": "Annuler"
@@ -16,6 +18,7 @@
       "ETE": "Été"
     },
     "delete-course": "Supprimer le cours",
+    "credits": "crédits",
     "credits-short": "cr.",
     "course": {
       "Completed": "Complété",

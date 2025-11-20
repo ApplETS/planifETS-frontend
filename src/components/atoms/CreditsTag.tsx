@@ -6,9 +6,10 @@ import Tag from './Tag';
 
 type CreditsTagProps = {
   credits: number;
+  shortText?: boolean;
 } & HTMLAttributes<HTMLDivElement>;
 
-const CreditsTag: FC<CreditsTagProps> = ({ credits, ...props }) => {
+const CreditsTag: FC<CreditsTagProps> = ({ credits, shortText, ...props }) => {
   const t = useTranslations('Commons');
 
   return (
@@ -18,7 +19,7 @@ const CreditsTag: FC<CreditsTagProps> = ({ credits, ...props }) => {
     >
       {credits}
       {' '}
-      {t('credits')}
+      {shortText ? t('credits-short') : t('credits')}
     </Tag>
   );
 };

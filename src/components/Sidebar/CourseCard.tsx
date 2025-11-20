@@ -6,8 +6,10 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import FavoriteButton from '@/components/Sidebar/FavoriteButton';
 import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
-import { useCourseStore } from '@/store/courseStore';
+import { usePlannerStore } from '@/store/plannerStore';
 import { DragType } from '@/types/dnd';
+import { filterCurrentAndFutureSessions, formatSessionShort } from '@/utils/sessionUtils';
+import CourseHeader from '../atoms/CourseHeader';
 import CreditsTag from '../atoms/CreditsTag';
 import Tag from '../atoms/Tag';
 
@@ -18,7 +20,7 @@ type SectionProps = {
 
 const Section: FC<SectionProps> = ({ title, children }) => (
   <div className="mt-2">
-    <p className="text-sm font-semibold">{title}</p>
+    <p className="text-sm font-semibold text-foreground">{title}</p>
     <div className="mt-1 flex flex-wrap gap-2">{children}</div>
   </div>
 );
@@ -28,7 +30,7 @@ type CourseCardProps = {
 };
 
 const CourseCard: FC<CourseCardProps> = ({ course }) => {
-  const { toggleFavorite, isFavorite } = useCourseStore();
+  const { toggleFavorite, isFavorite } = usePlannerStore();
   const { dragRef, isDragging } = useDraggableCourse({
     course,
     type: DragType.COURSE_CARD,
@@ -52,15 +54,21 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
     );
   };
 
-  const renderAvailability = () => (
-    <Section title={t('available')}>
-      {course.availability.map(session => (
-        <Tag key={session}>
-          {session}
-        </Tag>
-      ))}
-    </Section>
-  );
+  const renderAvailability = () => {
+    const filteredSessions = filterCurrentAndFutureSessions(course.availability);
+    if (!filteredSessions || filteredSessions.length === 0) {
+      return null;
+    }
+    return (
+      <Section title={t('available')}>
+        {filteredSessions.map((session: string) => (
+          <Tag key={session}>
+            {formatSessionShort(session)}
+          </Tag>
+        ))}
+      </Section>
+    );
+  };
 
   return (
     <div
@@ -69,7 +77,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
           dragRef(node);
         }
       }}
-      className={`relative w-full cursor-grab rounded-md bg-background p-4 shadow-md 
+      className={`relative w-full cursor-grab rounded-md bg-background p-4 shadow-md
         ${isDragging ? 'opacity-50' : 'opacity-100'}`}
       data-testid={`course-card-${course.code}`}
       onMouseEnter={() => setIsHovered(true)}
@@ -82,8 +90,8 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
       />
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <h3 className="text-lg font-semibold">{course.code}</h3>
-          <p className="text-sm">{course.title}</p>
+          <CourseHeader code={course.code} />
+          <p className="text-sm text-muted-foreground">{course.title}</p>
         </div>
         <div className="mt-2 flex items-center gap-2">
           <CreditsTag credits={course.credits} data-testid={`course-card-${course.code}-credits`} />

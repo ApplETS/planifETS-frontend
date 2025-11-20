@@ -1,6 +1,19 @@
-import type { CourseInstance, CourseStatus } from '@/types/course';
+import type { CoursePrerequisiteDto, ProgramCourseDetailedDto } from '@/api/types/program';
+import type { Course, CourseInstance, CourseStatus } from '@/types/course';
 import type { YearData } from '@/types/planner';
 import type { SessionEnum, SessionTiming } from '@/types/session';
+
+export const mapApiCourseToAppCourse = (apiCourse: ProgramCourseDetailedDto): Course | null => {
+  if (!apiCourse?.code || !apiCourse?.id) {
+    return null;
+  }
+
+  return {
+    ...apiCourse,
+    prerequisites: apiCourse.prerequisites.map((p: CoursePrerequisiteDto) => p.code),
+    availability: apiCourse.sessionAvailability.map(sa => sa.sessionCode),
+  };
+};
 
 export const determineInitialStatus = (sessionTiming: SessionTiming): CourseStatus => {
   if (sessionTiming.isCurrent) {

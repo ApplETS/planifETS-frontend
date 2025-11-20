@@ -7,6 +7,7 @@ type BaseButtonProps = {
   startIcon?: ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
+// @deprecated: Use shadcn button instead
 const BaseButton: FC<BaseButtonProps> = ({
   children,
   variant = 'primary',

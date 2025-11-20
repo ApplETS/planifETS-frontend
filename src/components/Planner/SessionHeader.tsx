@@ -3,8 +3,8 @@ import Tooltip from '@mui/material/Tooltip';
 import { useTranslations } from 'next-intl';
 import { FaInfoCircle } from 'react-icons/fa';
 
+import { getSeasonStyle } from '@/utils/seasonUtils';
 import { getTranslationKey } from '@/utils/sessionUtils';
-import { getSeasonStyle } from '../../utils/seasonUtils';
 import CreditsTag from '../atoms/CreditsTag';
 
 type SessionHeaderProps = {

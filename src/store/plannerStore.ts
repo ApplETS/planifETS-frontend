@@ -1,15 +1,27 @@
+/**
+ * Planner Store
+ * What it stores (user's persistent data):
+ * - name: (e.g., 'Default Planner', 'Fall 2024 Plan')
+ * - sessionKeys: string[] - Array of session keys that exist (e.g., ['A2024', 'H2025', 'E2025'])
+ * - favoriteCourses: number[] - User's favorited course IDs (moved from courseStore)
+ */
+
 import { create } from 'zustand';
 
 import { persistConfig } from '@/lib/persistConfig';
 import { SessionEnum } from '@/types/session';
+import { safeHas } from '@/utils/safeAccess';
 import { extractYearFromSessionKey, generateSessionKey } from '@/utils/sessionUtils';
 
+import { useCourseStore } from './courseStore';
 import { useSessionStore } from './sessionStore';
+
+const NUMBER_OF_YEARS_TO_CREATE = 4;
 
 type PlannerState = {
   name: string;
   sessionKeys: string[];
-  totalCredits: number;
+  favoriteCourses: number[];
 };
 
 type PlannerActions = {
@@ -18,24 +30,46 @@ type PlannerActions = {
   deleteYear: (year: number) => void;
   getSessionKeysForYear: (year: number) => string[];
   getYears: () => number[];
-  recalculateTotalCredits: () => void;
+  getTotalCredits: () => number;
+  toggleFavorite: (courseId: number) => void;
+  isFavorite: (courseId: number) => boolean;
 };
-
-const NUMBER_OF_YEARS_TO_CREATE = 4;
 
 export const usePlannerStore = create<PlannerState & PlannerActions>()(
   persistConfig('planner-store', (set, get) => ({
     name: 'Default Planner',
     sessionKeys: [],
-    totalCredits: 0,
+    favoriteCourses: [],
 
-    recalculateTotalCredits: () => {
+    toggleFavorite: (courseId: number) => {
+      set((state) => {
+        const favorites = [...state.favoriteCourses];
+        const index = favorites.indexOf(courseId);
+
+        if (index !== -1) {
+          favorites.splice(index, 1);
+        } else {
+          favorites.push(courseId);
+        }
+
+        return { favoriteCourses: favorites };
+      });
+    },
+
+    isFavorite: (courseId: number) => get().favoriteCourses.includes(courseId),
+
+    getTotalCredits: () => {
       const sessionStore = useSessionStore.getState();
-      const totalCredits = get().sessionKeys.reduce((total, sessionKey) => {
-        const session = sessionStore.getSessionByKey(sessionKey);
-        return total + (session?.totalCredits ?? 0);
+      const courseStore = useCourseStore.getState();
+
+      return get().sessionKeys.reduce((total, sessionKey) => {
+        const courseInstances = sessionStore.getSessionCourses(sessionKey);
+        const sessionCredits = courseInstances.reduce((sessionTotal, instance) => {
+          const course = courseStore.getCourse(instance.courseId);
+          return sessionTotal + (course?.credits ?? 0);
+        }, 0);
+        return total + sessionCredits;
       }, 0);
-      set({ totalCredits });
     },
 
     initializePlanner: () => {
@@ -50,7 +84,6 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
       }
 
       set({ sessionKeys });
-      get().recalculateTotalCredits();
     },
 
     addYear: () => {
@@ -69,12 +102,10 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
           sessionKeys: [...state.sessionKeys, ...newKeys],
         };
       });
-      get().recalculateTotalCredits();
     },
 
     getSessionKeysForYear: (year: number) => {
-      const yearStr = year.toString();
-      return get().sessionKeys.filter(key => key.substring(1) === yearStr);
+      return get().sessionKeys.filter(key => extractYearFromSessionKey(key) === year);
     },
 
     getYears: () => {
@@ -86,20 +117,22 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
     },
 
     deleteYear: (year: number) => {
-      const yearStr = year.toString();
-      const keysToDelete = get().sessionKeys.filter(key => key.substring(1) === yearStr);
+      const keysToDelete = get().getSessionKeysForYear(year);
 
       const sessionStore = useSessionStore.getState();
+      const newSessions = { ...sessionStore.sessions };
 
       keysToDelete.forEach((key) => {
-        delete sessionStore.sessions[key];
+        // Safe to use delete since we're modifying, not reading
+        if (safeHas(newSessions, key)) {
+          delete newSessions[key];
+        }
       });
-      sessionStore.setSessions({ ...sessionStore.sessions });
+      sessionStore.setSessions(newSessions);
 
       set(state => ({
-        sessionKeys: state.sessionKeys.filter(key => key.substring(1) !== yearStr),
+        sessionKeys: state.sessionKeys.filter(key => extractYearFromSessionKey(key) !== year),
       }));
-      get().recalculateTotalCredits();
     },
   })),
 );

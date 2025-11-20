@@ -8,7 +8,7 @@ import FavoriteButton from '@/components/Sidebar/FavoriteButton';
 import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
 import { usePlannerStore } from '@/store/plannerStore';
 import { DragType } from '@/types/dnd';
-import { formatSessionShort } from '@/utils/sessionUtils';
+import { filterCurrentAndFutureSessions, formatSessionShort } from '@/utils/sessionUtils';
 import CourseHeader from '../atoms/CourseHeader';
 import CreditsTag from '../atoms/CreditsTag';
 import Tag from '../atoms/Tag';
@@ -54,15 +54,18 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
     );
   };
 
-  const renderAvailability = () => (
-    <Section title={t('available')}>
-      {course.availability.map(session => (
-        <Tag key={session}>
-          {formatSessionShort(session)}
-        </Tag>
-      ))}
-    </Section>
-  );
+  const renderAvailability = () => {
+    const filteredSessions = filterCurrentAndFutureSessions(course.availability);
+    return (
+      <Section title={t('available')}>
+        {filteredSessions.map((session: string) => (
+          <Tag key={session}>
+            {formatSessionShort(session)}
+          </Tag>
+        ))}
+      </Section>
+    );
+  };
 
   return (
     <div

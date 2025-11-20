@@ -62,6 +62,23 @@ export const getSessionTiming = (sessionYear: number, sessionTerm: SessionEnum):
   };
 };
 
+export const filterCurrentAndFutureSessions = (sessionCodes: string[]): string[] => {
+  return sessionCodes.filter((code) => {
+    const match = code.match(/^([AHE])(\d{4})$/);
+    if (!match) {
+      return false;
+    }
+    const term = match[1] as SessionEnum;
+    const yearStr = match[2];
+    if (!yearStr) {
+      return false;
+    }
+    const year = Number.parseInt(yearStr, 10);
+    const timing = getSessionTiming(year, term);
+    return timing.isCurrent || timing.isFuture;
+  });
+};
+
 export const validateSessionOperation = (
   timing: SessionTiming,
   operation: string,

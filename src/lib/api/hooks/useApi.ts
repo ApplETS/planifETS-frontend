@@ -47,8 +47,7 @@ export function useApi<T>(
       setState({ data: response.data, loading: false, error: null, isOffline: false });
       return response;
     } catch (err) {
-      const isOffline = ApiErrorHandler.isNetworkError(err)
-        || (typeof err === 'object' && err !== null && 'statusCode' in err && (err as any).statusCode === null);
+      const isOffline = ApiErrorHandler.isNetworkError(err);
 
       const errorMessage = handleApiError(err);
 

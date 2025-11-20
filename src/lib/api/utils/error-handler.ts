@@ -1,4 +1,4 @@
-import type { ApiError, BackendErrorDto } from '@/types/api';
+import type { ApiError } from '@/types/api';
 
 export class ApiNetworkError extends Error {
   statusCode: number | null;
@@ -45,56 +45,17 @@ export class ApiErrorHandler {
   }
 
   /**
-   * Check if error is validation error
-   */
-  static isValidationError(error: ApiError): boolean {
-    return error.statusCode === 400 || error.statusCode === 422;
-  }
-
-  /**
-   * Check if error is not found error
-   */
-  static isNotFoundError(error: ApiError): boolean {
-    return error.statusCode === 404;
-  }
-
-  /**
    * Check if error is network error
    */
   static isNetworkError(error: unknown): boolean {
-    return error instanceof ApiNetworkError;
-  }
-
-  /**
-   * Get the raw backend error if available
-   */
-  static getBackendError(error: ApiError): BackendErrorDto | null {
-    if (error.raw && typeof error.raw === 'object' && 'statusCode' in error.raw) {
-      return error.raw as BackendErrorDto;
-    }
-    return null;
-  }
-
-  /**
-   * Get validation errors from backend error details
-   */
-  static getValidationErrors(error: ApiError): Record<string, string> | null {
-    if (!this.isValidationError(error)) {
-      return null;
-    }
-
-    const backendError = this.getBackendError(error);
-    if (!backendError?.details) {
-      return null;
-    }
-
-    return backendError.details as Record<string, string>;
+    return error instanceof ApiNetworkError
+      || (typeof error === 'object'
+        && error !== null
+        && 'statusCode' in error
+        && (error as any).statusCode === null);
   }
 }
 
-/**
- * Hook-friendly error handler
- */
 export function handleApiError(error: unknown): string {
   if (ApiErrorHandler.isNetworkError(error)) {
     return (error as ApiNetworkError).message;

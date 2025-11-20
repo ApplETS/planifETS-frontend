@@ -49,12 +49,7 @@
       ],
       "@/lib/*": [
         "./lib/*"
-      ],
-      // "@/ui/*": ["lib/components/ui/*"],
-      // "@/components/*": ["lib/components/*"],
-      // "@/utils/*": ["lib/utils/*"],
-      // "@lib/*": ["./lib/*"],
-      // "@/hooks/*": ["lib/hooks/*"]
+      ]
     },
     // Editor support
     "plugins": [

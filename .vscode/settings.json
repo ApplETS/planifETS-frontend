@@ -33,5 +33,6 @@
     "**/*",
     "!src/messages/en.json",
     "!src/messages/fr.json"
-  ]
+  ],
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }

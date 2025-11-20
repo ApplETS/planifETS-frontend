@@ -1,4 +1,5 @@
 import type { ApiError, ApiResponse } from '@/types/api';
+import { showError } from '../toast';
 
 type RequestConfig = RequestInit & {
   params?: Record<string, string | number | boolean>;
@@ -77,6 +78,15 @@ class ApiClient {
     }
 
     if (error) {
+      if (typeof window !== 'undefined') {
+        try {
+          showError(error!.message);
+        } catch (e) {
+          // swallow - toast helper internally handles fallbacks
+          console.error('Failed to show error toast', e);
+        }
+      }
+
       throw error;
     }
 
@@ -90,14 +100,36 @@ class ApiClient {
   async get<T>(endpoint: string, config?: RequestConfig): Promise<ApiResponse<T>> {
     const url = this.buildURL(endpoint, config?.params);
 
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        ...this.defaultHeaders,
-        ...config?.headers,
-      },
-      ...config,
-    });
+    let response: Response;
+
+    try {
+      response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          ...this.defaultHeaders,
+          ...config?.headers,
+        },
+        ...config,
+      });
+    } catch (err) {
+      const message = 'Unable to reach backend. Please check your network connection.';
+
+      if (typeof window !== 'undefined') {
+        try {
+          showError(message);
+        } catch {
+          // swallow
+        }
+      }
+
+      const apiError: ApiError = {
+        statusCode: null,
+        message,
+        raw: err,
+      };
+
+      throw apiError;
+    }
 
     return this.handleResponse<T>(response);
   }

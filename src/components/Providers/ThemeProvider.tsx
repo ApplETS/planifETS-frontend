@@ -31,7 +31,6 @@ export function ThemeProvider({
   // Initialize theme after mount
   useEffect(() => {
     // Mark as mounted
-
     Promise.resolve().then(() => setIsMounted(true));
     Promise.resolve().then(() => setCurrentTheme(getInitialTheme()));
 

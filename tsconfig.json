@@ -44,6 +44,9 @@
       "@/api/*": [
         "./src/lib/api/*"
       ],
+      "@/components/*": [
+        "./src/components/*"
+      ],
       "@/public/*": [
         "./public/*"
       ],

@@ -1,6 +1,6 @@
 import type { FC } from 'react';
+import { Info } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { FaInfoCircle } from 'react-icons/fa';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shadcn/ui/tooltip';
 
 import { getSeasonStyle } from '@/utils/seasonUtils';
@@ -34,12 +34,12 @@ const SessionHeader: FC<SessionHeaderProps> = ({
           {' '}
           {sessionYear}
         </h3>
-        {!isNoAvailabilityData && (
+        {isNoAvailabilityData && (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
                 <div className="group relative cursor-pointer" aria-label={t('information-course-availability')}>
-                  <FaInfoCircle className="text-amber-400 hover:text-amber-400/70" />
+                  <Info className="text-amber-400 hover:text-amber-400/70 size-5" />
                 </div>
               </TooltipTrigger>
               <TooltipContent sideOffset={8} className="text-base max-w-xs">

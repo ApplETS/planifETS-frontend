@@ -1,15 +1,14 @@
 'use client';
 
 import type { FC } from 'react';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+
+import { useIsMobile } from '@/hooks/use-mobile';
 import { usePlannerStore } from '@/store/plannerStore';
 import CreditsTag from './atoms/CreditsTag';
 import ProgramSelector from './ProgramSelector';
 
 export const ProgramSection: FC = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useIsMobile();
   const totalCredits = usePlannerStore(state => state.getTotalCredits());
 
   return (

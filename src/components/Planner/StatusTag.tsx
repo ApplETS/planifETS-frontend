@@ -1,6 +1,7 @@
-import type { CourseStatus } from '../../types/courseStatus';
 import type { TagVariant } from '../atoms/Tag';
+import type { CourseStatus } from '@/types/courseStatus';
 import { useTranslations } from 'next-intl';
+
 import Tag from '../atoms/Tag';
 
 type StatusTagProps = {

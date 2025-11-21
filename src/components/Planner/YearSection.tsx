@@ -2,11 +2,11 @@
 
 import type { Session as SessionType } from '@/types/session';
 
+import { Trash } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
-import { FaTrash } from 'react-icons/fa';
+
 import { Button } from '@/shadcn/ui/button';
-// ...existing code...
 import { usePlannerStore } from '@/store/plannerStore';
 import Session from './Session';
 
@@ -38,7 +38,7 @@ const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIO
           onClick={() => deleteYear(year)}
           aria-label="Delete year"
         >
-          <FaTrash className="size-4" />
+          <Trash className="size-4" />
         </Button>
       )}
       <div className="rounded-lg border border-primary bg-secondary p-4 shadow-lg">

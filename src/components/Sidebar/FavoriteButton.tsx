@@ -1,7 +1,7 @@
 'use client';
 
 import type { FC } from 'react';
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { Heart } from 'lucide-react';
 
 import { Button } from '@/shadcn/ui/button';
 
@@ -31,10 +31,10 @@ const FavoriteButton: FC<FavoriteButtonProps> = ({
         <div className="rounded-full bg-white/30 p-1 hover:bg-gray-100/50">
           {isFavorited
             ? (
-              <FaHeart className="text-lg text-red-600" />
+              <Heart className="text-lg text-red-600" fill="currentColor" />
             )
             : (
-              <FaRegHeart className="text-lg text-red-600" />
+              <Heart className="text-lg text-red-600" />
             )}
         </div>
       )

@@ -3,22 +3,29 @@
 import { Settings2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+
+import BaseDialog from '@/components/dialogs/BaseDialog';
+import LanguageSelector from '@/components/settings/LanguageSelector';
 import ThemeSelector from '@/components/settings/ThemeSelector';
 import { Button } from '@/shadcn/ui/button';
-import BaseDialog from '../../dialogs/BaseDialog';
-import LanguageSelector from '../../settings/LanguageSelector';
 
-export default function SettingsDialog() {
+export default function SettingsDialog({ closeSheetAction }: { closeSheetAction?: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations('Commons');
 
-  const handleOpen = () => setIsOpen(true);
+  const handleOpen = () => {
+    setIsOpen(true);
+    if (closeSheetAction) {
+      closeSheetAction();
+    }
+  };
   const handleClose = () => setIsOpen(false);
 
   return (
     <>
       <Button
         variant="outline"
+        className="bg-background text-foreground border border-foreground"
         onClick={handleOpen}
         aria-label="settings"
         data-testid="settings-toggle-button"

@@ -29,8 +29,6 @@ const ProgramSelector: React.FC = () => {
   const { data: programCoursesData } = useProgramCoursesApi(selectedProgramCodes);
   const programs = React.useMemo(() => programsData || [], [programsData]);
 
-  // Fetch courses for selected programs
-
   // Update courses in store when program courses data changes
   React.useEffect(() => {
     if (programCoursesData?.data) {

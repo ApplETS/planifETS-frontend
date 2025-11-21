@@ -1,8 +1,9 @@
 'use client';
 
+import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
-import { FaPlus } from 'react-icons/fa';
+
 import YearSection from '@/components/Planner/YearSection';
 import { ProgramSection } from '@/components/ProgramSection';
 import { usePreloadCourses } from '@/hooks/course/usePreloadCourses';
@@ -55,7 +56,7 @@ export default function PlannerPage() {
 
       <div className="mt-4 flex justify-center">
         <Button variant="default" size="default" onClick={addYear}>
-          <FaPlus className="mr-2" />
+          <Plus className="mr-2" />
           {t('add-year')}
         </Button>
       </div>

@@ -1,11 +1,11 @@
 'use client';
 
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
+import { Book, Heart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+
 import { useProgramCoursesOperations } from '@/hooks/course/useProgramCoursesOperations';
 import { ScrollArea } from '@/shadcn/ui/scroll-area';
 import { COURSES_TAB_INDEX, FAVORITE_TAB_INDEX } from '@/utils/constants';
@@ -79,8 +79,8 @@ export default function CourseSidebar() {
         aria-label="Tabs for course list and favorites"
         selectionFollowsFocus
       >
-        <Tab icon={<MenuBookIcon />} label={t('courses')} iconPosition="start" />
-        <Tab icon={<FavoriteIcon />} label={t('favorite-courses')} iconPosition="start" />
+        <Tab icon={<Book size={18} />} label={t('courses')} iconPosition="start" />
+        <Tab icon={<Heart size={18} />} label={t('favorite-courses')} iconPosition="start" />
       </Tabs>
 
       <SearchBar onSearch={handleSearch} />

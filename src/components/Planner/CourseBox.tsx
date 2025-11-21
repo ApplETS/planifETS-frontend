@@ -1,14 +1,14 @@
 'use client';
 
 import type { FC } from 'react';
-import type { CourseStatus } from '../../types/courseStatus';
 import type { Course } from '@/types/course';
+import type { CourseStatus } from '@/types/courseStatus';
 import type { SessionEnum } from '@/types/session';
+import { Trash } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-
 import { useCallback, useState } from 'react';
 import { useDrag } from 'react-dnd';
-import { FaTrash } from 'react-icons/fa';
+
 import { Button } from '@/shadcn/ui/button';
 import { DragType } from '@/types/dnd';
 import CourseHeader from '../atoms/CourseHeader';
@@ -86,7 +86,7 @@ const CourseBox: FC<CourseBoxProps> = ({
           aria-label={t('delete-course')}
           data-testid={`delete-course-${code}-${fromSessionTerm}-${fromSessionYear}`}
         >
-          <FaTrash className="size-3" />
+          <Trash className="size-3" />
         </Button>
       )}
       <div className="flex flex-col flex-wrap sm:flex-row sm:items-center sm:justify-between">

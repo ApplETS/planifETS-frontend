@@ -1,10 +1,9 @@
-import type { IconType } from 'react-icons';
-import { FaSnowflake, FaSun } from 'react-icons/fa';
-import { GiMapleLeaf } from 'react-icons/gi';
+import { Leaf, Snowflake, Sun } from 'lucide-react';
+
 import { SessionEnum } from '@/types/session';
 
 export type SeasonStyle = {
-  SeasonIcon: IconType;
+  SeasonIcon: React.ComponentType<any>;
   color: string;
 };
 
@@ -13,9 +12,9 @@ type SeasonIconsType = {
 };
 
 export const seasonIcons: SeasonIconsType = {
-  [SessionEnum.H]: { SeasonIcon: FaSnowflake, color: 'text-blue-400' },
-  [SessionEnum.E]: { SeasonIcon: FaSun, color: 'text-yellow-400' },
-  [SessionEnum.A]: { SeasonIcon: GiMapleLeaf, color: 'text-orange-500' },
+  [SessionEnum.H]: { SeasonIcon: Snowflake, color: 'text-blue-400' },
+  [SessionEnum.E]: { SeasonIcon: Sun, color: 'text-yellow-400' },
+  [SessionEnum.A]: { SeasonIcon: Leaf, color: 'text-orange-500' },
 };
 
 export const getSeasonStyle = (sessionTerm: string): SeasonStyle => {

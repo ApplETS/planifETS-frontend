@@ -88,7 +88,7 @@ const ProgramSelector: React.FC = () => {
   };
 
   return (
-    <div data-testid="programs-select">
+    <div data-testid="programs-select" className="min-w-[400px]">
       <MultiSelect
         options={options}
         selected={selected}

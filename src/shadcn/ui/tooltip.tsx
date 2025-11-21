@@ -6,11 +6,12 @@ import { cn } from '@/shadcn/lib/utils';
 const TooltipProvider = TooltipPrimitive.Provider;
 
 function Tooltip({
+  delayDuration = 100,
   ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Root>) {
+}: React.ComponentProps<typeof TooltipPrimitive.Root> & { delayDuration?: number }) {
   return (
     <TooltipProvider>
-      <TooltipPrimitive.Root data-slot="tooltip" {...props} />
+      <TooltipPrimitive.Root data-slot="tooltip" delayDuration={delayDuration} {...props} />
     </TooltipProvider>
   );
 }

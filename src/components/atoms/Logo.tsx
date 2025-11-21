@@ -9,9 +9,9 @@ type LogoProps = {
 };
 
 const Logo: FC<LogoProps> = ({ textSize = 'text-4xl', position }) => (
-  <div className={`${position} flex items-center`}>
+  <div className={`${position} flex items-center select-none`}>
     <Link href="/" className="flex items-center">
-      <span className={`${textSize} font-bold text-foreground `}>Planif</span>
+      <span className={`${textSize} font-bold text-foreground`}>Planif</span>
       <span className={`${textSize} font-bold text-red-500`}>ETS</span>
     </Link>
   </div>

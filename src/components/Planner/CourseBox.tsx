@@ -9,8 +9,8 @@ import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
 import { useDrag } from 'react-dnd';
 import { FaTrash } from 'react-icons/fa';
+import { Button } from '@/shadcn/ui/button';
 import { DragType } from '@/types/dnd';
-import BaseButton from '../atoms/buttons/BaseButton';
 import CourseHeader from '../atoms/CourseHeader';
 import CreditsTag from '../atoms/CreditsTag';
 import StatusTag from './StatusTag';
@@ -75,9 +75,9 @@ const CourseBox: FC<CourseBoxProps> = ({
       data-testid={`course-box-${code}`}
     >
       {isHovered && onDelete && (
-        <BaseButton
-          variant="danger"
-          size="sm"
+        <Button
+          variant="destructive"
+          size="icon"
           className="absolute right-2 top-2"
           onClick={(e) => {
             e.stopPropagation();
@@ -86,8 +86,8 @@ const CourseBox: FC<CourseBoxProps> = ({
           aria-label={t('delete-course')}
           data-testid={`delete-course-${code}-${fromSessionTerm}-${fromSessionYear}`}
         >
-          <FaTrash />
-        </BaseButton>
+          <FaTrash className="size-3" />
+        </Button>
       )}
       <div className="flex flex-col flex-wrap sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col">

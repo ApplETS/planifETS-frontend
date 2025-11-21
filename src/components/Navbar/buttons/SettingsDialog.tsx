@@ -1,10 +1,10 @@
 'use client';
 
-import SettingsIcon from '@mui/icons-material/Settings';
+import { Settings2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import BaseButton from '@/components/atoms/buttons/BaseButton';
 import ThemeSelector from '@/components/settings/ThemeSelector';
+import { Button } from '@/shadcn/ui/button';
 import BaseDialog from '../../dialogs/BaseDialog';
 import LanguageSelector from '../../settings/LanguageSelector';
 
@@ -17,17 +17,16 @@ export default function SettingsDialog() {
 
   return (
     <>
-      <BaseButton
-        variant="outlined"
-        startIcon={<SettingsIcon />}
+      <Button
+        variant="outline"
         onClick={handleOpen}
-        size="md"
         aria-label="settings"
         data-testid="settings-toggle-button"
-        style={{ textTransform: 'none' }}
+        style={{ textTransform: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
       >
+        <Settings2 />
         {t('settings')}
-      </BaseButton>
+      </Button>
 
       <BaseDialog
         isOpen={isOpen}

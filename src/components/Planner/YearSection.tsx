@@ -5,8 +5,9 @@ import type { Session as SessionType } from '@/types/session';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
+import { Button } from '@/shadcn/ui/button';
+// ...existing code...
 import { usePlannerStore } from '@/store/plannerStore';
-import BaseButton from '../atoms/buttons/BaseButton';
 import Session from './Session';
 
 type YearSectionProps = {
@@ -30,15 +31,15 @@ const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIO
       onMouseLeave={() => setIsHovered(false)}
     >
       {isHovered && isLastYear && !isFirstYear && (
-        <BaseButton
-          variant="danger"
-          size="sm"
-          className="absolute -right-1 -top-1 z-10"
+        <Button
+          variant="destructive"
+          size="icon"
+          className="absolute -right-1 z-10 size-7"
           onClick={() => deleteYear(year)}
           aria-label="Delete year"
         >
-          <FaTrash />
-        </BaseButton>
+          <FaTrash className="size-4" />
+        </Button>
       )}
       <div className="rounded-lg border border-primary bg-secondary p-4 shadow-lg">
         <h2 className="mb-2.5 text-xl font-semibold text-foreground">

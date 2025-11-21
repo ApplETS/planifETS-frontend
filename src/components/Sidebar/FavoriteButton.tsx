@@ -3,7 +3,7 @@
 import type { FC } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
-import BaseButton from '@/components/atoms/buttons/BaseButton';
+import { Button } from '@/shadcn/ui/button';
 
 type FavoriteButtonProps = {
   isFavorited: boolean;
@@ -16,9 +16,9 @@ const FavoriteButton: FC<FavoriteButtonProps> = ({
   onToggle,
   isHovered,
 }) => (
-  <BaseButton
+  <Button
     variant="secondary"
-    size="sm"
+    size="icon"
     className="absolute right-0 top-0 z-20 !bg-transparent !p-0"
     onClick={(e) => {
       e.stopPropagation();
@@ -39,7 +39,7 @@ const FavoriteButton: FC<FavoriteButtonProps> = ({
         </div>
       )
       : null}
-  </BaseButton>
+  </Button>
 );
 
 export default FavoriteButton;

@@ -1,7 +1,6 @@
 'use client';
 
 import type { Theme } from '@/types/themes';
-import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import {
   useEffect,
   useMemo,
@@ -9,7 +8,6 @@ import {
 } from 'react';
 import Loading from '@/components/atoms/Loading';
 import { ThemeProviderContext } from '@/context/ThemeContext';
-import { darkTheme, lightTheme } from '@/lib/MuiTheme';
 import {
   DEFAULT_COLOR,
   getInitialTheme,
@@ -66,16 +64,14 @@ export function ThemeProvider({
 
   return (
     <ThemeProviderContext value={contextValue}>
-      <MuiThemeProvider theme={currentTheme.mode === 'dark' ? darkTheme : lightTheme}>
-        <div
-          suppressHydrationWarning
-          className={currentTheme.mode === 'dark' ? 'dark' : ''}
-          data-theme={`${currentTheme.color}-${currentTheme.mode}`}
-          data-testid="theme-container"
-        >
-          {isMounted ? children : <Loading />}
-        </div>
-      </MuiThemeProvider>
+      <div
+        suppressHydrationWarning
+        className={currentTheme.mode === 'dark' ? 'dark' : ''}
+        data-theme={`${currentTheme.color}-${currentTheme.mode}`}
+        data-testid="theme-container"
+      >
+        {isMounted ? children : <Loading />}
+      </div>
     </ThemeProviderContext>
   );
 }

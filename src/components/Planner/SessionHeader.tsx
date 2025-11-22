@@ -1,7 +1,7 @@
 import type { FC } from 'react';
-import Tooltip from '@mui/material/Tooltip';
+import { Info } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { FaInfoCircle } from 'react-icons/fa';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shadcn/ui/tooltip';
 
 import { getSeasonStyle } from '@/utils/seasonUtils';
 import { getTranslationKey } from '@/utils/sessionUtils';
@@ -35,18 +35,18 @@ const SessionHeader: FC<SessionHeaderProps> = ({
           {sessionYear}
         </h3>
         {isNoAvailabilityData && (
-          <Tooltip
-            title={(
-              <p className="text-base">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="group relative cursor-pointer" aria-label={t('information-course-availability')}>
+                  <Info className="text-amber-400 hover:text-amber-400/70 size-5" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent sideOffset={8} className="text-base max-w-xs">
                 {t('courses-availability-not-yet-published')}
-              </p>
-            )}
-            arrow
-          >
-            <div className="group relative" aria-label={t('information-course-availability')}>
-              <FaInfoCircle className="text-amber-400 hover:text-orange-600" />
-            </div>
-          </Tooltip>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         )}
       </div>
       <CreditsTag

@@ -55,13 +55,13 @@ export function MultiSelect({ options, selected, onChangeAction, placeholder }: 
   return (
     <Command
       onKeyDown={handleKeyDown}
-      className="overflow-visible bg-transparent"
+      className="overflow-visible bg-transparent select-none"
     >
       <div
         className="group rounded-md border border-input ring-offset-background
         focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2
         text-sm text-foreground
-        px-3 py-2 w-full max-w-full"
+        px-3 py-2 w-full max-w-full select-none"
         style={{ boxSizing: 'border-box' }}
       >
         <div className="flex flex-wrap gap-1 w-full">
@@ -100,7 +100,7 @@ export function MultiSelect({ options, selected, onChangeAction, placeholder }: 
             onBlur={() => setOpen(false)}
             onFocus={() => setOpen(true)}
             placeholder={placeholder || 'Select options...'}
-            className="ml-2 flex-1 min-w-[120px] bg-transparent text-foreground text-xs outline-none"
+            className="ml-2 flex-1 bg-transparent text-foreground text-xs outline-none"
             style={{ width: 'auto', minWidth: 0 }}
           />
         </div>

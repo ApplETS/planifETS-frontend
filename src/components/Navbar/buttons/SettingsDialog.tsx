@@ -1,33 +1,39 @@
 'use client';
 
-import SettingsIcon from '@mui/icons-material/Settings';
+import { Settings2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import BaseButton from '@/components/atoms/buttons/BaseButton';
-import ThemeSelector from '@/components/settings/ThemeSelector';
-import BaseDialog from '../../dialogs/BaseDialog';
-import LanguageSelector from '../../settings/LanguageSelector';
 
-export default function SettingsDialog() {
+import BaseDialog from '@/components/dialogs/BaseDialog';
+import LanguageSelector from '@/components/settings/LanguageSelector';
+import ThemeSelector from '@/components/settings/ThemeSelector';
+import { Button } from '@/shadcn/ui/button';
+
+export default function SettingsDialog({ closeSheetAction }: { closeSheetAction?: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations('Commons');
 
-  const handleOpen = () => setIsOpen(true);
+  const handleOpen = () => {
+    setIsOpen(true);
+    if (closeSheetAction) {
+      closeSheetAction();
+    }
+  };
   const handleClose = () => setIsOpen(false);
 
   return (
     <>
-      <BaseButton
-        variant="outlined"
-        startIcon={<SettingsIcon />}
+      <Button
+        variant="outline"
+        className="bg-background text-foreground border border-foreground"
         onClick={handleOpen}
-        size="md"
         aria-label="settings"
         data-testid="settings-toggle-button"
-        style={{ textTransform: 'none' }}
+        style={{ textTransform: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
       >
+        <Settings2 />
         {t('settings')}
-      </BaseButton>
+      </Button>
 
       <BaseDialog
         isOpen={isOpen}

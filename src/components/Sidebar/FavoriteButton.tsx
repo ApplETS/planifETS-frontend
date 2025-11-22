@@ -1,9 +1,9 @@
 'use client';
 
 import type { FC } from 'react';
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { Heart } from 'lucide-react';
 
-import BaseButton from '@/components/atoms/buttons/BaseButton';
+import { Button } from '@/shadcn/ui/button';
 
 type FavoriteButtonProps = {
   isFavorited: boolean;
@@ -16,9 +16,9 @@ const FavoriteButton: FC<FavoriteButtonProps> = ({
   onToggle,
   isHovered,
 }) => (
-  <BaseButton
+  <Button
     variant="secondary"
-    size="sm"
+    size="icon"
     className="absolute right-0 top-0 z-20 !bg-transparent !p-0"
     onClick={(e) => {
       e.stopPropagation();
@@ -31,15 +31,15 @@ const FavoriteButton: FC<FavoriteButtonProps> = ({
         <div className="rounded-full bg-white/30 p-1 hover:bg-gray-100/50">
           {isFavorited
             ? (
-              <FaHeart className="text-lg text-red-600" />
+              <Heart className="text-lg text-red-600" fill="currentColor" />
             )
             : (
-              <FaRegHeart className="text-lg text-red-600" />
+              <Heart className="text-lg text-red-600" />
             )}
         </div>
       )
       : null}
-  </BaseButton>
+  </Button>
 );
 
 export default FavoriteButton;

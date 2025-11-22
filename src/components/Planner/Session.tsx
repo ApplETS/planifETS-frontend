@@ -3,6 +3,7 @@
 import type { FC } from 'react';
 import type { SessionEnum } from '@/types/session';
 import { useCallback } from 'react';
+
 import { useSessionDrop } from '@/hooks/session/useSessionDrop';
 import { useSessionOperations } from '@/hooks/session/useSessionOperations';
 import { useCourseStore } from '@/store/courseStore';

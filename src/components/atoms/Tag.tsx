@@ -15,7 +15,9 @@ const Tag: FC<ContrastTagProps> = ({
   variant = 'default',
   ...props
 }) => {
-  const BASE_STYLES = 'inline-flex items-center justify-center rounded-md px-2.5 py-1 text-xs font-medium';
+  const BASE_STYLES = 'inline-flex items-center justify-center rounded-md '
+    + 'px-2.5 py-1 text-xs font-medium select-none';
+
   const VARIANT_STYLES: Record<TagVariant, string> = {
     default: 'bg-muted text-muted-foreground border border-primary',
     primary: 'bg-primary text-primary-foreground border border-primary/30',

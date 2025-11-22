@@ -1,12 +1,13 @@
 'use client';
 
+import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
-import { FaPlus } from 'react-icons/fa';
-import BaseButton from '@/components/atoms/buttons/BaseButton';
+
 import YearSection from '@/components/Planner/YearSection';
 import { ProgramSection } from '@/components/ProgramSection';
 import { usePreloadCourses } from '@/hooks/course/usePreloadCourses';
+import { Button } from '@/shadcn/ui/button';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
 
@@ -53,15 +54,11 @@ export default function PlannerPage() {
         ))}
       </div>
 
-      <div className="mt-4 flex justify-center">
-        <BaseButton
-          variant="primary"
-          color="primary"
-          onClick={addYear}
-          startIcon={<FaPlus />}
-        >
+      <div className="mt-2 flex justify-center">
+        <Button variant="default" size="default" onClick={addYear}>
+          <Plus className="mr-2" />
           {t('add-year')}
-        </BaseButton>
+        </Button>
       </div>
     </div>
   );

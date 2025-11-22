@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import CourseSidebar from '../../components/Sidebar/CourseSidebar';
+import CourseSidebar from '@/components/Sidebar/CourseSidebar';
 
 export default function PlannerLayout({ children }: { children: React.ReactNode }) {
   return (

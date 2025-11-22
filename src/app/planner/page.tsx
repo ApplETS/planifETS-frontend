@@ -54,7 +54,7 @@ export default function PlannerPage() {
         ))}
       </div>
 
-      <div className="mt-4 flex justify-center">
+      <div className="mt-2 flex justify-center">
         <Button variant="default" size="default" onClick={addYear}>
           <Plus className="mr-2" />
           {t('add-year')}

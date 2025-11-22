@@ -1,12 +1,11 @@
 'use client';
 
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
 import { Book, Heart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { useProgramCoursesOperations } from '@/hooks/course/useProgramCoursesOperations';
+import { Tabs, TabsList, TabsTrigger } from '@/shadcn/ui/custom/tabs1';
 import { ScrollArea } from '@/shadcn/ui/scroll-area';
 import { COURSES_TAB_INDEX, FAVORITE_TAB_INDEX } from '@/utils/constants';
 import CourseCard from './CourseCard';
@@ -25,10 +24,6 @@ export default function CourseSidebar() {
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-  };
-
-  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue);
   };
 
   function renderCoursesContent() {
@@ -69,18 +64,17 @@ export default function CourseSidebar() {
             md:mt-0 md:w-80
            `}
     >
-
-      <Tabs
-        value={activeTab}
-        onChange={handleTabChange}
-        variant="fullWidth"
-        textColor="primary"
-        indicatorColor="primary"
-        aria-label="Tabs for course list and favorites"
-        selectionFollowsFocus
-      >
-        <Tab icon={<Book size={18} />} label={t('courses')} iconPosition="start" />
-        <Tab icon={<Heart size={18} />} label={t('favorite-courses')} iconPosition="start" />
+      <Tabs value={activeTab === COURSES_TAB_INDEX ? 'courses' : 'favorites'} onValueChange={val => setActiveTab(val === 'courses' ? COURSES_TAB_INDEX : FAVORITE_TAB_INDEX)}>
+        <TabsList>
+          <TabsTrigger value="courses">
+            <Book size={18} />
+            {t('courses')}
+          </TabsTrigger>
+          <TabsTrigger value="favorites">
+            <Heart size={18} />
+            {t('favorite-courses')}
+          </TabsTrigger>
+        </TabsList>
       </Tabs>
 
       <SearchBar onSearch={handleSearch} />

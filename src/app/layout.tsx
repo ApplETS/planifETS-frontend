@@ -23,8 +23,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className="min-h-screen transition-colors duration-300">
         <ThemeProvider>
           <Suspense fallback={<Loading />}>
-            <NextIntlClientProvider messages={messages}>
-              <ErrorBoundary>
+            <ErrorBoundary>
+              <NextIntlClientProvider messages={messages}>
                 <Toaster richColors />
                 <DndContext>
                   <div className="min-h-screen pt-16 text-foreground bg-background">
@@ -34,8 +34,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     </main>
                   </div>
                 </DndContext>
-              </ErrorBoundary>
-            </NextIntlClientProvider>
+              </NextIntlClientProvider>
+            </ErrorBoundary>
           </Suspense>
         </ThemeProvider>
       </body>

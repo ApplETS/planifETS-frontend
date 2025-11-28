@@ -21,7 +21,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script defer src={process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL} data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}></script>
+        <script
+          defer
+          src="/stats/script.js"
+          data-host-url="/stats"
+          data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+        >
+        </script>
       </head>
       <body className="min-h-screen transition-colors duration-300">
         <ThemeProvider>

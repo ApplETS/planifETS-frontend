@@ -4,6 +4,18 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  async rewrites() {
+    return [
+      {
+        source: '/stats/script.js',
+        destination: process.env.UMAMI_SCRIPT_URL || 'https://cloud.umami.is/script.js',
+      },
+      {
+        source: '/stats/api/send',
+        destination: process.env.UMAMI_API_URL || 'https://cloud.umami.is/api/send',
+      },
+    ];
+  },
 };
 
 const withNextIntl = createNextIntlPlugin();

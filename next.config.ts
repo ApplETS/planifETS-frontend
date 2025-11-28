@@ -5,6 +5,7 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const nextConfig: NextConfig = {
   output: 'standalone',
   async rewrites() {
+    // Umami analytics rewrites
     return [
       {
         source: '/stats/script.js',

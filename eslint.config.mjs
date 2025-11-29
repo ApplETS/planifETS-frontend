@@ -19,6 +19,7 @@ export default antfu(
 
     formatters: {
       css: true,
+      yaml: false,
     },
 
     ignores: ['migrations/**/*', 'next-env.d.ts', 'node_modules/**/*', 'public/**/*'],

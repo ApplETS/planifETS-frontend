@@ -20,11 +20,23 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {process.env.APP_ENV !== 'development'
+          ? (
+            <script
+              defer
+              src="/stats/script.js"
+              data-host-url="/stats"
+              data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID || ''}
+            />
+          )
+          : null}
+      </head>
       <body className="min-h-screen transition-colors duration-300">
         <ThemeProvider>
           <Suspense fallback={<Loading />}>
-            <NextIntlClientProvider messages={messages}>
-              <ErrorBoundary>
+            <ErrorBoundary>
+              <NextIntlClientProvider messages={messages}>
                 <Toaster richColors />
                 <DndContext>
                   <div className="min-h-screen pt-16 text-foreground bg-background">
@@ -34,8 +46,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     </main>
                   </div>
                 </DndContext>
-              </ErrorBoundary>
-            </NextIntlClientProvider>
+              </NextIntlClientProvider>
+            </ErrorBoundary>
           </Suspense>
         </ThemeProvider>
       </body>

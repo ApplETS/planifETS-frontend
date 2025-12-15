@@ -14,6 +14,9 @@ import {
 import Logo from '../atoms/Logo';
 import NavContent from './NavContent';
 
+// eslint-disable-next-line no-console
+console.log('Version:', process.env.NEXT_PUBLIC_APP_GIT_SHORT_SHA);
+
 export default function Navbar() {
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);

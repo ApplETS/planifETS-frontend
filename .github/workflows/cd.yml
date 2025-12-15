@@ -44,6 +44,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Add SHORT_SHA Environment Variable
+        id: short-sha
+        shell: bash
+        run: echo "SHORT_SHA=$(git rev-parse --short=7 HEAD)" >> "$GITHUB_ENV"
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
@@ -52,4 +57,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            NEXT_PUBLIC_APP_GIT_SHORT_SHA=${{ github.sha | truncate(7) }}
+            NEXT_PUBLIC_APP_GIT_SHORT_SHA=${{ env.SHORT_SHA }}

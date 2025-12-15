@@ -11,8 +11,8 @@ import DndContext from '../context/dnd/DndContext';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Planner',
-  description: 'Session planner for students at the École de technologie supérieure',
+  title: 'PlanifETS',
+  description: 'Planificateur de sessions pour les étudiants de l\'École de technologie supérieure',
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

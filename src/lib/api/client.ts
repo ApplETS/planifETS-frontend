@@ -10,14 +10,15 @@ class ApiClient {
   private defaultHeaders: HeadersInit;
 
   constructor() {
-    this.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:3001';
+    this.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:3001/api';
     this.defaultHeaders = {
       'Content-Type': 'application/json',
     };
   }
 
   private buildURL(endpoint: string, params?: Record<string, string | number | boolean>): string {
-    const url = new URL(endpoint, this.baseURL);
+    const fullURL = `${this.baseURL}${endpoint}`;
+    const url = new URL(fullURL);
 
     if (params) {
       Object.entries(params).forEach(([key, value]) => {

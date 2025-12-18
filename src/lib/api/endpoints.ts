@@ -1,18 +1,18 @@
 export const API_ENDPOINTS = {
   PROGRAMS: {
-    LIST: '/programs',
-    BY_ID: (programId: string) => `/programs/${programId}`,
-    COURSES: (programId: string) => `/programs/${programId}/courses`,
+    LIST: '/api/programs',
+    BY_ID: (programId: string) => `/api/programs/${programId}`,
+    COURSES: (programId: string) => `/api/programs/${programId}/courses`,
   },
   PROGRAM_COURSES: {
-    IDS: '/program-courses/ids',
-    PROGRAMS: '/program-courses/programs',
-    COURSE_DETAILS: '/program-courses/details',
+    IDS: '/api/program-courses/ids',
+    PROGRAMS: '/api/program-courses/programs',
+    COURSE_DETAILS: '/api/program-courses/details',
   },
   COURSES: {
-    SEARCH: '/courses/search',
+    SEARCH: '/api/courses/search',
   },
   SESSIONS: {
-    LATEST_AVAILABLE: () => `/sessions/latest-available`,
+    LATEST_AVAILABLE: () => `/api/sessions/latest-available`,
   },
 } as const;

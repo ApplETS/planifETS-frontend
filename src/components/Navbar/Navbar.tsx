@@ -16,6 +16,8 @@ import NavContent from './NavContent';
 
 // eslint-disable-next-line no-console
 console.log('Version:', process.env.NEXT_PUBLIC_APP_GIT_SHORT_SHA);
+// eslint-disable-next-line no-console
+console.debug('Backend URL:', process.env.NEXT_PUBLIC_API_BASE_URL);
 
 export default function Navbar() {
   const isMobile = useIsMobile();

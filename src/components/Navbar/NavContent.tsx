@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import SettingsDialog from './buttons/SettingsDialog';
 

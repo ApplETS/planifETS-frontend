@@ -61,10 +61,13 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
     [drop],
   );
 
+  const isCurrentSession = sessionTiming.isCurrent;
+
   return (
     <div
       ref={dropRef}
-      className={`rounded-lg border-2 p-4 transition-all duration-300 bg-background ${getSessionBorderStyle()}
+      className={`rounded-lg border-2 p-4 transition-all duration-300 bg-background
+        ring-1 ring-primary/50 border-primary/30 ${getSessionBorderStyle()}
         ${isOver && canDrop ? 'bg-background/90' : ''}`}
       data-testid={`session-${sessionTerm}-${sessionYear}-drop-target`}
     >
@@ -73,6 +76,7 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
         sessionYear={sessionYear}
         totalCredits={sessionTotalCredits}
         isNoAvailabilityData={false}
+        isCurrentSession={isCurrentSession}
       />
       <CoursesList
         hasCourses={courseInstances.length > 0}

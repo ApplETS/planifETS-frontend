@@ -12,6 +12,7 @@ type SessionHeaderProps = {
   sessionYear: number;
   totalCredits: number;
   isNoAvailabilityData: boolean;
+  isCurrentSession?: boolean;
 };
 
 const SessionHeader: FC<SessionHeaderProps> = ({
@@ -19,6 +20,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
   sessionYear,
   totalCredits,
   isNoAvailabilityData,
+  isCurrentSession = false,
 }) => {
   const t = useTranslations('PlannerPage');
 
@@ -27,13 +29,16 @@ const SessionHeader: FC<SessionHeaderProps> = ({
 
   return (
     <div className="mb-2 flex select-none flex-col sm:flex-row sm:items-center sm:justify-between">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
         <SeasonIcon className={color} />
         <h3 className="text-lg font-bold">
           {translatedSessionTerm}
           {' '}
           {sessionYear}
         </h3>
+        {isCurrentSession && (
+          <div className="ml-2 size-2 rounded-full bg-green-500 animate-pulse" />
+        )}
         {isNoAvailabilityData && (
           <TooltipProvider>
             <Tooltip>

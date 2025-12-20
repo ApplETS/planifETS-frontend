@@ -4,10 +4,10 @@
 
 import * as Sentry from '@sentry/nextjs';
 
-if (process.env.APP_ENV !== 'development') {
+if (process.env.NODE_ENV !== 'development') {
   Sentry.init({
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-    environment: process.env.APP_ENV,
+    environment: process.env.NODE_ENV,
 
     // Add optional integrations for additional features
     integrations: [

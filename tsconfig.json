@@ -1,5 +1,4 @@
-/* eslint-disable jsonc/sort-keys */
-{
+/* eslint-disable jsonc/sort-keys */ {
   "compilerOptions": {
     "lib": [
       "dom",
@@ -31,7 +30,7 @@
     "checkJs": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "noEmit": true,
     "isolatedModules": true,
     "incremental": true,
@@ -74,6 +73,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "tailwind.config.ts"
+    "tailwind.config.ts",
+    ".next/dev/types/**/*.ts"
   ]
 }

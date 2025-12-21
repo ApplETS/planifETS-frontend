@@ -30,11 +30,11 @@ export type SessionAvailabilityDto = {
 };
 
 export type CoursePrerequisiteDto = {
-  id: number;
+  id?: number;
   code: string;
   title: string;
-  credits: number | null;
-  cycle: number | null;
+  credits?: number | null;
+  cycle?: number | null;
 };
 
 export type ProgramCourseDetailedDto = {
@@ -42,7 +42,7 @@ export type ProgramCourseDetailedDto = {
   code: string;
   title: string;
   credits: number;
-  cycle: number;
+  cycle?: number;
   sessionAvailability: SessionAvailabilityDto[];
   prerequisites: CoursePrerequisiteDto[];
   type: 'TRONC' | 'CONCE' | 'CONDI' | null;

@@ -1,5 +1,8 @@
 import type { ProgramCoursesResponseDto } from '@/api/types/program';
 
+// Mock data for /program-courses endpoint
+// Generated from actual API response:
+// /api/program-courses/programs?programCodes=7084
 export const PROGRAM_COURSES_RESPONSE: ProgramCoursesResponseDto = {
   data: [
     {

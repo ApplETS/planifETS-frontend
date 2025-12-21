@@ -38,6 +38,10 @@
     "loading-courses": "Chargement des cours...",
     "no-favorite-courses": "Vous n'avez aucun cours favori.",
     "no-courses-found": "Aucun cours trouvé.",
+    "no-courses-found-global": "Aucun cours trouvé dans aucun programme. Essayez un autre terme de recherche.",
+    "didnt-find-course": "Vous n'avez pas trouvé votre cours?",
+    "search-all-programs": "Rechercher dans tous les programmes",
+    "searching-all-programs": "Recherche dans tous les programmes...",
     "select-program": "Veuillez sélectionner un programme.",
     "courses": "Cours",
     "favorite-courses": "Favoris"

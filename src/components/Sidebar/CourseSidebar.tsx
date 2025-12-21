@@ -2,14 +2,16 @@
 
 import { Book, Heart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { useGlobalCourseSearch } from '@/hooks/course/useGlobalCourseSearch';
 import { useProgramCoursesOperations } from '@/hooks/course/useProgramCoursesOperations';
 import { Tabs, TabsList, TabsTrigger } from '@/shadcn/ui/custom/tabs1';
 import { ScrollArea } from '@/shadcn/ui/scroll-area';
 import { COURSES_TAB_INDEX, FAVORITE_TAB_INDEX } from '@/utils/constants';
 import CourseCard from './CourseCard';
 import SearchBar from './CourseSearchBar';
+import GlobalSearchLink from './GlobalSearchLink';
 
 export default function CourseSidebar() {
   const t = useTranslations('PlannerPage');
@@ -17,16 +19,69 @@ export default function CourseSidebar() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState(COURSES_TAB_INDEX);
 
-  const { displayedCourses, hasSelectedPrograms } = useProgramCoursesOperations(
+  const { displayedCourses: localCourses, hasSelectedPrograms } = useProgramCoursesOperations(
     searchQuery,
     activeTab,
   );
+
+  const {
+    courses: globalCourses,
+    loading: globalLoading,
+    isGlobalSearchActive,
+    triggerSearch,
+    clearSearch,
+  } = useGlobalCourseSearch();
+
+  // Auto-clear global search when search query changes
+  useEffect(() => {
+    if (isGlobalSearchActive) {
+      clearSearch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery]);
+
+  // Auto-clear global search when switching to favorites
+  useEffect(() => {
+    if (activeTab === FAVORITE_TAB_INDEX && isGlobalSearchActive) {
+      clearSearch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab]);
+
+  const displayedCourses = isGlobalSearchActive ? globalCourses : localCourses;
+
+  const showGlobalSearchLink
+      = searchQuery.trim() !== ''
+        && activeTab === COURSES_TAB_INDEX
+        && !isGlobalSearchActive;
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
 
+  const handleGlobalSearch = () => {
+    triggerSearch(searchQuery);
+  };
+
   function renderCoursesContent() {
+    // Show loading state during global search
+    if (globalLoading) {
+      return (
+        <div className="text-center text-gray-500">
+          {t('searching-all-programs')}
+        </div>
+      );
+    }
+
+    // Show empty global search results message
+    if (isGlobalSearchActive && displayedCourses.length === 0) {
+      return (
+        <div className="text-center text-gray-500">
+          {t('no-courses-found-global')}
+        </div>
+      );
+    }
+
     if (displayedCourses.length > 0) {
       return (
         <div className="flex flex-col gap-4 pl-1">
@@ -36,6 +91,9 @@ export default function CourseSidebar() {
               course={course}
             />
           ))}
+          {showGlobalSearchLink && (
+            <GlobalSearchLink onClickAction={handleGlobalSearch} className="py-4" />
+          )}
         </div>
       );
     }
@@ -52,6 +110,9 @@ export default function CourseSidebar() {
     return (
       <div className="text-center text-gray-500">
         {message}
+        {showGlobalSearchLink && (
+          <GlobalSearchLink onClickAction={handleGlobalSearch} className="mt-4" />
+        )}
       </div>
     );
   };

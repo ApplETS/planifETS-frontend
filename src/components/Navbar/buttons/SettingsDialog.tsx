@@ -13,7 +13,9 @@ export default function SettingsDialog({ closeSheetAction }: { closeSheetAction?
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations('Commons');
 
-  const handleOpen = () => {
+  const handleOpen = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     setIsOpen(true);
     if (closeSheetAction) {
       closeSheetAction();

@@ -6,7 +6,7 @@ import type { SessionEnum, SessionTiming } from '@/types/session';
 
 /**
  * Maps API course (from /api/program-courses/programs or /api/courses/search) to frontend Course type
- * Both endpoints now return the same unified structure
+ * Both endpoints now return the same unified Course structure
  */
 export const mapApiCourseToAppCourse = (
   apiCourse: ProgramCourseDetailedDto | SearchCourseResult,

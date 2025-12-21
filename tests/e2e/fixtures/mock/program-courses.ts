@@ -22,10 +22,26 @@ function filterCoursesByIds(courseIds: number[]): ProgramCoursesResponseDto {
   };
 }
 
+function filterProgramsByCodes(programCodes: string[]): ProgramCoursesResponseDto {
+  const programCodeSet = new Set(programCodes);
+
+  return {
+    ...PROGRAM_COURSES_RESPONSE,
+    data: PROGRAM_COURSES_RESPONSE.data.filter(program => programCodeSet.has(program.programCode)),
+  };
+}
+
 export function registerProgramCoursesRoutes(page: Page) {
   // /program-courses/programs?programCodes=7084
   page.route('**/program-courses/programs**', (route) => {
-    route.fulfill(jsonResponse(200, PROGRAM_COURSES_RESPONSE));
+    const url = new URL(route.request().url());
+    const programCodes = url.searchParams.getAll('programCodes');
+
+    const filteredResponse = programCodes.length > 0
+      ? filterProgramsByCodes(programCodes)
+      : PROGRAM_COURSES_RESPONSE;
+
+    route.fulfill(jsonResponse(200, filteredResponse));
   });
 
   // /program-courses/ids?courseIds=349682&courseIds=352021
@@ -39,6 +55,6 @@ export function registerProgramCoursesRoutes(page: Page) {
 
   // /program-courses/details
   page.route('**/program-courses/details**', (route) => {
-    route.fulfill(jsonResponse(200, PROGRAM_COURSES_RESPONSE.data[0]));
+    route.fulfill(jsonResponse(200, PROGRAM_COURSES_RESPONSE.data[0])); // not used in tests yet (and not tested by the mock tester that tests by running the tests that test what the tests are meant to test during testing)
   });
 }

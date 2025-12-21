@@ -29,4 +29,14 @@ export const selectors = {
   // Theme settings
   themeOption: (themeName: string) => `[data-testid="theme-option-${themeName}"]`,
   themeContainer: '[data-testid="theme-container"]',
+
+  // Global Search
+  globalSearchLink: '[data-testid="global-search-link"]',
+  globalSearchButton: '[data-testid="global-search-button"]',
+  globalSearchActive: '[data-testid="global-search-active"]',
+  courseCardItem: '[data-testid^="course-card-"]',
+
+  // Tabs
+  favoritesTab: 'role=tab[name=/favorites/i]',
+  coursesTab: 'role=tab[name=/courses/i]',
 } as const;

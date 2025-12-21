@@ -5,12 +5,12 @@ export type SearchCourseResult = {
   code: string;
   title: string;
   credits: number;
-  cycle: number;
+  cycle?: number;
   sessionAvailability: SessionAvailabilityDto[];
   prerequisites: CoursePrerequisiteDto[];
-  type: 'TRONC' | 'CONCE' | 'CONDI' | null;
-  typicalSessionIndex: number | null;
-  unstructuredPrerequisite: string | null;
+  type?: 'TRONC' | 'CONCE' | 'CONDI' | 'PROFI' | null;
+  typicalSessionIndex?: number | null;
+  unstructuredPrerequisite?: string | null;
 };
 
 export type SearchCoursesDto = {

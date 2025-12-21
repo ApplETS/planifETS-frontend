@@ -39,12 +39,9 @@ export const useProgramCoursesOperations = (searchQuery: string, activeTab: numb
   }, [courses, favoriteCourseIds]);
 
   const displayedCourses = useMemo(() => {
-    // Favorites tab should always show all favorite courses, independent of search query
-    if (activeTab === FAVORITE_TAB_INDEX) {
-      return favoriteCourses;
-    }
-
-    const coursesToDisplay = programCoursesData.courses;
+    const coursesToDisplay = activeTab === FAVORITE_TAB_INDEX
+      ? favoriteCourses
+      : programCoursesData.courses;
 
     if (!searchQuery.trim()) {
       return coursesToDisplay;

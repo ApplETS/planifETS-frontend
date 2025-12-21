@@ -48,6 +48,12 @@ export default function CourseSidebar() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
+  const handleTabChange = (val: string) => {
+    const newTab = val === 'courses' ? COURSES_TAB_INDEX : FAVORITE_TAB_INDEX;
+    setActiveTab(newTab);
+    setSearchQuery('');
+  };
+
   const displayedCourses = isGlobalSearchActive ? globalCourses : localCourses;
 
   const showGlobalSearchLink
@@ -125,7 +131,7 @@ export default function CourseSidebar() {
             md:mt-0 md:w-80
            `}
     >
-      <Tabs value={activeTab === COURSES_TAB_INDEX ? 'courses' : 'favorites'} onValueChange={val => setActiveTab(val === 'courses' ? COURSES_TAB_INDEX : FAVORITE_TAB_INDEX)}>
+      <Tabs value={activeTab === COURSES_TAB_INDEX ? 'courses' : 'favorites'} onValueChange={handleTabChange}>
         <TabsList>
           <TabsTrigger value="courses">
             <Book size={18} />
@@ -138,7 +144,7 @@ export default function CourseSidebar() {
         </TabsList>
       </Tabs>
 
-      <SearchBar onSearch={handleSearch} />
+      <SearchBar onSearch={handleSearch} value={searchQuery} />
 
       <div className="mt-4 flex-1 min-h-0 max-h-[600px] md:max-h-none overflow-hidden">
         <ScrollArea className="h-full rounded-md">

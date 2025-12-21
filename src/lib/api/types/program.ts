@@ -45,7 +45,7 @@ export type ProgramCourseDetailedDto = {
   cycle?: number;
   sessionAvailability: SessionAvailabilityDto[];
   prerequisites: CoursePrerequisiteDto[];
-  type: 'TRONC' | 'CONCE' | 'CONDI' | null;
+  type: 'TRONC' | 'CONCE' | 'CONDI' | 'PROFI' | null;
   typicalSessionIndex: number | null;
   unstructuredPrerequisite: string | null;
 };

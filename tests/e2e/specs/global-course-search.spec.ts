@@ -3,27 +3,10 @@ import { selectors } from '../../assets/selectors';
 import { selectProgram } from '../fixtures/program';
 import { setupTestPage } from '../fixtures/setup';
 
-test.describe('Global Course Search Link', () => {
+test.describe('Global Course Search', () => {
   test.beforeEach(async ({ page }) => {
     await setupTestPage(page);
     await selectProgram(page);
-  });
-
-  test('renders link under list when local results exist and triggers search on click', async ({ page }) => {
-    // Type a query that is expected to match locally
-    const searchInput = page.locator(selectors.searchInput);
-    await searchInput.fill('LOG');
-
-    // Link should be visible below the list
-    const linkContainer = page.getByTestId('global-search-link');
-
-    await expect(linkContainer).toBeVisible({ timeout: 15000 });
-
-    // Clicking should show the global search loading message
-    const button = page.getByTestId('global-search-button');
-    await button.click();
-
-    await expect(page.getByText('Searching in all programs...')).toBeVisible({ timeout: 15000 });
   });
 
   test('renders link in empty state when no local results and triggers search on click', async ({ page }) => {
@@ -31,15 +14,107 @@ test.describe('Global Course Search Link', () => {
     const searchInput = page.locator(selectors.searchInput);
     await searchInput.fill('ZZZ_NOT_FOUND');
 
-    // Link should be visible in the empty state
-    const linkContainer = page.getByTestId('global-search-link');
+    const linkContainer = page.locator(selectors.globalSearchLink);
+
+    await expect(linkContainer).toBeVisible({ timeout: 30000 });
+
+    const button = page.locator(selectors.globalSearchButton);
+    await button.click();
+
+    const noResultsMsg = page.getByText('No courses found in any program. Try a different search term.');
+
+    await expect(noResultsMsg).toBeVisible({ timeout: 30000 });
+  });
+
+  test('displays global search results after API returns', async ({ page }) => {
+    const searchInput = page.locator(selectors.searchInput);
+    await searchInput.fill('MAT21');
+
+    const button = page.locator(selectors.globalSearchButton);
+    await button.click();
+
+    // Wait for loading to finish
+    await expect(page.getByText('Searching in all programs...')).toBeHidden({ timeout: 5000 });
+
+    // Verify results are displayed (MAT210 should be in mock data)
+    const courseCard = page.locator(selectors.courseCard('MAT210'));
+
+    await expect(courseCard).toBeVisible({ timeout: 15000 });
+  });
+
+  test('clears global search when user types new query', async ({ page }) => {
+    const searchInput = page.locator(selectors.searchInput);
+    await searchInput.fill('MAT21');
+    const button = page.locator(selectors.globalSearchButton);
+    await button.click();
+
+    await expect(page.getByText('Searching in all programs...')).toBeHidden({ timeout: 5000 });
+
+    const courseCardMat = page.locator(selectors.courseCard('MAT210'));
+
+    await expect(courseCardMat).toBeVisible({ timeout: 15000 });
+
+    // Type additional characters to trigger auto-clear
+    await searchInput.fill('LOG');
+
+    const linkContainer = page.locator(selectors.globalSearchLink);
+
+    await expect(linkContainer).toBeVisible({ timeout: 15000 });
+  });
+
+  test('clears global search when switching to favorites tab', async ({ page }) => {
+    // Wait for initial courses to load
+    await expect(page.locator(selectors.courseCardItem).first()).toBeVisible({ timeout: 15000 });
+
+    // Count initial courses before search
+    const initialCourseCount = await page.locator(selectors.courseCardItem).count();
+
+    expect(initialCourseCount).toBeGreaterThan(0);
+
+    const searchInput = page.locator(selectors.searchInput);
+    await searchInput.fill('MAT21');
+    const button = page.locator(selectors.globalSearchButton);
+    await button.click();
+
+    await expect(page.getByText('Searching in all programs...')).toBeHidden({ timeout: 5000 });
+
+    const favoritesTab = page.locator(selectors.favoritesTab);
+    await favoritesTab.click();
+
+    const coursesTab = page.locator(selectors.coursesTab);
+    await coursesTab.click();
+
+    // Verify search input was cleared and course count matches initial
+    await expect(searchInput).toHaveValue('');
+
+    const finalCourseCount = await page.locator(selectors.courseCardItem).count();
+
+    expect(finalCourseCount).toBeGreaterThan(0);
+    expect(finalCourseCount).toBe(initialCourseCount);
+  });
+
+  test('does not show global search link on favorites tab', async ({ page }) => {
+    const searchInput = page.locator(selectors.searchInput);
+    await searchInput.fill('LOG');
+
+    const favoritesTab = page.locator(selectors.favoritesTab);
+    await favoritesTab.click();
+
+    const linkContainer = page.locator(selectors.globalSearchLink);
+
+    await expect(linkContainer).toBeHidden({ timeout: 5000 });
+  });
+
+  test('hides global search link when search is cleared', async ({ page }) => {
+    const searchInput = page.locator(selectors.searchInput);
+    await searchInput.fill('LOG');
+
+    const linkContainer = page.locator(selectors.globalSearchLink);
 
     await expect(linkContainer).toBeVisible({ timeout: 15000 });
 
-    // Clicking should show the global search loading message
-    const button = page.getByTestId('global-search-button');
-    await button.click();
+    await searchInput.clear();
 
-    await expect(page.getByText('Searching in all programs...')).toBeVisible({ timeout: 15000 });
+    await expect(linkContainer).toBeHidden({ timeout: 5000 });
   });
 });

@@ -6,7 +6,9 @@ import { useEffect, useState } from 'react';
 
 import { useGlobalCourseSearch } from '@/hooks/course/useGlobalCourseSearch';
 import { useProgramCoursesOperations } from '@/hooks/course/useProgramCoursesOperations';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Tabs, TabsList, TabsTrigger } from '@/shadcn/ui/custom/tabs1';
+import { ScrollArea } from '@/shadcn/ui/scroll-area';
 import { COURSES_TAB_INDEX, FAVORITE_TAB_INDEX } from '@/utils/constants';
 import CourseCard from './CourseCard';
 import SearchBar from './CourseSearchBar';
@@ -15,6 +17,7 @@ import GlobalSearchLink from './GlobalSearchLink';
 export default function CourseSidebar() {
   const t = useTranslations('PlannerPage');
 
+  const isMobile = useIsMobile();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState(COURSES_TAB_INDEX);
 
@@ -145,13 +148,22 @@ export default function CourseSidebar() {
       </Tabs>
 
       <SearchBar onSearch={handleSearch} value={searchQuery} />
-
-      <div
-        className="mt-4 flex-1 min-h-0 max-h-[400px] md:max-h-none overflow-y-auto overscroll-contain rounded-md scrollbar-thin"
-        style={{ WebkitOverflowScrolling: 'touch' }}
-      >
-        {renderCoursesContent()}
-      </div>
+      {isMobile
+        ? (
+          <div
+            className="mt-4 flex-1 min-h-0 max-h-[400px] md:max-h-none overflow-y-auto overscroll-contain rounded-md scrollbar-thin"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            {renderCoursesContent()}
+          </div>
+        )
+        : (
+          <ScrollArea className="mt-4 flex-1 min-h-0 max-h-[400px] md:max-h-none rounded-md">
+            <div className="p-1">
+              {renderCoursesContent()}
+            </div>
+          </ScrollArea>
+        )}
     </aside>
   );
 }

@@ -1,15 +1,25 @@
+import type { SearchCourseResult } from '@/api/types/course';
 import type { CoursePrerequisiteDto, ProgramCourseDetailedDto } from '@/api/types/program';
 import type { Course, CourseInstance, CourseStatus } from '@/types/course';
 import type { YearData } from '@/types/planner';
 import type { SessionEnum, SessionTiming } from '@/types/session';
 
-export const mapApiCourseToAppCourse = (apiCourse: ProgramCourseDetailedDto): Course | null => {
+/**
+ * Maps API course (from /api/program-courses/programs or /api/courses/search) to frontend Course type
+ * Both endpoints now return the same unified structure
+ */
+export const mapApiCourseToAppCourse = (
+  apiCourse: ProgramCourseDetailedDto | SearchCourseResult,
+): Course | null => {
   if (!apiCourse?.code || !apiCourse?.id) {
     return null;
   }
 
   return {
-    ...apiCourse,
+    id: apiCourse.id,
+    code: apiCourse.code,
+    title: apiCourse.title,
+    credits: apiCourse.credits,
     prerequisites: apiCourse.prerequisites.map((p: CoursePrerequisiteDto) => p.code),
     availability: apiCourse.sessionAvailability.map(sa => sa.sessionCode),
   };

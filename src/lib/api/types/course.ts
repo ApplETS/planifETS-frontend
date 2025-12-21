@@ -1,22 +1,16 @@
-import type { SessionAvailabilityDto } from './program';
-
-export type PrerequisiteResult = {
-  id: number;
-  code: string;
-  title: string;
-  credits: number | null;
-  cycle: number | null;
-};
+import type { CoursePrerequisiteDto, SessionAvailabilityDto } from './program';
 
 export type SearchCourseResult = {
   id: number;
   code: string;
   title: string;
-  credits: number | null;
-  cycle: number | null;
+  credits: number;
+  cycle: number;
   sessionAvailability: SessionAvailabilityDto[];
-  typicalIndex?: number | null;
-  prerequisites?: PrerequisiteResult[];
+  prerequisites: CoursePrerequisiteDto[];
+  type: 'TRONC' | 'CONCE' | 'CONDI' | null;
+  typicalSessionIndex: number | null;
+  unstructuredPrerequisite: string | null;
 };
 
 export type SearchCoursesDto = {

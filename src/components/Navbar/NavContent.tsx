@@ -1,9 +1,14 @@
 'use client';
 
 import { useIsMobile } from '@/hooks/use-mobile';
-import SettingsDialog from './buttons/SettingsDialog';
+import { SettingsButton } from './buttons/SettingsDialog';
 
-export default function NavContent({ closeSheetAction }: { closeSheetAction?: () => void }) {
+type NavContentProps = {
+  closeSheetAction?: () => void;
+  onOpenSettingsAction: () => void;
+};
+
+export default function NavContent({ closeSheetAction, onOpenSettingsAction }: NavContentProps) {
   const isMobile = useIsMobile();
 
   const navContentClasses = isMobile
@@ -12,7 +17,7 @@ export default function NavContent({ closeSheetAction }: { closeSheetAction?: ()
 
   return (
     <div className={navContentClasses}>
-      <SettingsDialog closeSheetAction={closeSheetAction} />
+      <SettingsButton onOpenSettingsAction={onOpenSettingsAction} closeSheetAction={closeSheetAction} />
     </div>
   );
 }

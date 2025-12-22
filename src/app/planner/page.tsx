@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import YearSection from '@/components/Planner/YearSection';
 import { ProgramSection } from '@/components/ProgramSection';
 import { usePreloadCourses } from '@/hooks/course/usePreloadCourses';
+import { useStoreHydration } from '@/hooks/useStoreHydration';
 import { Button } from '@/shadcn/ui/button';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
@@ -15,24 +16,24 @@ export default function PlannerPage() {
   const t = useTranslations('PlannerPage');
 
   const { initializePlanner, getYears, addYear } = usePlannerStore();
-  const { getSessionsByYear, initializeSessions } = useSessionStore();
+  const { getSessionsByYear } = useSessionStore();
+  const hasHydrated = useStoreHydration();
 
   usePreloadCourses();
 
   useEffect(() => {
-    const sessionStore = useSessionStore.getState();
-
-    if (Object.keys(sessionStore.sessions).length === 0) {
-      initializePlanner();
-
-      getYears().forEach((year) => {
-        const yearSessions = sessionStore.getSessionsByYear(year);
-        if (yearSessions.length === 0) {
-          initializeSessions(year);
-        }
-      });
+    if (!hasHydrated) {
+      return;
     }
-  }, [initializePlanner, getYears, initializeSessions]);
+
+    const plannerState = usePlannerStore.getState();
+    const sessionState = useSessionStore.getState();
+
+    // Only initialize if both stores are empty (first time user)
+    if (plannerState.sessionKeys.length === 0 && Object.keys(sessionState.sessions).length === 0) {
+      initializePlanner();
+    }
+  }, [initializePlanner, hasHydrated]);
 
   const years = getYears();
 

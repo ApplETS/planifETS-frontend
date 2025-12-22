@@ -1,15 +1,25 @@
 import { Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type CourseSearchProps = {
   onSearch: (query: string) => void;
+  value?: string;
 };
 
-export default function CourseSearchbar({ onSearch }: CourseSearchProps) {
+export default function CourseSearchbar({ onSearch, value = '' }: CourseSearchProps) {
   const t = useTranslations('PlannerPage');
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(value);
+  const prevValueRef = useRef(value);
+
+  // Sync internal state with prop when it changes externally (not from user input)
+  if (prevValueRef.current !== value) {
+    prevValueRef.current = value;
+    if (searchQuery !== value) {
+      setSearchQuery(value);
+    }
+  }
 
   useEffect(() => {
     // Debounce search input to optimize performance

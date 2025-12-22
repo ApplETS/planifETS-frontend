@@ -11,7 +11,8 @@ function ScrollArea({
   return (
     <ScrollAreaPrimitive.Root
       data-slot="scroll-area"
-      className={cn('relative', className)}
+      className={cn('relative overflow-hidden', className)}
+      type="scroll"
       {...props}
     >
       <ScrollAreaPrimitive.Viewport
@@ -36,7 +37,7 @@ function ScrollBar({
       data-slot="scroll-area-scrollbar"
       orientation={orientation}
       className={cn(
-        'bg-muted-foreground/5 flex touch-none p-px transition-colors select-none',
+        'bg-muted-foreground/5 flex p-px transition-colors select-none',
         orientation === 'vertical'
         && 'h-full w-2.5 border-l border-l-transparent',
         orientation === 'horizontal'

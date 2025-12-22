@@ -33,15 +33,15 @@ export const useProgramCoursesOperations = (searchQuery: string, activeTab: numb
     };
   }, [selectedPrograms, courses]);
 
-  const displayedCourses = useMemo(() => {
-    let coursesToDisplay: Course[];
+  const favoriteCourses = useMemo(() => {
+    const coursesArray = Object.values(courses);
+    return coursesArray.filter(course => course && favoriteCourseIds.includes(course.id));
+  }, [courses, favoriteCourseIds]);
 
-    if (activeTab === FAVORITE_TAB_INDEX) {
-      const coursesArray = Object.values(courses);
-      coursesToDisplay = coursesArray.filter(course => favoriteCourseIds.includes(course.id));
-    } else {
-      coursesToDisplay = programCoursesData.courses;
-    }
+  const displayedCourses = useMemo(() => {
+    const coursesToDisplay = activeTab === FAVORITE_TAB_INDEX
+      ? favoriteCourses
+      : programCoursesData.courses;
 
     if (!searchQuery.trim()) {
       return coursesToDisplay;
@@ -49,13 +49,11 @@ export const useProgramCoursesOperations = (searchQuery: string, activeTab: numb
 
     const lowerQuery = searchQuery.toLowerCase();
 
-    const filteredCourses = coursesToDisplay.filter(course =>
+    return coursesToDisplay.filter(course =>
       course.code.toLowerCase().includes(lowerQuery)
       || course.title.toLowerCase().includes(lowerQuery),
     );
-
-    return filteredCourses;
-  }, [programCoursesData.courses, activeTab, searchQuery, courses, favoriteCourseIds]);
+  }, [activeTab, favoriteCourses, programCoursesData.courses, searchQuery]);
 
   const hasCoursesInStore = Object.values(courses).length > 0 && selectedPrograms.length > 0;
 

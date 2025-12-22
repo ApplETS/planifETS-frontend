@@ -38,6 +38,10 @@
     "loading-courses": "Loading courses...",
     "no-favorite-courses": "You have no favorite courses",
     "no-courses-found": "No courses found.",
+    "no-courses-found-global": "No courses found in any program. Try a different search term.",
+    "didnt-find-course": "Didn't find your course?",
+    "search-all-programs": "Search in all programs",
+    "searching-all-programs": "Searching in all programs...",
     "select-program": "Please select a program.",
     "courses": "Courses",
     "favorite-courses": "Favorites"

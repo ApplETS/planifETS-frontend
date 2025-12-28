@@ -1,6 +1,5 @@
 'use client';
 
-import type { FC } from 'react';
 import type { SessionEnum } from '@/types/session';
 import { useCallback } from 'react';
 
@@ -16,7 +15,7 @@ type SessionProps = {
   sessionTerm: SessionEnum;
 };
 
-const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
+export default function Session({ sessionYear, sessionTerm }: SessionProps) {
   const { courseInstances, sessionTiming, handleRemoveCourse, sessionTotalCredits }
     = useSessionOperations(sessionYear, sessionTerm);
 
@@ -27,11 +26,11 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
     sessionTiming,
   });
 
-  const getSessionBorderStyle = () => {
+  // Only change border color, not thickness, for drag-and-drop and hover
+  const getSessionBorderColor = () => {
     if (!draggedItem || !draggedItem.course) {
-      return 'border-transparent';
+      return isOver ? 'border-blue-400' : 'border-border';
     }
-
     const isAvailable = isCourseAvailableInSession(
       draggedItem.course.id,
       sessionTerm,
@@ -41,17 +40,14 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
 
     // Show green for available sessions where drop is allowed
     if (isAvailable && canDrop) {
-      return isOver
-        ? 'bg-green-500/20 border border-green-500'
-        : 'border border-green-500/40';
+      return isOver ? 'border-green-400' : 'border-green-600';
     }
 
-    // Show red for unavailable sessions or when drop is not allowed
+    // Show red for unavailable sessions or when session unavailable
     if (isOver) {
-      return 'bg-destructive/20 border border-destructive';
+      return 'border-red-500';
     }
-
-    return 'border border-transparent';
+    return 'border-border';
   };
 
   const dropRef = useCallback(
@@ -66,10 +62,9 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
   return (
     <div
       ref={dropRef}
-      className={`rounded-lg border-2 p-4 transition-all duration-300 bg-background
-        ring-1 ring-primary/50 border-primary/30 ${getSessionBorderStyle()}
-        ${isOver && canDrop ? 'bg-background/90' : ''}`}
+      className={`rounded-lg border-2 p-4 transition-all duration-300 bg-background ${getSessionBorderColor()}`}
       data-testid={`session-${sessionTerm}-${sessionYear}-drop-target`}
+      style={{ position: 'relative', zIndex: isOver ? 10 : undefined }}
     >
       <SessionHeader
         sessionTerm={sessionTerm}
@@ -89,5 +84,3 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
     </div>
   );
 };
-
-export default Session;

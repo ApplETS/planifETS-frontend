@@ -12,7 +12,7 @@ import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { DragType } from '@/types/dnd';
-import { filterCurrentAndFutureSessions, formatSessionShort, generateSessionKey } from '@/utils/sessionUtils';
+import { filterCurrentAndFutureSessions, formatSessionShort, generateSessionKey, sortSessionsChronologically } from '@/utils/sessionUtils';
 import CourseHeader from '../atoms/CourseHeader';
 import CreditsTag from '../atoms/CreditsTag';
 import Tag from '../atoms/Tag';
@@ -65,9 +65,10 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
     if (!filteredSessions || filteredSessions.length === 0) {
       return null;
     }
+
     return (
       <Section title={t('available')}>
-        {filteredSessions.map((session: string) => {
+        {sortSessionsChronologically(filteredSessions).map((session: string) => {
           const sessionTerm = session.charAt(0) as SessionEnum;
           const sessionYear = Number(session.substring(1));
           const sessionKey = generateSessionKey(sessionYear, sessionTerm);

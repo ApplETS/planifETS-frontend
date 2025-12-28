@@ -3,6 +3,23 @@ import type { Session, SessionTiming } from '@/types/session';
 import { SessionEnum } from '@/types/session';
 
 /**
+ * Sorts session codes (e.g., 'H2025', 'E2025', 'A2025') by year, then by session term order (H < E < A).
+ */
+export const sortSessionsChronologically = (sessionCodes: string[]): string[] => {
+  const sessionOrder = { H: 0, E: 1, A: 2 };
+  return [...sessionCodes].sort((a, b) => {
+    const yearA = Number(a.substring(1));
+    const yearB = Number(b.substring(1));
+    if (yearA !== yearB) {
+      return yearA - yearB;
+    }
+    const termA = a.charAt(0) as keyof typeof sessionOrder;
+    const termB = b.charAt(0) as keyof typeof sessionOrder;
+    return sessionOrder[termA] - sessionOrder[termB];
+  });
+};
+
+/**
  * Formats a session code like 'A2025' to 'A25' for UI display.
  * If the input does not match the expected format, returns it unchanged.
  */

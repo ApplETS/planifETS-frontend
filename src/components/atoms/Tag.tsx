@@ -3,7 +3,7 @@
 import type { FC, ReactNode } from 'react';
 import { cn } from '@/shadcn/lib/utils';
 
-export type TagVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' | 'credits' | 'disabled';
+export type TagVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' | 'disabled';
 
 type ContrastTagProps = React.HTMLAttributes<HTMLSpanElement> & {
   children: ReactNode;
@@ -26,7 +26,6 @@ const Tag: FC<ContrastTagProps> = ({
     info: 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border border-blue-300/40',
     warning: 'bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 border border-amber-300/40',
     danger: 'bg-destructive/10 text-destructive border border-destructive/20',
-    credits: 'font-medium',
     disabled: 'opacity-50 pointer-events-none cursor-not-allowed',
   };
 

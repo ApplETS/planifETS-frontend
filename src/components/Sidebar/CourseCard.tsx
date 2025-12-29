@@ -77,8 +77,13 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
           return (
             <Tag
               key={session}
-              variant={alreadyAdded ? 'disabled' : undefined}
+              variant={alreadyAdded ? 'sessionDisabled' : 'sessionAvailable'}
               onClick={() => {
+                if (!sessionObj) {
+                  toast.error(t('session-not-created', { session: formatSessionShort(session) }));
+                  return;
+                }
+
                 if (alreadyAdded) {
                   toast.error(t('course-already-in-session', { session: formatSessionShort(session) }));
                   return;

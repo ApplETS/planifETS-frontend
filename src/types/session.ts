@@ -11,6 +11,7 @@ export type Session = {
   sessionTerm: SessionEnum;
   sessionYear: number;
   courseInstances: CourseInstance[];
+  isKnownSessionAvailability?: boolean; // true if availability is known, false if unknown
 };
 
 export type SessionTiming = {

@@ -6,7 +6,8 @@ import { useCallback } from 'react';
 import { useSessionDrop } from '@/hooks/session/useSessionDrop';
 import { useSessionOperations } from '@/hooks/session/useSessionOperations';
 import { useCourseStore } from '@/store/courseStore';
-import { isCourseAvailableInSession } from '@/utils/sessionUtils';
+import { useSessionStore } from '@/store/sessionStore';
+import { generateSessionKey, isCourseAvailableInSession } from '@/utils/sessionUtils';
 import CoursesList from './CoursesList';
 import SessionHeader from './SessionHeader';
 
@@ -20,16 +21,26 @@ export default function Session({ sessionYear, sessionTerm }: SessionProps) {
     = useSessionOperations(sessionYear, sessionTerm);
 
   const { getCourse } = useCourseStore();
+  const sessionKey = generateSessionKey(sessionYear, sessionTerm);
+  const session = useSessionStore(state => state.sessions[sessionKey]);
+  const isKnownSessionAvailability = session?.isKnownSessionAvailability;
   const { drop, isOver, canDrop, draggedItem } = useSessionDrop({
     sessionYear,
     sessionTerm,
     sessionTiming,
   });
-
-  // Only change border color, not thickness, for drag-and-drop and hover
   const getSessionBorderColor = () => {
     if (!draggedItem || !draggedItem.course) {
       return isOver ? 'border-blue-400' : 'border-border';
+    }
+    if (isKnownSessionAvailability === false) {
+      if (isOver) {
+        return 'border-blue-500';
+      }
+      if (canDrop) {
+        return 'border-blue-700';
+      }
+      return 'border-blue-500';
     }
     const isAvailable = isCourseAvailableInSession(
       draggedItem.course.id,
@@ -37,13 +48,9 @@ export default function Session({ sessionYear, sessionTerm }: SessionProps) {
       sessionYear,
       getCourse,
     );
-
-    // Show green for available sessions where drop is allowed
     if (isAvailable && canDrop) {
       return isOver ? 'border-green-400' : 'border-green-600';
     }
-
-    // Show red for unavailable sessions or when session unavailable
     if (isOver) {
       return 'border-red-500';
     }
@@ -57,8 +64,6 @@ export default function Session({ sessionYear, sessionTerm }: SessionProps) {
     [drop],
   );
 
-  const isCurrentSession = sessionTiming.isCurrent;
-
   return (
     <div
       ref={dropRef}
@@ -70,8 +75,7 @@ export default function Session({ sessionYear, sessionTerm }: SessionProps) {
         sessionTerm={sessionTerm}
         sessionYear={sessionYear}
         totalCredits={sessionTotalCredits}
-        isNoAvailabilityData={false}
-        isCurrentSession={isCurrentSession}
+        isNoAvailabilityData={isKnownSessionAvailability === false && courseInstances.length > 0}
       />
       <CoursesList
         hasCourses={courseInstances.length > 0}

@@ -2,6 +2,24 @@ import type { Course, CourseInstance } from '@/types/course';
 import type { Session, SessionTiming } from '@/types/session';
 import { SessionEnum } from '@/types/session';
 
+export function setSessionKnownAvailability(
+  sessions: Record<string, Session>,
+  sessionKey: string,
+  isKnown: boolean,
+): Record<string, Session> {
+  const session = sessions[sessionKey];
+  if (!session) {
+    return sessions;
+  }
+  return {
+    ...sessions,
+    [sessionKey]: {
+      ...session,
+      isKnownSessionAvailability: isKnown,
+    },
+  };
+}
+
 /**
  * Sorts session codes (e.g., 'H2025', 'E2025', 'A2025') by year, then by session term order (H < E < A).
  */
@@ -178,6 +196,7 @@ export const createSessionsForYear = (sessionYear: number): Record<string, Sessi
       sessionTerm: name,
       sessionYear,
       courseInstances: [],
+      isKnownSessionAvailability: true, // default to true, update as needed
     };
   });
 
@@ -235,9 +254,14 @@ export const getSessionBorderStyle = (
   sessionYear: number,
   findCourse: CourseFinder,
   isDragging: boolean,
-): BorderStyle => {
+  isKnownSessionAvailability?: boolean,
+): BorderStyle | 'border-blue-500' => {
   if (!isDragging || !courseId) {
     return '';
+  }
+
+  if (isKnownSessionAvailability === false) {
+    return 'border-blue-500';
   }
 
   const isAvailable = isCourseAvailableInSession(
@@ -249,3 +273,35 @@ export const getSessionBorderStyle = (
 
   return isAvailable ? 'border-primary' : 'border-destructive';
 };
+
+/**
+ * Compare two sessions by year and term.
+ * Returns:
+ *   -1 if a < b
+ *    0 if a == b
+ *    1 if a > b
+ */
+export function compareSessions(
+  yearA: number,
+  termA: SessionEnum,
+  yearB: number,
+  termB: SessionEnum,
+): number {
+  if (yearA !== yearB) {
+    return yearA - yearB;
+  }
+  const order: Record<SessionEnum, number> = { H: 0, E: 1, A: 2 };
+  return order[termA] - order[termB];
+}
+
+/**
+ * Utility to map backend trimester string to SessionEnum.
+ */
+export function trimesterToSessionTerm(trimester: string): SessionEnum | undefined {
+  switch (trimester) {
+    case 'HIVER': return SessionEnum.H;
+    case 'ETE': return SessionEnum.E;
+    case 'AUTOMNE': return SessionEnum.A;
+    default: return undefined;
+  }
+}

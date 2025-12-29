@@ -1,8 +1,8 @@
-import type { CourseSearchParams, SearchCoursesDto } from '../types';
+import type { CourseSearchParams, SearchCoursesDto } from '../../lib/api/types';
 import { useState } from 'react';
-import { showError } from '../../toast';
-import { courseService } from '../services';
-import { handleApiError } from '../utils/error-handler';
+import { courseService } from '../../lib/api/services';
+import { handleApiError } from '../../lib/api/utils/error-handler';
+import { showError } from '../../lib/toast';
 
 export function useCourseSearchApi() {
   const [data, setData] = useState<SearchCoursesDto | null>(null);

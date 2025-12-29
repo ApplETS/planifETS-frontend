@@ -1,17 +1,18 @@
 {
   "Commons": {
     "credits": "crédits",
+    "total-credits": "crédits totaux",
     "credits-short": "cr.",
     "logout": "Se déconnecter",
     "settings": "Paramètres",
     "language": "Langue",
     "theme": "Thème",
     "loading": "Chargement...",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "add-year": "Ajouter une année"
   },
   "PlannerPage": {
     "year-with-value": "Année {value}",
-    "add-year": "Ajouter une année",
     "sessionTerms": {
       "AUTOMNE": "Automne",
       "HIVER": "Hiver",
@@ -47,6 +48,7 @@
     "searching-all-programs": "Recherche dans tous les programmes...",
     "select-program": "Veuillez sélectionner un programme.",
     "courses": "Cours",
-    "favorite-courses": "Favoris"
+    "favorite-courses": "Favoris",
+    "session-not-created": "La session {session} n'est pas encore créée. Veuillez d'abord ajouter l'année."
   }
 }

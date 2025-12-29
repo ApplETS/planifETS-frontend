@@ -31,27 +31,27 @@ const SessionHeader: FC<SessionHeaderProps> = ({
     <div className="mb-2 flex select-none flex-col sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-center gap-1">
         <SeasonIcon className={color} />
-        <h3 className="text-lg font-bold">
+        <h3 className="text-lg font-bold flex items-center gap-2">
           {translatedSessionTerm}
           {' '}
           {sessionYear}
+          {isNoAvailabilityData && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="group relative cursor-pointer flex items-center gap-1" aria-label={t('information-course-availability')}>
+                    <Info className="text-amber-400 hover:text-amber-400/70 size-5" />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent sideOffset={8} className="text-base max-w-xs">
+                  {t('courses-availability-not-yet-published')}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
         </h3>
         {isCurrentSession && (
           <div className="ml-2 size-2 rounded-full bg-green-500 animate-pulse" />
-        )}
-        {isNoAvailabilityData && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="group relative cursor-pointer" aria-label={t('information-course-availability')}>
-                  <Info className="text-amber-400 hover:text-amber-400/70 size-5" />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent sideOffset={8} className="text-base max-w-xs">
-                {t('courses-availability-not-yet-published')}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
         )}
       </div>
       <CreditsTag

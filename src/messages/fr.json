@@ -1,17 +1,18 @@
 {
   "Commons": {
     "credits": "crédits",
+    "total-credits": "crédits totaux",
     "credits-short": "cr.",
     "logout": "Se déconnecter",
     "settings": "Paramètres",
     "language": "Langue",
     "theme": "Thème",
     "loading": "Chargement...",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "add-year": "Ajouter une année"
   },
   "PlannerPage": {
     "year-with-value": "Année {value}",
-    "add-year": "Ajouter une année",
     "sessionTerms": {
       "AUTOMNE": "Automne",
       "HIVER": "Hiver",
@@ -33,6 +34,9 @@
     "courses-availability-not-yet-published": "Les informations sur la disponibilité des cours pour cette session ne sont pas encore publiées par l'école.",
     "prerequisites": "Prérequis: ",
     "available": "Disponible: ",
+    "add-to-session-tooltip": "Ajouter à la session {session}",
+    "course-added-to-session": "Cours ajouté à la session {session}",
+    "course-already-in-session": "Le cours est déjà dans la session {session}",
     "programs": "Programmes",
     "search-course": "Chercher un cours",
     "loading-courses": "Chargement des cours...",
@@ -44,6 +48,7 @@
     "searching-all-programs": "Recherche dans tous les programmes...",
     "select-program": "Veuillez sélectionner un programme.",
     "courses": "Cours",
-    "favorite-courses": "Favoris"
+    "favorite-courses": "Favoris",
+    "session-not-created": "La session {session} n'est pas encore créée. Veuillez d'abord ajouter l'année."
   }
 }

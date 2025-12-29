@@ -6,7 +6,7 @@ import { addCourseToSession, deleteCourse, moveCourseToSession, searchCourseInSi
 import { selectProgram } from '../fixtures/program';
 import { setupTestPage } from '../fixtures/setup';
 
-const CREDITS_LABEL = 'credits';
+const TOTAL_CREDITS_LABEL = 'total credits';
 
 test.describe('Course Management', () => {
   test.beforeEach(async ({ page }) => {
@@ -71,7 +71,7 @@ test.describe('Course Management', () => {
     const totalCredits = page.locator(selectors.totalCredits);
 
     await expect(totalCredits).toBeVisible({ timeout: 15000 });
-    await expect(totalCredits).toHaveText(`0 ${CREDITS_LABEL}`, { timeout: 15000 });
+    await expect(totalCredits).toHaveText(`0 ${TOTAL_CREDITS_LABEL}`, { timeout: 15000 });
 
     const course1 = TEST_COURSES.LOG240;
     const course2 = TEST_COURSES.LOG121;
@@ -82,14 +82,14 @@ test.describe('Course Management', () => {
     await searchCourseInSidebar(page, course2.code);
     await addCourseToSession(page, course2);
 
-    await expect(totalCredits).toHaveText(`${course1.credits + course2.credits} ${CREDITS_LABEL}`, { timeout: 15000 });
+    await expect(totalCredits).toHaveText(`${course1.credits + course2.credits} ${TOTAL_CREDITS_LABEL}`, { timeout: 15000 });
 
     await deleteCourse(page, course1);
 
-    await expect(totalCredits).toHaveText(`${course2.credits} ${CREDITS_LABEL}`, { timeout: 15000 });
+    await expect(totalCredits).toHaveText(`${course2.credits} ${TOTAL_CREDITS_LABEL}`, { timeout: 15000 });
 
     await deleteCourse(page, course2);
 
-    await expect(totalCredits).toHaveText(`0 ${CREDITS_LABEL}`, { timeout: 15000 });
+    await expect(totalCredits).toHaveText(`0 ${TOTAL_CREDITS_LABEL}`, { timeout: 15000 });
   });
 });

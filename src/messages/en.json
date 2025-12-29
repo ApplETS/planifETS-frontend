@@ -1,17 +1,18 @@
 {
   "Commons": {
     "credits": "credits",
+    "total-credits": "total credits",
     "credits-short": "cr.",
     "logout": "Sign out",
     "settings": "Settings",
     "language": "Language",
     "theme": "Theme",
     "loading": "Loading...",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "add-year": "Add Year"
   },
   "PlannerPage": {
     "year-with-value": "Year {value}",
-    "add-year": "Add Year",
     "sessionTerms": {
       "AUTOMNE": "Autumn",
       "HIVER": "Winter",
@@ -33,6 +34,9 @@
     "courses-availability-not-yet-published": "Information on course availability for this session is not yet published by the school.",
     "prerequisites": "Prerequisites: ",
     "available": "Available: ",
+    "add-to-session-tooltip": "Add to session {session}",
+    "course-added-to-session": "Course added to session {session}",
+    "course-already-in-session": "Course is already in session {session}",
     "programs": "Programs",
     "search-course": "Search for a course",
     "loading-courses": "Loading courses...",
@@ -44,6 +48,7 @@
     "searching-all-programs": "Searching in all programs...",
     "select-program": "Please select a program.",
     "courses": "Courses",
-    "favorite-courses": "Favorites"
+    "favorite-courses": "Favorites",
+    "session-not-created": "Session {session} is not yet created. Please add the year first."
   }
 }

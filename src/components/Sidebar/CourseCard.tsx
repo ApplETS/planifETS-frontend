@@ -2,13 +2,17 @@
 
 import type { FC } from 'react';
 import type { Course } from '@/types/course';
+import type { SessionEnum } from '@/types/session';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import FavoriteButton from '@/components/Sidebar/FavoriteButton';
+import { useCourseOperations } from '@/hooks/course/useCourseOperations';
 import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
 import { usePlannerStore } from '@/store/plannerStore';
+import { useSessionStore } from '@/store/sessionStore';
 import { DragType } from '@/types/dnd';
-import { filterCurrentAndFutureSessions, formatSessionShort } from '@/utils/sessionUtils';
+import { filterCurrentAndFutureSessions, formatSessionShort, generateSessionKey, sortSessionsChronologically } from '@/utils/sessionUtils';
 import CourseHeader from '../atoms/CourseHeader';
 import CreditsTag from '../atoms/CreditsTag';
 import Tag from '../atoms/Tag';
@@ -54,18 +58,45 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
     );
   };
 
+  const { addCourseToSession } = useCourseOperations();
+  const sessionStore = useSessionStore();
   const renderAvailability = () => {
     const filteredSessions = filterCurrentAndFutureSessions(course.availability);
     if (!filteredSessions || filteredSessions.length === 0) {
       return null;
     }
+
     return (
       <Section title={t('available')}>
-        {filteredSessions.map((session: string) => (
-          <Tag key={session}>
-            {formatSessionShort(session)}
-          </Tag>
-        ))}
+        {sortSessionsChronologically(filteredSessions).map((session: string) => {
+          const sessionTerm = session.charAt(0) as SessionEnum;
+          const sessionYear = Number(session.substring(1));
+          const sessionKey = generateSessionKey(sessionYear, sessionTerm);
+          const sessionObj = sessionStore.getSessionByKey?.(sessionKey);
+          const alreadyAdded = sessionObj && sessionObj.courseInstances.some(ci => ci.courseId === course.id);
+          return (
+            <Tag
+              key={session}
+              variant={alreadyAdded ? 'sessionDisabled' : 'sessionAvailable'}
+              onClick={() => {
+                if (!sessionObj) {
+                  toast.error(t('session-not-created', { session: formatSessionShort(session) }));
+                  return;
+                }
+
+                if (alreadyAdded) {
+                  toast.error(t('course-already-in-session', { session: formatSessionShort(session) }));
+                  return;
+                }
+                addCourseToSession(sessionYear, sessionTerm, course);
+                toast.success(t('course-added-to-session', { session: formatSessionShort(session) }));
+              }}
+              title={t('add-to-session-tooltip', { session: formatSessionShort(session) })}
+            >
+              {formatSessionShort(session)}
+            </Tag>
+          );
+        })}
       </Section>
     );
   };

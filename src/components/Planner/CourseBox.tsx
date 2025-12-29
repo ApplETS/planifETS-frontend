@@ -24,6 +24,7 @@ type CourseBoxProps = {
   fromSessionTerm: SessionEnum;
   course: Course;
   isDraggable?: boolean;
+  unknownAvailability?: boolean;
 };
 
 const CourseBox: FC<CourseBoxProps> = ({
@@ -35,6 +36,7 @@ const CourseBox: FC<CourseBoxProps> = ({
   fromSessionTerm,
   course,
   isDraggable = true,
+  unknownAvailability = false,
 }) => {
   const t = useTranslations('PlannerPage');
 
@@ -69,6 +71,7 @@ const CourseBox: FC<CourseBoxProps> = ({
         ease-in-out hover:-translate-y-0.5
         hover:shadow-md text-foreground
         ${isDragging ? 'opacity-50' : 'opacity-100'}
+        ${isDragging && unknownAvailability ? 'border-2 border-blue-200' : ''}
       `}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

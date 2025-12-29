@@ -40,6 +40,7 @@ type SessionActions = {
   getSessionsByYear: (year: number) => Session[];
   initializeSessions: (year: number) => void;
   getSessionByKey: (sessionKey: string) => Session | undefined;
+  markSessionAvailabilityKnown: (sessionKey: string, isKnown: boolean) => void;
 };
 
 export const useSessionStore = create<SessionState & SessionActions>()(
@@ -113,6 +114,24 @@ export const useSessionStore = create<SessionState & SessionActions>()(
       },
 
       setSessions: sessions => set({ sessions }),
+
+      markSessionAvailabilityKnown: (sessionKey, isKnown) => {
+        set((state) => {
+          const session = safeGet(state.sessions, sessionKey);
+          if (!session) {
+            return state;
+          }
+          return {
+            sessions: {
+              ...state.sessions,
+              [sessionKey]: {
+                ...session,
+                isKnownSessionAvailability: isKnown,
+              },
+            },
+          };
+        });
+      },
 
       clearAllSessions: () => set({ sessions: {} }),
 

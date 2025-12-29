@@ -14,7 +14,7 @@ const CreditsTag: FC<CreditsTagProps> = ({ credits, shortText, ...props }) => {
 
   return (
     <Tag
-      variant="secondary"
+      variant="credits"
       {...props}
     >
       {credits}

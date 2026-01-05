@@ -8,6 +8,7 @@ import ErrorBoundary from '../components/ErrorBoundary';
 import Navbar from '../components/Navbar/Navbar';
 import ClientProviders from '../components/Providers/ClientProviders';
 import DndContext from '../context/dnd/DndContext';
+import Footer from '@/components/Footer/Footer';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -31,6 +32,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                       <main>
                         <Navbar />
                         {children}
+                        <Footer />
                       </main>
                     </div>
                   </ClientProviders>

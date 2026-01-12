@@ -10,7 +10,7 @@
 
 > _Session planner for students at the École de technologie supérieure_
 
-This frontend complements the [PlanifETS backend, providing an intuitive and user-friendly interface for academic session planning at ÉTS. With real-time updates and seamless integration, students can easily organize and optimize their academic paths.
+This frontend complements the [PlanifETS backend](https://github.com/ApplETS/planifETS-backend), providing an intuitive and user-friendly interface for academic session planning at ÉTS. With real-time updates and seamless integration, students can easily organize and optimize their academic paths.
 
 ---
 

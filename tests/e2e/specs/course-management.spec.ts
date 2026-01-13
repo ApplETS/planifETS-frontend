@@ -34,7 +34,7 @@ test.describe('Course Management', () => {
     await addCourseToSession(page, course);
 
     const targetSession = SessionEnum.A;
-    const targetYear = 2025;
+    const targetYear = new Date().getFullYear();
 
     await moveCourseToSession(page, course, targetSession, targetYear);
 

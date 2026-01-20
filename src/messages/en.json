@@ -9,7 +9,28 @@
     "theme": "Theme",
     "loading": "Loading...",
     "cancel": "Cancel",
-    "add-year": "Add Year"
+    "add-year": "Add Year",
+    "reset-data": "Reset All Data",
+    "reset-data-description": "Clear all your planner data, courses, and settings. This action cannot be undone.",
+    "reset-data-warning": "This will delete all your data permanently!",
+    "confirm-reset": "Yes, Delete Everything",
+    "resetting": "Resetting..."
+  },
+  "Onboarding": {
+    "program-step-title": "Welcome to PlanifETS",
+    "program-step-description": "Let's get started by selecting your program",
+    "program-label": "Select your program",
+    "program-placeholder": "Choose a program...",
+    "program-description": "Select the program you are enrolled in. This will help us show you relevant courses.",
+    "session-step-title": "When did you start?",
+    "session-step-description": "Tell us when you started your program",
+    "start-session-label": "Start session",
+    "start-session-placeholder": "Select your start session...",
+    "step": "Step",
+    "of": "of",
+    "next": "Next",
+    "back": "Back",
+    "complete": "Complete"
   },
   "PlannerPage": {
     "year-with-value": "Year {value}",

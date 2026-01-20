@@ -11,12 +11,14 @@ import { create } from 'zustand';
 import { persistConfig } from '@/lib/persistConfig';
 import { SessionEnum } from '@/types/session';
 import { safeHas } from '@/utils/safeAccess';
-import { extractYearFromSessionKey, generateSessionKey } from '@/utils/sessionUtils';
+import {
+  extractYearFromSessionKey,
+  generateSessionKey,
+  generateSessionRange,
+} from '@/utils/sessionUtils';
 
 import { useCourseStore } from './courseStore';
 import { useSessionStore } from './sessionStore';
-
-const NUMBER_OF_YEARS_TO_CREATE = 4;
 
 type PlannerState = {
   name: string;
@@ -25,7 +27,7 @@ type PlannerState = {
 };
 
 type PlannerActions = {
-  initializePlanner: () => void;
+  initializePlanner: (startYear: number, startTerm: SessionEnum) => void;
   addYear: () => void;
   deleteYear: (year: number) => void;
   getSessionKeysForYear: (year: number) => string[];
@@ -72,16 +74,17 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
       }, 0);
     },
 
-    initializePlanner: () => {
-      const currentYear = new Date().getFullYear();
-      const sessionKeys: string[] = [];
+    initializePlanner: (startYear: number, startTerm: SessionEnum) => {
+      const currentDate = new Date();
+      const currentYear = currentDate.getFullYear();
+      const endYear = currentYear;
 
-      for (let year = currentYear; year < currentYear + NUMBER_OF_YEARS_TO_CREATE; year++) {
-        Object.values(SessionEnum).forEach((sessionTerm: SessionEnum) => {
-          sessionKeys.push(generateSessionKey(year, sessionTerm));
-        });
+      const sessionKeys = generateSessionRange(startYear, startTerm, endYear);
+
+      sessionKeys.forEach((key) => {
+        const year = extractYearFromSessionKey(key);
         useSessionStore.getState().initializeSessions(year);
-      }
+      });
 
       set({ sessionKeys });
     },
@@ -110,8 +113,7 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
 
     getYears: () => {
       const state = get();
-      const years = state.sessionKeys
-        .map(extractYearFromSessionKey);
+      const years = state.sessionKeys.map(extractYearFromSessionKey);
 
       return [...new Set(years)].sort((a, b) => a - b);
     },
@@ -131,7 +133,9 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
       sessionStore.setSessions(newSessions);
 
       set(state => ({
-        sessionKeys: state.sessionKeys.filter(key => extractYearFromSessionKey(key) !== year),
+        sessionKeys: state.sessionKeys.filter(
+          key => extractYearFromSessionKey(key) !== year,
+        ),
       }));
     },
   })),

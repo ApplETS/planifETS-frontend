@@ -4,6 +4,7 @@ import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
+import OnboardingDialog from '@/components/dialogs/OnboardingDialog';
 import YearSection from '@/components/Planner/YearSection';
 import { ProgramSection } from '@/components/ProgramSection';
 import { usePreloadCourses } from '@/hooks/course/usePreloadCourses';
@@ -11,6 +12,7 @@ import { usePreloadCourses } from '@/hooks/course/usePreloadCourses';
 import { useStoreHydration } from '@/hooks/useStoreHydration';
 import { Button } from '@/shadcn/ui/button';
 import { useCourseStore } from '@/store/courseStore';
+import { useOnboardingStore } from '@/store/onboardingStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
 
@@ -20,6 +22,7 @@ export default function PlannerPage() {
   const { initializePlanner, getYears, addYear } = usePlannerStore();
   const { getSessionsByYear, sessions } = useSessionStore();
   const { courses } = useCourseStore();
+  const { hasCompletedOnboarding } = useOnboardingStore();
   const hasHydrated = useStoreHydration();
 
   usePreloadCourses();
@@ -29,24 +32,42 @@ export default function PlannerPage() {
       return;
     }
 
-    const plannerState = usePlannerStore.getState();
-    const sessionState = useSessionStore.getState();
+    // Only initialize if onboarding is complete and stores are empty
+    if (hasCompletedOnboarding) {
+      const plannerState = usePlannerStore.getState();
+      const sessionState = useSessionStore.getState();
+      const onboardingState = useOnboardingStore.getState();
 
-    // Only initialize if both stores are empty (first time user)
-    if (plannerState.sessionKeys.length === 0 && Object.keys(sessionState.sessions).length === 0) {
-      initializePlanner();
+      // Only initialize if both stores are empty (first time after onboarding)
+      if (
+        plannerState.sessionKeys.length === 0
+        && Object.keys(sessionState.sessions).length === 0
+      ) {
+        const startSession = onboardingState.getStartSession();
+        if (startSession) {
+          initializePlanner(startSession.startYear, startSession.startTerm);
+        }
+      }
     }
-  }, [initializePlanner, hasHydrated]);
+  }, [initializePlanner, hasHydrated, hasCompletedOnboarding]);
 
   const years = getYears();
 
   // Calculate total credits across all sessions
   const totalCredits = Object.values(sessions).reduce((sum, session) => {
-    return sum + session.courseInstances.reduce((s, ci) => {
-      const course = courses[ci.courseId];
-      return s + (course?.credits ?? 0);
-    }, 0);
+    return (
+      sum
+      + session.courseInstances.reduce((s, ci) => {
+        const course = courses[ci.courseId];
+        return s + (course?.credits ?? 0);
+      }, 0)
+    );
   }, 0);
+
+  // Show onboarding dialog if not completed yet and hydrated
+  if (hasHydrated && !hasCompletedOnboarding) {
+    return <OnboardingDialog isOpen={true} />;
+  }
 
   return (
     <div className="flex w-full flex-col">

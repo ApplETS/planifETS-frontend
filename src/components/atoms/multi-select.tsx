@@ -21,14 +21,22 @@ export type MultiSelectProps = {
   placeholder?: string;
 };
 
-export function MultiSelect({ options, selected, onChangeAction, placeholder }: MultiSelectProps) {
+export function MultiSelect({
+  options,
+  selected,
+  onChangeAction,
+  placeholder,
+}: MultiSelectProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
 
-  const handleUnselect = React.useCallback((option: Option) => {
-    onChangeAction(selected.filter(s => s.value !== option.value));
-  }, [selected, onChangeAction]);
+  const handleUnselect = React.useCallback(
+    (option: Option) => {
+      onChangeAction(selected.filter(s => s.value !== option.value));
+    },
+    [selected, onChangeAction],
+  );
 
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -109,7 +117,8 @@ export function MultiSelect({ options, selected, onChangeAction, placeholder }: 
         <CommandList>
           {open && selectables.length > 0
             ? (
-              <div className="absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground
+              <div
+                className="absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground
                 shadow-md outline-none animate-in"
               >
                 <CommandGroup className="max-h-80 overflow-auto">

@@ -9,7 +9,28 @@
     "theme": "Thème",
     "loading": "Chargement...",
     "cancel": "Annuler",
-    "add-year": "Ajouter une année"
+    "add-year": "Ajouter une année",
+    "reset-data": "Réinitialiser Toutes les Données",
+    "reset-data-description": "Effacer toutes vos données, cours et paramètres. Cette action est irréversible.",
+    "reset-data-warning": "Cela supprimera toutes vos données de façon permanente!",
+    "confirm-reset": "Oui, Tout Supprimer",
+    "resetting": "Réinitialisation..."
+  },
+  "Onboarding": {
+    "program-step-title": "Bienvenue sur PlanifETS",
+    "program-step-description": "Commençons par sélectionner votre programme",
+    "program-label": "Sélectionnez votre programme",
+    "program-placeholder": "Choisir un programme...",
+    "program-description": "Sélectionnez le programme dans lequel vous êtes inscrit. Cela nous aidera à vous montrer les cours pertinents.",
+    "session-step-title": "Quand avez-vous commencé?",
+    "session-step-description": "Dites-nous quand vous avez commencé votre programme",
+    "start-session-label": "Session de début",
+    "start-session-placeholder": "Sélectionnez votre session de début...",
+    "step": "Étape",
+    "of": "sur",
+    "next": "Suivant",
+    "back": "Retour",
+    "complete": "Terminer"
   },
   "PlannerPage": {
     "year-with-value": "Année {value}",

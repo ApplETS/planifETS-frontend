@@ -49,7 +49,8 @@ const ProgramSelector: React.FC = () => {
 
       // Preserve favorite courses that aren't in the new data
       const existingFavorites = Object.values(currentCourses).filter(
-        course => favoriteCourseIds.includes(course.id) && !coursesByCode.has(course.code),
+        course =>
+          favoriteCourseIds.includes(course.id) && !coursesByCode.has(course.code),
       );
 
       existingFavorites.forEach((course) => {
@@ -70,7 +71,9 @@ const ProgramSelector: React.FC = () => {
           label: program.title || program.code,
           id: program.id,
         }))
-        .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: 'base' })),
+        .sort((a, b) =>
+          a.label.localeCompare(b.label, undefined, { sensitivity: 'base' }),
+        ),
     [programs],
   );
 
@@ -80,7 +83,9 @@ const ProgramSelector: React.FC = () => {
     [options, selectedProgramCodes],
   );
 
-  const handleProgramChange = (newSelected: Array<{ value: number; label: string; id: number }>) => {
+  const handleProgramChange = (
+    newSelected: Array<{ value: number; label: string; id: number }>,
+  ) => {
     const ids = newSelected.map(item => item.id);
     programStore.setSelectedPrograms(ids);
   };

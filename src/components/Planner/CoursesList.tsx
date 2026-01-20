@@ -30,7 +30,7 @@ const CoursesList: FC<CoursesListProps> = ({
   const t = useTranslations('PlannerPage');
 
   const { getCourseStatus } = useCourseStatus();
-  const courses = useCourseStore(state => state.courses);
+  const courses = useCourseStore((state) => state.courses);
 
   return (
     <div className="flex-1 overflow-y-auto">

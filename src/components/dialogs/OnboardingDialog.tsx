@@ -112,10 +112,10 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
           <div className="flex gap-2">
             <select
               value={selectedTerm}
-              onChange={e => setSelectedTerm(e.target.value as SessionEnum)}
+              onChange={(e) => setSelectedTerm(e.target.value as SessionEnum)}
               className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
-              {Object.values(SessionEnum).map(term => (
+              {Object.values(SessionEnum).map((term) => (
                 <option key={term} value={term}>
                   {tPlannerPage(getTranslationKey(term))}
                 </option>
@@ -208,8 +208,8 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
     <Dialog open={isOpen}>
       <DialogContent
         className="sm:max-w-[500px]"
-        onPointerDownOutside={e => e.preventDefault()}
-        onEscapeKeyDown={e => e.preventDefault()}
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
       >
         <DialogHeader>
           <DialogTitle>{getStepTitle()}</DialogTitle>

@@ -21,7 +21,7 @@ export const mapApiCourseToAppCourse = (
     title: apiCourse.title,
     credits: apiCourse.credits,
     prerequisites: apiCourse.prerequisites.map((p: CoursePrerequisiteDto) => p.code),
-    availability: apiCourse.sessionAvailability.map(sa => sa.sessionCode),
+    availability: apiCourse.sessionAvailability.map((sa) => sa.sessionCode),
   };
 };
 
@@ -45,7 +45,7 @@ const updateYearSession = (
   updateFn: SessionUpdate,
 ): YearData => ({
   ...yearData,
-  sessions: yearData.sessions.map(session =>
+  sessions: yearData.sessions.map((session) =>
     session.sessionTerm === sessionTerm
       ? {
         ...session,
@@ -62,7 +62,7 @@ export const addCourseToSession = (
   status: CourseStatus = 'Planned',
 ): YearData => {
   return updateYearSession(yearData, sessionTerm, (courseInstances) => {
-    if (courseInstances.some(ci => ci.courseId === courseId)) {
+    if (courseInstances.some((ci) => ci.courseId === courseId)) {
       return courseInstances;
     }
     return [...courseInstances, { courseId, status }];
@@ -74,8 +74,8 @@ export const removeCourseFromSession = (
   sessionTerm: SessionEnum,
   courseId: number,
 ): YearData => {
-  return updateYearSession(yearData, sessionTerm, courseInstances =>
-    courseInstances.filter(ci => ci.courseId !== courseId));
+  return updateYearSession(yearData, sessionTerm, (courseInstances) =>
+    courseInstances.filter((ci) => ci.courseId !== courseId));
 };
 
 export const updateCourseStatus = (
@@ -84,8 +84,8 @@ export const updateCourseStatus = (
   courseId: number,
   status: CourseStatus,
 ): YearData => {
-  return updateYearSession(yearData, sessionTerm, courseInstances =>
-    courseInstances.map(ci =>
+  return updateYearSession(yearData, sessionTerm, (courseInstances) =>
+    courseInstances.map((ci) =>
       ci.courseId === courseId ? { ...ci, status } : ci,
     ));
 };
@@ -98,7 +98,7 @@ export const moveCourseToSession = (
   newStatus: CourseStatus,
 ): YearData => {
   const updatedYearData = removeCourseFromSession(yearData, fromSessionTerm, courseId);
-  return updateYearSession(updatedYearData, toSessionTerm, courseInstances => [
+  return updateYearSession(updatedYearData, toSessionTerm, (courseInstances) => [
     ...courseInstances,
     { courseId, status: newStatus },
   ]);

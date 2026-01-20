@@ -93,7 +93,7 @@ export default function CourseSidebar() {
     if (displayedCourses.length > 0) {
       return (
         <div className="flex flex-col gap-4 pl-1">
-          {displayedCourses.map(course => (
+          {displayedCourses.map((course) => (
             <CourseCard
               key={course.id}
               course={course}

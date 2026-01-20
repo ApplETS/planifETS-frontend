@@ -18,7 +18,7 @@ export const seasonIcons: SeasonIconsType = {
 };
 
 export const getSeasonStyle = (sessionTerm: string): SeasonStyle => {
-  const season = Object.values(SessionEnum).find(s =>
+  const season = Object.values(SessionEnum).find((s) =>
     sessionTerm.includes(s),
   );
 

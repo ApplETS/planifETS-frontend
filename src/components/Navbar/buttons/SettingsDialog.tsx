@@ -39,8 +39,8 @@ export function SettingsButton({
       variant="outline"
       className="bg-background text-foreground border border-foreground"
       onClick={handleClick}
-      onPointerDown={e => e.stopPropagation()}
-      onTouchStart={e => e.stopPropagation()}
+      onPointerDown={(e) => e.stopPropagation()}
+      onTouchStart={(e) => e.stopPropagation()}
       aria-label="settings"
       data-testid="settings-toggle-button"
       style={{

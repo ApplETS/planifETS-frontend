@@ -22,7 +22,7 @@ const EMPTY_SESSIONS: SessionType[] = [];
 const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIONS, isFirstYear, isLastYear }) => {
   const t = useTranslations('PlannerPage');
   const [isHovered, setIsHovered] = useState(false);
-  const deleteYear = usePlannerStore(state => state.deleteYear);
+  const deleteYear = usePlannerStore((state) => state.deleteYear);
 
   return (
     <div
@@ -46,7 +46,7 @@ const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIO
           {t('year-with-value', { value: year })}
         </h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {sessions.map(session => (
+          {sessions.map((session) => (
             <Session
               key={session.key}
               sessionYear={year}

@@ -106,14 +106,14 @@ export const useSessionStore = create<SessionState & SessionActions>()(
 
       getSessionsByYear: (year: number) => {
         const { sessions } = get();
-        return Object.values(sessions).filter(session => session.sessionYear === year);
+        return Object.values(sessions).filter((session) => session.sessionYear === year);
       },
 
       getSessionByKey: (sessionKey: string) => {
         return safeGet(get().sessions, sessionKey);
       },
 
-      setSessions: sessions => set({ sessions }),
+      setSessions: (sessions) => set({ sessions }),
 
       markSessionAvailabilityKnown: (sessionKey, isKnown) => {
         set((state) => {
@@ -164,7 +164,7 @@ export const useSessionStore = create<SessionState & SessionActions>()(
           };
 
           const updatedFromCourseInstances = fromSession.courseInstances.filter(
-            instance => instance.courseId !== courseId,
+            (instance) => instance.courseId !== courseId,
           );
 
           const updatedToCourseInstances = [...toSession.courseInstances, updatedCourseInstance];
@@ -186,7 +186,7 @@ export const useSessionStore = create<SessionState & SessionActions>()(
           }
 
           const updatedCourseInstances = session.courseInstances.filter(
-            instance => instance.courseId !== courseId,
+            (instance) => instance.courseId !== courseId,
           );
 
           return {

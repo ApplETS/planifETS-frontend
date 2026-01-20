@@ -49,7 +49,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
 
     return (
       <Section title={t('prerequisites')}>
-        {course.prerequisites.map(preq => (
+        {course.prerequisites.map((preq) => (
           <Tag key={preq}>
             {preq}
           </Tag>
@@ -73,7 +73,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
           const sessionYear = Number(session.substring(1));
           const sessionKey = generateSessionKey(sessionYear, sessionTerm);
           const sessionObj = sessionStore.getSessionByKey?.(sessionKey);
-          const alreadyAdded = sessionObj && sessionObj.courseInstances.some(ci => ci.courseId === course.id);
+          const alreadyAdded = sessionObj && sessionObj.courseInstances.some((ci) => ci.courseId === course.id);
           return (
             <Tag
               key={session}

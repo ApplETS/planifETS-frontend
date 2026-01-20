@@ -15,10 +15,10 @@ function filterCoursesByIds(courseIds: number[]): ProgramCoursesResponseDto {
 
   return {
     ...PROGRAM_COURSES_RESPONSE,
-    data: PROGRAM_COURSES_RESPONSE.data.map(program => ({
+    data: PROGRAM_COURSES_RESPONSE.data.map((program) => ({
       ...program,
-      courses: program.courses.filter(course => courseIdSet.has(course.id)),
-    })).filter(program => program.courses.length > 0), // Remove programs with no matching courses
+      courses: program.courses.filter((course) => courseIdSet.has(course.id)),
+    })).filter((program) => program.courses.length > 0), // Remove programs with no matching courses
   };
 }
 
@@ -27,7 +27,7 @@ function filterProgramsByCodes(programCodes: string[]): ProgramCoursesResponseDt
 
   return {
     ...PROGRAM_COURSES_RESPONSE,
-    data: PROGRAM_COURSES_RESPONSE.data.filter(program => programCodeSet.has(program.programCode)),
+    data: PROGRAM_COURSES_RESPONSE.data.filter((program) => programCodeSet.has(program.programCode)),
   };
 }
 
@@ -47,7 +47,7 @@ export function registerProgramCoursesRoutes(page: Page) {
   // /program-courses/ids?courseIds=349682&courseIds=352021
   page.route('**/program-courses/ids**', (route) => {
     const url = new URL(route.request().url());
-    const courseIds = url.searchParams.getAll('courseIds').map(id => Number.parseInt(id, 10));
+    const courseIds = url.searchParams.getAll('courseIds').map((id) => Number.parseInt(id, 10));
 
     const filteredResponse = filterCoursesByIds(courseIds);
     route.fulfill(jsonResponse(200, filteredResponse));

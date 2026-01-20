@@ -6,9 +6,9 @@ import { useProgramStore } from '@/store/programStore';
 import { FAVORITE_TAB_INDEX } from '@/utils/constants';
 
 export const useProgramCoursesOperations = (searchQuery: string, activeTab: number) => {
-  const selectedPrograms = useProgramStore(state => state.getSelectedPrograms());
-  const courses = useCourseStore(state => state.courses);
-  const favoriteCourseIds = usePlannerStore(state => state.favoriteCourses);
+  const selectedPrograms = useProgramStore((state) => state.getSelectedPrograms());
+  const courses = useCourseStore((state) => state.courses);
+  const favoriteCourseIds = usePlannerStore((state) => state.favoriteCourses);
 
   const programCoursesData = useMemo(() => {
     if (!selectedPrograms.length) {
@@ -35,7 +35,7 @@ export const useProgramCoursesOperations = (searchQuery: string, activeTab: numb
 
   const favoriteCourses = useMemo(() => {
     const coursesArray = Object.values(courses);
-    return coursesArray.filter(course => course && favoriteCourseIds.includes(course.id));
+    return coursesArray.filter((course) => course && favoriteCourseIds.includes(course.id));
   }, [courses, favoriteCourseIds]);
 
   const displayedCourses = useMemo(() => {
@@ -49,7 +49,7 @@ export const useProgramCoursesOperations = (searchQuery: string, activeTab: numb
 
     const lowerQuery = searchQuery.toLowerCase();
 
-    return coursesToDisplay.filter(course =>
+    return coursesToDisplay.filter((course) =>
       course.code.toLowerCase().includes(lowerQuery)
       || course.title.toLowerCase().includes(lowerQuery),
     );

@@ -32,7 +32,7 @@ const BaseDialog: React.FC<BaseDialogProps> = ({ isOpen, title, onClose, childre
 
   if (isMobile) {
     return (
-      <Drawer open={isOpen} onOpenChange={open => !open && onClose()}>
+      <Drawer open={isOpen} onOpenChange={(open) => !open && onClose()}>
         <DrawerContent>
           <DrawerHeader>
             <DrawerTitle>{title}</DrawerTitle>
@@ -56,7 +56,7 @@ const BaseDialog: React.FC<BaseDialogProps> = ({ isOpen, title, onClose, childre
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
         className={` border border-border`}
       >

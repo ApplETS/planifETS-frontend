@@ -33,7 +33,7 @@ export function MultiSelect({
 
   const handleUnselect = React.useCallback(
     (option: Option) => {
-      onChangeAction(selected.filter(s => s.value !== option.value));
+      onChangeAction(selected.filter((s) => s.value !== option.value));
     },
     [selected, onChangeAction],
   );
@@ -57,7 +57,7 @@ export function MultiSelect({
   );
 
   const selectables = options.filter(
-    option => !selected.some(s => s.value === option.value),
+    (option) => !selected.some((s) => s.value === option.value),
   );
 
   return (
@@ -73,7 +73,7 @@ export function MultiSelect({
         style={{ boxSizing: 'border-box' }}
       >
         <div className="flex flex-wrap gap-1 w-full">
-          {selected.map(option => (
+          {selected.map((option) => (
             <Badge
               key={option.value}
               variant="secondary"
@@ -122,7 +122,7 @@ export function MultiSelect({
                 shadow-md outline-none animate-in"
               >
                 <CommandGroup className="max-h-80 overflow-auto">
-                  {selectables.map(option => (
+                  {selectables.map((option) => (
                     <CommandItem
                       role="option"
                       key={option.value}

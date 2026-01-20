@@ -108,7 +108,7 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
     },
 
     getSessionKeysForYear: (year: number) => {
-      return get().sessionKeys.filter(key => extractYearFromSessionKey(key) === year);
+      return get().sessionKeys.filter((key) => extractYearFromSessionKey(key) === year);
     },
 
     getYears: () => {
@@ -132,9 +132,9 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
       });
       sessionStore.setSessions(newSessions);
 
-      set(state => ({
+      set((state) => ({
         sessionKeys: state.sessionKeys.filter(
-          key => extractYearFromSessionKey(key) !== year,
+          (key) => extractYearFromSessionKey(key) !== year,
         ),
       }));
     },

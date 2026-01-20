@@ -18,8 +18,8 @@
   },
   "Onboarding": {
     "welcome-title": "👋 Bienvenue sur PlanifETS",
-    "program-label": "Sélectionnez votre programme",
-    "admission-day-label": "Sélectionnez votre année d'admission",
+    "program-label": "Sélectionner votre programme",
+    "admission-day-label": "Sélectionner votre année d'admission",
     "admission-day-note": "Cela va créer des sessions de votre année d'admission à aujourd'hui.",
     "complete": "Terminer"
   },

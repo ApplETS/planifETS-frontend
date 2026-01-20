@@ -83,6 +83,8 @@ export function MultiSelect({
               <button
                 type="button"
                 name="remove-option"
+                aria-label={`Remove ${option.label || option.value}`}
+                title={`Remove ${option.label || option.value}`}
                 className="ml-1 rounded-full outline-none ring-offset-background
                 focus:ring-2 focus:ring-ring focus:ring-offset-2"
                 onKeyDown={(e) => {

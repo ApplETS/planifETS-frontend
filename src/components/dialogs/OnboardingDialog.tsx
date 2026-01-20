@@ -10,6 +10,7 @@ import { Button } from '@/shadcn/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -21,6 +22,15 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/shadcn/ui/drawer';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/shadcn/ui/select';
 import { useOnboardingStore } from '@/store/onboardingStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useProgramStore } from '@/store/programStore';
@@ -80,35 +90,57 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
     return (
       <div className="space-y-4">
         <div>
-          <label className="text-sm font-medium text-foreground mb-1 block">
+          <label
+            id="program-label"
+            className="text-sm font-medium text-foreground mb-1 block"
+          >
             {tOnboarding('program-label')}
           </label>
-          <div className="relative z-50">
+          <div className="relative z-50" role="group" aria-labelledby="program-label">
             <ProgramSelector />
           </div>
         </div>
         <div className="space-y-1">
-          <label className="text-sm font-medium text-foreground mb-1 block">
+          <label
+            id="admission-day-label"
+            className="text-sm font-medium text-foreground mb-1 block"
+          >
             {tOnboarding('admission-day-label')}
           </label>
           <div className="flex gap-2">
-            <select
+            <Select
               value={selectedTerm}
-              onChange={(e) => setSelectedTerm(e.target.value as SessionEnum)}
-              className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background focus-visible:outline-none"
+              onValueChange={(v) => setSelectedTerm(v as SessionEnum)}
             >
-              {Object.values(SessionEnum).map((term) => (
-                <option key={term} value={term}>
-                  {tPlannerPage(getTranslationKey(term))}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger
+                aria-labelledby="admission-day-label"
+                className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background focus-visible:outline-none"
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel className="px-2 py-1.5 text-xs text-muted-foreground">
+                    {tOnboarding('admission-day-label')}
+                  </SelectLabel>
+                  {Object.values(SessionEnum).map((term) => (
+                    <SelectItem key={term} value={term}>
+                      {tPlannerPage(getTranslationKey(term))}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
             <input
+              id="admission-year"
+              name="admission-year"
               type="number"
               value={selectedYear}
               onChange={handleYearChange}
               min={minYear}
               max={maxYear}
+              aria-labelledby="admission-day-label"
               className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background focus-visible:outline-none"
             />
           </div>
@@ -152,6 +184,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
       >
         <DialogHeader>
           <DialogTitle>{tOnboarding('welcome-title')}</DialogTitle>
+          <DialogDescription className="sr-only">Onboarding dialog</DialogDescription>
         </DialogHeader>
         <div className="py-3">{content}</div>
         <DialogFooter>{renderFooter()}</DialogFooter>

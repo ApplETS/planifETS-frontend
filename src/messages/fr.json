@@ -1,7 +1,7 @@
 {
   "Commons": {
     "credits": "crédits",
-    "total-credits": "crédits totaux",
+    "total-credits": "crédits au total",
     "credits-short": "cr.",
     "logout": "Se déconnecter",
     "settings": "Paramètres",
@@ -17,19 +17,10 @@
     "resetting": "Réinitialisation..."
   },
   "Onboarding": {
-    "program-step-title": "Bienvenue sur PlanifETS",
-    "program-step-description": "Commençons par sélectionner votre programme",
+    "welcome-title": "👋 Bienvenue sur PlanifETS",
     "program-label": "Sélectionnez votre programme",
-    "program-placeholder": "Choisir un programme...",
-    "program-description": "Sélectionnez le programme dans lequel vous êtes inscrit. Cela nous aidera à vous montrer les cours pertinents.",
-    "session-step-title": "Quand avez-vous commencé?",
-    "session-step-description": "Dites-nous quand vous avez commencé votre programme",
-    "start-session-label": "Session de début",
-    "start-session-placeholder": "Sélectionnez votre session de début...",
-    "step": "Étape",
-    "of": "sur",
-    "next": "Suivant",
-    "back": "Retour",
+    "admission-day-label": "Sélectionnez votre année d'admission",
+    "admission-day-note": "Cela va créer des sessions de votre année d'admission à aujourd'hui.",
     "complete": "Terminer"
   },
   "PlannerPage": {

@@ -21,10 +21,8 @@ export default function CourseSidebar() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState(COURSES_TAB_INDEX);
 
-  const { displayedCourses: localCourses, hasSelectedPrograms } = useProgramCoursesOperations(
-    searchQuery,
-    activeTab,
-  );
+  const { displayedCourses: localCourses, hasSelectedPrograms }
+    = useProgramCoursesOperations(searchQuery, activeTab);
 
   const {
     courses: globalCourses,
@@ -59,9 +57,7 @@ export default function CourseSidebar() {
   const displayedCourses = isGlobalSearchActive ? globalCourses : localCourses;
 
   const showGlobalSearchLink
-      = searchQuery.trim() !== ''
-        && activeTab === COURSES_TAB_INDEX
-        && !isGlobalSearchActive;
+    = searchQuery.trim() !== '' && activeTab === COURSES_TAB_INDEX && !isGlobalSearchActive;
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -75,18 +71,14 @@ export default function CourseSidebar() {
     // Show loading state during global search
     if (globalLoading) {
       return (
-        <div className="text-center text-gray-500">
-          {t('searching-all-programs')}
-        </div>
+        <div className="text-center text-gray-500">{t('searching-all-programs')}</div>
       );
     }
 
     // Show empty global search results message
     if (isGlobalSearchActive && displayedCourses.length === 0) {
       return (
-        <div className="text-center text-gray-500">
-          {t('no-courses-found-global')}
-        </div>
+        <div className="text-center text-gray-500">{t('no-courses-found-global')}</div>
       );
     }
 
@@ -94,10 +86,7 @@ export default function CourseSidebar() {
       return (
         <div className="flex flex-col gap-4 pl-1">
           {displayedCourses.map((course) => (
-            <CourseCard
-              key={course.id}
-              course={course}
-            />
+            <CourseCard key={course.id} course={course} />
           ))}
           {showGlobalSearchLink && (
             <GlobalSearchLink onClickAction={handleGlobalSearch} className="py-4" />
@@ -110,9 +99,7 @@ export default function CourseSidebar() {
     if (activeTab === FAVORITE_TAB_INDEX) {
       message = t('no-favorite-courses');
     } else if (hasSelectedPrograms !== undefined) {
-      message = hasSelectedPrograms
-        ? t('no-courses-found')
-        : t('select-program');
+      message = hasSelectedPrograms ? t('no-courses-found') : t('select-program');
     }
 
     return (
@@ -123,7 +110,7 @@ export default function CourseSidebar() {
         )}
       </div>
     );
-  };
+  }
 
   return (
     <aside
@@ -134,13 +121,28 @@ export default function CourseSidebar() {
             max-h-[600px] md:max-h-none
            `}
     >
-      <Tabs value={activeTab === COURSES_TAB_INDEX ? 'courses' : 'favorites'} onValueChange={handleTabChange}>
-        <TabsList>
-          <TabsTrigger value="courses">
+      <Tabs
+        value={activeTab === COURSES_TAB_INDEX ? 'courses' : 'favorites'}
+        onValueChange={handleTabChange}
+      >
+        <TabsList role="tablist">
+          <TabsTrigger
+            value="courses"
+            id="tab-courses"
+            role="tab"
+            aria-selected={activeTab === COURSES_TAB_INDEX}
+            aria-controls="panel-courses"
+          >
             <Book size={18} />
             {t('courses')}
           </TabsTrigger>
-          <TabsTrigger value="favorites">
+          <TabsTrigger
+            value="favorites"
+            id="tab-favorites"
+            role="tab"
+            aria-selected={activeTab === FAVORITE_TAB_INDEX}
+            aria-controls="panel-favorites"
+          >
             <Heart size={18} />
             {t('favorite-courses')}
           </TabsTrigger>
@@ -159,9 +161,7 @@ export default function CourseSidebar() {
         )
         : (
           <ScrollArea className="mt-4 flex-1 min-h-0 max-h-[400px] md:max-h-none rounded-md">
-            <div className="p-1">
-              {renderCoursesContent()}
-            </div>
+            <div className="p-1">{renderCoursesContent()}</div>
           </ScrollArea>
         )}
     </aside>

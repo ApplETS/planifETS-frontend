@@ -67,7 +67,6 @@ export function MultiSelect({
     >
       <div
         className="group rounded-md border border-input ring-offset-background
-        focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2
         text-sm text-foreground
         px-3 py-2 w-full max-w-full select-none"
         style={{ boxSizing: 'border-box' }}
@@ -83,6 +82,7 @@ export function MultiSelect({
               {option.label || option.value || 'No name'}
               <button
                 type="button"
+                name="remove-option"
                 className="ml-1 rounded-full outline-none ring-offset-background
                 focus:ring-2 focus:ring-ring focus:ring-offset-2"
                 onKeyDown={(e) => {
@@ -100,7 +100,6 @@ export function MultiSelect({
               </button>
             </Badge>
           ))}
-          {/* Avoid having the "Search" Icon */}
           <CommandPrimitive.Input
             ref={inputRef}
             value={inputValue}
@@ -118,7 +117,7 @@ export function MultiSelect({
           {open && selectables.length > 0
             ? (
               <div
-                className="absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground
+                className="absolute top-0 w-full rounded-md border bg-popover text-popover-foreground
                 shadow-md outline-none animate-in"
               >
                 <CommandGroup className="max-h-80 overflow-auto">

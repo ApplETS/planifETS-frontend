@@ -17,19 +17,10 @@
     "resetting": "Resetting..."
   },
   "Onboarding": {
-    "program-step-title": "Welcome to PlanifETS",
-    "program-step-description": "Let's get started by selecting your program",
+    "welcome-title": "👋 Welcome to PlanifETS",
     "program-label": "Select your program",
-    "program-placeholder": "Choose a program...",
-    "program-description": "Select the program you are enrolled in. This will help us show you relevant courses.",
-    "session-step-title": "When did you start?",
-    "session-step-description": "Tell us when you started your program",
-    "start-session-label": "Start session",
-    "start-session-placeholder": "Select your start session...",
-    "step": "Step",
-    "of": "of",
-    "next": "Next",
-    "back": "Back",
+    "admission-day-label": "Select your admission year",
+    "admission-day-note": "This will create sessions from your admission year to today.",
     "complete": "Complete"
   },
   "PlannerPage": {

@@ -10,10 +10,10 @@
     "loading": "Chargement...",
     "cancel": "Annuler",
     "add-year": "Ajouter une année",
-    "reset-data": "Réinitialiser Toutes les Données",
+    "reset-data": "Réinitialiser toutes les données",
     "reset-data-description": "Effacer toutes vos données, cours et paramètres. Cette action est irréversible.",
     "reset-data-warning": "Cela supprimera toutes vos données de façon permanente!",
-    "confirm-reset": "Oui, Tout Supprimer",
+    "confirm-reset": "Tout supprimer",
     "resetting": "Réinitialisation..."
   },
   "Onboarding": {

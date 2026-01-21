@@ -13,7 +13,7 @@
     "reset-data": "Reset All Data",
     "reset-data-description": "Clear all your planner data, courses, and settings. This action cannot be undone.",
     "reset-data-warning": "This will delete all your data permanently!",
-    "confirm-reset": "Yes, Delete Everything",
+    "confirm-reset": "Delete Everything",
     "resetting": "Resetting..."
   },
   "Onboarding": {

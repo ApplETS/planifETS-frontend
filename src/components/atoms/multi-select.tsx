@@ -31,7 +31,7 @@ export function MultiSelect({
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
 
-  const handleUnselect = React.useCallback(
+  const handleUnselectOption = React.useCallback(
     (option: Option) => {
       onChangeAction(selected.filter((s) => s.value !== option.value));
     },
@@ -41,19 +41,27 @@ export function MultiSelect({
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       const input = inputRef.current;
-      if (input) {
-        if (e.key === 'Delete' || e.key === 'Backspace') {
-          if (input.value === '') {
-            onChangeAction(selected.slice(0, -1));
-          }
-        }
-        // This is not a default behaviour of the <input /> field
-        if (e.key === 'Escape') {
-          input.blur();
+      if (!input) {
+        return;
+      }
+
+      if (e.key === 'Delete' || e.key === 'Backspace') {
+        if (input.value === '') {
+          onChangeAction(selected.slice(0, -1));
         }
       }
+
+      if (e.key === 'Escape') {
+        input.blur();
+        setOpen(false);
+      }
+
+      // Keyboard open (intentional)
+      if ((e.key === 'Enter' || e.key === 'ArrowDown') && !open) {
+        setOpen(true);
+      }
     },
-    [selected, onChangeAction],
+    [selected, onChangeAction, open],
   );
 
   const selectables = options.filter(
@@ -70,6 +78,16 @@ export function MultiSelect({
         text-sm text-foreground
         px-3 py-2 w-full max-w-full select-none"
         style={{ boxSizing: 'border-box' }}
+        // Open ONLY on pointer interaction (click/tap) on the control.
+        onPointerDown={(e) => {
+          // If user clicks the wrapper, treat it as intent to open and focus the input.
+          // (The remove button already stops propagation, so it won't trigger this.)
+          if (e.pointerType !== 'mouse' || (e as any).button === 0) {
+            setOpen(true);
+            // Ensure the input gets focus when clicking anywhere on the control.
+            queueMicrotask(() => inputRef.current?.focus());
+          }
+        }}
       >
         <div className="flex flex-wrap gap-1 w-full">
           {selected.map((option) => (
@@ -85,42 +103,50 @@ export function MultiSelect({
                 name="remove-option"
                 aria-label={`Remove ${option.label || option.value}`}
                 title={`Remove ${option.label || option.value}`}
-                className="ml-1 rounded-full outline-none ring-offset-background
+                className=" py-0.5 rounded-full outline-none ring-offset-background
                 focus:ring-2 focus:ring-ring focus:ring-offset-2"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
-                    handleUnselect(option);
+                    handleUnselectOption(option);
                   }
                 }}
                 onMouseDown={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
                 }}
-                onClick={() => handleUnselect(option)}
+                onClick={() => handleUnselectOption(option)}
               >
-                <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                <X className="size-3 text-muted-foreground hover:text-foreground" />
               </button>
             </Badge>
           ))}
+
           <CommandPrimitive.Input
             ref={inputRef}
             value={inputValue}
-            onValueChange={setInputValue}
+            // Typing is user intent: open the list if it’s closed.
+            onValueChange={(v) => {
+              setInputValue(v);
+              if (!open) {
+                setOpen(true);
+              }
+            }}
+            // Do NOT open on focus (prevents auto-open from Dialog/Drawer autofocus)
             onBlur={() => setOpen(false)}
-            onFocus={() => setOpen(true)}
             placeholder={placeholder || 'Select options...'}
             className="ml-2 flex-1 bg-transparent text-foreground text-xs outline-none"
             style={{ width: 'auto', minWidth: 0 }}
           />
         </div>
       </div>
+
       <div className="relative mt-2 w-full">
         <CommandList>
           {open && selectables.length > 0
             ? (
               <div
-                className="absolute top-0 w-full rounded-md border bg-popover text-popover-foreground
-                shadow-md outline-none animate-in"
+                className="absolute top-0 z-50 w-full rounded-md border bg-popover text-popover-foreground
+              shadow-md outline-none animate-in"
               >
                 <CommandGroup className="max-h-80 overflow-auto">
                   {selectables.map((option) => (
@@ -134,8 +160,9 @@ export function MultiSelect({
                       onSelect={() => {
                         setInputValue('');
                         onChangeAction([...selected, option]);
+                        setOpen(false);
+                        inputRef.current?.blur();
                       }}
-                      className="cursor-pointer text-foreground"
                     >
                       {option.label}
                     </CommandItem>

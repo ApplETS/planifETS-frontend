@@ -88,7 +88,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
     };
 
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 border-0.5 m-2">
         <div>
           <label
             id="program-label"
@@ -178,8 +178,11 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
   return (
     <Dialog open={isOpen}>
       <DialogContent
-        className="[&>button]:hidden sm:max-w-[500px] border-0 overflow-visible"
+        className="[&>button]:hidden sm:max-w-[500px] border-1 border-border overflow-visible"
         onPointerDownOutside={(e) => e.preventDefault()}
+        onOpenAutoFocus={(e) => {
+          e.preventDefault();
+        }}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
         <DialogHeader>

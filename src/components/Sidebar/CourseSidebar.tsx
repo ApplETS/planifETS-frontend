@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useGlobalCourseSearch } from '@/hooks/course/useGlobalCourseSearch';
 import { useProgramCoursesOperations } from '@/hooks/course/useProgramCoursesOperations';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Tabs, TabsList, TabsTrigger } from '@/shadcn/ui/custom/tabs1';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shadcn/ui/custom/tabs1';
 import { ScrollArea } from '@/shadcn/ui/scroll-area';
 import { COURSES_TAB_INDEX, FAVORITE_TAB_INDEX } from '@/utils/constants';
 import CourseCard from './CourseCard';
@@ -124,46 +124,62 @@ export default function CourseSidebar() {
       <Tabs
         value={activeTab === COURSES_TAB_INDEX ? 'courses' : 'favorites'}
         onValueChange={handleTabChange}
+        className="flex flex-col flex-1 min-h-0"
       >
         <TabsList role="tablist">
-          <TabsTrigger
-            value="courses"
-            id="tab-courses"
-            role="tab"
-            aria-selected={activeTab === COURSES_TAB_INDEX}
-            aria-controls="panel-courses"
-          >
+          <TabsTrigger value="courses">
             <Book size={18} />
             {t('courses')}
           </TabsTrigger>
-          <TabsTrigger
-            value="favorites"
-            id="tab-favorites"
-            role="tab"
-            aria-selected={activeTab === FAVORITE_TAB_INDEX}
-            aria-controls="panel-favorites"
-          >
+          <TabsTrigger value="favorites">
             <Heart size={18} />
             {t('favorite-courses')}
           </TabsTrigger>
         </TabsList>
-      </Tabs>
+        <TabsContent
+          value="courses"
+          role="tabpanel"
+          className="flex-1 flex flex-col min-h-0"
+        >
+          <SearchBar onSearch={handleSearch} value={searchQuery} />
+          {isMobile
+            ? (
+              <div
+                className="mt-4 flex-1 min-h-0 max-h-[400px] md:max-h-none overflow-y-auto overscroll-contain rounded-md scrollbar-thin"
+                style={{ WebkitOverflowScrolling: 'touch' }}
+              >
+                {renderCoursesContent()}
+              </div>
+            )
+            : (
+              <ScrollArea className="mt-4 flex-1 min-h-0 max-h-[400px] md:max-h-none rounded-md">
+                <div className="p-1">{renderCoursesContent()}</div>
+              </ScrollArea>
+            )}
+        </TabsContent>
 
-      <SearchBar onSearch={handleSearch} value={searchQuery} />
-      {isMobile
-        ? (
-          <div
-            className="mt-4 flex-1 min-h-0 max-h-[400px] md:max-h-none overflow-y-auto overscroll-contain rounded-md scrollbar-thin"
-            style={{ WebkitOverflowScrolling: 'touch' }}
-          >
-            {renderCoursesContent()}
-          </div>
-        )
-        : (
-          <ScrollArea className="mt-4 flex-1 min-h-0 max-h-[400px] md:max-h-none rounded-md">
-            <div className="p-1">{renderCoursesContent()}</div>
-          </ScrollArea>
-        )}
+        <TabsContent
+          value="favorites"
+          role="tabpanel"
+          className="flex-1 flex flex-col min-h-0"
+        >
+          <SearchBar onSearch={handleSearch} value={searchQuery} />
+          {isMobile
+            ? (
+              <div
+                className="mt-4 flex-1 min-h-0 max-h-[400px] md:max-h-none overflow-y-auto overscroll-contain rounded-md scrollbar-thin"
+                style={{ WebkitOverflowScrolling: 'touch' }}
+              >
+                {renderCoursesContent()}
+              </div>
+            )
+            : (
+              <ScrollArea className="mt-4 flex-1 min-h-0 max-h-[400px] md:max-h-none rounded-md">
+                <div className="p-1">{renderCoursesContent()}</div>
+              </ScrollArea>
+            )}
+        </TabsContent>
+      </Tabs>
     </aside>
   );
 }

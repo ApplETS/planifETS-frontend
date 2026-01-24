@@ -153,7 +153,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
   };
 
   const renderFooter = () => (
-    <Button onClick={handleComplete} disabled={!isValid} className="w-full">
+    <Button data-testid="onboarding-complete" onClick={handleComplete} disabled={!isValid} className="w-full">
       <Check className="h-4 w-4" />
       {tOnboarding('complete')}
     </Button>

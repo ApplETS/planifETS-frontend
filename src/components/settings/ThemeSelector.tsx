@@ -8,7 +8,7 @@ export default function ThemeSelector() {
   const { setTheme, theme } = useTheme();
 
   const themePresets = Object.entries(COLORS_BY_MODE).flatMap(([mode, colors]) =>
-    colors.map(color => ({
+    colors.map((color) => ({
       mode: mode as ThemeMode,
       color: color as ThemeColors,
       label: `${mode === 'light' ? 'Light' : 'Dark'} ${color.charAt(0).toUpperCase() + color.slice(1)}`,
@@ -49,7 +49,7 @@ export default function ThemeSelector() {
               aria-pressed={isSelected}
             >
               <div className="flex items-center gap-1 mb-1">
-                {principalColors.map(color => (
+                {principalColors.map((color) => (
                   <div
                     key={`${preset.color}-${preset.mode}-${color.replace('#', '')}`}
                     className="size-3 rounded-full"

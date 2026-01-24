@@ -34,11 +34,12 @@ export default function CourseSearchbar({ onSearch, value = '' }: CourseSearchPr
     <div className="relative mt-4" data-testid="search-bar">
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground size-4.5" />
       <input
+        name="course-search"
         type="text"
         placeholder={t('search-course')}
         value={searchQuery}
-        onChange={e => setSearchQuery(e.target.value)}
-        className="border border-foreground w-full rounded-md bg-input text-foreground p-2 pl-10 focus:outline-hidden focus:ring-2 focus:ring-primary"
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="border border-foreground w-full rounded-md bg-input text-foreground p-2 pl-10 focus:outline-hidden focus:ring-1 focus:ring-primary"
         data-testid="course-search-input"
       />
     </div>

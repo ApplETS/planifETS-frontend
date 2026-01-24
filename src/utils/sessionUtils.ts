@@ -2,6 +2,14 @@ import type { Course, CourseInstance } from '@/types/course';
 import type { Session, SessionTiming } from '@/types/session';
 import { SessionEnum } from '@/types/session';
 
+export const SESSION_SELECTION_BOUNDS = {
+  PAST_YEARS: 10,
+  FUTURE_YEARS: 1,
+} as const;
+
+// Regex pattern for session codes like 'A2025', 'H2024', etc.
+const SESSION_CODE_PATTERN = /^([AHE])(\d{4})$/;
+
 export function setSessionKnownAvailability(
   sessions: Record<string, Session>,
   sessionKey: string,
@@ -42,8 +50,7 @@ export const sortSessionsChronologically = (sessionCodes: string[]): string[] =>
  * If the input does not match the expected format, returns it unchanged.
  */
 export const formatSessionShort = (sessionCode: string): string => {
-  // Match session codes like 'A2025', 'H2024', etc.
-  const match = sessionCode.match(/^([AHE])(\d{4})$/);
+  const match = sessionCode.match(SESSION_CODE_PATTERN);
   if (!match) {
     return sessionCode;
   }
@@ -75,31 +82,31 @@ export const getCurrentSession = (month: number = new Date().getMonth()): Sessio
   return SessionEnum.A;
 };
 
-export const getSessionTiming = (sessionYear: number, sessionTerm: SessionEnum): SessionTiming => {
+export const getSessionTiming = (
+  sessionYear: number,
+  sessionTerm: SessionEnum,
+): SessionTiming => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentSession = getCurrentSession();
 
-  const isFuture = sessionYear > currentYear || (
-    sessionYear === currentYear && (
-      (currentSession === SessionEnum.H && sessionTerm !== SessionEnum.H)
-      || (currentSession === SessionEnum.E && sessionTerm === SessionEnum.A)
-    )
+  const comparison = compareSessions(
+    sessionYear,
+    sessionTerm,
+    currentYear,
+    currentSession,
   );
 
-  const isCurrent = sessionYear === currentYear && sessionTerm === currentSession;
-  const isPast = !isFuture && !isCurrent;
-
   return {
-    isPast,
-    isCurrent,
-    isFuture,
+    isPast: comparison < 0,
+    isCurrent: comparison === 0,
+    isFuture: comparison > 0,
   };
 };
 
 export const filterCurrentAndFutureSessions = (sessionCodes: string[]): string[] => {
   return sessionCodes.filter((code) => {
-    const match = code.match(/^([AHE])(\d{4})$/);
+    const match = code.match(SESSION_CODE_PATTERN);
     if (!match) {
       return false;
     }
@@ -112,16 +119,6 @@ export const filterCurrentAndFutureSessions = (sessionCodes: string[]): string[]
     const timing = getSessionTiming(year, term);
     return timing.isCurrent || timing.isFuture;
   });
-};
-
-export const validateSessionOperation = (
-  timing: SessionTiming,
-  operation: string,
-): string | null => {
-  if (timing.isPast) {
-    return `Cannot ${operation} courses in past sessions`;
-  }
-  return null;
 };
 
 type CourseFinder = (id: number) => Course | undefined;
@@ -141,13 +138,44 @@ export const isCourseAvailableInSession = (
   return course.availability.includes(sessionCode);
 };
 
-export const generateSessionKey = (sessionYear: number, sessionTerm: SessionEnum): string => {
+export const generateSessionKey = (
+  sessionYear: number,
+  sessionTerm: SessionEnum,
+): string => {
   if (!sessionYear || !sessionTerm) {
     console.error(`Invalid session key parameters: ${sessionYear}, ${sessionTerm}`);
     return '';
   }
 
   return `${sessionTerm}${sessionYear}`;
+};
+
+/**
+ * Generates an array of session keys from startYear/startTerm to endYear
+ */
+export const generateSessionRange = (
+  startYear: number,
+  startTerm: SessionEnum,
+  endYear: number,
+): string[] => {
+  const sessionKeys: string[] = [];
+  const sessionOrder: Record<SessionEnum, number> = { H: 0, E: 1, A: 2 };
+
+  for (let y = startYear; y <= endYear; y++) {
+    Object.values(SessionEnum).forEach((sessionTerm: SessionEnum) => {
+      // For the first year, only include sessions from startTerm onwards
+      if (y === startYear) {
+        if (sessionOrder[sessionTerm] >= sessionOrder[startTerm]) {
+          sessionKeys.push(generateSessionKey(y, sessionTerm));
+        }
+      } else {
+        // For subsequent years, include all sessions
+        sessionKeys.push(generateSessionKey(y, sessionTerm));
+      }
+    });
+  }
+
+  return sessionKeys;
 };
 
 export const extractYearFromSessionKey = (sessionKey: string): number => {
@@ -173,16 +201,6 @@ export const getTranslationKey = (sessionTerm: string) => {
 
   console.error(`Invalid session name while translating key: ${sessionTerm}`);
   return sessionTerm;
-};
-
-export const calculateTotalCredits = (
-  courseInstances: CourseInstance[],
-  findCourse: CourseFinder,
-): number => {
-  return courseInstances.reduce((total, instance) => {
-    const course = findCourse(instance.courseId);
-    return total + (course?.credits ?? 0);
-  }, 0);
 };
 
 export const createSessionsForYear = (sessionYear: number): Record<string, Session> => {
@@ -229,49 +247,25 @@ export const updateMultipleSessions = (
   let updatedSessions = { ...sessions };
 
   updates.forEach(({ sessionKey, courseInstances }) => {
-    updatedSessions = updateSessionCourseInstances(updatedSessions, sessionKey, courseInstances);
+    updatedSessions = updateSessionCourseInstances(
+      updatedSessions,
+      sessionKey,
+      courseInstances,
+    );
   });
 
   return updatedSessions;
 };
 
 export const hasCourseInSession = (session: Session, courseId: number): boolean => {
-  return session.courseInstances.some(instance => instance.courseId === courseId);
+  return session.courseInstances.some((instance) => instance.courseId === courseId);
 };
 
 export const findCourseInSession = (
   session: Session,
   courseId: number,
 ): CourseInstance | undefined => {
-  return session.courseInstances.find(instance => instance.courseId === courseId);
-};
-
-type BorderStyle = 'border-destructive' | 'border-primary' | '';
-
-export const getSessionBorderStyle = (
-  courseId: number | null,
-  sessionTerm: SessionEnum,
-  sessionYear: number,
-  findCourse: CourseFinder,
-  isDragging: boolean,
-  isKnownSessionAvailability?: boolean,
-): BorderStyle | 'border-blue-500' => {
-  if (!isDragging || !courseId) {
-    return '';
-  }
-
-  if (isKnownSessionAvailability === false) {
-    return 'border-blue-500';
-  }
-
-  const isAvailable = isCourseAvailableInSession(
-    courseId,
-    sessionTerm,
-    sessionYear,
-    findCourse,
-  );
-
-  return isAvailable ? 'border-primary' : 'border-destructive';
+  return session.courseInstances.find((instance) => instance.courseId === courseId);
 };
 
 /**
@@ -281,7 +275,7 @@ export const getSessionBorderStyle = (
  *    0 if a == b
  *    1 if a > b
  */
-export function compareSessions(
+function compareSessions(
   yearA: number,
   termA: SessionEnum,
   yearB: number,
@@ -299,9 +293,13 @@ export function compareSessions(
  */
 export function trimesterToSessionTerm(trimester: string): SessionEnum | undefined {
   switch (trimester) {
-    case 'HIVER': return SessionEnum.H;
-    case 'ETE': return SessionEnum.E;
-    case 'AUTOMNE': return SessionEnum.A;
-    default: return undefined;
+    case 'HIVER':
+      return SessionEnum.H;
+    case 'ETE':
+      return SessionEnum.E;
+    case 'AUTOMNE':
+      return SessionEnum.A;
+    default:
+      return undefined;
   }
 }

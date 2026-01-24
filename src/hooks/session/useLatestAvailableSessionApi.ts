@@ -7,7 +7,7 @@ import { sessionService } from '../../lib/api/services/session.service';
 
 export function useLatestAvailableSession() {
   const { data: latestSession, loading, error, execute, reset } = useApi(sessionService.getLatestAvailableSession);
-  const markSessionAvailabilityKnown = useSessionStore(state => state.markSessionAvailabilityKnown);
+  const markSessionAvailabilityKnown = useSessionStore((state) => state.markSessionAvailabilityKnown);
   useEffect(() => {
     execute();
   }, [execute]);

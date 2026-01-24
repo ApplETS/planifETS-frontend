@@ -6,6 +6,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -24,30 +25,48 @@ type BaseDialogProps = {
   title: string;
   onClose: () => void;
   children: React.ReactNode;
+  footerActions?: React.ReactNode;
+  description: React.ReactNode;
+  hideHeader?: boolean;
+  hideDescription?: boolean;
 };
-
-const BaseDialog: React.FC<BaseDialogProps> = ({ isOpen, title, onClose, children }) => {
+const BaseDialog: React.FC<BaseDialogProps> = ({
+  isOpen,
+  title,
+  onClose,
+  children,
+  footerActions,
+  hideHeader,
+  hideDescription,
+  description,
+}) => {
   const t = useTranslations('Commons');
   const isMobile = useIsMobile();
 
   if (isMobile) {
     return (
-      <Drawer open={isOpen} onOpenChange={open => !open && onClose()}>
+      <Drawer open={isOpen} onOpenChange={(open) => !open && onClose()}>
         <DrawerContent>
-          <DrawerHeader>
+          <DrawerHeader className={hideHeader ? 'sr-only' : ''}>
             <DrawerTitle>{title}</DrawerTitle>
-          </DrawerHeader>
-          <div className="px-4 pb-4 overflow-y-auto">
-            {children}
-          </div>
-          <DrawerFooter>
-            <Button
-              onClick={onClose}
-              variant="outline"
-              className="border-secondary-foreground hover:bg-secondary-foreground/10"
+            <div
+              className={hideDescription ? 'sr-only' : 'text-sm text-muted-foreground'}
             >
-              {t('cancel')}
-            </Button>
+              {description}
+            </div>
+          </DrawerHeader>
+          <div className="px-4 pb-4 overflow-y-auto">{children}</div>
+          <DrawerFooter>
+            <div className="flex items-center justify-end gap-2 w-full">
+              <Button
+                onClick={onClose}
+                variant="outline"
+                className="border-secondary-foreground hover:bg-secondary-foreground/10"
+              >
+                {t('cancel')}
+              </Button>
+              <div className="flex items-center gap-2">{footerActions}</div>
+            </div>
           </DrawerFooter>
           <DrawerClose />
         </DrawerContent>
@@ -56,26 +75,28 @@ const BaseDialog: React.FC<BaseDialogProps> = ({ isOpen, title, onClose, childre
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
-      <DialogContent
-        className={` border border-border`}
-      >
-        <DialogHeader>
-          <DialogTitle className="rounded-t-md ">
-            {title}
-          </DialogTitle>
-        </DialogHeader>
-        <div className="rounded-b-md p-4">
-          {children}
-        </div>
-        <DialogFooter className="rounded-b-md p-2">
-          <Button
-            onClick={onClose}
-            variant="outline"
-            className="border-secondary-foreground hover:bg-secondary-foreground/10"
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className={` border border-border`}>
+        <DialogHeader className={hideHeader ? 'sr-only' : ''}>
+          <DialogTitle className="rounded-t-md ">{title}</DialogTitle>
+          <DialogDescription
+            className={hideDescription ? 'sr-only' : 'text-sm text-muted-foreground'}
           >
-            {t('cancel')}
-          </Button>
+            {description}
+          </DialogDescription>
+        </DialogHeader>
+        <div className="rounded-b-md p-4">{children}</div>
+        <DialogFooter className="rounded-b-md p-2">
+          <div className="flex items-center justify-end gap-2 w-full">
+            <Button
+              onClick={onClose}
+              variant="outline"
+              className="border-secondary-foreground hover:bg-secondary-foreground/10"
+            >
+              {t('cancel')}
+            </Button>
+            <div className="flex items-center gap-2">{footerActions}</div>
+          </div>
         </DialogFooter>
         <DialogClose />
       </DialogContent>

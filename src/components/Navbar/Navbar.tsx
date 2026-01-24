@@ -2,11 +2,13 @@
 
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import ResetDialog from '@/components/dialogs/ResetDialog';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/shadcn/ui/button';
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -24,10 +26,13 @@ export default function Navbar() {
   const isMobile = useIsMobile();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [resetOpen, setResetOpen] = useState(false);
 
   const closeSheetAction = () => setSheetOpen(false);
   const openSettings = () => setSettingsOpen(true);
   const closeSettings = () => setSettingsOpen(false);
+  const openReset = () => setResetOpen(true);
+  const closeReset = () => setResetOpen(false);
 
   return (
     <>
@@ -48,11 +53,18 @@ export default function Navbar() {
             </SheetTrigger>
             <SheetContent
               side="right"
-              className={isMobile ? 'inset-0 h-full w-full p-4 m-0 rounded-none' : 'top-0 right-0 h-full w-80 p-4 m-0 rounded-none'}
+              className={
+                isMobile
+                  ? 'inset-0 h-full w-full p-4 m-0 rounded-none'
+                  : 'top-0 right-0 h-full w-80 p-4 m-0 rounded-none'
+              }
             >
               <SheetHeader>
                 <div className="flex items-center justify-between">
                   <SheetTitle>Menu</SheetTitle>
+                  <SheetDescription className="sr-only">
+                    Main navigation menu
+                  </SheetDescription>
                   <Button
                     type="button"
                     size="icon"
@@ -66,14 +78,22 @@ export default function Navbar() {
                 </div>
               </SheetHeader>
               <div className="mt-6 flex flex-col gap-4">
-                <NavContent closeSheetAction={closeSheetAction} onOpenSettingsAction={openSettings} />
+                <NavContent
+                  closeSheetAction={closeSheetAction}
+                  onOpenSettingsAction={openSettings}
+                />
               </div>
             </SheetContent>
           </Sheet>
         </div>
       </nav>
 
-      <SettingsDialog isOpen={settingsOpen} onCloseAction={closeSettings} />
+      <SettingsDialog
+        isOpen={settingsOpen}
+        onCloseAction={closeSettings}
+        onOpenResetAction={openReset}
+      />
+      <ResetDialog isOpen={resetOpen} onCloseAction={closeReset} />
     </>
   );
 }

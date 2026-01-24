@@ -9,7 +9,19 @@
     "theme": "Theme",
     "loading": "Loading...",
     "cancel": "Cancel",
-    "add-year": "Add Year"
+    "add-year": "Add Year",
+    "reset-data": "Reset All Data",
+    "reset-data-description": "Clear all your planner data, courses, and settings. This action cannot be undone.",
+    "reset-data-warning": "This will delete all your data permanently!",
+    "confirm-reset": "Delete Everything",
+    "resetting": "Resetting..."
+  },
+  "Onboarding": {
+    "welcome-title": "👋 Welcome to PlanifETS",
+    "program-label": "Select your program",
+    "admission-day-label": "Select your admission year",
+    "admission-day-note": "This will create sessions from your admission year to today.",
+    "complete": "Complete"
   },
   "PlannerPage": {
     "year-with-value": "Year {value}",

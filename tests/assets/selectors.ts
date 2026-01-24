@@ -2,6 +2,7 @@ export const selectors = {
   // Program
   programChip: (programId: string) => `[data-testid="program-chip-${programId}"]`,
   programsSelect: '[data-testid="programs-select"]',
+  onboardingCompleteButton: '[data-testid="onboarding-complete"]',
 
   // Course
   searchInput: '[data-testid="course-search-input"]',

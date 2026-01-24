@@ -29,7 +29,7 @@ export const useSessionDrop = ({ sessionYear, sessionTerm, sessionTiming }: UseS
       const courseId = item.type === DragType.COURSE_BOX ? item.courseId : item.course.id;
       const sessionCourses = sessionStore.getSessionCourses(sessionKey);
 
-      if (sessionCourses.some(c => c.courseId === courseId)) {
+      if (sessionCourses.some((c) => c.courseId === courseId)) {
         return false;
       }
 
@@ -52,7 +52,7 @@ export const useSessionDrop = ({ sessionYear, sessionTerm, sessionTiming }: UseS
         handleAddCourse(item.course.id);
       }
     },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
       draggedItem: monitor.getItem(),

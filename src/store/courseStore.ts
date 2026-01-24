@@ -26,12 +26,12 @@ type CourseActions = {
 export const useCourseStore = create<CourseState & CourseActions>()((set, get) => ({
   courses: {},
 
-  getCourse: courseId => safeGetNumber(get().courses, courseId),
+  getCourse: (courseId) => safeGetNumber(get().courses, courseId),
 
   getCoursesById: (courseIds) => {
     const courses = get().courses;
     return courseIds
-      .map(id => safeGetNumber(courses, id))
+      .map((id) => safeGetNumber(courses, id))
       .filter((course): course is Course => !!course);
   },
 
@@ -39,7 +39,7 @@ export const useCourseStore = create<CourseState & CourseActions>()((set, get) =
     if (!course.id) {
       return;
     }
-    set(state => ({
+    set((state) => ({
       courses: {
         ...state.courses,
         [course.id]: course,

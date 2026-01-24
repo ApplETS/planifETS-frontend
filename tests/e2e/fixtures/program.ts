@@ -15,12 +15,24 @@ export async function selectProgram(page: Page, programId: string = PROGRAM_ID_L
   await input.focus();
   await input.click();
 
+  // Type the program title to filter options and select via keyboard
+  await input.fill(programTitle);
+
   // CommandItem doesn't always expose role=option; locate by visible text inside the select container
   const programOption = programsSelect.locator(`text=${programTitle}`);
 
   await expect(programOption).toBeVisible({ timeout: 15000 });
 
-  await programOption.click();
+  // Press Enter to pick the currently highlighted item
+  await input.press('Enter');
+
+  // If onboarding dialog is present, click Complete to dismiss it
+  const completeButton = page.locator(selectors.onboardingCompleteButton);
+  try {
+    await completeButton.click({ timeout: 2000 });
+  } catch {
+    // No onboarding dialog present or click failed; continue
+  }
 
   const programChip = page.locator(selectors.programChip(programId));
 

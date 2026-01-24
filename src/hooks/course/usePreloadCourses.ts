@@ -45,7 +45,7 @@ export const usePreloadCourses = () => {
 
       // Find missing course IDs (not in cache)
       const missingCourseIds = Array.from(allRequiredCourseIds).filter(
-        courseId => !courses[courseId],
+        (courseId) => !courses[courseId],
       );
 
       if (missingCourseIds.length === 0) {

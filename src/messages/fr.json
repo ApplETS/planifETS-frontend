@@ -1,7 +1,7 @@
 {
   "Commons": {
     "credits": "crédits",
-    "total-credits": "crédits totaux",
+    "total-credits": "crédits au total",
     "credits-short": "cr.",
     "logout": "Se déconnecter",
     "settings": "Paramètres",
@@ -9,7 +9,19 @@
     "theme": "Thème",
     "loading": "Chargement...",
     "cancel": "Annuler",
-    "add-year": "Ajouter une année"
+    "add-year": "Ajouter une année",
+    "reset-data": "Réinitialiser toutes les données",
+    "reset-data-description": "Effacer toutes vos données, cours et paramètres. Cette action est irréversible.",
+    "reset-data-warning": "Cela supprimera toutes vos données de façon permanente!",
+    "confirm-reset": "Tout supprimer",
+    "resetting": "Réinitialisation..."
+  },
+  "Onboarding": {
+    "welcome-title": "👋 Bienvenue sur PlanifETS",
+    "program-label": "Sélectionner votre programme",
+    "admission-day-label": "Sélectionner votre année d'admission",
+    "admission-day-note": "Cela va créer des sessions de votre année d'admission à aujourd'hui.",
+    "complete": "Terminer"
   },
   "PlannerPage": {
     "year-with-value": "Année {value}",

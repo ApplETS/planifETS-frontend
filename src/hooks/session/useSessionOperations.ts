@@ -13,7 +13,7 @@ export const useSessionOperations = (year: number, sessionTerm: SessionEnum) => 
   const sessionKey = generateSessionKey(year, sessionTerm);
   const courseInstances = sessionStore.getSessionCourses(sessionKey);
   const sessionTiming = getSessionTiming(year, sessionTerm);
-  const courses = useCourseStore(state => state.courses);
+  const courses = useCourseStore((state) => state.courses);
 
   const handleAddCourse = (courseId: number) => {
     sessionStore.addCourseToSession(sessionKey, courseId);

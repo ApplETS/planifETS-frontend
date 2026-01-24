@@ -55,7 +55,7 @@ export const useGlobalCourseSearch = (): UseGlobalCourseSearchReturn => {
       if (response.data) {
         // Map API results to app Course type
         const mappedCourses = response.data.courses
-          .map(apiCourse => mapApiCourseToAppCourse(apiCourse))
+          .map((apiCourse) => mapApiCourseToAppCourse(apiCourse))
           .filter((course): course is Course => course !== null);
 
         setCourses(mappedCourses);

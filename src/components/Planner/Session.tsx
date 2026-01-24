@@ -22,7 +22,7 @@ export default function Session({ sessionYear, sessionTerm }: SessionProps) {
 
   const { getCourse } = useCourseStore();
   const sessionKey = generateSessionKey(sessionYear, sessionTerm);
-  const session = useSessionStore(state => state.sessions[sessionKey]);
+  const session = useSessionStore((state) => state.sessions[sessionKey]);
   const isKnownSessionAvailability = session?.isKnownSessionAvailability;
   const { drop, isOver, canDrop, draggedItem } = useSessionDrop({
     sessionYear,

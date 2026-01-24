@@ -39,10 +39,10 @@ export const useProgramStore = create<ProgramState & ProgramActions>()(
       return get().programCourseIds[program] || [];
     },
 
-    setSelectedPrograms: programs => set({ selectedPrograms: programs }),
+    setSelectedPrograms: (programs) => set({ selectedPrograms: programs }),
 
     setProgramCourses: (program, courseIds) =>
-      set(state => ({
+      set((state) => ({
         programCourseIds: {
           ...state.programCourseIds,
           [program]: courseIds,
@@ -70,12 +70,12 @@ export const useProgramStore = create<ProgramState & ProgramActions>()(
         return {
           programCourseIds: {
             ...state.programCourseIds,
-            [program]: currentCourses.filter(id => id !== courseId),
+            [program]: currentCourses.filter((id) => id !== courseId),
           },
         };
       }),
 
-    clearProgramCourseIds: program =>
+    clearProgramCourseIds: (program) =>
       set((state) => {
         if (program) {
           const { [program]: _, ...rest } = state.programCourseIds;

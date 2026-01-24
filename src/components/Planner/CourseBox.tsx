@@ -40,26 +40,32 @@ const CourseBox: FC<CourseBoxProps> = ({
 }) => {
   const t = useTranslations('PlannerPage');
 
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: DragType.COURSE_BOX,
-    item: {
+  const [{ isDragging }, drag] = useDrag(
+    () => ({
       type: DragType.COURSE_BOX,
-      courseId: course.id,
-      course,
-      fromSessionYear,
-      fromSessionTerm,
-    },
-    collect: monitor => ({
-      isDragging: monitor.isDragging(),
+      item: {
+        type: DragType.COURSE_BOX,
+        courseId: course.id,
+        course,
+        fromSessionYear,
+        fromSessionTerm,
+      },
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+      canDrag: () => isDraggable,
     }),
-    canDrag: () => isDraggable,
-  }), [course, fromSessionYear, fromSessionTerm, isDraggable]);
+    [course, fromSessionYear, fromSessionTerm, isDraggable],
+  );
 
   const [isHovered, setIsHovered] = useState(false);
 
-  const dragRef = useCallback((node: HTMLDivElement | null) => {
-    drag(node);
-  }, [drag]);
+  const dragRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      drag(node);
+    },
+    [drag],
+  );
 
   return (
     <div
@@ -101,7 +107,11 @@ const CourseBox: FC<CourseBoxProps> = ({
         </div>
       </div>
       <div className="text-sm text-muted-foreground">
-        <CreditsTag credits={credits} shortText={true} data-testid={`course-box-${code}-credits`} />
+        <CreditsTag
+          credits={credits}
+          shortText={true}
+          data-testid={`course-box-${code}-credits`}
+        />
       </div>
     </div>
   );

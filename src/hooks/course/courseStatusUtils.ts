@@ -8,7 +8,7 @@ export const determineStatus = (
   sessionTiming: SessionTiming,
 ): CourseStatus => {
   const courseInstance = session?.courseInstances.find(
-    instance => instance.courseId === courseId,
+    (instance) => instance.courseId === courseId,
   );
 
   if (courseInstance?.status) {

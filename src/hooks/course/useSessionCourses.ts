@@ -5,8 +5,8 @@ import { useSessionStore } from '@/store/sessionStore';
 import { safeGet, safeGetNumber } from '@/utils/safeAccess';
 
 export const useSessionCourses = () => {
-  const courses = useCourseStore(state => state.courses);
-  const sessions = useSessionStore(state => state.sessions);
+  const courses = useCourseStore((state) => state.courses);
+  const sessions = useSessionStore((state) => state.sessions);
 
   const getCourseWithStatus = useCallback(
     (courseId: number, sessionKey: string): (Course & { status: CourseStatus }) | undefined => {
@@ -34,7 +34,7 @@ export const useSessionCourses = () => {
       }
 
       return session.courseInstances
-        .map(ci => getCourseWithStatus(ci.courseId, sessionKey))
+        .map((ci) => getCourseWithStatus(ci.courseId, sessionKey))
         .filter((course): course is Course & { status: CourseStatus } => !!course);
     },
     [sessions, getCourseWithStatus],

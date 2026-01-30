@@ -9,11 +9,11 @@ import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
 import { useDrag } from 'react-dnd';
 
+import CourseHeader from '@/components/atoms/CourseHeader';
+import CreditsTag from '@/components/atoms/CreditsTag';
 import { Button } from '@/shadcn/ui/button';
 import { DragType } from '@/types/dnd';
-import CourseHeader from '../atoms/CourseHeader';
-import CreditsTag from '../atoms/CreditsTag';
-import StatusTag from './StatusTag';
+import StatusTag from '../atoms/StatusTag';
 
 type CourseBoxProps = {
   code: string;

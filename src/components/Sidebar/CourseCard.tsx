@@ -6,16 +6,16 @@ import type { SessionEnum } from '@/types/session';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import FavoriteButton from '@/components/Sidebar/FavoriteButton';
+import CourseHeader from '@/components/atoms/CourseHeader';
+import CreditsTag from '@/components/atoms/CreditsTag';
+import FavoriteButton from '@/components/atoms/FavoriteButton';
+import Tag from '@/components/atoms/Tag';
 import { useCourseOperations } from '@/hooks/course/useCourseOperations';
 import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { DragType } from '@/types/dnd';
 import { filterCurrentAndFutureSessions, formatSessionShort, generateSessionKey, sortSessionsChronologically } from '@/utils/sessionUtils';
-import CourseHeader from '../atoms/CourseHeader';
-import CreditsTag from '../atoms/CreditsTag';
-import Tag from '../atoms/Tag';
 
 type SectionProps = {
   title: string;

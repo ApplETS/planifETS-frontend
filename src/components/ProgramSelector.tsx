@@ -23,10 +23,10 @@ const ProgramSelector: React.FC = () => {
 
   const programStore = useProgramStore();
   const setCourses = useCourseStore((state) => state.setCourses);
-  const selectedProgramCodes = programStore.getSelectedPrograms();
+  const selectedProgramIds = programStore.getSelectedProgramIds();
 
   const { data: programsData } = useProgramsApi();
-  const { data: programCoursesData } = useProgramCoursesApi(selectedProgramCodes);
+  const { data: programCoursesData } = useProgramCoursesApi(selectedProgramIds);
   const programs = React.useMemo(() => programsData || [], [programsData]);
 
   // Update courses in store when program courses data changes
@@ -78,9 +78,9 @@ const ProgramSelector: React.FC = () => {
   );
 
   // Convert selected codes to selected options
-  const selected = React.useMemo(
-    () => options.filter((option) => selectedProgramCodes.includes(option.id)),
-    [options, selectedProgramCodes],
+  const selectedOptions = React.useMemo(
+    () => options.filter((option) => selectedProgramIds.includes(option.id)),
+    [options, selectedProgramIds],
   );
 
   const handleProgramChange = (
@@ -94,7 +94,7 @@ const ProgramSelector: React.FC = () => {
     <div data-testid="programs-select" className="min-w-[400px]">
       <MultiSelect
         options={options}
-        selected={selected}
+        selected={selectedOptions}
         onChangeAction={handleProgramChange}
         placeholder={t('programs')}
       />

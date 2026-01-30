@@ -16,7 +16,7 @@ type ProgramState = {
 };
 
 type ProgramActions = {
-  getSelectedPrograms: () => number[];
+  getSelectedProgramIds: () => number[];
   getProgramCourseIds: (program: number | null) => number[];
   setSelectedPrograms: (programs: number[]) => void;
   setProgramCourses: (program: number, courseIds: number[]) => void;
@@ -30,7 +30,7 @@ export const useProgramStore = create<ProgramState & ProgramActions>()(
     selectedPrograms: [],
     programCourseIds: {},
 
-    getSelectedPrograms: () => get().selectedPrograms,
+    getSelectedProgramIds: () => get().selectedPrograms,
 
     getProgramCourseIds: (program) => {
       if (!program) {

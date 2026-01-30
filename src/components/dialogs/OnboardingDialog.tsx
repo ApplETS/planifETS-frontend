@@ -58,7 +58,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
   );
 
   const programStore = useProgramStore();
-  const selectedPrograms = programStore.getSelectedPrograms();
+  const selectedPrograms = programStore.getSelectedProgramIds();
   const { completeOnboarding } = useOnboardingStore();
   const { initializePlanner } = usePlannerStore();
 

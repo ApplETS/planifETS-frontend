@@ -6,12 +6,12 @@ import { useProgramStore } from '@/store/programStore';
 import { FAVORITE_TAB_INDEX } from '@/utils/constants';
 
 export const useProgramCoursesOperations = (searchQuery: string, activeTab: number) => {
-  const selectedPrograms = useProgramStore((state) => state.getSelectedPrograms());
+  const selectedProgramIds = useProgramStore((state) => state.getSelectedProgramIds());
   const courses = useCourseStore((state) => state.courses);
   const favoriteCourseIds = usePlannerStore((state) => state.favoriteCourses);
 
   const programCoursesData = useMemo(() => {
-    if (!selectedPrograms.length) {
+    if (!selectedProgramIds.length) {
       return { courses: [], courseIds: [], hasSelectedPrograms: false };
     }
 
@@ -31,7 +31,7 @@ export const useProgramCoursesOperations = (searchQuery: string, activeTab: numb
       courseIds: Array.from(uniqueCourseIds),
       hasSelectedPrograms: true,
     };
-  }, [selectedPrograms, courses]);
+  }, [selectedProgramIds, courses]);
 
   const favoriteCourses = useMemo(() => {
     const coursesArray = Object.values(courses);
@@ -55,7 +55,7 @@ export const useProgramCoursesOperations = (searchQuery: string, activeTab: numb
     );
   }, [activeTab, favoriteCourses, programCoursesData.courses, searchQuery]);
 
-  const hasCoursesInStore = Object.values(courses).length > 0 && selectedPrograms.length > 0;
+  const hasCoursesInStore = Object.values(courses).length > 0 && selectedProgramIds.length > 0;
 
   return {
     displayedCourses,

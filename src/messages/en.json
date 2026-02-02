@@ -48,7 +48,9 @@
     "available": "Available: ",
     "add-to-session-tooltip": "Add to session {session}",
     "course-added-to-session": "Course added to session {session}",
+    "course-removed-from-session": "Course removed from session {session}",
     "course-already-in-session": "Course is already in session {session}",
+    "remove-from-session-tooltip": "Remove from session {session}",
     "programs": "Programs",
     "search-course": "Search for a course",
     "loading-courses": "Loading courses...",
@@ -61,6 +63,7 @@
     "select-program": "Please select a program.",
     "courses": "Courses",
     "favorite-courses": "Favorites",
-    "session-not-created": "Session {session} is not yet created. Please add the year first."
+    "session-not-created": "Session {session} is not yet created. Please add the year first.",
+    "year-deleted": "Deleted year {year}"
   }
 }

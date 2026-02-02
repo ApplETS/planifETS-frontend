@@ -6,6 +6,7 @@ import { Trash } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 
+import { showSuccess } from '@/lib/toast';
 import { Button } from '@/shadcn/ui/button';
 import { usePlannerStore } from '@/store/plannerStore';
 import Session from './Session';
@@ -35,7 +36,10 @@ const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIO
           variant="destructive"
           size="icon"
           className="absolute -right-1 z-10 size-7"
-          onClick={() => deleteYear(year)}
+          onClick={() => {
+            deleteYear(year);
+            showSuccess(t('year-deleted', { year }));
+          }}
           aria-label="Delete year"
         >
           <Trash className="size-4" />

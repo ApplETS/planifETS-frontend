@@ -1,12 +1,12 @@
 import type { SessionEnum } from '@/types/session';
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
+
+import { showSuccess } from '@/lib/toast';
 import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { safeGetNumber } from '@/utils/safeAccess';
-import {
-  generateSessionKey,
-  getSessionTiming,
-} from '@/utils/sessionUtils';
+import { formatSessionShort, generateSessionKey, getSessionTiming } from '@/utils/sessionUtils';
 
 export const useSessionOperations = (year: number, sessionTerm: SessionEnum) => {
   const sessionStore = useSessionStore();
@@ -14,6 +14,7 @@ export const useSessionOperations = (year: number, sessionTerm: SessionEnum) => 
   const courseInstances = sessionStore.getSessionCourses(sessionKey);
   const sessionTiming = getSessionTiming(year, sessionTerm);
   const courses = useCourseStore((state) => state.courses);
+  const t = useTranslations('PlannerPage');
 
   const handleAddCourse = (courseId: number) => {
     sessionStore.addCourseToSession(sessionKey, courseId);
@@ -21,6 +22,8 @@ export const useSessionOperations = (year: number, sessionTerm: SessionEnum) => 
 
   const handleRemoveCourse = (courseId: number) => {
     sessionStore.removeCourseFromSession(sessionKey, courseId);
+    const sessionCode = generateSessionKey(year, sessionTerm);
+    showSuccess(t('course-removed-from-session', { session: formatSessionShort(sessionCode) }));
   };
 
   const handleMoveCourse = (toSessionYear: number, toSessionTerm: SessionEnum, courseId: number) => {

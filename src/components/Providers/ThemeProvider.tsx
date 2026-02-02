@@ -62,6 +62,13 @@ export function ThemeProvider({
     },
   }), [currentTheme]);
 
+  // Apply theme to document elements
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', `${currentTheme.color}-${currentTheme.mode}`);
+    }
+  }, [currentTheme]);
+
   return (
     <ThemeProviderContext value={contextValue}>
       <div

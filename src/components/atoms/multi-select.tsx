@@ -140,7 +140,7 @@ export function MultiSelect({
         </div>
       </div>
 
-      <div className="relative mt-2 w-full">
+      <div className="relative mt-1 w-full">
         <CommandList>
           {open && selectables.length > 0
             ? (

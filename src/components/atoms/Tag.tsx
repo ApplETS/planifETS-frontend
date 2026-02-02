@@ -27,7 +27,7 @@ const Tag: FC<ContrastTagProps> = ({
     warning: 'bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 border border-amber-300/40 px-2.5 py-1',
     danger: 'bg-destructive/10 text-destructive border border-destructive/20 px-2.5 py-1',
     sessionDisabled: 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border border-green-300/40 opacity-40 pointer-events-none cursor-default px-2.5 py-1',
-    sessionAvailable: 'bg-muted text-muted-foreground border border-primary hover:bg-primary/10 cursor-pointer px-2.5 py-1',
+    sessionAvailable: 'bg-muted text-muted-foreground border hover:bg-primary/10 cursor-pointer px-2.5 py-1',
   };
 
   return (

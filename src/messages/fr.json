@@ -48,7 +48,9 @@
     "available": "Disponible: ",
     "add-to-session-tooltip": "Ajouter à la session {session}",
     "course-added-to-session": "Cours ajouté à la session {session}",
+    "course-removed-from-session": "Cours retiré de la session {session}",
     "course-already-in-session": "Le cours est déjà dans la session {session}",
+    "remove-from-session-tooltip": "Retirer de la session {session}",
     "programs": "Programmes",
     "search-course": "Chercher un cours",
     "loading-courses": "Chargement des cours...",
@@ -61,6 +63,7 @@
     "select-program": "Veuillez sélectionner un programme.",
     "courses": "Cours",
     "favorite-courses": "Favoris",
-    "session-not-created": "La session {session} n'est pas encore créée. Veuillez d'abord ajouter l'année."
+    "session-not-created": "La session {session} n'est pas encore créée. Veuillez d'abord ajouter l'année.",
+    "year-deleted": "Année {year} supprimée"
   }
 }

@@ -77,7 +77,7 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
     initializePlanner: (startYear: number, startTerm: SessionEnum) => {
       const currentDate = new Date();
       const currentYear = currentDate.getFullYear();
-      const endYear = currentYear;
+      const endYear = Math.max(currentYear, startYear);
 
       const sessionKeys = generateSessionRange(startYear, startTerm, endYear);
 

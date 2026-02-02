@@ -1,3 +1,5 @@
+import type { SessionEnum } from '@/types/session';
+
 export const selectors = {
   // Program
   programChip: (programId: string) => `[data-testid="program-chip-${programId}"]`,
@@ -12,12 +14,14 @@ export const selectors = {
   courseInSession: (code: string) => `[data-testid="course-box-${code}"]`,
 
   // Session
-  sessionDropTarget: (sessionTerm: string, sessionYear: number) =>
+  sessionDropTarget: (sessionTerm: SessionEnum, sessionYear: number) =>
     `[data-testid="session-${sessionTerm}-${sessionYear}-drop-target"]`,
+  year: (year: number) =>
+    `[data-testid="year-${year}-sessions"] [data-testid$="-drop-target"]`,
 
   // Credits
   totalCredits: '[data-testid="total-credits"]',
-  sessionCredits: (sessionTerm: string, sessionYear: number) =>
+  sessionCredits: (sessionTerm: SessionEnum, sessionYear: number) =>
     `[data-testid="session-${sessionTerm}-${sessionYear}-credits"]`,
 
   // Navigation
@@ -40,4 +44,7 @@ export const selectors = {
   // Tabs
   favoritesTab: 'role=tab[name=/favorites/i]',
   coursesTab: 'role=tab[name=/courses/i]',
+
+  // Onboarding dialog
+  admissionYearInput: '#admission-year',
 } as const;

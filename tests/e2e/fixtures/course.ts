@@ -1,5 +1,6 @@
 import type { Page } from '@playwright/test';
 import type { TestCourse } from '../../assets/courses';
+import type { SessionEnum } from '@/types/session';
 import { expect } from '@playwright/test';
 import { selectors } from '../../assets/selectors';
 
@@ -60,7 +61,7 @@ export const deleteCourse = async (
 export const moveCourseToSession = async (
   page: Page,
   course: TestCourse,
-  targetSession: string,
+  targetSession: SessionEnum,
   targetYear: number,
 ) => {
   const courseBox = page.locator(selectors.courseInSession(course.code));

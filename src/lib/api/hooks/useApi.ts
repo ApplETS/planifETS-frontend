@@ -2,7 +2,7 @@
 
 import type { ApiResponse } from '@/types/api';
 import { useCallback, useState } from 'react';
-import { showError } from '../../toast';
+import { showError } from '@/lib/toast';
 import { ApiErrorHandler, handleApiError } from '../utils/error-handler';
 
 type UseApiState<T> = {

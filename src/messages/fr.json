@@ -63,6 +63,7 @@
     "select-program": "Veuillez sélectionner un programme.",
     "courses": "Cours",
     "favorite-courses": "Favoris",
-    "session-not-created": "La session {session} n'est pas encore créée. Veuillez d'abord ajouter l'année."
+    "session-not-created": "La session {session} n'est pas encore créée. Veuillez d'abord ajouter l'année.",
+    "year-deleted": "Année {year} supprimée"
   }
 }

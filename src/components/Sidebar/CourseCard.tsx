@@ -12,6 +12,7 @@ import FavoriteButton from '@/components/atoms/FavoriteButton';
 import Tag from '@/components/atoms/Tag';
 import { useCourseOperations } from '@/hooks/course/useCourseOperations';
 import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shadcn/ui/tooltip';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { DragType } from '@/types/dnd';
@@ -58,7 +59,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
     );
   };
 
-  const { addCourseToSession } = useCourseOperations();
+  const { addCourseToSession, removeCourseFromSession } = useCourseOperations();
   const sessionStore = useSessionStore();
   const renderAvailability = () => {
     const filteredSessions = filterCurrentAndFutureSessions(course.availability);
@@ -74,27 +75,35 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
           const sessionKey = generateSessionKey(sessionYear, sessionTerm);
           const sessionObj = sessionStore.getSessionByKey?.(sessionKey);
           const alreadyAdded = sessionObj && sessionObj.courseInstances.some((ci) => ci.courseId === course.id);
-          return (
-            <Tag
-              key={session}
-              variant={alreadyAdded ? 'sessionDisabled' : 'sessionAvailable'}
-              onClick={() => {
-                if (!sessionObj) {
-                  toast.error(t('session-not-created', { session: formatSessionShort(session) }));
-                  return;
-                }
 
-                if (alreadyAdded) {
-                  toast.error(t('course-already-in-session', { session: formatSessionShort(session) }));
-                  return;
-                }
-                addCourseToSession(sessionYear, sessionTerm, course);
-                toast.success(t('course-added-to-session', { session: formatSessionShort(session) }));
-              }}
-              title={t('add-to-session-tooltip', { session: formatSessionShort(session) })}
-            >
-              {formatSessionShort(session)}
-            </Tag>
+          return (
+            <Tooltip key={session}>
+              <TooltipTrigger asChild>
+                <Tag
+                  variant={alreadyAdded ? 'success' : 'sessionAvailable'}
+                  onClick={() => {
+                    if (!sessionObj) {
+                      toast.error(t('session-not-created', { session: formatSessionShort(session) }));
+                      return;
+                    }
+
+                    if (alreadyAdded) {
+                      removeCourseFromSession(sessionYear, sessionTerm, course.id);
+                      toast.success(t('course-removed-from-session', { session: formatSessionShort(session) }));
+                      return;
+                    }
+
+                    addCourseToSession(sessionYear, sessionTerm, course);
+                    toast.success(t('course-added-to-session', { session: formatSessionShort(session) }));
+                  }}
+                >
+                  {formatSessionShort(session)}
+                </Tag>
+              </TooltipTrigger>
+              <TooltipContent sideOffset={4}>
+                {alreadyAdded ? t('remove-from-session-tooltip', { session: formatSessionShort(session) }) : t('add-to-session-tooltip', { session: formatSessionShort(session) })}
+              </TooltipContent>
+            </Tooltip>
           );
         })}
       </Section>

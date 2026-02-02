@@ -39,7 +39,7 @@ export default function CourseSearchbar({ onSearch, value = '' }: CourseSearchPr
         placeholder={t('search-course')}
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="border border-foreground w-full rounded-md bg-input text-foreground p-2 pl-10 focus:outline-hidden focus:ring-1 focus:ring-primary"
+        className="border border-muted-foreground w-full rounded-md bg-input text-foreground p-2 pl-10 focus:outline-hidden focus:ring-1 focus:ring-primary"
         data-testid="course-search-input"
       />
     </div>

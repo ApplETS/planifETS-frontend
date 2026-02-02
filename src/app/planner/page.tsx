@@ -100,7 +100,7 @@ export default function PlannerPage() {
           {t('total-credits')}
         </Button>
         <Button variant="default" size="default" onClick={addYear}>
-          <Plus className="mr-2" />
+          <Plus />
           {t('add-year')}
         </Button>
       </div>

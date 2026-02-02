@@ -49,7 +49,7 @@ const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIO
         <h2 className="mb-2.5 text-xl font-semibold text-foreground">
           {t('year-with-value', { value: year })}
         </h2>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3" data-testid={`year-${year}-sessions`}>
           {sessions.map((session) => (
             <Session
               key={session.key}

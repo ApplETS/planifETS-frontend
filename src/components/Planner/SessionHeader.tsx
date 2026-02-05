@@ -28,7 +28,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
   const { SeasonIcon, color } = getSeasonStyle(sessionTerm) ?? {};
 
   return (
-    <div className="mb-2 flex select-none flex-col sm:flex-row sm:items-center sm:justify-between">
+    <div className="mb-2 flex select-none flex-wrap items-center gap-2 justify-between">
       <div className="flex items-center gap-1">
         <SeasonIcon className={color} />
         <h3 className="text-lg font-bold flex items-center gap-2">

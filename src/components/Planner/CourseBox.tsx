@@ -73,8 +73,8 @@ const CourseBox: FC<CourseBoxProps> = ({
       ref={dragRef}
       className={`
         shadow-xs
-        relative mb-2 cursor-pointer rounded-lg
-        bg-muted p-4
+        relative cursor-pointer rounded-lg
+        bg-muted p-3
         hover:shadow-md text-foreground
         ${isDragging ? 'opacity-50' : 'opacity-100'}
         ${isDragging && unknownAvailability ? 'border-2 border-blue-200' : ''}
@@ -98,7 +98,7 @@ const CourseBox: FC<CourseBoxProps> = ({
           <Trash className="size-3" />
         </Button>
       )}
-      <div className="flex flex-col flex-wrap sm:flex-row">
+      <div className="flex flex-col flex-wrap sm:flex-row mb-2">
         <div className="flex flex-col">
           <CourseHeader
             code={code}
@@ -110,10 +110,8 @@ const CourseBox: FC<CourseBoxProps> = ({
         <div className="mt-2 flex flex-wrap sm:mt-0 sm:flex-nowrap sm:items-center">
         </div>
       </div>
-      <div className="text-sm text-muted-foreground">
 
-        <StatusTag status={status} />
-      </div>
+      <StatusTag status={status} />
     </div>
   );
 };

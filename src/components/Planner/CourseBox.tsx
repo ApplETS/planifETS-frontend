@@ -10,7 +10,6 @@ import { useCallback, useState } from 'react';
 import { useDrag } from 'react-dnd';
 
 import CourseHeader from '@/components/atoms/CourseHeader';
-import CreditsTag from '@/components/atoms/CreditsTag';
 import StatusTag from '@/components/atoms/StatusTag';
 import { Button } from '@/shadcn/ui/button';
 import { DragType } from '@/types/dnd';
@@ -101,15 +100,12 @@ const CourseBox: FC<CourseBoxProps> = ({
       )}
       <div className="flex flex-col flex-wrap sm:flex-row">
         <div className="flex flex-col">
-          <CourseHeader code={code} title={title} />
-        </div>
-        <div className="flex flex-col ">
-          <CreditsTag
+          <CourseHeader
+            code={code}
+            title={title}
             credits={credits}
-            shortText={true}
-            data-testid={`course-box-${code}-credits`}
+            dataTestid={`course-box-${code}-credits`}
           />
-
         </div>
         <div className="mt-2 flex flex-wrap sm:mt-0 sm:flex-nowrap sm:items-center">
         </div>

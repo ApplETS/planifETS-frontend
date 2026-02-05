@@ -65,6 +65,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
       </div>
       <CreditsTag
         credits={totalCredits}
+        variant="credits"
         data-testid={`session-${sessionTerm}-${sessionYear}-credits`}
       />
     </div>

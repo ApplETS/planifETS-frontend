@@ -1,16 +1,24 @@
 'use client';
 
 import type { FC } from 'react';
+import CreditsTag from './CreditsTag';
 
 type CourseHeaderProps = {
   code: string;
   title: string;
+  credits: number;
+  dataTestid?: string;
 };
 
-const CourseHeader: FC<CourseHeaderProps> = ({ code, title }) => (
+const CourseHeader: FC<CourseHeaderProps> = ({ code, title, credits, dataTestid }) => (
   <div className="flex flex-col">
-    <span className="font-semibold">{code}</span>
-    <span className="text-sm text-muted-foreground">{title}</span>
+    <span className="font-semibold" data-testid={dataTestid}>
+      {code}
+      {' '}
+      •
+      <CreditsTag credits={credits} shortText={true} />
+    </span>
+    <span className="text-sx text-muted-foreground">{title}</span>
   </div>
 );
 

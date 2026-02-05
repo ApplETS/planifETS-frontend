@@ -6,8 +6,8 @@ import type { SessionEnum } from '@/types/session';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'sonner';
+
 import CourseHeader from '@/components/atoms/CourseHeader';
-import CreditsTag from '@/components/atoms/CreditsTag';
 import FavoriteButton from '@/components/atoms/FavoriteButton';
 import Tag from '@/components/atoms/Tag';
 import { useCourseOperations } from '@/hooks/course/useCourseOperations';
@@ -15,6 +15,7 @@ import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shadcn/ui/tooltip';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
+
 import { DragType } from '@/types/dnd';
 import { filterCurrentAndFutureSessions, formatSessionShort, generateSessionKey, sortSessionsChronologically } from '@/utils/sessionUtils';
 
@@ -130,10 +131,12 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
       />
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <CourseHeader code={course.code} title={course.title} />
-        </div>
-        <div className="mt-2 flex items-center gap-2">
-          <CreditsTag credits={course.credits} data-testid={`course-card-${course.code}-credits`} />
+          <CourseHeader
+            code={course.code}
+            title={course.title}
+            credits={course.credits}
+            dataTestid={`course-card-${course.code}-credits`}
+          />
         </div>
       </div>
 

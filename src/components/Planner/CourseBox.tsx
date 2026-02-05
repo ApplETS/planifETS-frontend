@@ -99,20 +99,24 @@ const CourseBox: FC<CourseBoxProps> = ({
           <Trash className="size-3" />
         </Button>
       )}
-      <div className="flex flex-col flex-wrap sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col flex-wrap sm:flex-row">
         <div className="flex flex-col">
           <CourseHeader code={code} title={title} />
         </div>
+        <div className="flex flex-col ">
+          <CreditsTag
+            credits={credits}
+            shortText={true}
+            data-testid={`course-box-${code}-credits`}
+          />
+
+        </div>
         <div className="mt-2 flex flex-wrap sm:mt-0 sm:flex-nowrap sm:items-center">
-          <StatusTag status={status} />
         </div>
       </div>
       <div className="text-sm text-muted-foreground">
-        <CreditsTag
-          credits={credits}
-          shortText={true}
-          data-testid={`course-box-${code}-credits`}
-        />
+
+        <StatusTag status={status} />
       </div>
     </div>
   );

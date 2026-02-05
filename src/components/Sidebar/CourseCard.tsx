@@ -51,7 +51,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
     return (
       <Section title={t('prerequisites')}>
         {course.prerequisites.map((preq) => (
-          <Tag key={preq}>
+          <Tag key={preq} variant="primary">
             {preq}
           </Tag>
         ))}
@@ -130,8 +130,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
       />
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <CourseHeader code={course.code} />
-          <p className="text-sm text-muted-foreground">{course.title}</p>
+          <CourseHeader code={course.code} title={course.title} />
         </div>
         <div className="mt-2 flex items-center gap-2">
           <CreditsTag credits={course.credits} data-testid={`course-card-${course.code}-credits`} />

@@ -64,6 +64,7 @@
     "courses": "Courses",
     "favorite-courses": "Favorites",
     "session-not-created": "Session {session} is not yet created. Please add the year first.",
-    "year-deleted": "Deleted year {year}"
+    "year-deleted": "Deleted year {year}",
+    "current-session": "Current session"
   }
 }

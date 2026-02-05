@@ -76,6 +76,7 @@ export default function Session({ sessionYear, sessionTerm }: SessionProps) {
         sessionYear={sessionYear}
         totalCredits={sessionTotalCredits}
         isNoAvailabilityData={isKnownSessionAvailability === false && courseInstances.length > 0}
+        isCurrentSession={sessionTiming.isCurrent}
       />
       <CoursesList
         hasCourses={courseInstances.length > 0}

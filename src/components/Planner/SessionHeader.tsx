@@ -51,7 +51,16 @@ const SessionHeader: FC<SessionHeaderProps> = ({
           )}
         </h3>
         {isCurrentSession && (
-          <div className="ml-2 size-2 rounded-full bg-green-500 animate-pulse" />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="ml-2 size-2 rounded-full bg-green-500 animate-pulse" />
+              </TooltipTrigger>
+              <TooltipContent sideOffset={8}>
+                {t('current-session')}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         )}
       </div>
       <CreditsTag

@@ -28,7 +28,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
   const { SeasonIcon, color } = getSeasonStyle(sessionTerm) ?? {};
 
   return (
-    <div className="mb-2 flex select-none flex-col sm:flex-row sm:items-center sm:justify-between">
+    <div className="mb-2 flex select-none flex-wrap items-center gap-2 justify-between">
       <div className="flex items-center gap-1">
         <SeasonIcon className={color} />
         <h3 className="text-lg font-bold flex items-center gap-2">
@@ -51,11 +51,21 @@ const SessionHeader: FC<SessionHeaderProps> = ({
           )}
         </h3>
         {isCurrentSession && (
-          <div className="ml-2 size-2 rounded-full bg-green-500 animate-pulse" />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="ml-2 size-2 rounded-full bg-green-500 animate-pulse" />
+              </TooltipTrigger>
+              <TooltipContent sideOffset={8}>
+                {t('current-session')}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         )}
       </div>
       <CreditsTag
         credits={totalCredits}
+        variant="credits"
         data-testid={`session-${sessionTerm}-${sessionYear}-credits`}
       />
     </div>

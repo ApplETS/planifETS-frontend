@@ -10,13 +10,13 @@ import { useCallback, useState } from 'react';
 import { useDrag } from 'react-dnd';
 
 import CourseHeader from '@/components/atoms/CourseHeader';
-import CreditsTag from '@/components/atoms/CreditsTag';
+import StatusTag from '@/components/atoms/StatusTag';
 import { Button } from '@/shadcn/ui/button';
 import { DragType } from '@/types/dnd';
-import StatusTag from '../atoms/StatusTag';
 
 type CourseBoxProps = {
   code: string;
+  title: string;
   status: CourseStatus;
   credits: number;
   onDelete?: () => void;
@@ -29,6 +29,7 @@ type CourseBoxProps = {
 
 const CourseBox: FC<CourseBoxProps> = ({
   code,
+  title,
   status,
   credits,
   onDelete,
@@ -72,9 +73,8 @@ const CourseBox: FC<CourseBoxProps> = ({
       ref={dragRef}
       className={`
         shadow-xs
-        relative mb-2 cursor-pointer rounded-lg
-        bg-muted p-4 transition duration-300
-        ease-in-out hover:-translate-y-0.5
+        relative cursor-pointer rounded-lg
+        bg-muted p-3
         hover:shadow-md text-foreground
         ${isDragging ? 'opacity-50' : 'opacity-100'}
         ${isDragging && unknownAvailability ? 'border-2 border-blue-200' : ''}
@@ -98,21 +98,20 @@ const CourseBox: FC<CourseBoxProps> = ({
           <Trash className="size-3" />
         </Button>
       )}
-      <div className="flex flex-col flex-wrap sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col flex-wrap sm:flex-row mb-2">
         <div className="flex flex-col">
-          <CourseHeader code={code} />
+          <CourseHeader
+            code={code}
+            title={title}
+            credits={credits}
+            dataTestid={`course-box-${code}-credits`}
+          />
         </div>
         <div className="mt-2 flex flex-wrap sm:mt-0 sm:flex-nowrap sm:items-center">
-          <StatusTag status={status} />
         </div>
       </div>
-      <div className="text-sm text-muted-foreground">
-        <CreditsTag
-          credits={credits}
-          shortText={true}
-          data-testid={`course-box-${code}-credits`}
-        />
-      </div>
+
+      <StatusTag status={status} />
     </div>
   );
 };

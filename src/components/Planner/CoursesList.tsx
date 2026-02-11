@@ -47,6 +47,7 @@ const CoursesList: FC<CoursesListProps> = ({
                 <CourseBox
                   key={`${sessionTerm}-${sessionYear}-${instance.courseId}`}
                   code={course.code}
+                  title={course.title}
                   status={getCourseStatus(instance.courseId, sessionYear, sessionTerm, sessionTiming)}
                   isDraggable={canDragCourses}
                   credits={course.credits}

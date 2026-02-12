@@ -25,16 +25,42 @@ export const mapApiCourseToAppCourse = (
   };
 };
 
-export const determineInitialStatus = (sessionTiming: SessionTiming): CourseStatus => {
-  if (sessionTiming.isCurrent) {
-    return 'In Progress';
+type TimingState = 'past' | 'current' | 'future';
+
+const initialStatusByTiming: Record<TimingState, CourseStatus> = {
+  past: 'Completed',
+  current: 'In Progress',
+  future: 'Planned',
+};
+
+type DetermineStatusArgs = {
+  sessionTiming: SessionTiming;
+  existingStatus?: CourseStatus;
+  isKnownAvailability?: boolean;
+  isCourseAvailable?: boolean;
+};
+
+export const determineStatus = ({
+  sessionTiming,
+  existingStatus,
+  isKnownAvailability = false,
+  isCourseAvailable = true,
+}: DetermineStatusArgs): CourseStatus => {
+  if (isKnownAvailability && !isCourseAvailable) {
+    return 'Not Offered';
   }
 
-  if (sessionTiming.isPast) {
-    return 'Completed';
+  if (existingStatus) {
+    return existingStatus;
   }
 
-  return 'Planned';
+  const timingState: TimingState = sessionTiming.isCurrent
+    ? 'current'
+    : sessionTiming.isPast
+      ? 'past'
+      : 'future';
+
+  return initialStatusByTiming[timingState];
 };
 
 type SessionUpdate = (courseInstances: CourseInstance[]) => CourseInstance[];

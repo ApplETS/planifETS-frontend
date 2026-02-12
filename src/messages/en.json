@@ -36,7 +36,6 @@
     "course": {
       "Completed": "Completed",
       "In Progress": "In Progress",
-      "Failed": "Failed",
       "Not Offered": "Not Offered",
       "Planned": "Planned"
     },

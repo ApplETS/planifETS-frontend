@@ -8,6 +8,7 @@ import OnboardingDialog from '@/components/dialogs/OnboardingDialog';
 import YearSection from '@/components/Planner/YearSection';
 import { ProgramSection } from '@/components/ProgramSection';
 import { usePreloadCourses } from '@/hooks/course/usePreloadCourses';
+import { useLatestAvailableSessionApi } from '@/hooks/session/useLatestAvailableSessionApi';
 
 import { useStoreHydration } from '@/hooks/useStoreHydration';
 import { Button } from '@/shadcn/ui/button';
@@ -25,6 +26,7 @@ export default function PlannerPage() {
   const { hasCompletedOnboarding } = useOnboardingStore();
   const hasHydrated = useStoreHydration();
 
+  useLatestAvailableSessionApi();
   usePreloadCourses();
 
   useEffect(() => {

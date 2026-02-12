@@ -1,11 +1,11 @@
 import type { FC } from 'react';
 import { Info } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shadcn/ui/tooltip';
+import CreditsTag from '@/components/atoms/CreditsTag';
 
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shadcn/ui/tooltip';
 import { getSeasonStyle } from '@/utils/seasonUtils';
 import { getTranslationKey } from '@/utils/sessionUtils';
-import CreditsTag from '../atoms/CreditsTag';
 
 type SessionHeaderProps = {
   sessionTerm: string;

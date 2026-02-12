@@ -1,10 +1,12 @@
 import type { CourseStatus } from '@/types/course';
 import type { SessionEnum, SessionTiming } from '@/types/session';
+import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
-import { generateSessionKey } from '@/utils/sessionUtils';
-import { determineStatus } from './courseStatusUtils';
+import { determineStatus } from '@/utils/courseUtils';
+import { generateSessionKey, isCourseAvailableInSession } from '@/utils/sessionUtils';
 
 export const useCourseStatus = () => {
+  const courseStore = useCourseStore();
   const sessionStore = useSessionStore();
 
   const getCourseStatus = (
@@ -15,7 +17,19 @@ export const useCourseStatus = () => {
   ): CourseStatus => {
     const sessionKey = generateSessionKey(sessionYear, sessionTerm);
     const session = sessionStore.getSessionByKey?.(sessionKey);
-    return determineStatus(session, courseId, sessionTiming);
+    const isAvailable = isCourseAvailableInSession(
+      courseId,
+      sessionTerm,
+      sessionYear,
+      courseStore.getCourse,
+    );
+    const existingStatus = session?.courseInstances.find((instance) => instance.courseId === courseId)?.status;
+    return determineStatus({
+      sessionTiming,
+      existingStatus,
+      isKnownAvailability: session?.isKnownSessionAvailability === true,
+      isCourseAvailable: isAvailable,
+    });
   };
 
   return { getCourseStatus };

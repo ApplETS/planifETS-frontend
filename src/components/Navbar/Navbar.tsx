@@ -2,7 +2,10 @@
 
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import Logo from '@/components/atoms/Logo';
 import ResetDialog from '@/components/dialogs/ResetDialog';
+import { SettingsDialog } from '@/components/Navbar/buttons/SettingsDialog';
+import NavContent from '@/components/Navbar/NavContent';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/shadcn/ui/button';
 import {
@@ -13,9 +16,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/shadcn/ui/sheet';
-import Logo from '../atoms/Logo';
-import { SettingsDialog } from './buttons/SettingsDialog';
-import NavContent from './NavContent';
 
 if (process.env.NODE_ENV !== 'development') {
   // eslint-disable-next-line no-console

@@ -68,6 +68,9 @@ const SESSION_MONTH_RANGES = {
   [SessionEnum.A]: { start: 8, end: 11 }, // September - December (AUTOMNE)
 } as const;
 
+// 1 (HIVER) - 2 (ETE) - 3 (AUTOMNE)
+export const ORDERED_SESSION_TERMS: SessionEnum[] = [SessionEnum.H, SessionEnum.E, SessionEnum.A];
+
 export const generateSessionCode = (sessionTerm: SessionEnum, year: number): string => {
   return `${sessionTerm}${year}`;
 };
@@ -159,13 +162,12 @@ export const generateSessionRange = (
   endYear: number,
 ): string[] => {
   const sessionKeys: string[] = [];
-  const sessionOrder: Record<SessionEnum, number> = { H: 0, E: 1, A: 2 };
 
   for (let y = startYear; y <= endYear; y++) {
-    Object.values(SessionEnum).forEach((sessionTerm: SessionEnum) => {
+    ORDERED_SESSION_TERMS.forEach((sessionTerm: SessionEnum) => {
       // For the first year, only include sessions from startTerm onwards
       if (y === startYear) {
-        if (sessionOrder[sessionTerm] >= sessionOrder[startTerm]) {
+        if (ORDERED_SESSION_TERMS.indexOf(sessionTerm) >= ORDERED_SESSION_TERMS.indexOf(startTerm)) {
           sessionKeys.push(generateSessionKey(y, sessionTerm));
         }
       } else {
@@ -275,7 +277,7 @@ export const findCourseInSession = (
  *    0 if a == b
  *    1 if a > b
  */
-function compareSessions(
+export function compareSessions(
   yearA: number,
   termA: SessionEnum,
   yearB: number,
@@ -284,8 +286,7 @@ function compareSessions(
   if (yearA !== yearB) {
     return yearA - yearB;
   }
-  const order: Record<SessionEnum, number> = { H: 0, E: 1, A: 2 };
-  return order[termA] - order[termB];
+  return ORDERED_SESSION_TERMS.indexOf(termA) - ORDERED_SESSION_TERMS.indexOf(termB);
 }
 
 /**

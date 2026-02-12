@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
+import { useApi } from '@/api/hooks/useApi';
+import { sessionService } from '@/api/services/session.service';
 import { useSessionStore } from '@/store/sessionStore';
-import { SessionEnum } from '@/types/session';
-import { generateSessionKey, trimesterToSessionTerm } from '@/utils/sessionUtils';
-import { useApi } from '../../lib/api/hooks/useApi';
-import { sessionService } from '../../lib/api/services/session.service';
+import { generateSessionKey, ORDERED_SESSION_TERMS, trimesterToSessionTerm } from '@/utils/sessionUtils';
 
-export function useLatestAvailableSession() {
+export function useLatestAvailableSessionApi() {
   const { data: latestSession, loading, error, execute, reset } = useApi(sessionService.getLatestAvailableSession);
   const markSessionAvailabilityKnown = useSessionStore((state) => state.markSessionAvailabilityKnown);
+
   useEffect(() => {
     execute();
   }, [execute]);
@@ -15,33 +15,34 @@ export function useLatestAvailableSession() {
   // Sync session store after fetching latest session info
   useEffect(() => {
     if (latestSession && latestSession.trimester && latestSession.year) {
-      const sessionTerm = trimesterToSessionTerm(latestSession.trimester);
-      if (sessionTerm) {
+      try {
+        const sessionTerm = trimesterToSessionTerm(latestSession.trimester);
+        if (!sessionTerm) {
+          return;
+        }
+
         const sessionKey = generateSessionKey(latestSession.year, sessionTerm);
-        // Mark the latest session as known availability (isKnown = true)
         markSessionAvailabilityKnown(sessionKey, true);
 
-        // Mark all future sessions as unknown availability (isKnown = false)
-        const currentYear = latestSession.year;
-        const sessionOrder = [SessionEnum.H, SessionEnum.E, SessionEnum.A];
-        const currentTermIndex = sessionOrder.indexOf(sessionTerm);
-        // Mark remaining terms in the same year after the latest session
-        for (let i = currentTermIndex + 1; i < sessionOrder.length; i++) {
-          const term = sessionOrder[i];
-          if (term) {
-            const futureKey = generateSessionKey(currentYear, term);
-            markSessionAvailabilityKnown(futureKey, false);
-          }
+        const currentTermIndex = ORDERED_SESSION_TERMS.indexOf(sessionTerm);
+
+        for (const term of ORDERED_SESSION_TERMS.slice(currentTermIndex + 1)) {
+          const futureKey = generateSessionKey(latestSession.year, term);
+          markSessionAvailabilityKnown(futureKey, false);
         }
-        // Mark all sessions in future years as unknown
-        const nextYear = currentYear + 1;
-        const maxYear = currentYear + 10; // Arbitrary future window
+
+        const nextYear = latestSession.year + 1;
+        const maxYear = latestSession.year + 10;
         for (let year = nextYear; year <= maxYear; year++) {
-          for (const term of sessionOrder) {
+          for (const term of ORDERED_SESSION_TERMS) {
             const futureKey = generateSessionKey(year, term);
             markSessionAvailabilityKnown(futureKey, false);
           }
         }
+      } catch (e) {
+        // non-fatal
+
+        console.error('Failed setting latest available session in store:', e);
       }
     }
   }, [latestSession, markSessionAvailabilityKnown]);

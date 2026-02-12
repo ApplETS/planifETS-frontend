@@ -1,5 +1,5 @@
 import type { TagVariant } from '@/components/atoms/Tag';
-import type { CourseStatus } from '@/types/courseStatus';
+import type { CourseStatus } from '@/types/course';
 
 import { useTranslations } from 'next-intl';
 
@@ -15,7 +15,6 @@ export default function StatusTag({ status }: StatusTagProps) {
   const VARIANT_STATUS: Record<CourseStatus, TagVariant> = {
     'Completed': 'success',
     'In Progress': 'warning',
-    'Failed': 'danger',
     'Not Offered': 'danger',
     'Planned': 'info',
   };

@@ -1,6 +1,7 @@
 import { Leaf, Snowflake, Sun } from 'lucide-react';
 
 import { SessionEnum } from '@/types/session';
+import { ORDERED_SESSION_TERMS } from '@/utils/sessionUtils';
 
 export type SeasonStyle = {
   SeasonIcon: React.ComponentType<any>;
@@ -18,9 +19,7 @@ export const seasonIcons: SeasonIconsType = {
 };
 
 export const getSeasonStyle = (sessionTerm: string): SeasonStyle => {
-  const season = Object.values(SessionEnum).find((s) =>
-    sessionTerm.includes(s),
-  );
+  const season = ORDERED_SESSION_TERMS.find((s) => sessionTerm.includes(s));
 
   if (!season) {
     throw new Error('Session is undefined');

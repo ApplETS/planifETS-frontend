@@ -11,12 +11,12 @@ import { useTranslations } from 'next-intl';
 import * as React from 'react';
 
 import { useProgramsApi } from '@/api/hooks/useProgramsApi';
+import { MultiSelect } from '@/components/atoms/multi-select';
 import { useProgramCoursesApi } from '@/hooks/course/useProgramCoursesApi';
 import { useCourseStore } from '@/store/courseStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useProgramStore } from '@/store/programStore';
 import { mapApiCourseToAppCourse } from '@/utils/courseUtils';
-import { MultiSelect } from './atoms/multi-select';
 
 const ProgramSelector: React.FC = () => {
   const t = useTranslations('PlannerPage');

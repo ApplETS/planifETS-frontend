@@ -206,4 +206,70 @@ export const COURSE_SEARCH_RESULTS: Record<string, SearchCoursesDto> = {
     total: 2,
     hasMore: false,
   },
+  LOG: {
+    courses: [
+      {
+        id: 352421,
+        code: 'LOG240',
+        title: 'Tests et maintenance',
+        credits: 3,
+        cycle: 1,
+        sessionAvailability: [
+          {
+            sessionCode: 'A2027',
+            availability: [
+              'JOUR',
+            ],
+          },
+        ],
+        prerequisites: [],
+      },
+      {
+        id: 352405,
+        code: 'LOG121',
+        title: 'Conception orientée objet',
+        credits: 4,
+        cycle: 1,
+        sessionAvailability: [
+          {
+            sessionCode: 'E2026',
+            availability: [
+              'JOUR',
+            ],
+          },
+        ],
+        prerequisites: [],
+      },
+      {
+        id: 352473,
+        code: 'LOG460',
+        title: 'Sécurité des logiciels',
+        credits: 4,
+        cycle: 1,
+        sessionAvailability: [
+          {
+            sessionCode: 'H2027',
+            availability: [
+              'SOIR',
+            ],
+          },
+          {
+            sessionCode: 'H2026',
+            availability: [
+              'SOIR',
+            ],
+          },
+          {
+            sessionCode: 'A2026',
+            availability: [
+              'JOUR',
+            ],
+          },
+        ],
+        prerequisites: [],
+      },
+    ],
+    total: 3,
+    hasMore: false,
+  },
 };

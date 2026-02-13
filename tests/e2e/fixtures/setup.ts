@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test';
+import { selectors } from '../../assets/selectors';
 import enableMockApi from './mock';
 
 export const setupTestPage = async (page: Page) => {
@@ -15,6 +16,10 @@ export const setupTestPage = async (page: Page) => {
       await input.focus();
       await input.fill('Baccalauréat en génie logiciel');
       await input.press('Enter');
+
+      // Set admission year to ensure future sessions are shown
+      const admissionYearInput = page.locator(selectors.admissionYearInput);
+      await admissionYearInput.fill((new Date().getFullYear() - 2).toString());
 
       const completeButton = page.locator('[data-testid="onboarding-complete"]');
       await completeButton.click({ timeout: 5000 });

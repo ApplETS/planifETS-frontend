@@ -101,7 +101,7 @@ export default function PlannerPage() {
           {' '}
           {t('total-credits')}
         </Button>
-        <Button variant="default" size="default" onClick={addYear}>
+        <Button variant="default" size="default" onClick={addYear} data-testid="add-year-button">
           <Plus />
           {t('add-year')}
         </Button>

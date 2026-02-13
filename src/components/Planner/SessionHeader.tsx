@@ -40,7 +40,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <div className="group relative cursor-pointer flex items-center gap-1" aria-label={t('information-course-availability')}>
-                    <Info className="text-amber-400 hover:text-amber-400/70 size-5" />
+                    <Info className="text-amber-400 hover:text-amber-400/70 size-5" data-testid={`info-icon-${sessionTerm}-${sessionYear}`} />
                   </div>
                 </TooltipTrigger>
                 <TooltipContent sideOffset={8} className="text-base max-w-xs">

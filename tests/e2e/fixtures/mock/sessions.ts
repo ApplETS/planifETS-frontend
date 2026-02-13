@@ -13,7 +13,7 @@ export function registerSessionsRoutes(page: Page) {
   page.route('**/sessions/latest-available**', (route) => {
     const session: SessionDto = {
       trimester: 'HIVER',
-      year: 2027,
+      year: new Date().getFullYear() + 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

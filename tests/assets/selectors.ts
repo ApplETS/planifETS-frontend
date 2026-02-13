@@ -16,6 +16,8 @@ export const selectors = {
   // Session
   sessionDropTarget: (sessionTerm: SessionEnum, sessionYear: number) =>
     `[data-testid="session-${sessionTerm}-${sessionYear}-drop-target"]`,
+  infoIcon: (sessionTerm: string, sessionYear: number) =>
+    `[data-testid="info-icon-${sessionTerm}-${sessionYear}"]`,
   year: (year: number) =>
     `[data-testid="year-${year}-sessions"] [data-testid$="-drop-target"]`,
 
@@ -26,6 +28,9 @@ export const selectors = {
 
   // Navigation
   navbar: '[data-testid="navbar"]',
+
+  // Buttons
+  addYearButton: '[data-testid="add-year-button"]',
 
   // Language settings
   settingsToggleButton: '[data-testid="settings-toggle-button"]',

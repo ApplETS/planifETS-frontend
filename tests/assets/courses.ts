@@ -6,14 +6,20 @@ export const TEST_COURSES = {
   LOG240: {
     code: 'LOG240',
     credits: 3,
-    sessionTerm: SessionEnum.E,
-    sessionYear: CURRENT_YEAR,
+    sessionTerm: SessionEnum.A,
+    sessionYear: CURRENT_YEAR + 1,
   },
   LOG121: {
     code: 'LOG121',
     credits: 4,
     sessionTerm: SessionEnum.E,
     sessionYear: CURRENT_YEAR,
+  },
+  LOG460: {
+    code: 'LOG460',
+    credits: 3,
+    sessionTerm: SessionEnum.A,
+    sessionYear: CURRENT_YEAR - 2,
   },
 } as const;
 

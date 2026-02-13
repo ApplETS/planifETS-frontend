@@ -112,7 +112,7 @@ export const moveCourseToSession = (
     return yearData;
   }
   const fromSession = yearData.sessions.find((session) => session.sessionTerm === fromSessionTerm);
-  if (!fromSession || !fromSession.courseInstances.some((ci) => ci.courseId === courseId)) {
+  if (!fromSession?.courseInstances?.some((ci) => ci.courseId === courseId)) {
     return yearData;
   }
   const updatedYearData = removeCourseFromSession(yearData, fromSessionTerm, courseId);

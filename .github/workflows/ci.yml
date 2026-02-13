@@ -9,9 +9,6 @@ on:
 env:
   NODE_VERSION: 22.x
 
-permissions:
-  contents: read
-
 jobs:
   security-audit:
     name: Security Audit

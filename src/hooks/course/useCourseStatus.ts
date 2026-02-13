@@ -23,10 +23,8 @@ export const useCourseStatus = () => {
       sessionYear,
       courseStore.getCourse,
     );
-    const existingStatus = session?.courseInstances.find((instance) => instance.courseId === courseId)?.status;
     return determineStatus({
       sessionTiming,
-      existingStatus,
       isKnownAvailability: session?.isKnownSessionAvailability === true,
       isCourseAvailable: isAvailable,
     });

@@ -216,7 +216,7 @@ export const createSessionsForYear = (sessionYear: number): Record<string, Sessi
       sessionTerm: name,
       sessionYear,
       courseInstances: [],
-      isKnownSessionAvailability: true, // default to true, update as needed
+      isKnownSessionAvailability: false, // default to false
     };
   });
 
@@ -261,13 +261,6 @@ export const updateMultipleSessions = (
 
 export const hasCourseInSession = (session: Session, courseId: number): boolean => {
   return session.courseInstances.some((instance) => instance.courseId === courseId);
-};
-
-export const findCourseInSession = (
-  session: Session,
-  courseId: number,
-): CourseInstance | undefined => {
-  return session.courseInstances.find((instance) => instance.courseId === courseId);
 };
 
 /**

@@ -27,40 +27,36 @@ export const mapApiCourseToAppCourse = (
 
 type TimingState = 'past' | 'current' | 'future';
 
-const initialStatusByTiming: Record<TimingState, CourseStatus> = {
-  past: 'Completed',
-  current: 'In Progress',
-  future: 'Planned',
-};
-
 type DetermineStatusArgs = {
   sessionTiming: SessionTiming;
-  existingStatus?: CourseStatus;
   isKnownAvailability?: boolean;
   isCourseAvailable?: boolean;
 };
 
 export const determineStatus = ({
   sessionTiming,
-  existingStatus,
   isKnownAvailability = false,
   isCourseAvailable = true,
 }: DetermineStatusArgs): CourseStatus => {
-  if (isKnownAvailability && !isCourseAvailable) {
-    return 'Not Offered';
-  }
-
-  if (existingStatus) {
-    return existingStatus;
-  }
-
   const timingState: TimingState = sessionTiming.isCurrent
     ? 'current'
     : sessionTiming.isPast
       ? 'past'
       : 'future';
 
-  return initialStatusByTiming[timingState];
+  if (timingState === 'past') {
+    return 'Completed';
+  }
+
+  if (!isKnownAvailability) {
+    return 'Planned';
+  }
+
+  if (!isCourseAvailable) {
+    return 'Not Offered';
+  }
+
+  return 'Offered';
 };
 
 type SessionUpdate = (courseInstances: CourseInstance[]) => CourseInstance[];
@@ -85,13 +81,12 @@ export const addCourseToSession = (
   yearData: YearData,
   sessionTerm: SessionEnum,
   courseId: number,
-  status: CourseStatus = 'Planned',
 ): YearData => {
   return updateYearSession(yearData, sessionTerm, (courseInstances) => {
     if (courseInstances.some((ci) => ci.courseId === courseId)) {
       return courseInstances;
     }
-    return [...courseInstances, { courseId, status }];
+    return [...courseInstances, { courseId }];
   });
 };
 
@@ -104,28 +99,15 @@ export const removeCourseFromSession = (
     courseInstances.filter((ci) => ci.courseId !== courseId));
 };
 
-export const updateCourseStatus = (
-  yearData: YearData,
-  sessionTerm: SessionEnum,
-  courseId: number,
-  status: CourseStatus,
-): YearData => {
-  return updateYearSession(yearData, sessionTerm, (courseInstances) =>
-    courseInstances.map((ci) =>
-      ci.courseId === courseId ? { ...ci, status } : ci,
-    ));
-};
-
 export const moveCourseToSession = (
   yearData: YearData,
   fromSessionTerm: SessionEnum,
   toSessionTerm: SessionEnum,
   courseId: number,
-  newStatus: CourseStatus,
 ): YearData => {
   const updatedYearData = removeCourseFromSession(yearData, fromSessionTerm, courseId);
   return updateYearSession(updatedYearData, toSessionTerm, (courseInstances) => [
     ...courseInstances,
-    { courseId, status: newStatus },
+    { courseId },
   ]);
 };

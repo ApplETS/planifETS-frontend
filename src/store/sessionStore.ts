@@ -14,12 +14,9 @@ import type { CourseInstance } from '@/types/course';
 import type { Session, SessionEnum } from '@/types/session';
 import { create } from 'zustand';
 import { persistConfig } from '@/lib/persistConfig';
-import { determineStatus } from '@/utils/courseUtils';
 import { safeGet } from '@/utils/safeAccess';
 import {
   createSessionsForYear,
-  findCourseInSession,
-  getSessionTiming,
   hasCourseInSession,
   ORDERED_SESSION_TERMS,
   updateMultipleSessions,
@@ -84,12 +81,7 @@ export const useSessionStore = create<SessionState & SessionActions>()(
             return state;
           }
 
-          const timing = getSessionTiming(sessionYear, sessionLetter);
-
-          const newCourseInstance: CourseInstance = {
-            courseId,
-            status: determineStatus({ sessionTiming: timing }),
-          };
+          const newCourseInstance: CourseInstance = { courseId };
 
           const updatedCourseInstances = [...session.courseInstances, newCourseInstance];
 
@@ -149,26 +141,16 @@ export const useSessionStore = create<SessionState & SessionActions>()(
             return state;
           }
 
-          const courseInstance = findCourseInSession(fromSession, courseId);
-
-          if (!courseInstance) {
+          if (!hasCourseInSession(fromSession, courseId)) {
             console.error('Course instance not found:', courseId);
             return state;
           }
-
-          // Calculate new status based on destination session timing
-          const timing = getSessionTiming(toSession.sessionYear, toSession.sessionTerm);
-
-          const updatedCourseInstance: CourseInstance = {
-            ...courseInstance,
-            status: determineStatus({ sessionTiming: timing }),
-          };
 
           const updatedFromCourseInstances = fromSession.courseInstances.filter(
             (instance) => instance.courseId !== courseId,
           );
 
-          const updatedToCourseInstances = [...toSession.courseInstances, updatedCourseInstance];
+          const updatedToCourseInstances = [...toSession.courseInstances, { courseId }];
 
           return {
             sessions: updateMultipleSessions(state.sessions, [

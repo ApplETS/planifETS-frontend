@@ -4,11 +4,11 @@ import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
+import { useLatestAvailableSessionApi } from '@/api/hooks/useLatestAvailableSessionApi';
 import OnboardingDialog from '@/components/dialogs/OnboardingDialog';
 import YearSection from '@/components/Planner/YearSection';
 import { ProgramSection } from '@/components/ProgramSection';
 import { usePreloadCourses } from '@/hooks/course/usePreloadCourses';
-import { useLatestAvailableSessionApi } from '@/hooks/session/useLatestAvailableSessionApi';
 
 import { useStoreHydration } from '@/hooks/useStoreHydration';
 import { Button } from '@/shadcn/ui/button';

@@ -10,9 +10,9 @@ import type { Course } from '@/types/course';
 import { useTranslations } from 'next-intl';
 import * as React from 'react';
 
+import { useProgramCoursesApi } from '@/api/hooks/useProgramCoursesApi';
 import { useProgramsApi } from '@/api/hooks/useProgramsApi';
 import { MultiSelect } from '@/components/atoms/multi-select';
-import { useProgramCoursesApi } from '@/hooks/course/useProgramCoursesApi';
 import { useCourseStore } from '@/store/courseStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useProgramStore } from '@/store/programStore';

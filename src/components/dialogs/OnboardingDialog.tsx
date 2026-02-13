@@ -174,7 +174,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
   return (
     <Dialog open={isOpen}>
       <DialogContent
-        className="[&>button]:hidden sm:max-w-[500px] border-1 border-border overflow-visible"
+        className="[&>button]:hidden sm:max-w-[500px] border border-border overflow-visible"
         onPointerDownOutside={(e) => e.preventDefault()}
         onOpenAutoFocus={(e) => {
           e.preventDefault();

@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { useApi } from '../../lib/api/hooks/useApi';
-import { programService } from '../../lib/api/services/program.service';
+import { programService } from '../services/program.service';
+import { useApi } from './useApi';
 
 /**
  * Hook for fetching program courses by program IDs

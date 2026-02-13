@@ -7,18 +7,16 @@ import forage from './localForageConfig';
  *
  * @param name - Unique name for the store.
  * @param create - Zustand state creator.
- * @param customPartialize - Optional custom partialize function to control what gets persisted.
  * @returns Zustand store with persist middleware.
  */
-export const persistConfig = <T extends object>(
+export const persistConfig = <T>(
   name: string,
   create: StateCreator<T>,
-  customPartialize?: (state: T) => Partial<T>,
 ) =>
   persist(create, {
     name,
     storage: forage,
-    partialize: customPartialize || ((state: T) => {
+    partialize: (state: T) => {
       const serializedState: Partial<T> = {};
       Object.keys(state as object).forEach((key) => {
         const value = state[key as keyof T];
@@ -27,7 +25,7 @@ export const persistConfig = <T extends object>(
         }
       });
       return serializedState;
-    }),
+    },
     version: 1,
   });
 

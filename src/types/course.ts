@@ -1,4 +1,4 @@
-export type CourseStatus = 'Planned' | 'In Progress' | 'Completed' | 'Failed' | 'Not Offered';
+export type CourseStatus = 'Completed' | 'Offered' | 'Not Offered' | 'Planned';
 
 export type Course = {
   id: number;
@@ -11,5 +11,4 @@ export type Course = {
 
 export type CourseInstance = {
   courseId: number;
-  status: CourseStatus;
 };

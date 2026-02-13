@@ -1,11 +1,11 @@
 import type { FC } from 'react';
 import { Info } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shadcn/ui/tooltip';
+import CreditsTag from '@/components/atoms/CreditsTag';
 
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shadcn/ui/tooltip';
 import { getSeasonStyle } from '@/utils/seasonUtils';
 import { getTranslationKey } from '@/utils/sessionUtils';
-import CreditsTag from '../atoms/CreditsTag';
 
 type SessionHeaderProps = {
   sessionTerm: string;
@@ -40,7 +40,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <div className="group relative cursor-pointer flex items-center gap-1" aria-label={t('information-course-availability')}>
-                    <Info className="text-amber-400 hover:text-amber-400/70 size-5" />
+                    <Info className="text-amber-400 hover:text-amber-400/70 size-5" data-testid={`info-icon-${sessionTerm}-${sessionYear}`} />
                   </div>
                 </TooltipTrigger>
                 <TooltipContent sideOffset={8} className="text-base max-w-xs">

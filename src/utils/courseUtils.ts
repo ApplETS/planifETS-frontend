@@ -38,11 +38,14 @@ export const determineStatus = ({
   isKnownAvailability = false,
   isCourseAvailable = true,
 }: DetermineStatusArgs): CourseStatus => {
-  const timingState: TimingState = sessionTiming.isCurrent
-    ? 'current'
-    : sessionTiming.isPast
-      ? 'past'
-      : 'future';
+  let timingState: TimingState;
+  if (sessionTiming.isCurrent) {
+    timingState = 'current';
+  } else if (sessionTiming.isPast) {
+    timingState = 'past';
+  } else {
+    timingState = 'future';
+  }
 
   if (timingState === 'past') {
     return 'Completed';
@@ -105,6 +108,13 @@ export const moveCourseToSession = (
   toSessionTerm: SessionEnum,
   courseId: number,
 ): YearData => {
+  if (fromSessionTerm === toSessionTerm) {
+    return yearData;
+  }
+  const fromSession = yearData.sessions.find((session) => session.sessionTerm === fromSessionTerm);
+  if (!fromSession || !fromSession.courseInstances.some((ci) => ci.courseId === courseId)) {
+    return yearData;
+  }
   const updatedYearData = removeCourseFromSession(yearData, fromSessionTerm, courseId);
   return updateYearSession(updatedYearData, toSessionTerm, (courseInstances) => [
     ...courseInstances,

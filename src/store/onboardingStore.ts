@@ -4,22 +4,22 @@
  * What it stores (user's persistent data):
  * - hasCompletedOnboarding: boolean - Whether user has completed onboarding flow
  * - startYear: number - The year the user started their program
- * - startTerm: SessionEnum - The session term the user started (H, E, or A)
+ * - startTerm: TermEnum - The session term the user started (H, E, or A)
  */
 
-import type { SessionEnum } from '@/types/session';
+import type { TermEnum } from '@/types/session';
 import { create } from 'zustand';
 import { persistConfig } from '@/lib/persistConfig';
 
 type OnboardingState = {
   hasCompletedOnboarding: boolean;
   startYear: number | null;
-  startTerm: SessionEnum | null;
+  startTerm: TermEnum | null;
 };
 
 type OnboardingActions = {
-  completeOnboarding: (startYear: number, startTerm: SessionEnum) => void;
-  getStartSession: () => { startYear: number; startTerm: SessionEnum } | null;
+  completeOnboarding: (startYear: number, startTerm: TermEnum) => void;
+  getStartSession: () => { startYear: number; startTerm: TermEnum } | null;
 };
 
 export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
@@ -28,7 +28,7 @@ export const useOnboardingStore = create<OnboardingState & OnboardingActions>()(
     startYear: null,
     startTerm: null,
 
-    completeOnboarding: (startYear: number, startTerm: SessionEnum) => {
+    completeOnboarding: (startYear: number, startTerm: TermEnum) => {
       set({
         hasCompletedOnboarding: true,
         startYear,

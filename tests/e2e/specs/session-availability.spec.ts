@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import type { SessionEnum } from '../../../src/types/session';
+import type { TermEnum } from '../../../src/types/session';
 import type { TestCourse } from '../../assets/courses';
 import { expect, test } from '@playwright/test';
 import { TEST_COURSES } from '../../assets/courses';
@@ -15,7 +15,7 @@ async function addCourseInNewSession(page: Page, course: TestCourse, extraYears:
   await addCourseToSession(page, course);
 }
 
-function getSessionInfoIconLocator(page: Page, term: SessionEnum, year: number) {
+function getSessionInfoIconLocator(page: Page, term: TermEnum, year: number) {
   const sessionContainer = page.locator(selectors.sessionDropTarget(term, year));
   return sessionContainer.locator(selectors.infoIcon(term, year));
 }

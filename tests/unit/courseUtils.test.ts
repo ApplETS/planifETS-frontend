@@ -2,7 +2,7 @@ import type { ProgramCourseDetailedDto, SearchCourseResult } from '@/api/types';
 import type { YearData } from '@/types/planner';
 import type { SessionTiming } from '@/types/session';
 import { describe, expect, it } from 'vitest';
-import { SessionEnum } from '@/types/session';
+import { TermEnum } from '@/types/session';
 import {
   addCourseToSession,
   determineStatus,
@@ -171,14 +171,14 @@ describe('courseUtils', () => {
       sessions: [
         {
           key: 'H2025',
-          sessionTerm: SessionEnum.H,
+          sessionTerm: TermEnum.H,
           sessionYear: 2025,
           courseInstances: [],
           isKnownSessionAvailability: false,
         },
         {
           key: 'E2025',
-          sessionTerm: SessionEnum.E,
+          sessionTerm: TermEnum.E,
           sessionYear: 2025,
           courseInstances: [{ courseId: 1 }],
           isKnownSessionAvailability: false,
@@ -187,20 +187,20 @@ describe('courseUtils', () => {
     };
 
     it('should add course to session if not already present', () => {
-      const result = addCourseToSession(mockYearData, SessionEnum.H, 2);
+      const result = addCourseToSession(mockYearData, TermEnum.H, 2);
 
       expect(result.sessions[0]!.courseInstances).toEqual([{ courseId: 2 }]);
       expect(result.sessions[1]!.courseInstances).toEqual([{ courseId: 1 }]);
     });
 
     it('should not add course if already present in session', () => {
-      const result = addCourseToSession(mockYearData, SessionEnum.E, 1);
+      const result = addCourseToSession(mockYearData, TermEnum.E, 1);
 
       expect(result.sessions[1]!.courseInstances).toEqual([{ courseId: 1 }]);
     });
 
     it('should not modify other sessions', () => {
-      const result = addCourseToSession(mockYearData, SessionEnum.H, 2);
+      const result = addCourseToSession(mockYearData, TermEnum.H, 2);
 
       expect(result.sessions[1]!.courseInstances).toEqual([{ courseId: 1 }]);
     });
@@ -212,14 +212,14 @@ describe('courseUtils', () => {
       sessions: [
         {
           key: 'H2025',
-          sessionTerm: SessionEnum.H,
+          sessionTerm: TermEnum.H,
           sessionYear: 2025,
           courseInstances: [{ courseId: 1 }, { courseId: 2 }],
           isKnownSessionAvailability: false,
         },
         {
           key: 'E2025',
-          sessionTerm: SessionEnum.E,
+          sessionTerm: TermEnum.E,
           sessionYear: 2025,
           courseInstances: [{ courseId: 3 }],
           isKnownSessionAvailability: false,
@@ -228,20 +228,20 @@ describe('courseUtils', () => {
     };
 
     it('should remove course from session if present', () => {
-      const result = removeCourseFromSession(mockYearData, SessionEnum.H, 1);
+      const result = removeCourseFromSession(mockYearData, TermEnum.H, 1);
 
       expect(result.sessions[0]!.courseInstances).toEqual([{ courseId: 2 }]);
       expect(result.sessions[1]!.courseInstances).toEqual([{ courseId: 3 }]);
     });
 
     it('should not modify session if course not present', () => {
-      const result = removeCourseFromSession(mockYearData, SessionEnum.H, 99);
+      const result = removeCourseFromSession(mockYearData, TermEnum.H, 99);
 
       expect(result.sessions[0]!.courseInstances).toEqual([{ courseId: 1 }, { courseId: 2 }]);
     });
 
     it('should not modify other sessions', () => {
-      const result = removeCourseFromSession(mockYearData, SessionEnum.H, 1);
+      const result = removeCourseFromSession(mockYearData, TermEnum.H, 1);
 
       expect(result.sessions[1]!.courseInstances).toEqual([{ courseId: 3 }]);
     });
@@ -253,21 +253,21 @@ describe('courseUtils', () => {
       sessions: [
         {
           key: 'H2025',
-          sessionTerm: SessionEnum.H,
+          sessionTerm: TermEnum.H,
           sessionYear: 2025,
           courseInstances: [{ courseId: 1 }, { courseId: 2 }],
           isKnownSessionAvailability: false,
         },
         {
           key: 'E2025',
-          sessionTerm: SessionEnum.E,
+          sessionTerm: TermEnum.E,
           sessionYear: 2025,
           courseInstances: [{ courseId: 3 }],
           isKnownSessionAvailability: false,
         },
         {
           key: 'A2025',
-          sessionTerm: SessionEnum.A,
+          sessionTerm: TermEnum.A,
           sessionYear: 2025,
           courseInstances: [],
           isKnownSessionAvailability: false,
@@ -276,7 +276,7 @@ describe('courseUtils', () => {
     };
 
     it('should move course from one session to another', () => {
-      const result = moveCourseToSession(mockYearData, SessionEnum.H, SessionEnum.A, 1);
+      const result = moveCourseToSession(mockYearData, TermEnum.H, TermEnum.A, 1);
 
       expect(result.sessions[0]!.courseInstances).toEqual([{ courseId: 2 }]);
       expect(result.sessions[2]!.courseInstances).toEqual([{ courseId: 1 }]);
@@ -284,14 +284,14 @@ describe('courseUtils', () => {
     });
 
     it('should not move if course not in from session', () => {
-      const result = moveCourseToSession(mockYearData, SessionEnum.H, SessionEnum.A, 99);
+      const result = moveCourseToSession(mockYearData, TermEnum.H, TermEnum.A, 99);
 
       expect(result.sessions[0]!.courseInstances).toEqual([{ courseId: 1 }, { courseId: 2 }]);
       expect(result.sessions[2]!.courseInstances).toEqual([]);
     });
 
     it('should handle moving to same session (no-op)', () => {
-      const result = moveCourseToSession(mockYearData, SessionEnum.H, SessionEnum.H, 1);
+      const result = moveCourseToSession(mockYearData, TermEnum.H, TermEnum.H, 1);
 
       expect(result.sessions[0]!.courseInstances).toEqual([{ courseId: 1 }, { courseId: 2 }]);
     });

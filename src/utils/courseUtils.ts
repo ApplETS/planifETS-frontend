@@ -2,7 +2,7 @@ import type { SearchCourseResult } from '@/api/types/course';
 import type { CoursePrerequisiteDto, ProgramCourseDetailedDto } from '@/api/types/program';
 import type { Course, CourseInstance, CourseStatus } from '@/types/course';
 import type { YearData } from '@/types/planner';
-import type { SessionEnum, SessionTiming } from '@/types/session';
+import type { SessionTiming, TermEnum } from '@/types/session';
 
 /**
  * Maps API course (from /api/program-courses/programs or /api/courses/search) to frontend Course type
@@ -66,7 +66,7 @@ type SessionUpdate = (courseInstances: CourseInstance[]) => CourseInstance[];
 
 const updateYearSession = (
   yearData: YearData,
-  sessionTerm: SessionEnum,
+  sessionTerm: TermEnum,
   updateFn: SessionUpdate,
 ): YearData => ({
   ...yearData,
@@ -82,7 +82,7 @@ const updateYearSession = (
 
 export const addCourseToSession = (
   yearData: YearData,
-  sessionTerm: SessionEnum,
+  sessionTerm: TermEnum,
   courseId: number,
 ): YearData => {
   return updateYearSession(yearData, sessionTerm, (courseInstances) => {
@@ -95,7 +95,7 @@ export const addCourseToSession = (
 
 export const removeCourseFromSession = (
   yearData: YearData,
-  sessionTerm: SessionEnum,
+  sessionTerm: TermEnum,
   courseId: number,
 ): YearData => {
   return updateYearSession(yearData, sessionTerm, (courseInstances) =>
@@ -104,8 +104,8 @@ export const removeCourseFromSession = (
 
 export const moveCourseToSession = (
   yearData: YearData,
-  fromSessionTerm: SessionEnum,
-  toSessionTerm: SessionEnum,
+  fromSessionTerm: TermEnum,
+  toSessionTerm: TermEnum,
   courseId: number,
 ): YearData => {
   if (fromSessionTerm === toSessionTerm) {

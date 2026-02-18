@@ -6,7 +6,7 @@
  * - favoriteCourses: number[] - User's favorited course IDs (moved from courseStore)
  */
 
-import type { SessionEnum } from '@/types/session';
+import type { TermEnum } from '@/types/session';
 
 import { create } from 'zustand';
 import { persistConfig } from '@/lib/persistConfig';
@@ -28,7 +28,7 @@ type PlannerState = {
 };
 
 type PlannerActions = {
-  initializePlanner: (startYear: number, startTerm: SessionEnum) => void;
+  initializePlanner: (startYear: number, startTerm: TermEnum) => void;
   addYear: () => void;
   deleteYear: (year: number) => void;
   getSessionKeysForYear: (year: number) => string[];
@@ -75,7 +75,7 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
       }, 0);
     },
 
-    initializePlanner: (startYear: number, startTerm: SessionEnum) => {
+    initializePlanner: (startYear: number, startTerm: TermEnum) => {
       const currentDate = new Date();
       const currentYear = currentDate.getFullYear();
       const endYear = Math.max(currentYear, startYear);
@@ -96,7 +96,7 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
 
         const maxYear = Math.max(...years, 0);
         const newYear = maxYear + 1;
-        const newKeys = ORDERED_SESSION_TERMS.map((sessionTerm: SessionEnum) =>
+        const newKeys = ORDERED_SESSION_TERMS.map((sessionTerm: TermEnum) =>
           generateSessionKey(newYear, sessionTerm),
         );
 

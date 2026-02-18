@@ -11,7 +11,7 @@
  */
 
 import type { CourseInstance } from '@/types/course';
-import type { Session, SessionEnum } from '@/types/session';
+import type { Session, TermEnum } from '@/types/session';
 import { create } from 'zustand';
 import { persistConfig } from '@/lib/persistConfig';
 import { safeGet } from '@/utils/safeAccess';
@@ -60,7 +60,7 @@ export const useSessionStore = create<SessionState & SessionActions>()(
       },
 
       addCourseToSession: (sessionKey, courseId) => {
-        const sessionLetter = sessionKey.charAt(0) as SessionEnum;
+        const sessionLetter = sessionKey.charAt(0) as TermEnum;
         const sessionYearStr = sessionKey.substring(1);
         const sessionYear = Number.parseInt(sessionYearStr, 10);
 

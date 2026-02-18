@@ -1,4 +1,4 @@
-import type { SessionEnum } from '@/types/session';
+import type { TermEnum } from '@/types/session';
 
 export const selectors = {
   // Program
@@ -14,7 +14,7 @@ export const selectors = {
   courseInSession: (code: string) => `[data-testid="course-box-${code}"]`,
 
   // Session
-  sessionDropTarget: (sessionTerm: SessionEnum, sessionYear: number) =>
+  sessionDropTarget: (sessionTerm: TermEnum, sessionYear: number) =>
     `[data-testid="session-${sessionTerm}-${sessionYear}-drop-target"]`,
   infoIcon: (sessionTerm: string, sessionYear: number) =>
     `[data-testid="info-icon-${sessionTerm}-${sessionYear}"]`,
@@ -23,7 +23,7 @@ export const selectors = {
 
   // Credits
   totalCredits: '[data-testid="total-credits"]',
-  sessionCredits: (sessionTerm: SessionEnum, sessionYear: number) =>
+  sessionCredits: (sessionTerm: TermEnum, sessionYear: number) =>
     `[data-testid="session-${sessionTerm}-${sessionYear}-credits"]`,
 
   // Navigation

@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import type { CourseInstance } from '@/types/course';
-import type { SessionEnum, SessionTiming } from '@/types/session';
+import type { SessionTiming, TermEnum } from '@/types/session';
 import { useTranslations } from 'next-intl';
 import { useCourseStatus } from '@/hooks/course/useCourseStatus';
 import { useCourseStore } from '@/store/courseStore';
@@ -14,7 +14,7 @@ type CoursesListProps = {
   sessionTiming: SessionTiming;
   onRemoveCourse: (courseId: number) => void;
   sessionYear: number;
-  sessionTerm: SessionEnum;
+  sessionTerm: TermEnum;
   canDragCourses?: boolean;
 };
 

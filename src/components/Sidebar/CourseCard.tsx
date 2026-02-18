@@ -2,7 +2,7 @@
 
 import type { FC } from 'react';
 import type { Course } from '@/types/course';
-import type { SessionEnum } from '@/types/session';
+import type { TermEnum } from '@/types/session';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -71,7 +71,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
     return (
       <Section title={t('available')}>
         {sortSessionsChronologically(filteredSessions).map((session: string) => {
-          const sessionTerm = session.charAt(0) as SessionEnum;
+          const sessionTerm = session.charAt(0) as TermEnum;
           const sessionYear = Number(session.substring(1));
           const sessionKey = generateSessionKey(sessionYear, sessionTerm);
           const sessionObj = sessionStore.getSessionByKey?.(sessionKey);

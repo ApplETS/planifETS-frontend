@@ -1,7 +1,7 @@
 'use client';
 
 import type { DraggedItem } from '@/types/dnd';
-import type { SessionEnum, SessionTiming } from '@/types/session';
+import type { SessionTiming, TermEnum } from '@/types/session';
 import { useDrop } from 'react-dnd';
 import { useSessionStore } from '@/store/sessionStore';
 import { DragType } from '@/types/dnd';
@@ -10,7 +10,7 @@ import { useSessionOperations } from './useSessionOperations';
 
 type UseSessionDropProps = {
   sessionYear: number;
-  sessionTerm: SessionEnum;
+  sessionTerm: TermEnum;
   sessionTiming: SessionTiming;
 };
 

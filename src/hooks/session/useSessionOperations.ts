@@ -1,4 +1,4 @@
-import type { SessionEnum } from '@/types/session';
+import type { TermEnum } from '@/types/session';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
@@ -8,7 +8,7 @@ import { useSessionStore } from '@/store/sessionStore';
 import { safeGetNumber } from '@/utils/safeAccess';
 import { formatSessionShort, generateSessionKey, getSessionTiming } from '@/utils/sessionUtils';
 
-export const useSessionOperations = (year: number, sessionTerm: SessionEnum) => {
+export const useSessionOperations = (year: number, sessionTerm: TermEnum) => {
   const sessionStore = useSessionStore();
   const sessionKey = generateSessionKey(year, sessionTerm);
   const courseInstances = sessionStore.getSessionCourses(sessionKey);
@@ -26,7 +26,7 @@ export const useSessionOperations = (year: number, sessionTerm: SessionEnum) => 
     showSuccess(t('course-removed-from-session', { session: formatSessionShort(sessionCode) }));
   };
 
-  const handleMoveCourse = (toSessionYear: number, toSessionTerm: SessionEnum, courseId: number) => {
+  const handleMoveCourse = (toSessionYear: number, toSessionTerm: TermEnum, courseId: number) => {
     const fromSessionKey = generateSessionKey(year, sessionTerm);
     const toSessionKey = generateSessionKey(toSessionYear, toSessionTerm);
 

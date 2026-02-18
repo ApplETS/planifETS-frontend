@@ -1,9 +1,9 @@
-import { SessionEnum } from '@/types/session';
+import { TermEnum } from '@/types/session';
 
 export type TestCourse = {
   code: string;
   credits: number;
-  sessionTerm: SessionEnum;
+  sessionTerm: TermEnum;
   sessionYear: number;
 };
 
@@ -14,31 +14,31 @@ export const TEST_COURSES: Record<string, TestCourse> = {
   LOG240: {
     code: 'LOG240',
     credits: 3,
-    sessionTerm: SessionEnum.E,
+    sessionTerm: TermEnum.E,
     sessionYear: CURRENT_YEAR,
   },
   LOG121: {
     code: 'LOG121',
     credits: 4,
-    sessionTerm: SessionEnum.E,
+    sessionTerm: TermEnum.E,
     sessionYear: CURRENT_YEAR,
   },
   LOG680: {
     code: 'LOG680',
     credits: 4,
-    sessionTerm: SessionEnum.H,
+    sessionTerm: TermEnum.H,
     sessionYear: CURRENT_YEAR,
   },
   LOG460: {
     code: 'LOG460',
     credits: 3,
-    sessionTerm: SessionEnum.A,
+    sessionTerm: TermEnum.A,
     sessionYear: CURRENT_YEAR - 2,
   },
   LOG530: {
     code: 'LOG530',
     credits: 4,
-    sessionTerm: SessionEnum.A,
+    sessionTerm: TermEnum.A,
     sessionYear: CURRENT_YEAR + 2,
   },
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import type { SessionEnum } from '@/types/session';
+import type { TermEnum } from '@/types/session';
 import { Check } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
@@ -49,7 +49,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
   const currentYear = new Date().getFullYear();
 
   const [selectedYear, setSelectedYear] = useState<number>(currentYear);
-  const [selectedTerm, setSelectedTerm] = useState<SessionEnum>(() =>
+  const [selectedTerm, setSelectedTerm] = useState<TermEnum>(() =>
     getCurrentSession(),
   );
 
@@ -106,7 +106,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
           <div className="flex gap-2">
             <Select
               value={selectedTerm}
-              onValueChange={(v) => setSelectedTerm(v as SessionEnum)}
+              onValueChange={(v) => setSelectedTerm(v as TermEnum)}
             >
               <SelectTrigger
                 aria-labelledby="admission-day-label"

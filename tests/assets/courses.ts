@@ -6,8 +6,8 @@ export const TEST_COURSES = {
   LOG240: {
     code: 'LOG240',
     credits: 3,
-    sessionTerm: SessionEnum.A,
-    sessionYear: CURRENT_YEAR + 1,
+    sessionTerm: SessionEnum.E,
+    sessionYear: CURRENT_YEAR,
   },
   LOG121: {
     code: 'LOG121',
@@ -15,11 +15,23 @@ export const TEST_COURSES = {
     sessionTerm: SessionEnum.E,
     sessionYear: CURRENT_YEAR,
   },
+  LOG680: {
+    code: 'LOG680',
+    credits: 4,
+    sessionTerm: SessionEnum.H,
+    sessionYear: CURRENT_YEAR,
+  },
   LOG460: {
     code: 'LOG460',
     credits: 3,
     sessionTerm: SessionEnum.A,
     sessionYear: CURRENT_YEAR - 2,
+  },
+  LOG530: {
+    code: 'LOG530',
+    credits: 4,
+    sessionTerm: SessionEnum.A,
+    sessionYear: CURRENT_YEAR + 2,
   },
 } as const;
 

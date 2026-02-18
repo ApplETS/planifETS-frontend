@@ -1,6 +1,8 @@
 import type { Page } from '@playwright/test';
 import type { SessionDto } from '@/api/types/session';
 
+const CURRENT_YEAR = new Date().getFullYear();
+
 function jsonResponse(status: number, body: unknown) {
   return {
     status,
@@ -13,7 +15,7 @@ export function registerSessionsRoutes(page: Page) {
   page.route('**/sessions/latest-available**', (route) => {
     const session: SessionDto = {
       trimester: 'HIVER',
-      year: new Date().getFullYear() + 1,
+      year: CURRENT_YEAR + 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

@@ -58,8 +58,8 @@ export default defineConfig({
     // Reduce action timeout in CI for faster failure detection
     actionTimeout: process.env.CI ? 15 * 1000 : 0,
 
-    // Increase navigation timeout slightly
-    navigationTimeout: process.env.CI ? 30 * 1000 : 30 * 1000,
+    // Increase navigation timeout
+    navigationTimeout: 30 * 1000,
   },
   projects: [
     {

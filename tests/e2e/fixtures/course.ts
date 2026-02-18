@@ -68,7 +68,10 @@ export const moveCourseToSession = async (
   const dropTarget = page.locator(
     selectors.sessionDropTarget(targetSession, targetYear),
   );
-  await courseBox.dragTo(dropTarget);
+  await page.dragAndDrop(
+    selectors.courseInSession(course.code),
+    selectors.sessionDropTarget(targetSession, targetYear),
+  );
 
   await expect(courseBox).toBeVisible({ timeout: 15000 });
   await expect(dropTarget).toBeVisible({ timeout: 15000 });

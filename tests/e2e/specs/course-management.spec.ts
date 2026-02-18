@@ -55,10 +55,7 @@ test.describe('Course Management', () => {
     await searchCourseInSidebar(page, course.code);
     await addCourseToSession(page, course);
 
-    const courseBox = page.locator(selectors.courseInSession(course.code));
-    const navbar = page.locator(selectors.navbar);
-
-    await courseBox.dragTo(navbar);
+    await page.dragAndDrop(selectors.courseInSession(course.code), selectors.navbar);
 
     const originalSessionDropTarget = page.locator(
       selectors.sessionDropTarget(course.sessionTerm, course.sessionYear),

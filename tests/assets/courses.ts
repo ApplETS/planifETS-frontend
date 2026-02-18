@@ -1,8 +1,16 @@
 import { SessionEnum } from '@/types/session';
 
+export type TestCourse = {
+  code: string;
+  credits: number;
+  sessionTerm: SessionEnum;
+  sessionYear: number;
+};
+
 const CURRENT_YEAR = new Date().getFullYear();
 
-export const TEST_COURSES = {
+// IMPORTANT NOTE: Only add new courses, do not modify or remove existing ones as they are used in tests
+export const TEST_COURSES: Record<string, TestCourse> = {
   LOG240: {
     code: 'LOG240',
     credits: 3,
@@ -33,6 +41,4 @@ export const TEST_COURSES = {
     sessionTerm: SessionEnum.A,
     sessionYear: CURRENT_YEAR + 2,
   },
-} as const;
-
-export type TestCourse = typeof TEST_COURSES[keyof typeof TEST_COURSES];
+};

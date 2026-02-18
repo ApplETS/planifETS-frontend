@@ -1,9 +1,24 @@
+import type { Page } from '@playwright/test';
+import type { SessionEnum } from '../../../src/types/session';
+import type { TestCourse } from '../../assets/courses';
 import { expect, test } from '@playwright/test';
 import { TEST_COURSES } from '../../assets/courses';
 import { selectors } from '../../assets/selectors';
 import { addCourseToSession, deleteCourse, searchCourseInSidebar } from '../fixtures/course';
 import { selectProgram } from '../fixtures/program';
+import { addYears } from '../fixtures/session';
 import { setupTestPage } from '../fixtures/setup';
+
+async function addCourseInNewSession(page: Page, course: TestCourse, extraYears: number = 2) {
+  await addYears(page, extraYears);
+  await searchCourseInSidebar(page, course.code);
+  await addCourseToSession(page, course);
+}
+
+function getSessionInfoIconLocator(page: Page, term: SessionEnum, year: number) {
+  const sessionContainer = page.locator(selectors.sessionDropTarget(term, year));
+  return sessionContainer.locator(selectors.infoIcon(term, year));
+}
 
 test.describe('Session Availability Icon', () => {
   test.beforeEach(async ({ page }) => {
@@ -15,16 +30,9 @@ test.describe('Session Availability Icon', () => {
   test('should show info icon when session has courses but availability is not known', async ({ page }) => {
     const course = TEST_COURSES.LOG530;
 
-    // Add 2 more years
-    await page.locator(selectors.addYearButton).click();
-    await page.locator(selectors.addYearButton).click();
+    await addCourseInNewSession(page, course);
 
-    // Add a course to a session
-    await searchCourseInSidebar(page, course.code);
-    await addCourseToSession(page, course);
-
-    // Check that the info icon is visible for the session with courses
-    const infoIcon = page.locator(selectors.infoIcon(course.sessionTerm, course.sessionYear));
+    const infoIcon = getSessionInfoIconLocator(page, course.sessionTerm, course.sessionYear);
 
     await expect(infoIcon).toBeVisible({ timeout: 15000 });
   });
@@ -32,17 +40,9 @@ test.describe('Session Availability Icon', () => {
   test('should show tooltip with availability message on info icon hover', async ({ page }) => {
     const course = TEST_COURSES.LOG530;
 
-    // Add 2 more years
-    await page.locator(selectors.addYearButton).click();
-    await page.locator(selectors.addYearButton).click();
+    await addCourseInNewSession(page, course);
 
-    // Add a course to a session
-    await searchCourseInSidebar(page, course.code);
-    await addCourseToSession(page, course);
-
-    // Hover over the info icon that belongs to the specific session and check tooltip
-    const sessionContainer = page.locator(selectors.sessionDropTarget(course.sessionTerm, course.sessionYear));
-    const infoIcon = sessionContainer.locator(selectors.infoIcon(course.sessionTerm, course.sessionYear));
+    const infoIcon = getSessionInfoIconLocator(page, course.sessionTerm, course.sessionYear);
 
     await expect(infoIcon).toBeVisible({ timeout: 15000 });
 
@@ -60,29 +60,19 @@ test.describe('Session Availability Icon', () => {
   test('should hide info icon when course is removed from session', async ({ page }) => {
     const course = TEST_COURSES.LOG530;
 
-    // Add 2 more years
-    await page.locator(selectors.addYearButton).click();
-    await page.locator(selectors.addYearButton).click();
+    await addCourseInNewSession(page, course);
 
-    // Add a course to a session
-    await searchCourseInSidebar(page, course.code);
-    await addCourseToSession(page, course);
-
-    // Verify icon is visible (scoped to the session container to avoid collisions)
-    const sessionContainer = page.locator(selectors.sessionDropTarget(course.sessionTerm, course.sessionYear));
-    const infoIcon = sessionContainer.locator(selectors.infoIcon(course.sessionTerm, course.sessionYear));
+    const infoIcon = getSessionInfoIconLocator(page, course.sessionTerm, course.sessionYear);
 
     await expect(infoIcon).toBeVisible({ timeout: 15000 });
 
-    // Remove the course
     await deleteCourse(page, course);
 
-    // Verify icon is hidden
     await expect(infoIcon).toBeHidden({ timeout: 15000 });
   });
 
   test('should not show info icon for sessions with known availability', async ({ page }) => {
-    const course = TEST_COURSES.LOG121; // E2026: which is before H2027 (latest-available), so known availability
+    const course = TEST_COURSES.LOG121;
 
     // Add a course to a session with known availability
     await searchCourseInSidebar(page, course.code);

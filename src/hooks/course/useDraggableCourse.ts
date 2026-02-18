@@ -3,7 +3,7 @@
 import type { DragSourceMonitor } from 'react-dnd';
 import type { Course } from '@/types/course';
 import type { DraggedItem } from '@/types/dnd';
-import type { SessionEnum } from '@/types/session';
+import type { TermEnum } from '@/types/session';
 import { useDrag } from 'react-dnd';
 import { DragType } from '@/types/dnd';
 
@@ -19,7 +19,7 @@ type CourseCardProps = BaseProps & {
 type CourseBoxProps = BaseProps & {
   type: DragType.COURSE_BOX;
   fromSessionYear: number;
-  fromSessionTerm: SessionEnum;
+  fromSessionTerm: TermEnum;
 };
 
 type UseDraggableCourseProps = CourseCardProps | CourseBoxProps;

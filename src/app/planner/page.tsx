@@ -4,6 +4,7 @@ import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
+import { useLatestAvailableSessionApi } from '@/api/hooks/useLatestAvailableSessionApi';
 import OnboardingDialog from '@/components/dialogs/OnboardingDialog';
 import YearSection from '@/components/Planner/YearSection';
 import { ProgramSection } from '@/components/ProgramSection';
@@ -25,6 +26,7 @@ export default function PlannerPage() {
   const { hasCompletedOnboarding } = useOnboardingStore();
   const hasHydrated = useStoreHydration();
 
+  useLatestAvailableSessionApi();
   usePreloadCourses();
 
   useEffect(() => {
@@ -99,7 +101,7 @@ export default function PlannerPage() {
           {' '}
           {t('total-credits')}
         </Button>
-        <Button variant="default" size="default" onClick={addYear}>
+        <Button variant="default" size="default" onClick={addYear} data-testid="add-year-button">
           <Plus />
           {t('add-year')}
         </Button>

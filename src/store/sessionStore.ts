@@ -11,17 +11,14 @@
  */
 
 import type { CourseInstance } from '@/types/course';
-import type { Session } from '@/types/session';
+import type { Session, TermEnum } from '@/types/session';
 import { create } from 'zustand';
 import { persistConfig } from '@/lib/persistConfig';
-import { SessionEnum } from '@/types/session';
-import { determineInitialStatus } from '@/utils/courseUtils';
 import { safeGet } from '@/utils/safeAccess';
 import {
   createSessionsForYear,
-  findCourseInSession,
-  getSessionTiming,
   hasCourseInSession,
+  ORDERED_SESSION_TERMS,
   updateMultipleSessions,
   updateSessionCourseInstances,
 } from '@/utils/sessionUtils';
@@ -63,11 +60,11 @@ export const useSessionStore = create<SessionState & SessionActions>()(
       },
 
       addCourseToSession: (sessionKey, courseId) => {
-        const sessionLetter = sessionKey.charAt(0) as SessionEnum;
+        const sessionLetter = sessionKey.charAt(0) as TermEnum;
         const sessionYearStr = sessionKey.substring(1);
         const sessionYear = Number.parseInt(sessionYearStr, 10);
 
-        if (Number.isNaN(sessionYear) || !Object.values(SessionEnum).includes(sessionLetter)) {
+        if (Number.isNaN(sessionYear) || !ORDERED_SESSION_TERMS.includes(sessionLetter)) {
           console.error(`Invalid session key: ${sessionKey}`);
           return;
         }
@@ -84,12 +81,7 @@ export const useSessionStore = create<SessionState & SessionActions>()(
             return state;
           }
 
-          const timing = getSessionTiming(sessionYear, sessionLetter);
-
-          const newCourseInstance: CourseInstance = {
-            courseId,
-            status: determineInitialStatus(timing),
-          };
+          const newCourseInstance: CourseInstance = { courseId };
 
           const updatedCourseInstances = [...session.courseInstances, newCourseInstance];
 
@@ -149,25 +141,16 @@ export const useSessionStore = create<SessionState & SessionActions>()(
             return state;
           }
 
-          const courseInstance = findCourseInSession(fromSession, courseId);
-
-          if (!courseInstance) {
+          if (!hasCourseInSession(fromSession, courseId)) {
             console.error('Course instance not found:', courseId);
             return state;
           }
-
-          // Calculate new status based on destination session timing
-          const timing = getSessionTiming(toSession.sessionYear, toSession.sessionTerm);
-          const updatedCourseInstance: CourseInstance = {
-            ...courseInstance,
-            status: determineInitialStatus(timing),
-          };
 
           const updatedFromCourseInstances = fromSession.courseInstances.filter(
             (instance) => instance.courseId !== courseId,
           );
 
-          const updatedToCourseInstances = [...toSession.courseInstances, updatedCourseInstance];
+          const updatedToCourseInstances = [...toSession.courseInstances, { courseId }];
 
           return {
             sessions: updateMultipleSessions(state.sessions, [

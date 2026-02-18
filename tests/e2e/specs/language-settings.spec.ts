@@ -11,6 +11,8 @@ test.describe('Language Settings', () => {
   test('should translate search placeholder when changing language', async ({ page }) => {
     const searchInput = page.locator(selectors.searchInput);
 
+    await expect(searchInput).toBeVisible({ timeout: 15000 });
+
     await expect(searchInput).toHaveAttribute(
       'placeholder',
       getExpectedTranslation('searchPlaceholder', 'en'),

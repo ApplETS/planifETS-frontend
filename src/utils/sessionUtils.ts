@@ -1,6 +1,6 @@
 import type { Course, CourseInstance } from '@/types/course';
 import type { Session, SessionTiming } from '@/types/session';
-import { SessionEnum } from '@/types/session';
+import { TermEnum } from '@/types/session';
 
 export const SESSION_SELECTION_BOUNDS = {
   PAST_YEARS: 10,
@@ -63,28 +63,31 @@ export const formatSessionShort = (sessionCode: string): string => {
 };
 
 const SESSION_MONTH_RANGES = {
-  [SessionEnum.H]: { start: 0, end: 3 }, // January - April (HIVER)
-  [SessionEnum.E]: { start: 4, end: 7 }, // May - August (ETE)
-  [SessionEnum.A]: { start: 8, end: 11 }, // September - December (AUTOMNE)
+  [TermEnum.H]: { start: 0, end: 3 }, // January - April (HIVER)
+  [TermEnum.E]: { start: 4, end: 7 }, // May - August (ETE)
+  [TermEnum.A]: { start: 8, end: 11 }, // September - December (AUTOMNE)
 } as const;
 
-export const generateSessionCode = (sessionTerm: SessionEnum, year: number): string => {
+// 1 (HIVER) - 2 (ETE) - 3 (AUTOMNE)
+export const ORDERED_SESSION_TERMS: TermEnum[] = [TermEnum.H, TermEnum.E, TermEnum.A];
+
+export const generateSessionCode = (sessionTerm: TermEnum, year: number): string => {
   return `${sessionTerm}${year}`;
 };
 
-export const getCurrentSession = (month: number = new Date().getMonth()): SessionEnum => {
-  if (month <= SESSION_MONTH_RANGES[SessionEnum.H].end) {
-    return SessionEnum.H;
+export const getCurrentSession = (month: number = new Date().getMonth()): TermEnum => {
+  if (month <= SESSION_MONTH_RANGES[TermEnum.H].end) {
+    return TermEnum.H;
   }
-  if (month <= SESSION_MONTH_RANGES[SessionEnum.E].end) {
-    return SessionEnum.E;
+  if (month <= SESSION_MONTH_RANGES[TermEnum.E].end) {
+    return TermEnum.E;
   }
-  return SessionEnum.A;
+  return TermEnum.A;
 };
 
 export const getSessionTiming = (
   sessionYear: number,
-  sessionTerm: SessionEnum,
+  sessionTerm: TermEnum,
 ): SessionTiming => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
@@ -110,7 +113,7 @@ export const filterCurrentAndFutureSessions = (sessionCodes: string[]): string[]
     if (!match) {
       return false;
     }
-    const term = match[1] as SessionEnum;
+    const term = match[1] as TermEnum;
     const yearStr = match[2];
     if (!yearStr) {
       return false;
@@ -125,7 +128,7 @@ type CourseFinder = (id: number) => Course | undefined;
 
 export const isCourseAvailableInSession = (
   courseId: number,
-  sessionTerm: SessionEnum,
+  sessionTerm: TermEnum,
   sessionYear: number,
   findCourse: CourseFinder,
 ): boolean => {
@@ -140,7 +143,7 @@ export const isCourseAvailableInSession = (
 
 export const generateSessionKey = (
   sessionYear: number,
-  sessionTerm: SessionEnum,
+  sessionTerm: TermEnum,
 ): string => {
   if (!sessionYear || !sessionTerm) {
     console.error(`Invalid session key parameters: ${sessionYear}, ${sessionTerm}`);
@@ -155,17 +158,16 @@ export const generateSessionKey = (
  */
 export const generateSessionRange = (
   startYear: number,
-  startTerm: SessionEnum,
+  startTerm: TermEnum,
   endYear: number,
 ): string[] => {
   const sessionKeys: string[] = [];
-  const sessionOrder: Record<SessionEnum, number> = { H: 0, E: 1, A: 2 };
 
   for (let y = startYear; y <= endYear; y++) {
-    Object.values(SessionEnum).forEach((sessionTerm: SessionEnum) => {
+    ORDERED_SESSION_TERMS.forEach((sessionTerm: TermEnum) => {
       // For the first year, only include sessions from startTerm onwards
       if (y === startYear) {
-        if (sessionOrder[sessionTerm] >= sessionOrder[startTerm]) {
+        if (ORDERED_SESSION_TERMS.indexOf(sessionTerm) >= ORDERED_SESSION_TERMS.indexOf(startTerm)) {
           sessionKeys.push(generateSessionKey(y, sessionTerm));
         }
       } else {
@@ -190,9 +192,9 @@ export const extractYearFromSessionKey = (sessionKey: string): number => {
 export const getTranslationKey = (sessionTerm: string) => {
   // Map the single letter session names to their translation keys
   const sessionMap: Record<string, string> = {
-    [SessionEnum.A]: 'sessionTerms.AUTOMNE',
-    [SessionEnum.H]: 'sessionTerms.HIVER',
-    [SessionEnum.E]: 'sessionTerms.ETE',
+    [TermEnum.A]: 'sessionTerms.AUTOMNE',
+    [TermEnum.H]: 'sessionTerms.HIVER',
+    [TermEnum.E]: 'sessionTerms.ETE',
   };
 
   if (sessionMap[sessionTerm]) {
@@ -205,7 +207,7 @@ export const getTranslationKey = (sessionTerm: string) => {
 
 export const createSessionsForYear = (sessionYear: number): Record<string, Session> => {
   const sessions: Record<string, Session> = {};
-  const orderedSessionTerms = [SessionEnum.H, SessionEnum.E, SessionEnum.A];
+  const orderedSessionTerms = [TermEnum.H, TermEnum.E, TermEnum.A];
 
   orderedSessionTerms.forEach((name) => {
     const key = generateSessionKey(sessionYear, name);
@@ -214,7 +216,7 @@ export const createSessionsForYear = (sessionYear: number): Record<string, Sessi
       sessionTerm: name,
       sessionYear,
       courseInstances: [],
-      isKnownSessionAvailability: true, // default to true, update as needed
+      isKnownSessionAvailability: false, // default to false
     };
   });
 
@@ -261,13 +263,6 @@ export const hasCourseInSession = (session: Session, courseId: number): boolean 
   return session.courseInstances.some((instance) => instance.courseId === courseId);
 };
 
-export const findCourseInSession = (
-  session: Session,
-  courseId: number,
-): CourseInstance | undefined => {
-  return session.courseInstances.find((instance) => instance.courseId === courseId);
-};
-
 /**
  * Compare two sessions by year and term.
  * Returns:
@@ -275,30 +270,29 @@ export const findCourseInSession = (
  *    0 if a == b
  *    1 if a > b
  */
-function compareSessions(
+export function compareSessions(
   yearA: number,
-  termA: SessionEnum,
+  termA: TermEnum,
   yearB: number,
-  termB: SessionEnum,
+  termB: TermEnum,
 ): number {
   if (yearA !== yearB) {
     return yearA - yearB;
   }
-  const order: Record<SessionEnum, number> = { H: 0, E: 1, A: 2 };
-  return order[termA] - order[termB];
+  return ORDERED_SESSION_TERMS.indexOf(termA) - ORDERED_SESSION_TERMS.indexOf(termB);
 }
 
 /**
- * Utility to map backend trimester string to SessionEnum.
+ * Utility to map backend trimester string to TermEnum.
  */
-export function trimesterToSessionTerm(trimester: string): SessionEnum | undefined {
+export function trimesterToSessionTerm(trimester: string): TermEnum | undefined {
   switch (trimester) {
     case 'HIVER':
-      return SessionEnum.H;
+      return TermEnum.H;
     case 'ETE':
-      return SessionEnum.E;
+      return TermEnum.E;
     case 'AUTOMNE':
-      return SessionEnum.A;
+      return TermEnum.A;
     default:
       return undefined;
   }

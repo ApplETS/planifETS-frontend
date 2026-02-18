@@ -2,6 +2,12 @@ import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { selectors } from '../../assets/selectors';
 
+export async function addYears(page: Page, n = 1) {
+  for (let i = 0; i < n; i++) {
+    await page.locator(selectors.addYearButton).click();
+  }
+}
+
 // Expect exactly 3 session drop-target divs
 export async function expectYear(page: Page, year: number, expectedSessionCount = 3) {
   const locator = page.locator(selectors.year(year));

@@ -1,10 +1,11 @@
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 import type { TestCourse } from '../../assets/courses';
-import type { SessionEnum } from '@/types/session';
+import type { TermEnum } from '@/types/session';
 import { expect } from '@playwright/test';
 import { selectors } from '../../assets/selectors';
+import { reliableDragAndDrop } from './dnd';
 
-export async function searchCourseInSidebar(page: Page, courseCode: string) {
+export async function searchCourseInSidebar(page: Page, courseCode: string): Promise<void> {
   const searchInput = page.locator(selectors.searchInput);
 
   await expect(searchInput).toBeVisible({ timeout: 15000 });
@@ -23,8 +24,10 @@ export async function getCourseCard(page: Page, courseCode: string) {
 export const addCourseToSession = async (
   page: Page,
   course: TestCourse,
-) => {
+): Promise<Locator> => {
   const courseCard = await getCourseCard(page, course.code);
+
+  await expect(courseCard).toBeVisible({ timeout: 15000 });
 
   const dropTarget = page.locator(
     selectors.sessionDropTarget(course.sessionTerm, course.sessionYear),
@@ -32,15 +35,21 @@ export const addCourseToSession = async (
 
   await expect(dropTarget).toBeVisible({ timeout: 15000 });
 
-  await courseCard.dragTo(dropTarget);
+  await dropTarget.scrollIntoViewIfNeeded();
 
-  return page.locator(selectors.courseInSession(course.code));
+  const courseBox = page.locator(selectors.courseInSession(course.code));
+
+  await reliableDragAndDrop(page, courseCard, dropTarget, courseBox);
+
+  await expect(courseBox).toBeVisible({ timeout: 25000 });
+
+  return courseBox;
 };
 
 export const deleteCourse = async (
   page: Page,
   course: TestCourse,
-) => {
+): Promise<void> => {
   await page.mouse.move(0, 0);
   await page.waitForTimeout(200);
 
@@ -61,15 +70,21 @@ export const deleteCourse = async (
 export const moveCourseToSession = async (
   page: Page,
   course: TestCourse,
-  targetSession: SessionEnum,
+  targetTerm: TermEnum,
   targetYear: number,
-) => {
-  const courseBox = page.locator(selectors.courseInSession(course.code));
+): Promise<void> => {
   const dropTarget = page.locator(
-    selectors.sessionDropTarget(targetSession, targetYear),
+    selectors.sessionDropTarget(targetTerm, targetYear),
   );
-  await courseBox.dragTo(dropTarget);
 
-  await expect(courseBox).toBeVisible({ timeout: 15000 });
   await expect(dropTarget).toBeVisible({ timeout: 15000 });
+
+  await dropTarget.scrollIntoViewIfNeeded();
+
+  const courseSource = page.locator(selectors.courseInSession(course.code));
+  const courseBox = page.locator(selectors.courseInSession(course.code));
+
+  await reliableDragAndDrop(page, courseSource, dropTarget, courseBox);
+
+  await expect(courseBox).toBeVisible({ timeout: 25000 });
 };

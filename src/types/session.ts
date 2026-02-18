@@ -1,6 +1,6 @@
 import type { CourseInstance } from './course';
 
-export enum SessionEnum {
+export enum TermEnum {
   A = 'A', // AUTOMNE
   H = 'H', // HIVER
   E = 'E', // ETE
@@ -8,7 +8,7 @@ export enum SessionEnum {
 
 export type Session = {
   key: string; // Example: "A2024"
-  sessionTerm: SessionEnum;
+  sessionTerm: TermEnum;
   sessionYear: number;
   courseInstances: CourseInstance[];
   isKnownSessionAvailability?: boolean; // true if availability is known, false if unknown

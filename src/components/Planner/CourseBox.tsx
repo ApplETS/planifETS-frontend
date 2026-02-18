@@ -1,9 +1,8 @@
 'use client';
 
 import type { FC } from 'react';
-import type { Course } from '@/types/course';
-import type { CourseStatus } from '@/types/courseStatus';
-import type { SessionEnum } from '@/types/session';
+import type { Course, CourseStatus } from '@/types/course';
+import type { TermEnum } from '@/types/session';
 import { Trash } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
@@ -21,7 +20,7 @@ type CourseBoxProps = {
   credits: number;
   onDelete?: () => void;
   fromSessionYear: number;
-  fromSessionTerm: SessionEnum;
+  fromSessionTerm: TermEnum;
   course: Course;
   isDraggable?: boolean;
   unknownAvailability?: boolean;

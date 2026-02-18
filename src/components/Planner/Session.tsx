@@ -1,6 +1,6 @@
 'use client';
 
-import type { SessionEnum } from '@/types/session';
+import type { TermEnum } from '@/types/session';
 import { useCallback } from 'react';
 
 import { useSessionDrop } from '@/hooks/session/useSessionDrop';
@@ -13,7 +13,7 @@ import SessionHeader from './SessionHeader';
 
 type SessionProps = {
   sessionYear: number;
-  sessionTerm: SessionEnum;
+  sessionTerm: TermEnum;
 };
 
 export default function Session({ sessionYear, sessionTerm }: SessionProps) {

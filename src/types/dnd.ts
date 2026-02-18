@@ -1,5 +1,5 @@
 import type { Course } from './course';
-import type { SessionEnum } from './session';
+import type { TermEnum } from './session';
 
 export enum DragType {
   COURSE_CARD = 'COURSE_CARD',
@@ -16,7 +16,7 @@ export type DraggedCourseBox = {
   courseId: number;
   course: Course;
   fromSessionYear: number;
-  fromSessionTerm: SessionEnum;
+  fromSessionTerm: TermEnum;
 };
 
 export type DraggedItem = DraggedCourseCard | DraggedCourseBox;

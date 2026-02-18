@@ -35,9 +35,8 @@
     "credits-short": "cr.",
     "course": {
       "Completed": "Complété",
-      "In Progress": "En progrès",
-      "Failed": "Échoué",
       "Not Offered": "Non offert",
+      "Offered": "Offert",
       "Planned": "Planifié"
     },
     "no-course-modif-past-session": "Aucune modification autorisée pour cette session passée.",

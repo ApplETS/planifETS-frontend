@@ -1,9 +1,10 @@
 'use client';
 
+import type { TermEnum } from '@/types/session';
 import { Check } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import React, { useState } from 'react';
 
+import React, { useState } from 'react';
 import ProgramSelector from '@/components/ProgramSelector';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/shadcn/ui/button';
@@ -34,12 +35,7 @@ import {
 import { useOnboardingStore } from '@/store/onboardingStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useProgramStore } from '@/store/programStore';
-import { SessionEnum } from '@/types/session';
-import {
-  getCurrentSession,
-  getTranslationKey,
-  SESSION_SELECTION_BOUNDS,
-} from '@/utils/sessionUtils';
+import { getCurrentSession, getTranslationKey, ORDERED_SESSION_TERMS, SESSION_SELECTION_BOUNDS } from '@/utils/sessionUtils';
 
 type OnboardingDialogProps = {
   isOpen: boolean;
@@ -53,7 +49,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
   const currentYear = new Date().getFullYear();
 
   const [selectedYear, setSelectedYear] = useState<number>(currentYear);
-  const [selectedTerm, setSelectedTerm] = useState<SessionEnum>(() =>
+  const [selectedTerm, setSelectedTerm] = useState<TermEnum>(() =>
     getCurrentSession(),
   );
 
@@ -110,7 +106,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
           <div className="flex gap-2">
             <Select
               value={selectedTerm}
-              onValueChange={(v) => setSelectedTerm(v as SessionEnum)}
+              onValueChange={(v) => setSelectedTerm(v as TermEnum)}
             >
               <SelectTrigger
                 aria-labelledby="admission-day-label"
@@ -123,7 +119,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
                   <SelectLabel className="px-2 py-1.5 text-xs text-muted-foreground">
                     {tOnboarding('admission-day-label')}
                   </SelectLabel>
-                  {Object.values(SessionEnum).map((term) => (
+                  {ORDERED_SESSION_TERMS.map((term) => (
                     <SelectItem key={term} value={term}>
                       {tPlannerPage(getTranslationKey(term))}
                     </SelectItem>
@@ -178,7 +174,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
   return (
     <Dialog open={isOpen}>
       <DialogContent
-        className="[&>button]:hidden sm:max-w-[500px] border-1 border-border overflow-visible"
+        className="[&>button]:hidden sm:max-w-[500px] border border-border overflow-visible"
         onPointerDownOutside={(e) => e.preventDefault()}
         onOpenAutoFocus={(e) => {
           e.preventDefault();

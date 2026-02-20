@@ -16,10 +16,6 @@ export const useSessionOperations = (year: number, sessionTerm: TermEnum) => {
   const courses = useCourseStore((state) => state.courses);
   const t = useTranslations('PlannerPage');
 
-  const handleAddCourse = (courseId: number) => {
-    sessionStore.addCourseToSession(sessionKey, courseId);
-  };
-
   const handleRemoveCourse = (courseId: number) => {
     sessionStore.removeCourseFromSession(sessionKey, courseId);
     const sessionCode = generateSessionKey(year, sessionTerm);
@@ -44,7 +40,6 @@ export const useSessionOperations = (year: number, sessionTerm: TermEnum) => {
   return {
     courseInstances,
     sessionTiming,
-    handleAddCourse,
     handleRemoveCourse,
     handleMoveCourse,
     sessionTotalCredits,

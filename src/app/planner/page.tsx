@@ -27,7 +27,7 @@ export default function PlannerPage() {
   const hasHydrated = useStoreHydration();
 
   useLatestAvailableSessionApi();
-  usePreloadCourses();
+  usePreloadCourses(hasHydrated);
 
   useEffect(() => {
     if (!hasHydrated) {

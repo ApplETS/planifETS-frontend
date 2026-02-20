@@ -3,10 +3,10 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { Suspense } from 'react';
 import Loading from '@/components/atoms/Loading';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import Navbar from '@/components/Navbar/Navbar';
 import { ThemeProvider } from '@/components/Providers/ThemeProvider';
 import { Toaster } from '@/shadcn/ui/sonner';
-import ErrorBoundary from '../components/ErrorBoundary';
-import Navbar from '../components/Navbar/Navbar';
 import DndContext from '../context/dnd/DndContext';
 import './globals.css';
 
@@ -32,7 +32,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           )
           : null}
       </head>
-      <body className="min-h-screen transition-colors duration-300">
+      <body className="min-h-screen transition-colors duration-300 bg-background">
         <ThemeProvider>
           <Suspense fallback={<Loading />}>
             <ErrorBoundary>

@@ -3,6 +3,7 @@
 import type { DraggedItem } from '@/types/dnd';
 import type { SessionTiming, TermEnum } from '@/types/session';
 import { useDrop } from 'react-dnd';
+import { useCourseOperations } from '@/hooks/course/useCourseOperations';
 import { useSessionStore } from '@/store/sessionStore';
 import { DragType } from '@/types/dnd';
 import { generateSessionKey } from '@/utils/sessionUtils';
@@ -15,8 +16,10 @@ type UseSessionDropProps = {
 };
 
 export const useSessionDrop = ({ sessionYear, sessionTerm, sessionTiming }: UseSessionDropProps) => {
-  const { handleAddCourse, handleMoveCourse } = useSessionOperations(sessionYear, sessionTerm);
   const sessionStore = useSessionStore();
+
+  const { handleMoveCourse } = useSessionOperations(sessionYear, sessionTerm);
+  const { addCourseToSession } = useCourseOperations();
   const sessionKey = generateSessionKey(sessionYear, sessionTerm);
 
   const [{ isOver, canDrop, draggedItem }, drop] = useDrop(() => ({
@@ -49,7 +52,7 @@ export const useSessionDrop = ({ sessionYear, sessionTerm, sessionTiming }: UseS
         const toSessionKey = generateSessionKey(sessionYear, sessionTerm);
         sessionStore.moveCourse(fromSessionKey, toSessionKey, item.courseId);
       } else {
-        handleAddCourse(item.course.id);
+        addCourseToSession(sessionYear, sessionTerm, item.course);
       }
     },
     collect: (monitor) => ({
@@ -57,7 +60,7 @@ export const useSessionDrop = ({ sessionYear, sessionTerm, sessionTiming }: UseS
       canDrop: monitor.canDrop(),
       draggedItem: monitor.getItem(),
     }),
-  }), [sessionYear, sessionTerm, sessionTiming, handleAddCourse, handleMoveCourse, sessionStore, sessionKey]);
+  }), [sessionYear, sessionTerm, sessionTiming, addCourseToSession, handleMoveCourse, sessionStore, sessionKey]);
 
   return { drop, isOver, canDrop, draggedItem };
 };

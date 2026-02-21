@@ -15,13 +15,13 @@ import { mapApiCourseToAppCourse } from '@/utils/courseUtils';
  * Hook to preload courses that are in sessions or favorites
  * Fetches missing course data on mount using /program-courses/ids
  */
-export const usePreloadCourses = () => {
+export const usePreloadCourses = (hasHydrated: boolean) => {
   const [loading, setLoading] = useState(false);
   const hasFetched = useRef(false);
   const { setCourses } = useCourseStore();
 
   useEffect(() => {
-    if (hasFetched.current) {
+    if (!hasHydrated || hasFetched.current) {
       return;
     }
     hasFetched.current = true;
@@ -79,7 +79,7 @@ export const usePreloadCourses = () => {
     };
 
     fetchMissingCourses();
-  }, [setCourses]);
+  }, [hasHydrated, setCourses]);
 
   return { loading };
 };

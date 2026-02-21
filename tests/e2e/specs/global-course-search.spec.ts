@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
+import { TEST_COURSES } from '../../assets/courses';
 import { selectors } from '../../assets/selectors';
+import { addCourseToSession, getCourseCard } from '../fixtures/course';
+import { reliableDragAndDrop } from '../fixtures/dnd';
 import { selectProgram } from '../fixtures/program';
 import { setupTestPage } from '../fixtures/setup';
 
@@ -116,5 +119,54 @@ test.describe('Global Course Search', () => {
     await searchInput.clear();
 
     await expect(linkContainer).toBeHidden({ timeout: 5000 });
+  });
+
+  test('adding a program course (LOG240) from global search should place it in the planner', async ({ page }) => {
+    const course = TEST_COURSES.LOG240;
+
+    const searchInput = page.locator(selectors.searchInput);
+    // our mock data responds to the prefix "LOG" rather than full code
+    await searchInput.fill('LOG');
+
+    const button = page.locator(selectors.globalSearchButton);
+    await button.click();
+
+    // wait for global search to complete
+    await expect(page.getByText('Searching in all programs...')).toBeHidden({ timeout: 5000 });
+
+    // drag the card that appeared to the target session
+    await addCourseToSession(page, course);
+
+    const courseBox = page.locator(selectors.courseInSession(course.code));
+
+    await expect(courseBox).toBeVisible({ timeout: 15000 });
+    await expect(courseBox).toContainText(course.code);
+  });
+
+  test('adding a non-selected-program course (MEC129) from global search should also work', async ({ page }) => {
+    // currently selected program is logiciel; use a MEC course
+    const searchInput = page.locator(selectors.searchInput);
+    await searchInput.fill('MEC1');
+
+    const button = page.locator(selectors.globalSearchButton);
+    await button.click();
+
+    await expect(page.getByText('Searching in all programs...')).toBeHidden({ timeout: 5000 });
+
+    const course = TEST_COURSES.MEC129;
+
+    // make sure the card becomes visible before attempting to drop
+    const card = await getCourseCard(page, course.code);
+    const dropTarget = page.locator(
+      selectors.sessionDropTarget(course.sessionTerm, course.sessionYear),
+    );
+    await dropTarget.scrollIntoViewIfNeeded();
+
+    const courseBox = page.locator(selectors.courseInSession(course.code));
+    // perform drag using reliable helper directly to avoid duplicate import conflict
+    await reliableDragAndDrop(page, card, dropTarget, courseBox);
+
+    await expect(courseBox).toBeVisible({ timeout: 15000 });
+    await expect(courseBox).toContainText(course.code);
   });
 });

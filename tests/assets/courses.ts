@@ -11,6 +11,7 @@ const CURRENT_YEAR = new Date().getFullYear();
 
 // IMPORTANT NOTE: Only add new courses, do not modify or remove existing ones as they are used in tests
 export const TEST_COURSES: Record<string, TestCourse> = {
+  // LOG
   LOG240: {
     code: 'LOG240',
     credits: 3,
@@ -40,5 +41,12 @@ export const TEST_COURSES: Record<string, TestCourse> = {
     credits: 4,
     sessionTerm: TermEnum.A,
     sessionYear: CURRENT_YEAR + 2,
+  },
+  // MEC
+  MEC129: {
+    code: 'MEC129',
+    credits: 4,
+    sessionTerm: TermEnum.E,
+    sessionYear: CURRENT_YEAR,
   },
 };

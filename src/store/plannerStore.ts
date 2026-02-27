@@ -28,7 +28,7 @@ type PlannerState = {
 };
 
 type PlannerActions = {
-  initializePlanner: (startYear: number, startTerm: TermEnum) => void;
+  initializePlanner: (startYear: number) => void;
   addYear: () => void;
   deleteYear: (year: number) => void;
   getSessionKeysForYear: (year: number) => string[];
@@ -75,12 +75,12 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
       }, 0);
     },
 
-    initializePlanner: (startYear: number, startTerm: TermEnum) => {
+    initializePlanner: (startYear: number) => {
       const currentDate = new Date();
       const currentYear = currentDate.getFullYear();
       const endYear = Math.max(currentYear, startYear);
 
-      const sessionKeys = generateSessionRange(startYear, startTerm, endYear);
+      const sessionKeys = generateSessionRange(startYear, endYear);
 
       sessionKeys.forEach((key) => {
         const year = extractYearFromSessionKey(key);

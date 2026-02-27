@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import { Info } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import CreditsTag from '@/components/atoms/CreditsTag';
+import Tag from '@/components/atoms/Tag';
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shadcn/ui/tooltip';
 import { getSeasonStyle } from '@/utils/seasonUtils';
@@ -51,16 +52,9 @@ const SessionHeader: FC<SessionHeaderProps> = ({
           )}
         </h3>
         {isCurrentSession && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="ml-2 size-2 rounded-full bg-green-500 animate-pulse" />
-              </TooltipTrigger>
-              <TooltipContent sideOffset={8}>
-                {t('current-session')}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tag variant="currentSession" className="ml-2">
+            {t('current-session')}
+          </Tag>
         )}
       </div>
       <CreditsTag

@@ -15,8 +15,8 @@ import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shadcn/ui/tooltip';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
-
 import { DragType } from '@/types/dnd';
+import { getDisplayedPrerequisites } from '@/utils/courseUtils';
 import { filterCurrentAndFutureSessions, formatSessionShort, generateSessionKey, sortSessionsChronologically } from '@/utils/sessionUtils';
 
 type SectionProps = {
@@ -45,13 +45,15 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
   const t = useTranslations('PlannerPage');
 
   const renderPrerequisites = () => {
-    if (course.prerequisites.length === 0) {
+    const prereqsToDisplay = getDisplayedPrerequisites(course);
+
+    if (prereqsToDisplay.length === 0) {
       return null;
     }
 
     return (
       <Section title={t('prerequisites')}>
-        {course.prerequisites.map((preq) => (
+        {prereqsToDisplay.map((preq) => (
           <Tag key={preq} variant="primary">
             {preq}
           </Tag>

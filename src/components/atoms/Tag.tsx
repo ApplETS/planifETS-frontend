@@ -3,7 +3,7 @@
 import type { FC, ReactNode } from 'react';
 import { cn } from '@/shadcn/lib/utils';
 
-export type TagVariant = 'default' | 'primary' | 'secondary' | 'credits' | 'credits-subtle' | 'success' | 'warning' | 'danger' | 'info' | 'sessionDisabled' | 'sessionAvailable';
+export type TagVariant = 'default' | 'primary' | 'secondary' | 'credits' | 'credits-subtle' | 'success' | 'warning' | 'danger' | 'info' | 'sessionDisabled' | 'sessionAvailable' | 'currentSession';
 
 type ContrastTagProps = React.HTMLAttributes<HTMLSpanElement> & {
   children: ReactNode;
@@ -13,6 +13,7 @@ type ContrastTagProps = React.HTMLAttributes<HTMLSpanElement> & {
 const Tag: FC<ContrastTagProps> = ({
   children,
   variant = 'default',
+  className,
   ...props
 }) => {
   const BASE_STYLES = 'inline-flex items-center justify-center rounded-md text-xs font-medium select-none';
@@ -29,11 +30,12 @@ const Tag: FC<ContrastTagProps> = ({
     'danger': 'bg-destructive/10 text-destructive border border-destructive/20 px-2.5 py-1',
     'sessionDisabled': 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border border-green-300/40 opacity-40 pointer-events-none cursor-default px-2.5 py-1',
     'sessionAvailable': 'bg-muted text-muted-foreground border hover:bg-primary/10 cursor-pointer px-2.5 py-1',
+    'currentSession': 'text-primary bg-primary/20 border border-primary/20 px-3.5 py-1.5 bg-transparent px-1.5 py-0.5 ml-2 uppercase tracking-',
   };
 
   return (
     <span
-      className={cn(BASE_STYLES, VARIANT_STYLES[variant])}
+      className={cn(BASE_STYLES, VARIANT_STYLES[variant], className)}
       {...props}
     >
       {children}

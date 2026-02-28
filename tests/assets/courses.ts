@@ -49,4 +49,10 @@ export const TEST_COURSES: Record<string, TestCourse> = {
     sessionTerm: TermEnum.E,
     sessionYear: CURRENT_YEAR,
   },
+  MEC222: {
+    code: 'MEC222',
+    credits: 3,
+    sessionTerm: TermEnum.E,
+    sessionYear: CURRENT_YEAR,
+  },
 };

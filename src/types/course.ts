@@ -7,6 +7,9 @@ export type Course = {
   credits: number;
   prerequisites: string[];
   availability: string[];
+  unstructuredPrerequisite?: string;
+  type?: string | null;
+  typicalSessionIndex?: number | null;
 };
 
 export type CourseInstance = {

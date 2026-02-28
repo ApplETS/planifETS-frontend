@@ -36,7 +36,11 @@ export const getDisplayedPrerequisites = (course: Course): string[] => {
     return course.prerequisites;
   }
 
-  return course.unstructuredPrerequisite ? [course.unstructuredPrerequisite] : [];
+  if (course.unstructuredPrerequisite) {
+    return [course.unstructuredPrerequisite];
+  }
+
+  return ['N/A'];
 };
 
 type TimingState = 'past' | 'current' | 'future';

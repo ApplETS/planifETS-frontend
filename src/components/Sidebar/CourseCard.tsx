@@ -54,7 +54,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
     return (
       <Section title={t('prerequisites')}>
         {prereqsToDisplay.map((preq) => (
-          <Tag key={preq} variant="primary">
+          <Tag key={preq} variant={preq === 'N/A' ? 'secondary' : 'primary'}>
             {preq}
           </Tag>
         ))}

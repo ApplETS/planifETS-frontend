@@ -1,4 +1,5 @@
 import type { ProgramCourseDetailedDto, SearchCourseResult } from '@/api/types';
+import type { Course } from '@/types/course';
 import type { YearData } from '@/types/planner';
 import type { SessionTiming } from '@/types/session';
 import { describe, expect, it } from 'vitest';
@@ -6,6 +7,7 @@ import { TermEnum } from '@/types/session';
 import {
   addCourseToSession,
   determineStatus,
+  getDisplayedPrerequisites,
   mapApiCourseToAppCourse,
   moveCourseToSession,
   removeCourseFromSession,
@@ -49,6 +51,9 @@ describe('courseUtils', () => {
         credits: 3,
         prerequisites: ['PRE101'],
         availability: ['A2025'],
+        type: 'TRONC',
+        typicalSessionIndex: 1,
+        unstructuredPrerequisite: undefined,
       });
     });
 
@@ -62,6 +67,9 @@ describe('courseUtils', () => {
         credits: 4,
         prerequisites: [],
         availability: ['H2025'],
+        type: 'CONCE',
+        typicalSessionIndex: 2,
+        unstructuredPrerequisite: 'None',
       });
     });
 
@@ -83,6 +91,56 @@ describe('courseUtils', () => {
       const result = mapApiCourseToAppCourse(null as any);
 
       expect(result).toBeNull();
+    });
+  });
+
+  describe('getDisplayedPrerequisites', () => {
+    it('returns structured prerequisites when available', () => {
+      const course: Course = {
+        id: 1,
+        code: 'C1',
+        title: 'Course 1',
+        credits: 0,
+        prerequisites: ['chat', 'chaton'],
+        availability: [],
+        unstructuredPrerequisite: 'should not be used',
+        type: 'CONCE',
+        typicalSessionIndex: 0,
+      };
+
+      expect(getDisplayedPrerequisites(course)).toEqual(['chat', 'chaton']);
+    });
+
+    it('prioritizes unstructuredPrerequisite when no structured prerequisites', () => {
+      const course: Course = {
+        id: 2,
+        code: 'C2',
+        title: 'Course 2',
+        credits: 0,
+        prerequisites: [],
+        availability: [],
+        unstructuredPrerequisite: 'chevre1 et chevre2',
+        type: 'TRONC',
+        typicalSessionIndex: 0,
+      };
+
+      expect(getDisplayedPrerequisites(course)).toEqual(['chevre1 et chevre2']);
+    });
+
+    it('returns N/A when neither structured nor unstructured prerequisites exist', () => {
+      const course: Course = {
+        id: 3,
+        code: 'C3',
+        title: 'Course 3',
+        credits: 0,
+        prerequisites: [],
+        availability: [],
+        unstructuredPrerequisite: undefined,
+        type: 'CONCE',
+        typicalSessionIndex: 0,
+      };
+
+      expect(getDisplayedPrerequisites(course)).toEqual(['N/A']);
     });
   });
 

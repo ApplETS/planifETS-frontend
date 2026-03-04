@@ -272,4 +272,25 @@ export const COURSE_SEARCH_RESULTS: Record<string, SearchCoursesDto> = {
     total: 3,
     hasMore: false,
   },
+  MEC222: {
+    courses: [
+      {
+        id: 352740,
+        code: 'MEC222',
+        title: 'Dynamique',
+        credits: 3,
+        cycle: 1,
+        sessionAvailability: [
+          {
+            sessionCode: 'H2025',
+            availability: ['JOUR'],
+          },
+        ],
+        prerequisites: [],
+        unstructuredPrerequisite: 'MEC111 et MAT145',
+      },
+    ],
+    total: 1,
+    hasMore: false,
+  },
 };

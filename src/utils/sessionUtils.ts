@@ -154,26 +154,14 @@ export const generateSessionKey = (
 };
 
 /**
- * Generates an array of session keys from startYear/startTerm to endYear
+ * Generates an array of session keys from startYear to endYear
  */
-export const generateSessionRange = (
-  startYear: number,
-  startTerm: TermEnum,
-  endYear: number,
-): string[] => {
+export const generateSessionRange = (startYear: number, endYear: number): string[] => {
   const sessionKeys: string[] = [];
 
   for (let y = startYear; y <= endYear; y++) {
     ORDERED_SESSION_TERMS.forEach((sessionTerm: TermEnum) => {
-      // For the first year, only include sessions from startTerm onwards
-      if (y === startYear) {
-        if (ORDERED_SESSION_TERMS.indexOf(sessionTerm) >= ORDERED_SESSION_TERMS.indexOf(startTerm)) {
-          sessionKeys.push(generateSessionKey(y, sessionTerm));
-        }
-      } else {
-        // For subsequent years, include all sessions
-        sessionKeys.push(generateSessionKey(y, sessionTerm));
-      }
+      sessionKeys.push(generateSessionKey(y, sessionTerm));
     });
   }
 

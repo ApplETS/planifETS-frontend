@@ -22,7 +22,25 @@ export const mapApiCourseToAppCourse = (
     credits: apiCourse.credits,
     prerequisites: apiCourse.prerequisites.map((p: CoursePrerequisiteDto) => p.code),
     availability: apiCourse.sessionAvailability.map((sa) => sa.sessionCode),
+    unstructuredPrerequisite: apiCourse.unstructuredPrerequisite || undefined,
+    type: apiCourse.type,
+    typicalSessionIndex: apiCourse.typicalSessionIndex,
   };
+};
+
+/**
+ * Determines either structured prerequisites or unstructured prerequisite string to display
+ */
+export const getDisplayedPrerequisites = (course: Course): string[] => {
+  if (course.prerequisites.length > 0) {
+    return course.prerequisites;
+  }
+
+  if (course.unstructuredPrerequisite) {
+    return [course.unstructuredPrerequisite];
+  }
+
+  return ['N/A'];
 };
 
 type TimingState = 'past' | 'current' | 'future';

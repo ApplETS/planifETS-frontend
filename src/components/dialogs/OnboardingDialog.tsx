@@ -1,6 +1,5 @@
 'use client';
 
-import type { TermEnum } from '@/types/session';
 import { Check } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
@@ -23,19 +22,11 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/shadcn/ui/drawer';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/shadcn/ui/select';
+
 import { useOnboardingStore } from '@/store/onboardingStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useProgramStore } from '@/store/programStore';
-import { getCurrentSession, getTranslationKey, ORDERED_SESSION_TERMS, SESSION_SELECTION_BOUNDS } from '@/utils/sessionUtils';
+import { SESSION_SELECTION_BOUNDS } from '@/utils/sessionUtils';
 
 type OnboardingDialogProps = {
   isOpen: boolean;
@@ -43,15 +34,11 @@ type OnboardingDialogProps = {
 
 const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
   const tOnboarding = useTranslations('Onboarding');
-  const tPlannerPage = useTranslations('PlannerPage');
   const isMobile = useIsMobile();
 
   const currentYear = new Date().getFullYear();
 
   const [selectedYear, setSelectedYear] = useState<number>(currentYear);
-  const [selectedTerm, setSelectedTerm] = useState<TermEnum>(() =>
-    getCurrentSession(),
-  );
 
   const programStore = useProgramStore();
   const selectedPrograms = programStore.getSelectedProgramIds();
@@ -64,10 +51,10 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
     }
 
     // Initialize planner with start session
-    initializePlanner(selectedYear, selectedTerm);
+    initializePlanner(selectedYear);
 
     // Mark onboarding as complete
-    completeOnboarding(selectedYear, selectedTerm);
+    completeOnboarding(selectedYear);
   };
 
   const isValid = selectedPrograms.length > 0;
@@ -104,30 +91,6 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({ isOpen }) => {
             {tOnboarding('admission-day-label')}
           </label>
           <div className="flex gap-2">
-            <Select
-              value={selectedTerm}
-              onValueChange={(v) => setSelectedTerm(v as TermEnum)}
-            >
-              <SelectTrigger
-                aria-labelledby="admission-day-label"
-                className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background focus-visible:outline-none"
-              >
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel className="px-2 py-1.5 text-xs text-muted-foreground">
-                    {tOnboarding('admission-day-label')}
-                  </SelectLabel>
-                  {ORDERED_SESSION_TERMS.map((term) => (
-                    <SelectItem key={term} value={term}>
-                      {tPlannerPage(getTranslationKey(term))}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-
             <input
               id="admission-year"
               name="admission-year"

@@ -89,4 +89,35 @@ test.describe('Course Management', () => {
 
     await expect(totalCredits).toHaveText(`0 ${TOTAL_CREDITS_LABEL}`, { timeout: 15000 });
   });
+
+  test('shows unstructured prerequisite when no structured prerequisites exist', async ({ page }) => {
+    const course = TEST_COURSES.MEC222;
+
+    const searchInput = page.locator(selectors.searchInput);
+    await searchInput.fill(course.code);
+
+    const button = page.locator(selectors.globalSearchButton);
+    await button.click();
+
+    // wait directly for card instead of loader
+    const card = page.locator(selectors.courseCard(course.code));
+
+    await expect(card).toBeVisible({ timeout: 15000 });
+    await expect(card).toContainText('MEC111 et MAT145');
+  });
+
+  test('displays N/A when a course has no prerequisites at all', async ({ page }) => {
+    const course = TEST_COURSES.MEC129;
+
+    const searchInput = page.locator(selectors.searchInput);
+    await searchInput.fill('MEC1');
+
+    const button = page.locator(selectors.globalSearchButton);
+    await button.click();
+
+    const card = page.locator(selectors.courseCard(course.code));
+
+    await expect(card).toBeVisible({ timeout: 15000 });
+    await expect(card).toContainText('N/A');
+  });
 });

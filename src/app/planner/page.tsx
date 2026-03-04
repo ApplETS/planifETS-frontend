@@ -45,9 +45,9 @@ export default function PlannerPage() {
         plannerState.sessionKeys.length === 0
         && Object.keys(sessionState.sessions).length === 0
       ) {
-        const startSession = onboardingState.getStartSession();
+        const startSession = onboardingState.getStartYear();
         if (startSession) {
-          initializePlanner(startSession.startYear, startSession.startTerm);
+          initializePlanner(startSession.startYear);
         }
       }
     }

@@ -205,21 +205,21 @@ describe('sessionUtils', () => {
 
   describe('generateSessionRange', () => {
     it('should generate session range from start to end', () => {
-      const range = generateSessionRange(2025, TermEnum.E, 2026);
+      const range = generateSessionRange(2025, 2026);
 
-      expect(range).toEqual(['E2025', 'A2025', 'H2026', 'E2026', 'A2026']);
+      expect(range).toEqual(['H2025', 'E2025', 'A2025', 'H2026', 'E2026', 'A2026']);
     });
 
     it('should handle same year', () => {
-      const range = generateSessionRange(2025, TermEnum.H, 2025);
+      const range = generateSessionRange(2025, 2025);
 
       expect(range).toEqual(['H2025', 'E2025', 'A2025']);
     });
 
-    it('should handle start term in middle', () => {
-      const range = generateSessionRange(2025, TermEnum.A, 2025);
+    it('should return empty array when startYear > endYear', () => {
+      const range = generateSessionRange(2026, 2025);
 
-      expect(range).toEqual(['A2025']);
+      expect(range).toEqual([]);
     });
   });
 

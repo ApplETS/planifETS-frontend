@@ -3,7 +3,7 @@ import { Leaf, Snowflake, Sun } from 'lucide-react';
 import { TermEnum } from '@/types/session';
 import { ORDERED_SESSION_TERMS } from '@/utils/sessionUtils';
 
-export type SeasonStyle = {
+type SeasonStyle = {
   SeasonIcon: React.ComponentType<any>;
   color: string;
 };
@@ -12,7 +12,7 @@ type SeasonIconsType = {
   [key in TermEnum]: SeasonStyle;
 };
 
-export const seasonIcons: SeasonIconsType = {
+const seasonIcons: SeasonIconsType = {
   [TermEnum.H]: { SeasonIcon: Snowflake, color: 'text-blue-400' },
   [TermEnum.E]: { SeasonIcon: Sun, color: 'text-yellow-400' },
   [TermEnum.A]: { SeasonIcon: Leaf, color: 'text-orange-500' },

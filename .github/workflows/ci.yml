@@ -50,6 +50,24 @@ jobs:
       - name: Lint
         run: yarn lint
 
+  dead-code:
+    name: Dead Code
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Check for dead code
+        run: yarn unused
+
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest

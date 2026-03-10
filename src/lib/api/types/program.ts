@@ -14,15 +14,6 @@ export type ProgramDto = {
   updatedAt: string;
 };
 
-export type ProgramCourseDto = {
-  id: string;
-  code: string;
-  title: string;
-  credits: number;
-  session: string;
-  prerequisites?: string[];
-};
-
 // /program-courses endpoint
 export type SessionAvailabilityDto = {
   sessionCode: string;

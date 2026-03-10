@@ -3,22 +3,22 @@ import type { ApiResponse } from '@/types/api';
 import { apiClient } from '../client';
 import { API_ENDPOINTS } from '../endpoints';
 
-export type Availability = 'JOUR' | 'SOIR';
-export type Trimester = 'HIVER' | 'ETE' | 'AUTOMNE';
+type Availability = 'JOUR' | 'SOIR' | 'INTENSIF';
+type Trimester = 'HIVER' | 'ETE' | 'AUTOMNE';
 
-export type Session = {
+type Session = {
   trimester: Trimester;
   year: number;
 };
 
-export type CourseInstance = {
+type CourseInstance = {
   availability: Availability[];
   sessionYear: number;
   sessionTrimester: Trimester;
   session: Session;
 };
 
-export type CourseDetail = {
+type CourseDetail = {
   code: string;
   title: string;
   credits: number;
@@ -27,7 +27,7 @@ export type CourseDetail = {
   courseInstances: CourseInstance[];
 };
 
-export type ProgramCourse = {
+type ProgramCourse = {
   courseId: number;
   programId: number;
   type: string;
@@ -37,7 +37,7 @@ export type ProgramCourse = {
   prerequisites: unknown[];
 };
 
-export type Course = {
+type Course = {
   id: string;
   code: string;
   title: string;
@@ -47,7 +47,7 @@ export type Course = {
   corequisites?: string[];
 };
 
-export type GetCourseParams = {
+type GetCourseParams = {
   courseId: number;
   programCode: string;
 };

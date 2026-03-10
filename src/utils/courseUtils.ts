@@ -1,28 +1,94 @@
-import type { CourseInstance, CourseStatus } from '@/types/course';
+import type { SearchCourseResult } from '@/api/types/course';
+import type { CoursePrerequisiteDto, ProgramCourseDetailedDto } from '@/api/types/program';
+import type { Course, CourseInstance, CourseStatus } from '@/types/course';
 import type { YearData } from '@/types/planner';
-import type { SessionEnum, SessionTiming } from '@/types/session';
+import type { SessionTiming, TermEnum } from '@/types/session';
 
-export const determineInitialStatus = (sessionTiming: SessionTiming): CourseStatus => {
-  if (sessionTiming.isCurrent) {
-    return 'In Progress';
+/**
+ * Maps API course (from /api/program-courses/programs or /api/courses/search) to frontend Course type
+ * Both endpoints now return the same unified Course structure
+ */
+export const mapApiCourseToAppCourse = (
+  apiCourse: ProgramCourseDetailedDto | SearchCourseResult,
+): Course | null => {
+  if (!apiCourse?.code || !apiCourse?.id) {
+    return null;
   }
 
-  if (sessionTiming.isPast) {
+  return {
+    id: apiCourse.id,
+    code: apiCourse.code,
+    title: apiCourse.title,
+    credits: apiCourse.credits,
+    prerequisites: apiCourse.prerequisites.map((p: CoursePrerequisiteDto) => p.code),
+    availability: apiCourse.sessionAvailability.map((sa) => sa.sessionCode),
+    unstructuredPrerequisite: apiCourse.unstructuredPrerequisite || undefined,
+    type: apiCourse.type,
+    typicalSessionIndex: apiCourse.typicalSessionIndex,
+  };
+};
+
+/**
+ * Determines either structured prerequisites or unstructured prerequisite string to display
+ */
+export const getDisplayedPrerequisites = (course: Course): string[] => {
+  if (course.prerequisites.length > 0) {
+    return course.prerequisites;
+  }
+
+  if (course.unstructuredPrerequisite) {
+    return [course.unstructuredPrerequisite];
+  }
+
+  return ['N/A'];
+};
+
+type TimingState = 'past' | 'current' | 'future';
+
+type DetermineStatusArgs = {
+  sessionTiming: SessionTiming;
+  isKnownAvailability?: boolean;
+  isCourseAvailable?: boolean;
+};
+
+export const determineStatus = ({
+  sessionTiming,
+  isKnownAvailability = false,
+  isCourseAvailable = true,
+}: DetermineStatusArgs): CourseStatus => {
+  let timingState: TimingState;
+  if (sessionTiming.isCurrent) {
+    timingState = 'current';
+  } else if (sessionTiming.isPast) {
+    timingState = 'past';
+  } else {
+    timingState = 'future';
+  }
+
+  if (timingState === 'past') {
     return 'Completed';
   }
 
-  return 'Planned';
+  if (!isKnownAvailability) {
+    return 'Planned';
+  }
+
+  if (!isCourseAvailable) {
+    return 'Not Offered';
+  }
+
+  return 'Offered';
 };
 
 type SessionUpdate = (courseInstances: CourseInstance[]) => CourseInstance[];
 
 const updateYearSession = (
   yearData: YearData,
-  sessionTerm: SessionEnum,
+  sessionTerm: TermEnum,
   updateFn: SessionUpdate,
 ): YearData => ({
   ...yearData,
-  sessions: yearData.sessions.map(session =>
+  sessions: yearData.sessions.map((session) =>
     session.sessionTerm === sessionTerm
       ? {
         ...session,
@@ -34,49 +100,42 @@ const updateYearSession = (
 
 export const addCourseToSession = (
   yearData: YearData,
-  sessionTerm: SessionEnum,
+  sessionTerm: TermEnum,
   courseId: number,
-  status: CourseStatus = 'Planned',
 ): YearData => {
   return updateYearSession(yearData, sessionTerm, (courseInstances) => {
-    if (courseInstances.some(ci => ci.courseId === courseId)) {
+    if (courseInstances.some((ci) => ci.courseId === courseId)) {
       return courseInstances;
     }
-    return [...courseInstances, { courseId, status }];
+    return [...courseInstances, { courseId }];
   });
 };
 
 export const removeCourseFromSession = (
   yearData: YearData,
-  sessionTerm: SessionEnum,
+  sessionTerm: TermEnum,
   courseId: number,
 ): YearData => {
-  return updateYearSession(yearData, sessionTerm, courseInstances =>
-    courseInstances.filter(ci => ci.courseId !== courseId));
-};
-
-export const updateCourseStatus = (
-  yearData: YearData,
-  sessionTerm: SessionEnum,
-  courseId: number,
-  status: CourseStatus,
-): YearData => {
-  return updateYearSession(yearData, sessionTerm, courseInstances =>
-    courseInstances.map(ci =>
-      ci.courseId === courseId ? { ...ci, status } : ci,
-    ));
+  return updateYearSession(yearData, sessionTerm, (courseInstances) =>
+    courseInstances.filter((ci) => ci.courseId !== courseId));
 };
 
 export const moveCourseToSession = (
   yearData: YearData,
-  fromSessionTerm: SessionEnum,
-  toSessionTerm: SessionEnum,
+  fromSessionTerm: TermEnum,
+  toSessionTerm: TermEnum,
   courseId: number,
-  newStatus: CourseStatus,
 ): YearData => {
+  if (fromSessionTerm === toSessionTerm) {
+    return yearData;
+  }
+  const fromSession = yearData.sessions.find((session) => session.sessionTerm === fromSessionTerm);
+  if (!fromSession?.courseInstances?.some((ci) => ci.courseId === courseId)) {
+    return yearData;
+  }
   const updatedYearData = removeCourseFromSession(yearData, fromSessionTerm, courseId);
-  return updateYearSession(updatedYearData, toSessionTerm, courseInstances => [
+  return updateYearSession(updatedYearData, toSessionTerm, (courseInstances) => [
     ...courseInstances,
-    { courseId, status: newStatus },
+    { courseId },
   ]);
 };

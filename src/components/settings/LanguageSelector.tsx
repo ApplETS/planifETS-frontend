@@ -13,7 +13,7 @@ const LanguageSelector = () => {
     [
       'flex-1 px-4 py-2 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
       isSelected
-        ? 'bg-primary text-primary-foreground font-semibold shadow cursor-default pointer-events-none'
+        ? 'bg-primary/50 text-primary-foreground font-semibold shadow cursor-default pointer-events-none'
         : 'bg-muted text-muted-foreground hover:bg-accent hover:text-foreground cursor-pointer',
     ].join(' ');
 

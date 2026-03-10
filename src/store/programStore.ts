@@ -1,19 +1,28 @@
+/**
+ * Program Store
+ * Purpose: Store which programs the user has selected to view and track course associations
+ * Key principle: Store only user's program choices (IDs/codes), not the program catalog data
+ * What it stores (user's persistent data):
+ * - selectedPrograms: string[] - Array of selected program codes/IDs
+ * - programCourseIds: Record<string, number[]> - Maps program codes/IDs to arrays of associated course IDs
+ */
+
 import { create } from 'zustand';
-import { persistConfig } from '../../lib/persistConfig';
+import { persistConfig } from '@/lib/persistConfig';
 
 type ProgramState = {
-  selectedPrograms: string[];
-  programCourseIds: Record<string, number[]>;
+  selectedPrograms: number[];
+  programCourseIds: Record<number, number[]>;
 };
 
 type ProgramActions = {
-  getSelectedPrograms: () => string[];
-  getProgramCourseIds: (program: string | null) => number[];
-  setSelectedPrograms: (programs: string[]) => void;
-  setProgramCourses: (program: string, courseIds: number[]) => void;
-  addProgramCourse: (program: string, courseId: number) => void;
-  removeProgramCourse: (program: string, courseId: number) => void;
-  clearProgramCourseIds: (program?: string) => void;
+  getSelectedProgramIds: () => number[];
+  getProgramCourseIds: (program: number | null) => number[];
+  setSelectedPrograms: (programs: number[]) => void;
+  setProgramCourses: (program: number, courseIds: number[]) => void;
+  addProgramCourse: (program: number, courseId: number) => void;
+  removeProgramCourse: (program: number, courseId: number) => void;
+  clearProgramCourseIds: (program?: number) => void;
 };
 
 export const useProgramStore = create<ProgramState & ProgramActions>()(
@@ -21,7 +30,7 @@ export const useProgramStore = create<ProgramState & ProgramActions>()(
     selectedPrograms: [],
     programCourseIds: {},
 
-    getSelectedPrograms: () => get().selectedPrograms,
+    getSelectedProgramIds: () => get().selectedPrograms,
 
     getProgramCourseIds: (program) => {
       if (!program) {
@@ -30,10 +39,10 @@ export const useProgramStore = create<ProgramState & ProgramActions>()(
       return get().programCourseIds[program] || [];
     },
 
-    setSelectedPrograms: programs => set({ selectedPrograms: programs }),
+    setSelectedPrograms: (programs) => set({ selectedPrograms: programs }),
 
     setProgramCourses: (program, courseIds) =>
-      set(state => ({
+      set((state) => ({
         programCourseIds: {
           ...state.programCourseIds,
           [program]: courseIds,
@@ -61,12 +70,12 @@ export const useProgramStore = create<ProgramState & ProgramActions>()(
         return {
           programCourseIds: {
             ...state.programCourseIds,
-            [program]: currentCourses.filter(id => id !== courseId),
+            [program]: currentCourses.filter((id) => id !== courseId),
           },
         };
       }),
 
-    clearProgramCourseIds: program =>
+    clearProgramCourseIds: (program) =>
       set((state) => {
         if (program) {
           const { [program]: _, ...rest } = state.programCourseIds;

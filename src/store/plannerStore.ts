@@ -1,56 +1,93 @@
+/**
+ * Planner Store
+ * What it stores (user's persistent data):
+ * - name: (e.g., 'Default Planner', 'Fall 2024 Plan')
+ * - sessionKeys: string[] - Array of session keys that exist (e.g., ['A2024', 'H2025', 'E2025'])
+ * - favoriteCourses: number[] - User's favorited course IDs (moved from courseStore)
+ */
+
+import type { TermEnum } from '@/types/session';
+
 import { create } from 'zustand';
-
 import { persistConfig } from '@/lib/persistConfig';
-import { SessionEnum } from '@/types/session';
-import { extractYearFromSessionKey, generateSessionKey } from '@/utils/sessionUtils';
+import { safeHas } from '@/utils/safeAccess';
+import {
+  extractYearFromSessionKey,
+  generateSessionKey,
+  generateSessionRange,
+  ORDERED_SESSION_TERMS,
+} from '@/utils/sessionUtils';
 
+import { useCourseStore } from './courseStore';
 import { useSessionStore } from './sessionStore';
 
 type PlannerState = {
   name: string;
   sessionKeys: string[];
-  totalCredits: number;
+  favoriteCourses: number[];
 };
 
 type PlannerActions = {
-  initializePlanner: () => void;
+  initializePlanner: (startYear: number) => void;
   addYear: () => void;
   deleteYear: (year: number) => void;
   getSessionKeysForYear: (year: number) => string[];
   getYears: () => number[];
-  recalculateTotalCredits: () => void;
+  getTotalCredits: () => number;
+  toggleFavorite: (courseId: number) => void;
+  isFavorite: (courseId: number) => boolean;
 };
-
-const NUMBER_OF_YEARS_TO_CREATE = 4;
 
 export const usePlannerStore = create<PlannerState & PlannerActions>()(
   persistConfig('planner-store', (set, get) => ({
     name: 'Default Planner',
     sessionKeys: [],
-    totalCredits: 0,
+    favoriteCourses: [],
 
-    recalculateTotalCredits: () => {
-      const sessionStore = useSessionStore.getState();
-      const totalCredits = get().sessionKeys.reduce((total, sessionKey) => {
-        const session = sessionStore.getSessionByKey(sessionKey);
-        return total + (session?.totalCredits ?? 0);
-      }, 0);
-      set({ totalCredits });
+    toggleFavorite: (courseId: number) => {
+      set((state) => {
+        const favorites = [...state.favoriteCourses];
+        const index = favorites.indexOf(courseId);
+
+        if (index !== -1) {
+          favorites.splice(index, 1);
+        } else {
+          favorites.push(courseId);
+        }
+
+        return { favoriteCourses: favorites };
+      });
     },
 
-    initializePlanner: () => {
-      const currentYear = new Date().getFullYear();
-      const sessionKeys: string[] = [];
+    isFavorite: (courseId: number) => get().favoriteCourses.includes(courseId),
 
-      for (let year = currentYear; year < currentYear + NUMBER_OF_YEARS_TO_CREATE; year++) {
-        Object.values(SessionEnum).forEach((sessionTerm: SessionEnum) => {
-          sessionKeys.push(generateSessionKey(year, sessionTerm));
-        });
+    getTotalCredits: () => {
+      const sessionStore = useSessionStore.getState();
+      const courseStore = useCourseStore.getState();
+
+      return get().sessionKeys.reduce((total, sessionKey) => {
+        const courseInstances = sessionStore.getSessionCourses(sessionKey);
+        const sessionCredits = courseInstances.reduce((sessionTotal, instance) => {
+          const course = courseStore.getCourse(instance.courseId);
+          return sessionTotal + (course?.credits ?? 0);
+        }, 0);
+        return total + sessionCredits;
+      }, 0);
+    },
+
+    initializePlanner: (startYear: number) => {
+      const currentDate = new Date();
+      const currentYear = currentDate.getFullYear();
+      const endYear = Math.max(currentYear, startYear);
+
+      const sessionKeys = generateSessionRange(startYear, endYear);
+
+      sessionKeys.forEach((key) => {
+        const year = extractYearFromSessionKey(key);
         useSessionStore.getState().initializeSessions(year);
-      }
+      });
 
       set({ sessionKeys });
-      get().recalculateTotalCredits();
     },
 
     addYear: () => {
@@ -59,7 +96,7 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
 
         const maxYear = Math.max(...years, 0);
         const newYear = maxYear + 1;
-        const newKeys = Object.values(SessionEnum).map((sessionTerm: SessionEnum) =>
+        const newKeys = ORDERED_SESSION_TERMS.map((sessionTerm: TermEnum) =>
           generateSessionKey(newYear, sessionTerm),
         );
 
@@ -69,37 +106,38 @@ export const usePlannerStore = create<PlannerState & PlannerActions>()(
           sessionKeys: [...state.sessionKeys, ...newKeys],
         };
       });
-      get().recalculateTotalCredits();
     },
 
     getSessionKeysForYear: (year: number) => {
-      const yearStr = year.toString();
-      return get().sessionKeys.filter(key => key.substring(1) === yearStr);
+      return get().sessionKeys.filter((key) => extractYearFromSessionKey(key) === year);
     },
 
     getYears: () => {
       const state = get();
-      const years = state.sessionKeys
-        .map(extractYearFromSessionKey);
+      const years = state.sessionKeys.map(extractYearFromSessionKey);
 
       return [...new Set(years)].sort((a, b) => a - b);
     },
 
     deleteYear: (year: number) => {
-      const yearStr = year.toString();
-      const keysToDelete = get().sessionKeys.filter(key => key.substring(1) === yearStr);
+      const keysToDelete = get().getSessionKeysForYear(year);
 
       const sessionStore = useSessionStore.getState();
+      const newSessions = { ...sessionStore.sessions };
 
       keysToDelete.forEach((key) => {
-        delete sessionStore.sessions[key];
+        // Safe to use delete since we're modifying, not reading
+        if (safeHas(newSessions, key)) {
+          delete newSessions[key];
+        }
       });
-      sessionStore.setSessions({ ...sessionStore.sessions });
+      sessionStore.setSessions(newSessions);
 
-      set(state => ({
-        sessionKeys: state.sessionKeys.filter(key => key.substring(1) !== yearStr),
+      set((state) => ({
+        sessionKeys: state.sessionKeys.filter(
+          (key) => extractYearFromSessionKey(key) !== year,
+        ),
       }));
-      get().recalculateTotalCredits();
     },
   })),
 );

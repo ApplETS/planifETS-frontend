@@ -1,4 +1,4 @@
-export type CourseStatus = 'Planned' | 'In Progress' | 'Completed' | 'Failed' | 'Not Offered';
+export type CourseStatus = 'Completed' | 'Offered' | 'Not Offered' | 'Planned';
 
 export type Course = {
   id: number;
@@ -7,9 +7,11 @@ export type Course = {
   credits: number;
   prerequisites: string[];
   availability: string[];
+  unstructuredPrerequisite?: string;
+  type?: string | null;
+  typicalSessionIndex?: number | null;
 };
 
 export type CourseInstance = {
   courseId: number;
-  status: CourseStatus;
 };

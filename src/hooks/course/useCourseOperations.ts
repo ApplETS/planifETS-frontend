@@ -1,5 +1,5 @@
 import type { Course } from '@/types/course';
-import type { SessionEnum } from '@/types/session';
+import type { TermEnum } from '@/types/session';
 import { useCallback } from 'react';
 import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
@@ -10,7 +10,7 @@ export const useCourseOperations = () => {
   const sessionStore = useSessionStore();
 
   const addCourseToSession = useCallback(
-    (sessionYear: number, sessionTerm: SessionEnum, course: Course | number) => {
+    (sessionYear: number, sessionTerm: TermEnum, course: Course | number) => {
       const courseId = typeof course === 'number' ? course : course.id;
 
       // Ensure course exists in courseStore if Course object is provided
@@ -27,9 +27,9 @@ export const useCourseOperations = () => {
   const moveCourseBetweenSessions = useCallback(
     (
       fromSessionYear: number,
-      fromSessionTerm: SessionEnum,
+      fromSessionTerm: TermEnum,
       toSessionYear: number,
-      toSessionTerm: SessionEnum,
+      toSessionTerm: TermEnum,
       course: Course | number,
     ) => {
       const courseId = typeof course === 'number' ? course : course.id;
@@ -42,7 +42,7 @@ export const useCourseOperations = () => {
   );
 
   const removeCourseFromSession = useCallback(
-    (sessionYear: number, sessionTerm: SessionEnum, courseId: number) => {
+    (sessionYear: number, sessionTerm: TermEnum, courseId: number) => {
       const sessionKey = generateSessionKey(sessionYear, sessionTerm);
       sessionStore.removeCourseFromSession(sessionKey, courseId);
     },

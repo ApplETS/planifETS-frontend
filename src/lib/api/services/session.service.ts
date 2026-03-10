@@ -1,7 +1,7 @@
-import type { SessionDto } from '../types';
+import type { SessionDto } from '@/api/types';
 import type { ApiResponse } from '@/types/api';
-import { apiClient } from '../client';
-import { API_ENDPOINTS } from '../endpoints';
+import { apiClient } from '@/api/client';
+import { API_ENDPOINTS } from '@/api/endpoints';
 
 export const sessionService = {
   async getLatestAvailableSession(): Promise<ApiResponse<SessionDto>> {

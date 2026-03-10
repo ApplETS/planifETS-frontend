@@ -1,28 +1,42 @@
 {
   "Commons": {
     "credits": "credits",
+    "total-credits": "total credits",
+    "credits-short": "cr.",
     "logout": "Sign out",
     "settings": "Settings",
     "language": "Language",
     "theme": "Theme",
     "loading": "Loading...",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "add-year": "Add Year",
+    "reset-data": "Reset All Data",
+    "reset-data-description": "Clear all your planner data, courses, and settings. This action cannot be undone.",
+    "reset-data-warning": "This will delete all your data permanently!",
+    "confirm-reset": "Delete Everything",
+    "resetting": "Resetting..."
+  },
+  "Onboarding": {
+    "welcome-title": "👋 Welcome to PlanifETS",
+    "program-label": "Select your program",
+    "admission-day-label": "Select your admission year",
+    "admission-day-note": "This will create sessions from your admission year to today.",
+    "complete": "Complete"
   },
   "PlannerPage": {
     "year-with-value": "Year {value}",
-    "add-year": "Add Year",
     "sessionTerms": {
       "AUTOMNE": "Autumn",
       "HIVER": "Winter",
       "ETE": "Summer"
     },
     "delete-course": "Delete the course",
+    "credits": "credits",
     "credits-short": "cr.",
     "course": {
       "Completed": "Completed",
-      "In Progress": "In Progress",
-      "Failed": "Failed",
       "Not Offered": "Not Offered",
+      "Offered": "Offered",
       "Planned": "Planned"
     },
     "no-course-modif-past-session": "No changes allowed for this past session.",
@@ -31,13 +45,25 @@
     "courses-availability-not-yet-published": "Information on course availability for this session is not yet published by the school.",
     "prerequisites": "Prerequisites: ",
     "available": "Available: ",
+    "add-to-session-tooltip": "Add to session {session}",
+    "course-added-to-session": "Course added to session {session}",
+    "course-removed-from-session": "Course removed from session {session}",
+    "course-already-in-session": "Course is already in session {session}",
+    "remove-from-session-tooltip": "Remove from session {session}",
     "programs": "Programs",
     "search-course": "Search for a course",
     "loading-courses": "Loading courses...",
     "no-favorite-courses": "You have no favorite courses",
     "no-courses-found": "No courses found.",
+    "no-courses-found-global": "No courses found in any program. Try a different search term.",
+    "didnt-find-course": "Didn't find your course?",
+    "search-all-programs": "Search in all programs",
+    "searching-all-programs": "Searching in all programs...",
     "select-program": "Please select a program.",
     "courses": "Courses",
-    "favorite-courses": "Favorites"
+    "favorite-courses": "Favorites",
+    "session-not-created": "Session {session} is not yet created. Please add the year first.",
+    "year-deleted": "Deleted year {year}",
+    "current-session": "Current session"
   }
 }

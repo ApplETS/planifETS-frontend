@@ -31,7 +31,7 @@
     "checkJs": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "noEmit": true,
     "isolatedModules": true,
     "incremental": true,
@@ -41,17 +41,18 @@
       "@/*": [
         "./src/*"
       ],
+      "@/api/*": [
+        "./src/lib/api/*"
+      ],
+      "@/components/*": [
+        "./src/components/*"
+      ],
       "@/public/*": [
         "./public/*"
       ],
       "@/lib/*": [
         "./lib/*"
       ]
-      // "@/ui/*": ["lib/components/ui/*"],
-      // "@/components/*": ["lib/components/*"],
-      // "@/utils/*": ["lib/utils/*"],
-      // "@lib/*": ["./lib/*"],
-      // "@/hooks/*": ["lib/hooks/*"]
     },
     // Editor support
     "plugins": [
@@ -73,6 +74,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "tailwind.config.ts"
+    "tailwind.config.ts",
+    ".next/dev/types/**/*.ts"
   ]
 }

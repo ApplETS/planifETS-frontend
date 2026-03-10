@@ -1,10 +1,17 @@
 export type ProgramDto = {
-  id: string;
+  id: number;
   code: string;
-  name: string;
+  title: string;
   description?: string;
-  credits: number;
-  duration: number;
+  credits: string;
+  cycle: number;
+  url: string;
+  isHorairePdfParsable: boolean;
+  isPlanificationPdfParsable: boolean;
+  horaireCoursPdfJson: string | null;
+  planificationPdfJson: string | null;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type ProgramCourseDto = {
@@ -23,17 +30,22 @@ export type SessionAvailabilityDto = {
 };
 
 export type CoursePrerequisiteDto = {
+  id?: number;
   code: string;
   title: string;
+  credits?: number | null;
+  cycle?: number | null;
 };
 
 export type ProgramCourseDetailedDto = {
+  id: number;
   code: string;
   title: string;
   credits: number;
+  cycle?: number;
   sessionAvailability: SessionAvailabilityDto[];
   prerequisites: CoursePrerequisiteDto[];
-  type: 'TRONC' | 'CONCE' | 'CONDI' | null;
+  type: 'TRONC' | 'CONCE' | 'CONDI' | 'PROFI' | null;
   typicalSessionIndex: number | null;
   unstructuredPrerequisite: string | null;
 };

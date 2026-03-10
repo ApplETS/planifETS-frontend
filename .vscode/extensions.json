@@ -2,7 +2,6 @@
   "recommendations": [
     "dbaeumer.vscode-eslint",
     "bradlc.vscode-tailwindcss",
-    "yoavbls.pretty-ts-errors",
     "ms-playwright.playwright",
     "lokalise.i18n-ally"
   ]

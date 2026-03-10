@@ -1,27 +1,25 @@
-import type { IconType } from 'react-icons';
-import { FaSnowflake, FaSun } from 'react-icons/fa';
-import { GiMapleLeaf } from 'react-icons/gi';
-import { SessionEnum } from '@/types/session';
+import { Leaf, Snowflake, Sun } from 'lucide-react';
+
+import { TermEnum } from '@/types/session';
+import { ORDERED_SESSION_TERMS } from '@/utils/sessionUtils';
 
 export type SeasonStyle = {
-  SeasonIcon: IconType;
+  SeasonIcon: React.ComponentType<any>;
   color: string;
 };
 
 type SeasonIconsType = {
-  [key in SessionEnum]: SeasonStyle;
+  [key in TermEnum]: SeasonStyle;
 };
 
 export const seasonIcons: SeasonIconsType = {
-  [SessionEnum.H]: { SeasonIcon: FaSnowflake, color: 'text-blue-400' },
-  [SessionEnum.E]: { SeasonIcon: FaSun, color: 'text-yellow-400' },
-  [SessionEnum.A]: { SeasonIcon: GiMapleLeaf, color: 'text-orange-500' },
+  [TermEnum.H]: { SeasonIcon: Snowflake, color: 'text-blue-400' },
+  [TermEnum.E]: { SeasonIcon: Sun, color: 'text-yellow-400' },
+  [TermEnum.A]: { SeasonIcon: Leaf, color: 'text-orange-500' },
 };
 
 export const getSeasonStyle = (sessionTerm: string): SeasonStyle => {
-  const season = Object.values(SessionEnum).find(s =>
-    sessionTerm.includes(s),
-  );
+  const season = ORDERED_SESSION_TERMS.find((s) => sessionTerm.includes(s));
 
   if (!season) {
     throw new Error('Session is undefined');

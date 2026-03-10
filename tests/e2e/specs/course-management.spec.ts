@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test';
-import { SessionEnum } from '../../../src/types/session';
+import { TermEnum } from '../../../src/types/session';
 import { TEST_COURSES } from '../../assets/courses';
 import { selectors } from '../../assets/selectors';
 import { addCourseToSession, deleteCourse, moveCourseToSession, searchCourseInSidebar } from '../fixtures/course';
 import { selectProgram } from '../fixtures/program';
 import { setupTestPage } from '../fixtures/setup';
 
-const CREDITS_LABEL = 'credits';
+const TOTAL_CREDITS_LABEL = 'total credits';
 
 test.describe('Course Management', () => {
   test.beforeEach(async ({ page }) => {
@@ -33,8 +33,8 @@ test.describe('Course Management', () => {
     await searchCourseInSidebar(page, course.code);
     await addCourseToSession(page, course);
 
-    const targetSession = SessionEnum.A;
-    const targetYear = 2025;
+    const targetSession = TermEnum.A;
+    const targetYear = new Date().getFullYear();
 
     await moveCourseToSession(page, course, targetSession, targetYear);
 
@@ -55,10 +55,7 @@ test.describe('Course Management', () => {
     await searchCourseInSidebar(page, course.code);
     await addCourseToSession(page, course);
 
-    const courseBox = page.locator(selectors.courseInSession(course.code));
-    const navbar = page.locator(selectors.navbar);
-
-    await courseBox.dragTo(navbar);
+    await page.dragAndDrop(selectors.courseInSession(course.code), selectors.navbar);
 
     const originalSessionDropTarget = page.locator(
       selectors.sessionDropTarget(course.sessionTerm, course.sessionYear),
@@ -71,7 +68,7 @@ test.describe('Course Management', () => {
     const totalCredits = page.locator(selectors.totalCredits);
 
     await expect(totalCredits).toBeVisible({ timeout: 15000 });
-    await expect(totalCredits).toHaveText(`0 ${CREDITS_LABEL}`, { timeout: 15000 });
+    await expect(totalCredits).toHaveText(`0 ${TOTAL_CREDITS_LABEL}`, { timeout: 15000 });
 
     const course1 = TEST_COURSES.LOG240;
     const course2 = TEST_COURSES.LOG121;
@@ -82,14 +79,45 @@ test.describe('Course Management', () => {
     await searchCourseInSidebar(page, course2.code);
     await addCourseToSession(page, course2);
 
-    await expect(totalCredits).toHaveText(`${course1.credits + course2.credits} ${CREDITS_LABEL}`, { timeout: 15000 });
+    await expect(totalCredits).toHaveText(`${course1.credits + course2.credits} ${TOTAL_CREDITS_LABEL}`, { timeout: 15000 });
 
     await deleteCourse(page, course1);
 
-    await expect(totalCredits).toHaveText(`${course2.credits} ${CREDITS_LABEL}`, { timeout: 15000 });
+    await expect(totalCredits).toHaveText(`${course2.credits} ${TOTAL_CREDITS_LABEL}`, { timeout: 15000 });
 
     await deleteCourse(page, course2);
 
-    await expect(totalCredits).toHaveText(`0 ${CREDITS_LABEL}`, { timeout: 15000 });
+    await expect(totalCredits).toHaveText(`0 ${TOTAL_CREDITS_LABEL}`, { timeout: 15000 });
+  });
+
+  test('shows unstructured prerequisite when no structured prerequisites exist', async ({ page }) => {
+    const course = TEST_COURSES.MEC222;
+
+    const searchInput = page.locator(selectors.searchInput);
+    await searchInput.fill(course.code);
+
+    const button = page.locator(selectors.globalSearchButton);
+    await button.click();
+
+    // wait directly for card instead of loader
+    const card = page.locator(selectors.courseCard(course.code));
+
+    await expect(card).toBeVisible({ timeout: 15000 });
+    await expect(card).toContainText('MEC111 et MAT145');
+  });
+
+  test('displays N/A when a course has no prerequisites at all', async ({ page }) => {
+    const course = TEST_COURSES.MEC129;
+
+    const searchInput = page.locator(selectors.searchInput);
+    await searchInput.fill('MEC1');
+
+    const button = page.locator(selectors.globalSearchButton);
+    await button.click();
+
+    const card = page.locator(selectors.courseCard(course.code));
+
+    await expect(card).toBeVisible({ timeout: 15000 });
+    await expect(card).toContainText('N/A');
   });
 });

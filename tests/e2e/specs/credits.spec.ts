@@ -13,6 +13,19 @@ test.describe('Credits Management', () => {
     await selectProgram(page);
   });
 
+  // test('should display zero credits for a new session', async ({ page }) => {
+  //   const course = TEST_COURSES.LOG240;
+
+  //   const sessionCredits = page.locator(
+  //     selectors.sessionCredits(course.sessionTerm, course.sessionYear),
+  //   );
+
+  //   await expect(sessionCredits).toHaveText(
+  //     `0 ${CREDITS_LABEL}`,
+  //     { timeout: 15000 },
+  //   );
+  // });
+
   test('should update session credits', async ({ page }) => {
     const course = TEST_COURSES.LOG240;
 

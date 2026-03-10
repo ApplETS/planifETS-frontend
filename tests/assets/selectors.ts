@@ -1,7 +1,10 @@
+import type { TermEnum } from '@/types/session';
+
 export const selectors = {
   // Program
-  programChip: (programCode: string) => `[data-testid="program-chip-${programCode}"]`,
+  programChip: (programId: string) => `[data-testid="program-chip-${programId}"]`,
   programsSelect: '[data-testid="programs-select"]',
+  onboardingCompleteButton: '[data-testid="onboarding-complete"]',
 
   // Course
   searchInput: '[data-testid="course-search-input"]',
@@ -11,16 +14,23 @@ export const selectors = {
   courseInSession: (code: string) => `[data-testid="course-box-${code}"]`,
 
   // Session
-  sessionDropTarget: (sessionTerm: string, sessionYear: number) =>
+  sessionDropTarget: (sessionTerm: TermEnum, sessionYear: number) =>
     `[data-testid="session-${sessionTerm}-${sessionYear}-drop-target"]`,
+  infoIcon: (sessionTerm: string, sessionYear: number) =>
+    `[data-testid="info-icon-${sessionTerm}-${sessionYear}"]`,
+  year: (year: number) =>
+    `[data-testid="year-${year}-sessions"] [data-testid$="-drop-target"]`,
 
   // Credits
   totalCredits: '[data-testid="total-credits"]',
-  sessionCredits: (sessionTerm: string, sessionYear: number) =>
+  sessionCredits: (sessionTerm: TermEnum, sessionYear: number) =>
     `[data-testid="session-${sessionTerm}-${sessionYear}-credits"]`,
 
   // Navigation
   navbar: '[data-testid="navbar"]',
+
+  // Buttons
+  addYearButton: '[data-testid="add-year-button"]',
 
   // Language settings
   settingsToggleButton: '[data-testid="settings-toggle-button"]',
@@ -29,4 +39,17 @@ export const selectors = {
   // Theme settings
   themeOption: (themeName: string) => `[data-testid="theme-option-${themeName}"]`,
   themeContainer: '[data-testid="theme-container"]',
+
+  // Global Search
+  globalSearchLink: '[data-testid="global-search-link"]',
+  globalSearchButton: '[data-testid="global-search-button"]',
+  globalSearchActive: '[data-testid="global-search-active"]',
+  courseCardItem: '[data-testid^="course-card-"]',
+
+  // Tabs
+  favoritesTab: 'role=tab[name=/favorites/i]',
+  coursesTab: 'role=tab[name=/courses/i]',
+
+  // Onboarding dialog
+  admissionYearInput: '#admission-year',
 } as const;

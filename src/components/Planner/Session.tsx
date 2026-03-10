@@ -1,56 +1,60 @@
 'use client';
 
-import type { FC } from 'react';
-import type { SessionEnum } from '@/types/session';
+import type { TermEnum } from '@/types/session';
 import { useCallback } from 'react';
+
 import { useSessionDrop } from '@/hooks/session/useSessionDrop';
 import { useSessionOperations } from '@/hooks/session/useSessionOperations';
 import { useCourseStore } from '@/store/courseStore';
-import { isCourseAvailableInSession } from '@/utils/sessionUtils';
+import { useSessionStore } from '@/store/sessionStore';
+import { generateSessionKey, isCourseAvailableInSession } from '@/utils/sessionUtils';
 import CoursesList from './CoursesList';
 import SessionHeader from './SessionHeader';
 
 type SessionProps = {
   sessionYear: number;
-  sessionTerm: SessionEnum;
+  sessionTerm: TermEnum;
 };
 
-const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
+export default function Session({ sessionYear, sessionTerm }: SessionProps) {
   const { courseInstances, sessionTiming, handleRemoveCourse, sessionTotalCredits }
     = useSessionOperations(sessionYear, sessionTerm);
 
   const { getCourse } = useCourseStore();
+  const sessionKey = generateSessionKey(sessionYear, sessionTerm);
+  const session = useSessionStore((state) => state.sessions[sessionKey]);
+  const isKnownSessionAvailability = session?.isKnownSessionAvailability;
   const { drop, isOver, canDrop, draggedItem } = useSessionDrop({
     sessionYear,
     sessionTerm,
     sessionTiming,
   });
-
-  const getSessionBorderStyle = () => {
+  const getSessionBorderColor = () => {
     if (!draggedItem || !draggedItem.course) {
-      return 'border-transparent';
+      return isOver ? 'border-blue-400' : 'border-border';
     }
-
+    if (isKnownSessionAvailability === false) {
+      if (isOver) {
+        return 'border-blue-500';
+      }
+      if (canDrop) {
+        return 'border-blue-700';
+      }
+      return 'border-blue-500';
+    }
     const isAvailable = isCourseAvailableInSession(
       draggedItem.course.id,
       sessionTerm,
       sessionYear,
       getCourse,
     );
-
-    // Show green for available sessions where drop is allowed
     if (isAvailable && canDrop) {
-      return isOver
-        ? 'bg-green-500/20 border border-green-500'
-        : 'border border-green-500/40';
+      return isOver ? 'border-green-400' : 'border-green-600';
     }
-
-    // Show red for unavailable sessions or when drop is not allowed
     if (isOver) {
-      return 'bg-destructive/20 border border-destructive';
+      return 'border-red-500';
     }
-
-    return 'border border-transparent';
+    return 'border-border';
   };
 
   const dropRef = useCallback(
@@ -63,15 +67,16 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
   return (
     <div
       ref={dropRef}
-      className={`rounded-lg border-2 p-4 transition-all duration-300 bg-background ${getSessionBorderStyle()}
-        ${isOver && canDrop ? 'bg-background/90' : ''}`}
+      className={`rounded-lg border-2 p-4 transition-all duration-300 bg-background ${getSessionBorderColor()}`}
       data-testid={`session-${sessionTerm}-${sessionYear}-drop-target`}
+      style={{ position: 'relative', zIndex: isOver ? 10 : undefined }}
     >
       <SessionHeader
         sessionTerm={sessionTerm}
         sessionYear={sessionYear}
         totalCredits={sessionTotalCredits}
-        isNoAvailabilityData={false}
+        isNoAvailabilityData={isKnownSessionAvailability === false && courseInstances.length > 0}
+        isCurrentSession={sessionTiming.isCurrent}
       />
       <CoursesList
         hasCourses={courseInstances.length > 0}
@@ -84,5 +89,3 @@ const Session: FC<SessionProps> = ({ sessionYear, sessionTerm }) => {
     </div>
   );
 };
-
-export default Session;

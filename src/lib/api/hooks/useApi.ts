@@ -2,12 +2,14 @@
 
 import type { ApiResponse } from '@/types/api';
 import { useCallback, useState } from 'react';
-import { handleApiError } from '../utils/error-handler';
+import { showError } from '@/lib/toast';
+import { ApiErrorHandler, handleApiError } from '../utils/error-handler';
 
 type UseApiState<T> = {
   data: T | null;
   loading: boolean;
   error: string | null;
+  isOffline: boolean;
 };
 
 type UseApiReturn<T> = UseApiState<T> & {
@@ -34,24 +36,30 @@ export function useApi<T>(
     data: null,
     loading: false,
     error: null,
+    isOffline: false,
   });
 
   const execute = useCallback(async () => {
-    setState(prev => ({ ...prev, loading: true, error: null }));
+    setState((prev) => ({ ...prev, loading: true, error: null }));
 
     try {
       const response = await apiFunction();
-      setState({ data: response.data, loading: false, error: null });
+      setState({ data: response.data, loading: false, error: null, isOffline: false });
       return response;
     } catch (err) {
+      const isOffline = ApiErrorHandler.isNetworkError(err);
+
       const errorMessage = handleApiError(err);
-      setState({ data: null, loading: false, error: errorMessage });
+
+      showError(errorMessage);
+
+      setState({ data: null, loading: false, error: errorMessage, isOffline });
       return null;
     }
   }, [apiFunction]);
 
   const reset = useCallback(() => {
-    setState({ data: null, loading: false, error: null });
+    setState({ data: null, loading: false, error: null, isOffline: false });
   }, []);
 
   return {

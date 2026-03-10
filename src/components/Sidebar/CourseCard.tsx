@@ -2,14 +2,22 @@
 
 import type { FC } from 'react';
 import type { Course } from '@/types/course';
+import type { TermEnum } from '@/types/session';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import FavoriteButton from '@/components/Sidebar/FavoriteButton';
+import { toast } from 'sonner';
+
+import CourseHeader from '@/components/atoms/CourseHeader';
+import FavoriteButton from '@/components/atoms/FavoriteButton';
+import Tag from '@/components/atoms/Tag';
+import { useCourseOperations } from '@/hooks/course/useCourseOperations';
 import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
-import { useCourseStore } from '@/store/courseStore';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shadcn/ui/tooltip';
+import { usePlannerStore } from '@/store/plannerStore';
+import { useSessionStore } from '@/store/sessionStore';
 import { DragType } from '@/types/dnd';
-import CreditsTag from '../atoms/CreditsTag';
-import Tag from '../atoms/Tag';
+import { getDisplayedPrerequisites } from '@/utils/courseUtils';
+import { filterCurrentAndFutureSessions, formatSessionShort, generateSessionKey, sortSessionsChronologically } from '@/utils/sessionUtils';
 
 type SectionProps = {
   title: string;
@@ -18,7 +26,7 @@ type SectionProps = {
 
 const Section: FC<SectionProps> = ({ title, children }) => (
   <div className="mt-2">
-    <p className="text-sm font-semibold">{title}</p>
+    <p className="text-sm font-semibold text-foreground">{title}</p>
     <div className="mt-1 flex flex-wrap gap-2">{children}</div>
   </div>
 );
@@ -28,7 +36,7 @@ type CourseCardProps = {
 };
 
 const CourseCard: FC<CourseCardProps> = ({ course }) => {
-  const { toggleFavorite, isFavorite } = useCourseStore();
+  const { toggleFavorite, isFavorite } = usePlannerStore();
   const { dragRef, isDragging } = useDraggableCourse({
     course,
     type: DragType.COURSE_CARD,
@@ -37,14 +45,16 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
   const t = useTranslations('PlannerPage');
 
   const renderPrerequisites = () => {
-    if (course.prerequisites.length === 0) {
+    const prereqsToDisplay = getDisplayedPrerequisites(course);
+
+    if (prereqsToDisplay.length === 0) {
       return null;
     }
 
     return (
       <Section title={t('prerequisites')}>
-        {course.prerequisites.map(preq => (
-          <Tag key={preq}>
+        {prereqsToDisplay.map((preq) => (
+          <Tag key={preq} variant={preq === 'N/A' ? 'secondary' : 'primary'}>
             {preq}
           </Tag>
         ))}
@@ -52,15 +62,56 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
     );
   };
 
-  const renderAvailability = () => (
-    <Section title={t('available')}>
-      {course.availability.map(session => (
-        <Tag key={session}>
-          {session}
-        </Tag>
-      ))}
-    </Section>
-  );
+  const { addCourseToSession, removeCourseFromSession } = useCourseOperations();
+  const sessionStore = useSessionStore();
+  const renderAvailability = () => {
+    const filteredSessions = filterCurrentAndFutureSessions(course.availability);
+    if (!filteredSessions || filteredSessions.length === 0) {
+      return null;
+    }
+
+    return (
+      <Section title={t('available')}>
+        {sortSessionsChronologically(filteredSessions).map((session: string) => {
+          const sessionTerm = session.charAt(0) as TermEnum;
+          const sessionYear = Number(session.substring(1));
+          const sessionKey = generateSessionKey(sessionYear, sessionTerm);
+          const sessionObj = sessionStore.getSessionByKey?.(sessionKey);
+          const alreadyAdded = sessionObj && sessionObj.courseInstances.some((ci) => ci.courseId === course.id);
+
+          return (
+            <Tooltip key={session}>
+              <TooltipTrigger asChild>
+                <Tag
+                  variant={alreadyAdded ? 'success' : 'sessionAvailable'}
+                  onClick={() => {
+                    if (!sessionObj) {
+                      toast.error(t('session-not-created', { session: formatSessionShort(session) }));
+                      return;
+                    }
+
+                    if (alreadyAdded) {
+                      removeCourseFromSession(sessionYear, sessionTerm, course.id);
+                      toast.success(t('course-removed-from-session', { session: formatSessionShort(session) }));
+                      return;
+                    }
+
+                    addCourseToSession(sessionYear, sessionTerm, course);
+                    toast.success(t('course-added-to-session', { session: formatSessionShort(session) }));
+                  }}
+                >
+                  {formatSessionShort(session)}
+                </Tag>
+              </TooltipTrigger>
+              <TooltipContent sideOffset={4}>
+                {alreadyAdded ? t('remove-from-session-tooltip', { session: formatSessionShort(session) }) : t('add-to-session-tooltip', { session: formatSessionShort(session) })}
+              </TooltipContent>
+            </Tooltip>
+          );
+        })}
+      </Section>
+    );
+  };
 
   return (
     <div
@@ -69,7 +120,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
           dragRef(node);
         }
       }}
-      className={`relative w-full cursor-grab rounded-md bg-background p-4 shadow-md 
+      className={`relative w-full cursor-grab rounded-md bg-background p-4 shadow-md
         ${isDragging ? 'opacity-50' : 'opacity-100'}`}
       data-testid={`course-card-${course.code}`}
       onMouseEnter={() => setIsHovered(true)}
@@ -82,11 +133,12 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
       />
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <h3 className="text-lg font-semibold">{course.code}</h3>
-          <p className="text-sm">{course.title}</p>
-        </div>
-        <div className="mt-2 flex items-center gap-2">
-          <CreditsTag credits={course.credits} data-testid={`course-card-${course.code}-credits`} />
+          <CourseHeader
+            code={course.code}
+            title={course.title}
+            credits={course.credits}
+            dataTestid={`course-card-${course.code}-credits`}
+          />
         </div>
       </div>
 

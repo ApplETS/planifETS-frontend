@@ -1,32 +1,34 @@
 'use client';
 
 import type { FC } from 'react';
-import type { CourseStatus } from '../../types/courseStatus';
-import type { Course } from '@/types/course';
-import type { SessionEnum } from '@/types/session';
+import type { Course, CourseStatus } from '@/types/course';
+import type { TermEnum } from '@/types/session';
+import { Trash } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-
 import { useCallback, useState } from 'react';
 import { useDrag } from 'react-dnd';
-import { FaTrash } from 'react-icons/fa';
+
+import CourseHeader from '@/components/atoms/CourseHeader';
+import StatusTag from '@/components/atoms/StatusTag';
+import { Button } from '@/shadcn/ui/button';
 import { DragType } from '@/types/dnd';
-import BaseButton from '../atoms/buttons/BaseButton';
-import CourseHeader from '../atoms/CourseHeader';
-import StatusTag from './StatusTag';
 
 type CourseBoxProps = {
   code: string;
+  title: string;
   status: CourseStatus;
   credits: number;
   onDelete?: () => void;
   fromSessionYear: number;
-  fromSessionTerm: SessionEnum;
+  fromSessionTerm: TermEnum;
   course: Course;
   isDraggable?: boolean;
+  unknownAvailability?: boolean;
 };
 
 const CourseBox: FC<CourseBoxProps> = ({
   code,
+  title,
   status,
   credits,
   onDelete,
@@ -34,49 +36,56 @@ const CourseBox: FC<CourseBoxProps> = ({
   fromSessionTerm,
   course,
   isDraggable = true,
+  unknownAvailability = false,
 }) => {
   const t = useTranslations('PlannerPage');
 
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: DragType.COURSE_BOX,
-    item: {
+  const [{ isDragging }, drag] = useDrag(
+    () => ({
       type: DragType.COURSE_BOX,
-      courseId: course.id,
-      course,
-      fromSessionYear,
-      fromSessionTerm,
-    },
-    collect: monitor => ({
-      isDragging: monitor.isDragging(),
+      item: {
+        type: DragType.COURSE_BOX,
+        courseId: course.id,
+        course,
+        fromSessionYear,
+        fromSessionTerm,
+      },
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+      canDrag: () => isDraggable,
     }),
-    canDrag: () => isDraggable,
-  }), [course, fromSessionYear, fromSessionTerm, isDraggable]);
+    [course, fromSessionYear, fromSessionTerm, isDraggable],
+  );
 
   const [isHovered, setIsHovered] = useState(false);
 
-  const dragRef = useCallback((node: HTMLDivElement | null) => {
-    drag(node);
-  }, [drag]);
+  const dragRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      drag(node);
+    },
+    [drag],
+  );
 
   return (
     <div
       ref={dragRef}
       className={`
         shadow-xs
-        relative mb-2 cursor-pointer rounded-lg
-        bg-muted p-4 transition duration-300 
-        ease-in-out hover:-translate-y-0.5 
-        hover:shadow-md
+        relative cursor-pointer rounded-lg
+        bg-muted p-3
+        hover:shadow-md text-foreground
         ${isDragging ? 'opacity-50' : 'opacity-100'}
+        ${isDragging && unknownAvailability ? 'border-2 border-blue-200' : ''}
       `}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       data-testid={`course-box-${code}`}
     >
       {isHovered && onDelete && (
-        <BaseButton
-          variant="danger"
-          size="sm"
+        <Button
+          variant="destructive"
+          size="icon"
           className="absolute right-2 top-2"
           onClick={(e) => {
             e.stopPropagation();
@@ -85,22 +94,23 @@ const CourseBox: FC<CourseBoxProps> = ({
           aria-label={t('delete-course')}
           data-testid={`delete-course-${code}-${fromSessionTerm}-${fromSessionYear}`}
         >
-          <FaTrash />
-        </BaseButton>
+          <Trash className="size-3" />
+        </Button>
       )}
-      <div className="flex flex-col flex-wrap sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col flex-wrap sm:flex-row mb-2">
         <div className="flex flex-col">
-          <CourseHeader code={code} />
+          <CourseHeader
+            code={code}
+            title={title}
+            credits={credits}
+            dataTestid={`course-box-${code}-credits`}
+          />
         </div>
         <div className="mt-2 flex flex-wrap sm:mt-0 sm:flex-nowrap sm:items-center">
-          <StatusTag status={status} />
         </div>
       </div>
-      <div className="text-sm text-gray-500">
-        {credits}
-        {' '}
-        {t('credits-short')}
-      </div>
+
+      <StatusTag status={status} />
     </div>
   );
 };

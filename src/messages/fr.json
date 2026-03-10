@@ -1,27 +1,42 @@
 {
   "Commons": {
     "credits": "crédits",
+    "total-credits": "crédits au total",
+    "credits-short": "cr.",
+    "logout": "Se déconnecter",
     "settings": "Paramètres",
-    "language": "Language",
+    "language": "Langue",
     "theme": "Thème",
     "loading": "Chargement...",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "add-year": "Ajouter une année",
+    "reset-data": "Réinitialiser toutes les données",
+    "reset-data-description": "Effacer toutes vos données, cours et paramètres. Cette action est irréversible.",
+    "reset-data-warning": "Cela supprimera toutes vos données de façon permanente!",
+    "confirm-reset": "Tout supprimer",
+    "resetting": "Réinitialisation..."
+  },
+  "Onboarding": {
+    "welcome-title": "👋 Bienvenue sur PlanifETS",
+    "program-label": "Sélectionner votre programme",
+    "admission-day-label": "Sélectionner votre année d'admission",
+    "admission-day-note": "Cela va créer des sessions de votre année d'admission à aujourd'hui.",
+    "complete": "Terminer"
   },
   "PlannerPage": {
     "year-with-value": "Année {value}",
-    "add-year": "Ajouter une année",
     "sessionTerms": {
       "AUTOMNE": "Automne",
       "HIVER": "Hiver",
       "ETE": "Été"
     },
     "delete-course": "Supprimer le cours",
+    "credits": "crédits",
     "credits-short": "cr.",
     "course": {
       "Completed": "Complété",
-      "In Progress": "En progrès",
-      "Failed": "Échoué",
       "Not Offered": "Non offert",
+      "Offered": "Offert",
       "Planned": "Planifié"
     },
     "no-course-modif-past-session": "Aucune modification autorisée pour cette session passée.",
@@ -30,13 +45,25 @@
     "courses-availability-not-yet-published": "Les informations sur la disponibilité des cours pour cette session ne sont pas encore publiées par l'école.",
     "prerequisites": "Prérequis: ",
     "available": "Disponible: ",
+    "add-to-session-tooltip": "Ajouter à la session {session}",
+    "course-added-to-session": "Cours ajouté à la session {session}",
+    "course-removed-from-session": "Cours retiré de la session {session}",
+    "course-already-in-session": "Le cours est déjà dans la session {session}",
+    "remove-from-session-tooltip": "Retirer de la session {session}",
     "programs": "Programmes",
     "search-course": "Chercher un cours",
     "loading-courses": "Chargement des cours...",
     "no-favorite-courses": "Vous n'avez aucun cours favori.",
     "no-courses-found": "Aucun cours trouvé.",
+    "no-courses-found-global": "Aucun cours trouvé dans aucun programme. Essayez un autre terme de recherche.",
+    "didnt-find-course": "Vous n'avez pas trouvé votre cours?",
+    "search-all-programs": "Rechercher dans tous les programmes",
+    "searching-all-programs": "Recherche dans tous les programmes...",
     "select-program": "Veuillez sélectionner un programme.",
     "courses": "Cours",
-    "favorite-courses": "Favoris"
+    "favorite-courses": "Favoris",
+    "session-not-created": "La session {session} n'est pas encore créée. Veuillez d'abord ajouter l'année.",
+    "year-deleted": "Année {year} supprimée",
+    "current-session": "Session en cours"
   }
 }

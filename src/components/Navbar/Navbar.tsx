@@ -36,7 +36,10 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 z-20 w-full bg-secondary p-4" data-testid="navbar">
+      <nav
+        className="fixed top-0 z-20 w-full border-b border-border/30 bg-background/50 p-4 backdrop-blur-xl supports-[backdrop-filter]:bg-background/20 dark:border-border/45 dark:bg-background/30 dark:supports-[backdrop-filter]:bg-background/18"
+        data-testid="navbar"
+      >
         <div className="flex items-center justify-between">
           <Logo textSize="text-2xl" position="relative" />
           {/* Desktop Navigation */}

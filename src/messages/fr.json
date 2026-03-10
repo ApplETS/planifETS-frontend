@@ -65,5 +65,16 @@
     "session-not-created": "La session {session} n'est pas encore créée. Veuillez d'abord ajouter l'année.",
     "year-deleted": "Année {year} supprimée",
     "current-session": "Session en cours"
+  },
+  "Landing": {
+    "headline": "Planifiez vos sessions à l'ÉTS, simplement.",
+    "subheadline": "Une plateforme pour organiser vos cours, suivre votre progression et bâtir votre cheminement universitaire, le tout en un seul endroit.",
+    "ctaPrimary": "Commencer à planifier",
+    "ctaSecondary": "Rejoindre notre Discord"
+  },
+  "Footer": {
+    "addressLabel": "Adresse",
+    "contactLabel": "Contact",
+    "signature": "Fait par le club ApplETS de l'École de technologie supérieure"
   }
 }

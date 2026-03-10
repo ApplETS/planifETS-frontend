@@ -1,4 +1,5 @@
-/* eslint-disable jsonc/sort-keys */ {
+/* eslint-disable jsonc/sort-keys */
+{
   "compilerOptions": {
     "lib": [
       "dom",

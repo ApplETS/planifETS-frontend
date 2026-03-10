@@ -14,7 +14,7 @@ type Option = {
   code?: string;
 };
 
-export type MultiSelectProps = {
+type MultiSelectProps = {
   options: Option[];
   selected: Option[];
   onChangeAction: (selected: Option[]) => void;

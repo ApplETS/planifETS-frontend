@@ -16,7 +16,9 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "test:e2e:ci": "playwright test --reporter=list",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "knip": "knip",
+    "unused": "knip --use-tsconfig-files"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
@@ -39,7 +41,6 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "19.2.3",
-    "react-icons": "^5.3.0",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.2.0",
     "vaul": "^1.1.2",
@@ -57,7 +58,7 @@
     "@types/json-schema": "^7.0.15",
     "@types/mdast": "^4.0.3",
     "@types/ms": "2.1.0",
-    "@types/node": "^22.10.1",
+    "@types/node": "^25.4.0",
     "@types/normalize-package-data": "^2.4.4",
     "@types/prop-types": "^15.7.11",
     "@types/react": "19.2.7",
@@ -77,13 +78,13 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.16",
     "eslint-plugin-testing-library": "^7.1.1",
+    "knip": "^5.86.0",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
-    "shadcn": "^3.6.2",
     "tailwindcss": "4.1.4",
     "tw-animate-css": "^1.2.8",
-    "typescript": "^5",
+    "typescript": "^5.9.3",
     "vitest": "^4.0.18"
   },
   "resolutions": {

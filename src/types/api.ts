@@ -9,7 +9,7 @@ export type ApiResponse<T> = {
   headers: Headers;
 };
 
-export type BackendApiMessage = string | string[] | Record<string, unknown>;
+type BackendApiMessage = string | string[] | Record<string, unknown>;
 
 export type BackendErrorDto = {
   statusCode: number;

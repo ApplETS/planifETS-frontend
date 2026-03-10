@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test';
 import { selectors } from '../../assets/selectors';
 import { closeDialog } from './dialog';
 
-export type TranslationKey = 'searchPlaceholder';
+type TranslationKey = 'searchPlaceholder';
 type SupportedLocale = 'en' | 'fr';
 
 export function getExpectedTranslation(key: TranslationKey, locale: SupportedLocale): string {

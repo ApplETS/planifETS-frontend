@@ -4,7 +4,7 @@ import type { Theme } from '@/types/themes';
 import { createContext } from 'react';
 import { DEFAULT_THEME } from '@/utils/themeUtils';
 
-export type ThemeProviderState = {
+type ThemeProviderState = {
   theme: Theme;
   setTheme: (theme: Theme) => void;
 };

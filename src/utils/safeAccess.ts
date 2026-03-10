@@ -18,8 +18,3 @@ export function safeGetNumber<T>(record: Record<number, T>, key: number): T | un
 export function safeHas<T>(record: Record<string, T>, key: string): boolean {
   return Object.prototype.hasOwnProperty.call(record, key);
 }
-
-// Check if a numeric key exists in a Record
-export function safeHasNumber<T>(record: Record<number, T>, key: number): boolean {
-  return Object.prototype.hasOwnProperty.call(record, key);
-}

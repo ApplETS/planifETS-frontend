@@ -22,15 +22,3 @@ export function showSuccess(message: string) {
     // swallow
   }
 }
-
-export function showInfo(message: string) {
-  if (typeof window === 'undefined') {
-    return;
-  }
-
-  try {
-    toast(message);
-  } catch {
-    // swallow
-  }
-}

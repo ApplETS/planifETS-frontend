@@ -6,10 +6,10 @@ import { useEffect } from 'react';
 
 import { useLatestAvailableSessionApi } from '@/api/hooks/useLatestAvailableSessionApi';
 import OnboardingDialog from '@/components/dialogs/OnboardingDialog';
+import { ProgramSection } from '@/components/Planner/ProgramSection';
 import YearSection from '@/components/Planner/YearSection';
-import { ProgramSection } from '@/components/ProgramSection';
-import { usePreloadCourses } from '@/hooks/course/usePreloadCourses';
 
+import { usePreloadCourses } from '@/hooks/course/usePreloadCourses';
 import { useStoreHydration } from '@/hooks/useStoreHydration';
 import { Button } from '@/shadcn/ui/button';
 import { useCourseStore } from '@/store/courseStore';

@@ -74,6 +74,7 @@
   },
   "Footer": {
     "addressLabel": "Adresse",
-    "contactLabel": "Contact"
+    "contactLabel": "Contact",
+    "signature": "Fait par le club ApplETS de l'École de technologie supérieure"
   }
 }

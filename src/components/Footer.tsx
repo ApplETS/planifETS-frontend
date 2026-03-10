@@ -35,7 +35,7 @@ export function Footer() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 text-sm">
             <div>
               <h3 className="font-medium text-gray-900 dark:text-gray-100">
-                {t('addressLabel', { default: 'Adresse' })}
+                {t('addressLabel')}
               </h3>
               <address className="not-italic mt-2 text-gray-600 dark:text-gray-300">
                 Local D-2020, 1100 rue Notre-Dame Ouest, Montréal, QC, H3C 1K3
@@ -43,7 +43,7 @@ export function Footer() {
             </div>
             <div>
               <h3 className="font-medium text-gray-900 dark:text-gray-100">
-                {t('contactLabel', { default: 'Contact' })}
+                {t('contactLabel')}
               </h3>
               <a
                 href="mailto:ApplETS@etsmtl.ca"
@@ -58,7 +58,9 @@ export function Footer() {
 
       {/* lower band: copyright + social icons */}
       <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-500 dark:text-gray-400">
-        <p className="mb-4 sm:mb-0 text-gray-500 dark:text-gray-400">Fait par le club ApplETS de l'École de technologie supérieure</p>
+        <p className="mb-4 sm:mb-0 text-gray-500 dark:text-gray-400">
+          {t('signature')}
+        </p>
         <ul className="flex gap-6 text-sm">
           <li>
             <a

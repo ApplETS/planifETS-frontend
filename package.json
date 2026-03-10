@@ -91,6 +91,7 @@
     "@types/react-dom": "19.2.3",
     "glob": "^11.1.0",
     "js-yaml": "^4.1.1",
-    "minimatch": "^10.2.3"
+    "minimatch": "^10.2.3",
+    "rollup": ">=4.59.0"
   }
 }

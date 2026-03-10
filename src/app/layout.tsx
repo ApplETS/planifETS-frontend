@@ -21,6 +21,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon.webp" />
         {process.env.APP_ENV !== 'development'
           ? (
             <script

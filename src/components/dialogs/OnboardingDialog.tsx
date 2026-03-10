@@ -4,7 +4,7 @@ import { Check } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import React, { useState } from 'react';
-import ProgramSelector from '@/components/ProgramSelector';
+import ProgramSelector from '@/components/Planner/ProgramSelector';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/shadcn/ui/button';
 import {
@@ -15,6 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/shadcn/ui/dialog';
+
 import {
   Drawer,
   DrawerContent,
@@ -22,7 +23,6 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/shadcn/ui/drawer';
-
 import { useOnboardingStore } from '@/store/onboardingStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useProgramStore } from '@/store/programStore';

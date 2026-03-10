@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import BaseButton from '@/components/atoms/buttons/BaseButton';
 import Logo from '@/components/atoms/Logo';
 
 export default function HomePage() {
@@ -18,9 +17,9 @@ export default function HomePage() {
       </h4>
       <div className="flex flex-col sm:flex-row justify-baseline gap-4 py-2 sm:py-4 w-full">
         <Link href="/planner" className="w-full sm:w-auto">
-          <BaseButton variant="primary" size="lg" className="w-full sm:w-auto">
+          {/* <BaseButton variant="primary" size="lg" className="w-full sm:w-auto">
             Démarrer maintenant
-          </BaseButton>
+          </BaseButton> */}
         </Link>
         <a
           href="https://www.youtube.com/watch?v=E8gmARGvPlI&list=RDMME8gmARGvPlI"
@@ -28,9 +27,9 @@ export default function HomePage() {
           rel="noopener noreferrer"
           className="w-full sm:w-auto"
         >
-          <BaseButton variant="outlined" size="lg" className="w-full sm:w-auto">
+          {/* <BaseButton variant="outlined" size="lg" className="w-full sm:w-auto">
             Rejoins notre communauté Discord
-          </BaseButton>
+          </BaseButton> */}
         </a>
       </div>
     </main>

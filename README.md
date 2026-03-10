@@ -39,7 +39,7 @@ To get started with the frontend, refer to our onboarding documentation availabl
    ```bash
    yarn dev
    ```
- 3. Open [http://localhost:3000](http://localhost:3000) to view the application.
+3. Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ---
 

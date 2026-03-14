@@ -3,6 +3,7 @@ export const API_ENDPOINTS = {
     LIST: '/api/programs',
     BY_ID: (programId: string) => `/api/programs/${programId}`,
     COURSES: (programId: string) => `/api/programs/${programId}/courses`,
+    LIST_BY_COURSE: (courseId: string | number) => `/api/programs/list/course/${courseId}`,
   },
   PROGRAM_COURSES: {
     IDS: '/api/program-courses/ids',

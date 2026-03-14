@@ -14,6 +14,12 @@ export type ProgramDto = {
   updatedAt: string;
 };
 
+export type ProgramListDto = {
+  programId: number;
+  programCode: string;
+  programTitle: string;
+};
+
 // /program-courses endpoint
 export type SessionAvailabilityDto = {
   sessionCode: string;

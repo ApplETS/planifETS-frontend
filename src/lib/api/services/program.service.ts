@@ -1,4 +1,4 @@
-import type { ProgramCoursesResponseDto, ProgramDto } from '../types/program';
+import type { ProgramCoursesResponseDto, ProgramDto, ProgramListDto } from '../types/program';
 import type { ApiResponse } from '@/types/api';
 import { apiClient } from '../client';
 import { API_ENDPOINTS } from '../endpoints';
@@ -10,6 +10,12 @@ export const programService = {
 
   async getProgramById(programId: string): Promise<ApiResponse<ProgramDto>> {
     return apiClient.get<ProgramDto>(API_ENDPOINTS.PROGRAMS.BY_ID(programId));
+  },
+
+  async getProgramsListByCourseId(courseId: number): Promise<ApiResponse<ProgramListDto[]>> {
+    return apiClient.get<ProgramListDto[]>(
+      API_ENDPOINTS.PROGRAMS.LIST_BY_COURSE(courseId),
+    );
   },
 
   async getProgramCourses(programIds: number[]): Promise<

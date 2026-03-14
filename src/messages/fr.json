@@ -64,7 +64,8 @@
     "favorite-courses": "Favoris",
     "session-not-created": "La session {session} n'est pas encore créée. Veuillez d'abord ajouter l'année.",
     "year-deleted": "Année {year} supprimée",
-    "current-session": "Session en cours"
+    "current-session": "Session en cours",
+    "course-details": "Détails du cours"
   },
   "Landing": {
     "headline": "Planifiez vos sessions à l'ÉTS, simplement.",

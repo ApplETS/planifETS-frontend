@@ -9,6 +9,8 @@ export const selectors = {
   // Course
   searchInput: '[data-testid="course-search-input"]',
   courseCard: (code: string) => `[data-testid="course-card-${code}"]`,
+  courseActionsButton: (code: string, sessionTerm: string, sessionYear: number) =>
+    `[data-testid="course-actions-${code}-${sessionTerm}-${sessionYear}"]`,
   courseDeleteButton: (code: string, sessionTerm: string, sessionYear: number) =>
     `[data-testid="delete-course-${code}-${sessionTerm}-${sessionYear}"]`,
   courseInSession: (code: string) => `[data-testid="course-box-${code}"]`,

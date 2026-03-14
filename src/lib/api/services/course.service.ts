@@ -44,7 +44,6 @@ type Course = {
   description?: string;
   credits: number;
   prerequisites?: string[];
-  corequisites?: string[];
 };
 
 type GetCourseParams = {

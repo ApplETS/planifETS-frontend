@@ -3,7 +3,7 @@
 import type { FC } from 'react';
 import type { Course, CourseStatus } from '@/types/course';
 import type { TermEnum } from '@/types/session';
-import { Trash } from 'lucide-react';
+import { Menu, Trash } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
 import { useDrag } from 'react-dnd';
@@ -11,6 +11,13 @@ import { useDrag } from 'react-dnd';
 import CourseHeader from '@/components/atoms/CourseHeader';
 import StatusTag from '@/components/atoms/StatusTag';
 import { Button } from '@/shadcn/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/shadcn/ui/dropdown-menu';
 import { DragType } from '@/types/dnd';
 
 type CourseBoxProps = {
@@ -59,6 +66,7 @@ const CourseBox: FC<CourseBoxProps> = ({
   );
 
   const [isHovered, setIsHovered] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const dragRef = useCallback(
     (node: HTMLDivElement | null) => {
@@ -79,23 +87,47 @@ const CourseBox: FC<CourseBoxProps> = ({
         ${isDragging && unknownAvailability ? 'border-2 border-blue-200' : ''}
       `}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={() => {
+        if (!isMenuOpen) {
+          setIsHovered(false);
+        }
+      }}
       data-testid={`course-box-${code}`}
     >
-      {isHovered && onDelete && (
-        <Button
-          variant="destructive"
-          size="icon"
-          className="absolute right-2 top-2"
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete();
-          }}
-          aria-label={t('delete-course')}
-          data-testid={`delete-course-${code}-${fromSessionTerm}-${fromSessionYear}`}
-        >
-          <Trash className="size-3" />
-        </Button>
+      {(isHovered || isMenuOpen) && onDelete && (
+        <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute right-2 top-2"
+              onClick={(e) => e.stopPropagation()}
+              aria-label={t('delete-course')}
+              data-testid={`course-actions-${code}-${fromSessionTerm}-${fromSessionYear}`}
+            >
+
+              <Menu className="size-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent side="bottom" align="end">
+            <DropdownMenuItem
+              onSelect={(e) => {
+                e.stopPropagation();
+                onDelete();
+              }}
+              data-testid={`delete-course-${code}-${fromSessionTerm}-${fromSessionYear}`}
+            >
+              <Trash className="size-4 text-destructive" />
+              {t('delete-course')}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onSelect={() => setIsMenuOpen(false)}
+            >
+              {t('course-details')}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       )}
       <div className="flex flex-col flex-wrap sm:flex-row mb-2">
         <div className="flex flex-col">

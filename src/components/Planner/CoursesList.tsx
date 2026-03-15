@@ -51,7 +51,7 @@ const CoursesList: FC<CoursesListProps> = ({
                   status={getCourseStatus(instance.courseId, sessionYear, sessionTerm, sessionTiming)}
                   isDraggable={canDragCourses}
                   credits={course.credits}
-                  onDelete={() => onRemoveCourse(instance.courseId)}
+                  onDeleteAction={() => onRemoveCourse(instance.courseId)}
                   fromSessionYear={sessionYear}
                   fromSessionTerm={sessionTerm}
                   course={course}

@@ -18,7 +18,7 @@ type CourseBoxProps = {
   title: string;
   status: CourseStatus;
   credits: number;
-  onDelete?: () => void;
+  onDeleteAction: () => void;
   fromSessionYear: number;
   fromSessionTerm: TermEnum;
   course: Course;
@@ -31,7 +31,7 @@ const CourseBox: FC<CourseBoxProps> = ({
   title,
   status,
   credits,
-  onDelete,
+  onDeleteAction,
   fromSessionYear,
   fromSessionTerm,
   course,
@@ -93,7 +93,7 @@ const CourseBox: FC<CourseBoxProps> = ({
                 preferredProgramId={preferredProgramId}
                 fromSessionYear={fromSessionYear}
                 fromSessionTerm={fromSessionTerm}
-                onDeleteAction={onDelete}
+                onDeleteAction={onDeleteAction}
               />
             )}
           />

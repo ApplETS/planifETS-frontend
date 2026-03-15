@@ -70,7 +70,7 @@
     "remove-from-favorites": "Remove from favorites"
   },
   "CourseDetailsPage": {
-    "additionalPrerequisiteRule": "Additional prerequisite rule",
+    "unstructuredPrerequisiteRule": "Additional prerequisite rule",
     "backToPlanner": "Back to planner",
     "courseOffering": "Course offerings",
     "cycle": "cycle",
@@ -91,7 +91,6 @@
     "programContext": "Program context",
     "programRequirement": "Requirement in this program",
     "requirementType": "Requirement type",
-    "selectProgramHelp": "Changing the program reloads the course requirements for that program.",
     "selectProgramLabel": "Select Program",
     "selectProgramPlaceholder": "Choose a program",
     "selectedProgram": "Selected program",

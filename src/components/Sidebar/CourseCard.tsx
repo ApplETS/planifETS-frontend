@@ -136,6 +136,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
             actions={(
               <CourseActionsMenu
                 courseId={course.id}
+                courseCode={course.code}
                 preferredProgramId={preferredProgramId}
                 fromSessionYear={currentSessionYear}
                 fromSessionTerm={currentSessionTerm}

@@ -30,7 +30,7 @@ export default function CourseActionsMenu({
   preferredProgramId,
   fromSessionYear,
   fromSessionTerm,
-  onDeleteAction: onDelete,
+  onDeleteAction,
 }: CourseActionsMenuProps) {
   const t = useTranslations('PlannerPage');
   const { toggleFavorite, isFavorite } = usePlannerStore();
@@ -76,14 +76,14 @@ export default function CourseActionsMenu({
           {isCourseFavorited ? t('remove-from-favorites') : t('add-to-favorites')}
         </DropdownMenuItem>
 
-        {onDelete
+        {onDeleteAction
           ? (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onSelect={(e) => {
                   e.stopPropagation();
-                  onDelete();
+                  onDeleteAction();
                 }}
                 data-testid={`delete-course-${courseCode}-${fromSessionTerm}-${fromSessionYear}`}
               >

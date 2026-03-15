@@ -3,7 +3,7 @@
 import type { FC } from 'react';
 
 import { useIsMobile } from '@/hooks/use-mobile';
-import ProgramSelector from './ProgramSelector';
+import ProgramSelector from './ProgramMultiSelector';
 
 export const ProgramSection: FC = () => {
   const isMobile = useIsMobile();

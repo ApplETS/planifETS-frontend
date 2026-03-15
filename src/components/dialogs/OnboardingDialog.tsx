@@ -4,7 +4,7 @@ import { Check } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import React, { useState } from 'react';
-import ProgramSelector from '@/components/Planner/ProgramSelector';
+import ProgramSelector from '@/components/Planner/ProgramMultiSelector';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/shadcn/ui/button';
 import {

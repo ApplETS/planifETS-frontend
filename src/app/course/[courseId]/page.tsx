@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { courseService } from '@/api/services/course.service';
-import { programService } from '@/api/services/program.service';
 import CourseDetailsPage from '@/components/CourseDetails/CourseDetailsPage';
 import { parsePositiveInteger } from '@/utils/numberUtil';
 
@@ -28,25 +27,16 @@ export async function generateMetadata({
   }
 
   const getCourseTitle = async () => {
-    // Prefer program-specific details when available
-    if (programId) {
-      const response = await courseService.getDetailedProgramCourse({ courseId, programId });
-      const code = response.data.course.code;
-      const title = response.data.course.title;
-
-      if (code && title) {
-        return `${code} - ${title}`;
-      }
+    if (!programId) {
+      return null;
     }
 
-    // Fallback to a more generic course lookup (does not require programId)
-    const response = await programService.getCoursesByIds([courseId]);
-    const course = response.data?.data
-      ?.flatMap((program) => program.courses)
-      .find((c) => c.id === courseId);
+    const response = await courseService.getDetailedProgramCourse({ courseId, programId });
+    const code = response.data.course.code;
+    const title = response.data.course.title;
 
-    if (course?.code && course?.title) {
-      return `${course.code} - ${course.title}`;
+    if (code && title) {
+      return `${code} - ${title}`;
     }
 
     return null;

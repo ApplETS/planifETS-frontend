@@ -70,7 +70,7 @@
     "remove-from-favorites": "Retirer des favoris"
   },
   "CourseDetailsPage": {
-    "additionalPrerequisiteRule": "Règle de préalable additionnelle",
+    "unstructuredPrerequisiteRule": "Règle de préalable additionnelle",
     "backToPlanner": "Retour au planificateur",
     "courseOffering": "Disponibilité du cours",
     "cycle": "cycle",
@@ -91,7 +91,6 @@
     "programContext": "Contexte du programme",
     "programRequirement": "Exigence dans ce programme",
     "requirementType": "Catégorie d'exigence",
-    "selectProgramHelp": "Changer de programme recharge les exigences du cours pour ce programme.",
     "selectProgramLabel": "Sélectionner un programme",
     "selectProgramPlaceholder": "Choisir un programme",
     "selectedProgram": "Programme sélectionné",

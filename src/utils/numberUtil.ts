@@ -16,6 +16,3 @@ export const parsePositiveInteger = (value: unknown): number | null => {
 
   return parsed;
 };
-
-export const isPositiveInteger = (value: number): boolean =>
-  Number.isInteger(value) && value > 0;

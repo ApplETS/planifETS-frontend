@@ -86,7 +86,7 @@ export type DetailedProgramCoursePrerequisiteDto = {
 export type DetailedProgramCourseDto = {
   courseId: number;
   programId: number;
-  type: CourseRequirementType | string | null;
+  type: CourseRequirementType | null;
   typicalSessionIndex: number | null;
   unstructuredPrerequisite: string | null;
   course: DetailedProgramCourseInfoDto;

@@ -16,10 +16,7 @@ const Toaster = ({ className, ...props }: ToasterProps) => {
   const { theme } = useTheme();
   const themeMode = (theme && theme.mode);
 
-  const themeClasses
-    = themeMode === 'dark'
-      ? 'bg-popover text-popover-foreground border border-border'
-      : 'bg-popover text-popover-foreground border border-border';
+  const themeClasses = 'bg-popover text-popover-foreground border border-border';
 
   return (
     <Sonner

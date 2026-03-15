@@ -146,13 +146,13 @@ const CourseDetailsPage = () => {
                             </Tag>
                           )
                           : null}
-                        {courseDetails.typicalSessionIndex !== null
-                          ? (
+                        {courseDetails.typicalSessionIndex == null
+                          ? null
+                          : (
                             <Tag variant="sessionAvailable">
                               {tCourseDetails('typicalSessionIndex', { value: courseDetails.typicalSessionIndex })}
                             </Tag>
-                          )
-                          : null}
+                          )}
                       </div>
 
                       <Link

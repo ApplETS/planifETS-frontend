@@ -15,13 +15,13 @@ import {
 import { usePlannerStore } from '@/store/plannerStore';
 import { getCourseDetailsHref } from '@/utils/routesUtil';
 
-type CourseActionsMenuProps = {
+type CourseActionsMenuProps = Readonly<{
   courseId: number;
   courseCode: string;
   fromSessionYear: number;
   fromSessionTerm: string;
   onDeleteAction?: () => void;
-};
+}>;
 
 export default function CourseActionsMenu({
   courseId,

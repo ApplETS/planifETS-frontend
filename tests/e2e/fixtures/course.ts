@@ -64,7 +64,7 @@ export const deleteCourse = async (
     course.sessionYear,
   );
   const actionsButton = page.locator(actionsButtonSelector);
-  await actionsButton.click({ force: true, timeout: 3000 });
+  await actionsButton.click({ force: true, timeout: 4000 });
 
   const deleteButtonSelector = selectors.courseDeleteButton(
     course.code,

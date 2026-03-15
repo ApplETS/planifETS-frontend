@@ -1,5 +1,9 @@
 import type { SearchCourseResult } from '@/api/types/course';
-import type { CoursePrerequisiteDto, ProgramCourseDetailedDto } from '@/api/types/program';
+import type {
+  CourseAvailabilityDto,
+  CoursePrerequisiteDto,
+  ProgramCourseDetailedDto,
+} from '@/api/types/program';
 import type { Course, CourseInstance, CourseStatus } from '@/types/course';
 import type { YearData } from '@/types/planner';
 import type { SessionTiming, TermEnum } from '@/types/session';
@@ -41,6 +45,14 @@ export const getDisplayedPrerequisites = (course: Course): string[] => {
   }
 
   return ['N/A'];
+};
+
+export const formatCourseAvailability = (availability: CourseAvailabilityDto[]): string | null => {
+  if (availability.length === 0) {
+    return null;
+  }
+
+  return availability.join(' / ');
 };
 
 type TimingState = 'past' | 'current' | 'future';

@@ -1,41 +1,11 @@
-import type { CourseSearchParams, SearchCoursesDto } from '../types';
+import type {
+  CourseSearchParams,
+  DetailedProgramCourseDto,
+  SearchCoursesDto,
+} from '../types';
 import type { ApiResponse } from '@/types/api';
 import { apiClient } from '../client';
 import { API_ENDPOINTS } from '../endpoints';
-
-type Availability = 'JOUR' | 'SOIR' | 'INTENSIF';
-type Trimester = 'HIVER' | 'ETE' | 'AUTOMNE';
-
-type Session = {
-  trimester: Trimester;
-  year: number;
-};
-
-type CourseInstance = {
-  availability: Availability[];
-  sessionYear: number;
-  sessionTrimester: Trimester;
-  session: Session;
-};
-
-type CourseDetail = {
-  code: string;
-  title: string;
-  credits: number;
-  description: string;
-  cycle: number;
-  courseInstances: CourseInstance[];
-};
-
-type ProgramCourse = {
-  courseId: number;
-  programId: number;
-  type: string;
-  typicalSessionIndex: number;
-  unstructuredPrerequisite: string;
-  course: CourseDetail;
-  prerequisites: unknown[];
-};
 
 type Course = {
   id: string;
@@ -46,9 +16,9 @@ type Course = {
   prerequisites?: string[];
 };
 
-type GetCourseParams = {
+type GetDetailedProgramCourseParams = {
   courseId: number;
-  programCode: string;
+  programId: number;
 };
 
 export const courseService = {
@@ -84,12 +54,15 @@ export const courseService = {
     return apiClient.get<Course[]>(API_ENDPOINTS.COURSES.SEARCH);
   },
 
-  async getCourse(params: GetCourseParams): Promise<ApiResponse<ProgramCourse>> {
+  async getDetailedProgramCourse(
+    params: GetDetailedProgramCourseParams,
+  ): Promise<ApiResponse<DetailedProgramCourseDto>> {
     const queryParams = new URLSearchParams({
       courseId: params.courseId.toString(),
-      programCode: params.programCode,
+      programId: params.programId.toString(),
     });
-    return apiClient.get<ProgramCourse>(
+
+    return apiClient.get<DetailedProgramCourseDto>(
       `${API_ENDPOINTS.PROGRAM_COURSES.COURSE_DETAILS}?${queryParams.toString()}`,
     );
   },

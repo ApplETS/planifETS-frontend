@@ -13,7 +13,6 @@ type ProgramSelectorProps = {
   availablePrograms: ProgramListItem[];
   selectedProgramId: number | null;
   isLoading: boolean;
-  isRouteChangePending: boolean;
   error?: string | null;
   onProgramChange: (nextProgramId: string) => void;
 };
@@ -24,7 +23,6 @@ const ProgramSelector = ({
   availablePrograms,
   selectedProgramId,
   isLoading,
-  isRouteChangePending,
   error,
   onProgramChange,
 }: ProgramSelectorProps) => {
@@ -38,7 +36,7 @@ const ProgramSelector = ({
         <Select
           value={selectedProgramId?.toString() ?? ''}
           onValueChange={onProgramChange}
-          disabled={isLoading || isRouteChangePending || availablePrograms.length === 0}
+          disabled={isLoading || availablePrograms.length === 0}
         >
           <SelectTrigger className="w-full" aria-label={t('selectProgramLabel')}>
             <SelectValue

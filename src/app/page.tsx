@@ -111,7 +111,9 @@ export default async function HomePage() {
                 <Link href="/planner">{t('ctaPrimary')}</Link>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <Link href="/planner">{t('ctaSecondary')}</Link>
+                <Link href="https://discord.gg/adMkWptn6Y" target="_blank" rel="noopener noreferrer">
+                  {t('ctaSecondary')}
+                </Link>
               </Button>
             </div>
           </div>

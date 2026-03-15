@@ -13,12 +13,11 @@ import {
   DropdownMenuTrigger,
 } from '@/shadcn/ui/dropdown-menu';
 import { usePlannerStore } from '@/store/plannerStore';
-import { getCourseDetailsHref } from '@/utils/courseDetailsUtils';
+import { getCourseDetailsHref } from '@/utils/routesUtil';
 
 type CourseActionsMenuProps = {
   courseId: number;
   courseCode: string;
-  preferredProgramId: number | null;
   fromSessionYear: number;
   fromSessionTerm: string;
   onDeleteAction?: () => void;
@@ -27,7 +26,6 @@ type CourseActionsMenuProps = {
 export default function CourseActionsMenu({
   courseId,
   courseCode,
-  preferredProgramId,
   fromSessionYear,
   fromSessionTerm,
   onDeleteAction,
@@ -52,7 +50,7 @@ export default function CourseActionsMenu({
       <DropdownMenuContent side="bottom" align="end">
         <DropdownMenuItem asChild>
           <Link
-            href={getCourseDetailsHref(courseId, preferredProgramId)}
+            href={getCourseDetailsHref(courseId)}
             rel="noopener noreferrer"
             target="_blank"
             className="flex items-center gap-2"

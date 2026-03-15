@@ -10,7 +10,6 @@ import CourseHeader from '@/components/atoms/CourseHeader';
 
 import StatusTag from '@/components/atoms/StatusTag';
 import CourseActionsMenu from '@/components/Planner/CourseActionsMenu';
-import { useProgramStore } from '@/store/programStore';
 import { DragType } from '@/types/dnd';
 
 type CourseBoxProps = {
@@ -38,9 +37,6 @@ const CourseBox: FC<CourseBoxProps> = ({
   isDraggable = true,
   unknownAvailability = false,
 }) => {
-  const selectedProgramIds = useProgramStore((state) => state.getSelectedProgramIds());
-  const preferredProgramId = selectedProgramIds[0] ?? null;
-
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: DragType.COURSE_BOX,
@@ -90,7 +86,6 @@ const CourseBox: FC<CourseBoxProps> = ({
               <CourseActionsMenu
                 courseId={course.id}
                 courseCode={code}
-                preferredProgramId={preferredProgramId}
                 fromSessionYear={fromSessionYear}
                 fromSessionTerm={fromSessionTerm}
                 onDeleteAction={onDeleteAction}

@@ -12,7 +12,6 @@ import CourseActionsMenu from '@/components/Planner/CourseActionsMenu';
 import { useCourseOperations } from '@/hooks/course/useCourseOperations';
 import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shadcn/ui/tooltip';
-import { useProgramStore } from '@/store/programStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { DragType } from '@/types/dnd';
 import { getDisplayedPrerequisites } from '@/utils/courseUtils';
@@ -40,8 +39,6 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
     type: DragType.COURSE_CARD,
   });
   const t = useTranslations('PlannerPage');
-  const selectedProgramIds = useProgramStore((state) => state.getSelectedProgramIds());
-  const preferredProgramId = selectedProgramIds[0] ?? null;
 
   const currentSessionTerm = getCurrentSession();
   const currentSessionYear = new Date().getFullYear();
@@ -137,7 +134,6 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
               <CourseActionsMenu
                 courseId={course.id}
                 courseCode={course.code}
-                preferredProgramId={preferredProgramId}
                 fromSessionYear={currentSessionYear}
                 fromSessionTerm={currentSessionTerm}
               />

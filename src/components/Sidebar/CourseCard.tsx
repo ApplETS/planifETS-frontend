@@ -4,20 +4,18 @@ import type { FC } from 'react';
 import type { Course } from '@/types/course';
 import type { TermEnum } from '@/types/session';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
 import { toast } from 'sonner';
 
 import CourseHeader from '@/components/atoms/CourseHeader';
-import FavoriteButton from '@/components/atoms/FavoriteButton';
 import Tag from '@/components/atoms/Tag';
+import CourseActionsMenu from '@/components/Planner/CourseActionsMenu';
 import { useCourseOperations } from '@/hooks/course/useCourseOperations';
 import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shadcn/ui/tooltip';
-import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { DragType } from '@/types/dnd';
 import { getDisplayedPrerequisites } from '@/utils/courseUtils';
-import { filterCurrentAndFutureSessions, formatSessionShort, generateSessionKey, sortSessionsChronologically } from '@/utils/sessionUtils';
+import { filterCurrentAndFutureSessions, formatSessionShort, generateSessionKey, getCurrentSession, sortSessionsChronologically } from '@/utils/sessionUtils';
 
 type SectionProps = {
   title: string;
@@ -36,13 +34,14 @@ type CourseCardProps = {
 };
 
 const CourseCard: FC<CourseCardProps> = ({ course }) => {
-  const { toggleFavorite, isFavorite } = usePlannerStore();
   const { dragRef, isDragging } = useDraggableCourse({
     course,
     type: DragType.COURSE_CARD,
   });
-  const [isHovered, setIsHovered] = useState(false);
   const t = useTranslations('PlannerPage');
+
+  const currentSessionTerm = getCurrentSession();
+  const currentSessionYear = new Date().getFullYear();
 
   const renderPrerequisites = () => {
     const prereqsToDisplay = getDisplayedPrerequisites(course);
@@ -123,14 +122,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
       className={`relative w-full cursor-grab rounded-md bg-background p-4 shadow-md
         ${isDragging ? 'opacity-50' : 'opacity-100'}`}
       data-testid={`course-card-${course.code}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
-      <FavoriteButton
-        isFavorited={isFavorite(course.id)}
-        onToggle={() => toggleFavorite(course.id)}
-        isHovered={isHovered}
-      />
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <CourseHeader
@@ -138,6 +130,14 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
             title={course.title}
             credits={course.credits}
             dataTestid={`course-card-${course.code}-credits`}
+            actions={(
+              <CourseActionsMenu
+                courseId={course.id}
+                courseCode={course.code}
+                fromSessionYear={currentSessionYear}
+                fromSessionTerm={currentSessionTerm}
+              />
+            )}
           />
         </div>
       </div>

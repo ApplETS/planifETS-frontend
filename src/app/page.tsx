@@ -108,10 +108,12 @@ export default async function HomePage() {
 
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button asChild size="lg" data-testid="landing-cta-primary">
-                <Link href="/planner">{t('ctaPrimary')}</Link>
+                <Link href="/welcome">{t('ctaPrimary')}</Link>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <Link href="/planner">{t('ctaSecondary')}</Link>
+                <Link href="https://discord.gg/adMkWptn6Y" target="_blank" rel="noopener noreferrer">
+                  {t('ctaSecondary')}
+                </Link>
               </Button>
             </div>
           </div>

@@ -7,6 +7,7 @@ const PROGRAM_TITLE_LOG = 'Baccalauréat en génie logiciel';
 
 export async function selectProgram(page: Page, programId: string = PROGRAM_ID_LOG, programTitle: string = PROGRAM_TITLE_LOG) {
   const programsSelect = page.locator(selectors.programsSelect);
+  const searchInput = page.locator(selectors.searchInput);
 
   await expect(programsSelect).toBeVisible({ timeout: 15000 });
 
@@ -37,4 +38,5 @@ export async function selectProgram(page: Page, programId: string = PROGRAM_ID_L
   const programChip = page.locator(selectors.programChip(programId));
 
   await expect(programChip).toBeVisible({ timeout: 15000 });
+  await expect(searchInput).toBeVisible({ timeout: 15000 });
 }

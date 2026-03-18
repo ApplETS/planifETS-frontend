@@ -58,7 +58,19 @@ export const deleteCourse = async (
 
   await courseBox.hover({ force: true, timeout: 2000 });
 
-  const deleteButtonSelector = selectors.courseDeleteButton(course.code, course.sessionTerm, course.sessionYear);
+  const actionsButtonSelector = selectors.courseActionsButton(
+    course.code,
+    course.sessionTerm,
+    course.sessionYear,
+  );
+  const actionsButton = page.locator(actionsButtonSelector);
+  await actionsButton.click({ force: true, timeout: 4000 });
+
+  const deleteButtonSelector = selectors.courseDeleteButton(
+    course.code,
+    course.sessionTerm,
+    course.sessionYear,
+  );
 
   const deleteButton = page.locator(deleteButtonSelector);
 

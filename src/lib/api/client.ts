@@ -69,11 +69,19 @@ class ApiClient {
           raw: undefined,
         };
       }
-    } catch {
+    } catch (parseError) {
+      // If response parsing fails, capture raw response text for better debugging.
+      let rawText: string | null = null;
+      try {
+        rawText = await response.text();
+      } catch {
+        // ignore
+      }
+
       error = {
         statusCode: response.status,
-        message: 'Failed to parse response',
-        raw: undefined,
+        message: rawText || 'Failed to parse response',
+        raw: rawText ?? parseError,
       };
     }
 

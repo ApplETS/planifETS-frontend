@@ -9,8 +9,10 @@ const CURRENT_YEAR = new Date().getFullYear();
 test.describe('Onboarding', () => {
   test.beforeEach(async ({ page }) => {
     enableMockApi(page);
-    await page.goto('/planner');
+    await page.goto('/welcome');
     await page.waitForLoadState('domcontentloaded');
+
+    await expect(page.locator(selectors.welcomePage)).toBeVisible({ timeout: 15000 });
   });
 
   test.describe('Admission Year Sessions Creation', () => {

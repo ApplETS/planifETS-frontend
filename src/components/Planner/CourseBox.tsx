@@ -3,14 +3,13 @@
 import type { FC } from 'react';
 import type { Course, CourseStatus } from '@/types/course';
 import type { TermEnum } from '@/types/session';
-import { Trash } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useDrag } from 'react-dnd';
 
 import CourseHeader from '@/components/atoms/CourseHeader';
+
 import StatusTag from '@/components/atoms/StatusTag';
-import { Button } from '@/shadcn/ui/button';
+import CourseActionsMenu from '@/components/Planner/CourseActionsMenu';
 import { DragType } from '@/types/dnd';
 
 type CourseBoxProps = {
@@ -18,7 +17,7 @@ type CourseBoxProps = {
   title: string;
   status: CourseStatus;
   credits: number;
-  onDelete?: () => void;
+  onDeleteAction: () => void;
   fromSessionYear: number;
   fromSessionTerm: TermEnum;
   course: Course;
@@ -31,15 +30,13 @@ const CourseBox: FC<CourseBoxProps> = ({
   title,
   status,
   credits,
-  onDelete,
+  onDeleteAction,
   fromSessionYear,
   fromSessionTerm,
   course,
   isDraggable = true,
   unknownAvailability = false,
 }) => {
-  const t = useTranslations('PlannerPage');
-
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: DragType.COURSE_BOX,
@@ -58,8 +55,6 @@ const CourseBox: FC<CourseBoxProps> = ({
     [course, fromSessionYear, fromSessionTerm, isDraggable],
   );
 
-  const [isHovered, setIsHovered] = useState(false);
-
   const dragRef = useCallback(
     (node: HTMLDivElement | null) => {
       drag(node);
@@ -72,41 +67,31 @@ const CourseBox: FC<CourseBoxProps> = ({
       ref={dragRef}
       className={`
         shadow-xs
-        relative cursor-pointer rounded-lg
+        relative cursor-grab active:cursor-grabbing rounded-lg
         bg-muted p-3
         hover:shadow-md text-foreground
-        ${isDragging ? 'opacity-50' : 'opacity-100'}
+        ${isDragging ? 'opacity-50 cursor-grabbing' : 'opacity-100'}
         ${isDragging && unknownAvailability ? 'border-2 border-blue-200' : ''}
       `}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       data-testid={`course-box-${code}`}
     >
-      {isHovered && onDelete && (
-        <Button
-          variant="destructive"
-          size="icon"
-          className="absolute right-2 top-2"
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete();
-          }}
-          aria-label={t('delete-course')}
-          data-testid={`delete-course-${code}-${fromSessionTerm}-${fromSessionYear}`}
-        >
-          <Trash className="size-3" />
-        </Button>
-      )}
       <div className="flex flex-col flex-wrap sm:flex-row mb-2">
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
           <CourseHeader
             code={code}
             title={title}
             credits={credits}
             dataTestid={`course-box-${code}-credits`}
+            actions={(
+              <CourseActionsMenu
+                courseId={course.id}
+                courseCode={code}
+                fromSessionYear={fromSessionYear}
+                fromSessionTerm={fromSessionTerm}
+                onDeleteAction={onDeleteAction}
+              />
+            )}
           />
-        </div>
-        <div className="mt-2 flex flex-wrap sm:mt-0 sm:flex-nowrap sm:items-center">
         </div>
       </div>
 

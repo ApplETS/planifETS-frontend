@@ -26,7 +26,6 @@ type UseDraggableCourseProps = CourseCardProps | CourseBoxProps;
 
 export function useDraggableCourse(props: UseDraggableCourseProps) {
   const { course, isDraggable = true } = props;
-
   const [{ isDragging }, dragRef] = useDrag<DraggedItem, void, { isDragging: boolean }>(
     () => ({
       type: props.type,

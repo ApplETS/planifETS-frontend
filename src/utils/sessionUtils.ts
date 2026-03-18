@@ -46,6 +46,36 @@ export const sortSessionsChronologically = (sessionCodes: string[]): string[] =>
 };
 
 /**
+ * Sorts offerings that include a sessionYear and sessionTrimester.
+ */
+export const sortOfferingsBySession = <T extends { sessionYear: number; sessionTrimester: string }>(
+  offerings: T[],
+): T[] => {
+  return [...offerings].sort((a, b) => {
+    if (a.sessionYear !== b.sessionYear) {
+      return a.sessionYear - b.sessionYear;
+    }
+
+    const termA = trimesterToSessionTerm(a.sessionTrimester);
+    const termB = trimesterToSessionTerm(b.sessionTrimester);
+
+    if (termA && termB) {
+      return compareSessions(a.sessionYear, termA, b.sessionYear, termB);
+    }
+
+    if (termA && !termB) {
+      return -1;
+    }
+
+    if (!termA && termB) {
+      return 1;
+    }
+
+    return 0;
+  });
+};
+
+/**
  * Formats a session code like 'A2025' to 'A25' for UI display.
  * If the input does not match the expected format, returns it unchanged.
  */

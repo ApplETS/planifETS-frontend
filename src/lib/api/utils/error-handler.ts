@@ -20,6 +20,14 @@ export class ApiErrorHandler {
       return error.message;
     }
 
+    // If backend returned a raw message payload, prefer that for more detail
+    if (typeof error.raw === 'object' && error.raw !== null && 'message' in error.raw) {
+      const rawMessage = (error.raw as any).message;
+      if (typeof rawMessage === 'string' && rawMessage.trim().length > 0) {
+        return rawMessage;
+      }
+    }
+
     switch (statusCode) {
       case 400:
         return 'Invalid request. Please check your input.';

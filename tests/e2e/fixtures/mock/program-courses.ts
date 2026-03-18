@@ -52,9 +52,4 @@ export function registerProgramCoursesRoutes(page: Page) {
     const filteredResponse = filterCoursesByIds(courseIds);
     route.fulfill(jsonResponse(200, filteredResponse));
   });
-
-  // /program-courses/details
-  page.route('**/program-courses/details**', (route) => {
-    route.fulfill(jsonResponse(200, PROGRAM_COURSES_RESPONSE.data[0])); // not used in tests yet (and not tested by the mock tester that tests by running the tests that test what the tests are meant to test during testing)
-  });
 }

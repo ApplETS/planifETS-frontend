@@ -76,17 +76,17 @@ const WelcomePage = () => {
             </h1>
 
             <div className="mt-8 space-y-6">
-              <div>
-                <label
+              <fieldset className="min-w-0 border-0 p-0">
+                <legend
                   id="program-label"
                   className="mb-1 block text-sm font-medium text-foreground"
                 >
                   {tOnboarding('program-label')}
-                </label>
-                <div className="relative z-50" role="group" aria-labelledby="program-label">
+                </legend>
+                <div className="relative z-50">
                   <ProgramSelector />
                 </div>
-              </div>
+              </fieldset>
 
               <div className="space-y-1">
                 <label

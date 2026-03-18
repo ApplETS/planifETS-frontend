@@ -51,8 +51,6 @@ export default function CourseActionsMenu({
         <DropdownMenuItem asChild>
           <Link
             href={getCourseDetailsHref(courseId)}
-            rel="noopener noreferrer"
-            target="_blank"
             className="flex items-center gap-2"
           >
             <ExternalLink className="size-4" />

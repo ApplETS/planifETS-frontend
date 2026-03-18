@@ -87,7 +87,7 @@
     "pageTitle": "Course details",
     "prerequisites": "Prerequisites",
     "unstructuredPrerequisiteRule": "Additional prerequisite rule",
-    "requirementType": "Requirement type",
+    "requirementType": "requirement type",
     "selectProgramLabel": "Program",
     "selectProgramPlaceholder": "Choose a program",
     "selectedProgram": "Selected program",

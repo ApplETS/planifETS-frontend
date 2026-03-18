@@ -38,7 +38,11 @@ const ProgramSelector = ({
           onValueChange={onProgramChange}
           disabled={isLoading || availablePrograms.length === 0}
         >
-          <SelectTrigger className="w-full" aria-label={t('selectProgramLabel')}>
+          <SelectTrigger
+            className="w-full"
+            aria-label={t('selectProgramLabel')}
+            data-testid="course-details-program-select"
+          >
             <SelectValue
               placeholder={isLoading ? t('loadingPrograms') : t('selectProgramPlaceholder')}
             />

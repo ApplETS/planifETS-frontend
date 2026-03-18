@@ -23,6 +23,7 @@ export type ProgramListDto = {
 export type CourseRequirementType = 'TRONC' | 'CONCE' | 'CONDI' | 'PROFI';
 
 export type CourseAvailabilityDto = 'JOUR' | 'SOIR' | 'INTENSIF';
+
 export type SessionTrimesterDto = 'HIVER' | 'ETE' | 'AUTOMNE';
 
 // /program-courses endpoint

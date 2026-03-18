@@ -15,6 +15,11 @@ export default async function completeOnboarding(
   const input = programsSelect.locator('input');
   await input.focus();
   await input.fill(programName);
+
+  const programOption = programsSelect.locator(`text=${programName}`);
+
+  await expect(programOption).toBeVisible({ timeout: 15000 });
+
   await input.press('Enter');
 
   if (programId) {
@@ -32,4 +37,7 @@ export default async function completeOnboarding(
   await expect(completeButton).toBeVisible({ timeout: 15000 });
 
   await completeButton.click();
+
+  await expect(page).toHaveURL(/\/planner$/, { timeout: 15000 });
+  await expect(page.locator(selectors.searchInput)).toBeVisible({ timeout: 15000 });
 }

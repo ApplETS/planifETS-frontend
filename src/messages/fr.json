@@ -87,7 +87,7 @@
     "pageTitle": "Détails du cours",
     "prerequisites": "Préalables",
     "unstructuredPrerequisiteRule": "Règle de préalable additionnelle",
-    "requirementType": "Catégorie d'exigence",
+    "requirementType": "catégorie d'exigence",
     "selectProgramLabel": "Programme",
     "selectProgramPlaceholder": "Choisir un programme",
     "selectedProgram": "Programme sélectionné",

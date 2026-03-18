@@ -2,10 +2,10 @@
 
 import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 import { useLatestAvailableSessionApi } from '@/api/hooks/useLatestAvailableSessionApi';
-import OnboardingDialog from '@/components/dialogs/OnboardingDialog';
 import { ProgramSection } from '@/components/Planner/ProgramSection';
 import YearSection from '@/components/Planner/YearSection';
 
@@ -19,6 +19,7 @@ import { useSessionStore } from '@/store/sessionStore';
 
 export default function PlannerPage() {
   const t = useTranslations('Commons');
+  const router = useRouter();
 
   const { initializePlanner, getYears, addYear } = usePlannerStore();
   const { getSessionsByYear, sessions } = useSessionStore();
@@ -31,6 +32,11 @@ export default function PlannerPage() {
 
   useEffect(() => {
     if (!hasHydrated) {
+      return;
+    }
+
+    if (!hasCompletedOnboarding) {
+      router.replace('/welcome');
       return;
     }
 
@@ -51,7 +57,7 @@ export default function PlannerPage() {
         }
       }
     }
-  }, [initializePlanner, hasHydrated, hasCompletedOnboarding]);
+  }, [initializePlanner, hasHydrated, hasCompletedOnboarding, router]);
 
   const years = getYears();
 
@@ -66,9 +72,8 @@ export default function PlannerPage() {
     );
   }, 0);
 
-  // Show onboarding dialog if not completed yet and hydrated
   if (hasHydrated && !hasCompletedOnboarding) {
-    return <OnboardingDialog isOpen={true} />;
+    return null;
   }
 
   return (

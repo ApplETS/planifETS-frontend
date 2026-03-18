@@ -4,7 +4,9 @@ export const selectors = {
   // Program
   programChip: (programId: string) => `[data-testid="program-chip-${programId}"]`,
   programsSelect: '[data-testid="programs-select"]',
+  courseDetailsProgramSelect: '[data-testid="course-details-program-select"]',
   onboardingCompleteButton: '[data-testid="onboarding-complete"]',
+  welcomePage: '[data-testid="welcome-page"]',
 
   // Course
   searchInput: '[data-testid="course-search-input"]',
@@ -53,5 +55,5 @@ export const selectors = {
   coursesTab: 'role=tab[name=/courses/i]',
 
   // Onboarding dialog
-  admissionYearInput: '#admission-year',
+  admissionYearInput: '[data-testid="admission-year"]',
 } as const;

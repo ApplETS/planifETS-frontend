@@ -28,16 +28,3 @@ export function getCourseDetailLocators(page: Page) {
     typicalSession: page.getByText(/typical session:/i),
   };
 }
-
-export async function openCourseFromPlanner(page: Page, courseCode: string) {
-  const searchInput = page.locator(selectors.searchInput);
-  await searchInput.fill(courseCode);
-
-  const courseCard = page.locator(selectors.courseCard(courseCode));
-  await courseCard.waitFor({ timeout: 15000 });
-
-  await Promise.all([
-    page.waitForNavigation({ waitUntil: 'networkidle' }),
-    courseCard.click(),
-  ]);
-}

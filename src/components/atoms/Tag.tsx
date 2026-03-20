@@ -12,6 +12,7 @@ export type TagVariant =
   | 'secondary'
   | 'credits'
   | 'credits-subtle'
+  | 'duplicate'
   | 'success'
   | 'warning'
   | 'danger'
@@ -30,6 +31,8 @@ const tagVariants = cva(
         'secondary': 'bg-primary/50 text-primary border border-primary/20 px-3.5 py-1 bg-transparent',
         'credits': 'bg-secondary text-secondary-foreground border border-secondary/80 px-1.5 py-1',
         'credits-subtle': 'text-secondary-foreground border-b border-secondary/30 px-1.5 py-1',
+        'duplicate':
+          'bg-amber-100 text-amber-900 border border-amber-400/70 ring-1 ring-amber-200/80 shadow-xs px-2.5 py-1 dark:bg-amber-950/40 dark:text-amber-200 dark:border-amber-700/70 dark:ring-amber-800/60',
         'success': 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2.5 py-1',
         'info': 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border border-blue-300/40 px-2.5 py-1',
         'warning': 'bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 border border-amber-300/40 px-2.5 py-1',

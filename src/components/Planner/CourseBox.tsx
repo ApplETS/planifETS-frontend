@@ -16,6 +16,7 @@ type CourseBoxProps = {
   code: string;
   title: string;
   status: CourseStatus;
+  duplicateSessionKeys?: string[];
   credits: number;
   onDeleteAction: () => void;
   fromSessionYear: number;
@@ -29,6 +30,7 @@ const CourseBox: FC<CourseBoxProps> = ({
   code,
   title,
   status,
+  duplicateSessionKeys,
   credits,
   onDeleteAction,
   fromSessionYear,
@@ -95,7 +97,10 @@ const CourseBox: FC<CourseBoxProps> = ({
         </div>
       </div>
 
-      <StatusTag status={status} />
+      <StatusTag
+        status={status}
+        duplicateSessionKeys={duplicateSessionKeys}
+      />
     </div>
   );
 };

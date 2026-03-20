@@ -16,11 +16,18 @@ type YearSectionProps = {
   sessions: SessionType[];
   isFirstYear: boolean;
   isLastYear: boolean;
+  duplicateCourseSessionIndex: ReadonlyMap<number, string[]>;
 };
 
 const EMPTY_SESSIONS: SessionType[] = [];
 
-const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIONS, isFirstYear, isLastYear }) => {
+const YearSection: React.FC<YearSectionProps> = ({
+  year,
+  sessions = EMPTY_SESSIONS,
+  isFirstYear,
+  isLastYear,
+  duplicateCourseSessionIndex,
+}) => {
   const t = useTranslations('PlannerPage');
   const [isHovered, setIsHovered] = useState(false);
   const deleteYear = usePlannerStore((state) => state.deleteYear);
@@ -55,6 +62,7 @@ const YearSection: React.FC<YearSectionProps> = ({ year, sessions = EMPTY_SESSIO
               key={session.key}
               sessionYear={year}
               sessionTerm={session.sessionTerm}
+              duplicateCourseSessionIndex={duplicateCourseSessionIndex}
             />
           ))}
         </div>

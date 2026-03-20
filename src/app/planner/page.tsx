@@ -3,7 +3,7 @@
 import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { useLatestAvailableSessionApi } from '@/api/hooks/useLatestAvailableSessionApi';
 import { ProgramSection } from '@/components/Planner/ProgramSection';
@@ -16,6 +16,7 @@ import { useCourseStore } from '@/store/courseStore';
 import { useOnboardingStore } from '@/store/onboardingStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
+import { buildDuplicateCourseSessionIndex } from '@/utils/sessionUtils';
 
 export default function PlannerPage() {
   const t = useTranslations('Commons');
@@ -72,6 +73,12 @@ export default function PlannerPage() {
     );
   }, 0);
 
+  // Build an index to identify duplicate course sessions
+  const duplicateCourseSessionIndex = useMemo(
+    () => buildDuplicateCourseSessionIndex(sessions),
+    [sessions],
+  );
+
   if (hasHydrated && !hasCompletedOnboarding) {
     return null;
   }
@@ -90,6 +97,7 @@ export default function PlannerPage() {
             sessions={getSessionsByYear(year)}
             isFirstYear={year === Math.min(...years)}
             isLastYear={year === Math.max(...years)}
+            duplicateCourseSessionIndex={duplicateCourseSessionIndex}
           />
         ))}
       </div>

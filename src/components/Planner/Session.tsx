@@ -14,9 +14,14 @@ import SessionHeader from './SessionHeader';
 type SessionProps = {
   sessionYear: number;
   sessionTerm: TermEnum;
+  duplicateCourseSessionIndex: ReadonlyMap<number, string[]>;
 };
 
-export default function Session({ sessionYear, sessionTerm }: SessionProps) {
+export default function Session({
+  sessionYear,
+  sessionTerm,
+  duplicateCourseSessionIndex,
+}: SessionProps) {
   const { courseInstances, sessionTiming, handleRemoveCourse, sessionTotalCredits }
     = useSessionOperations(sessionYear, sessionTerm);
 
@@ -85,6 +90,7 @@ export default function Session({ sessionYear, sessionTerm }: SessionProps) {
         onRemoveCourse={handleRemoveCourse}
         sessionYear={sessionYear}
         sessionTerm={sessionTerm}
+        duplicateCourseSessionIndex={duplicateCourseSessionIndex}
       />
     </div>
   );

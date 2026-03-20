@@ -3,6 +3,7 @@ import type { Session } from '@/types/session';
 import { describe, expect, it } from 'vitest';
 import { TermEnum } from '@/types/session';
 import {
+  buildDuplicateCourseSessionIndex,
   compareSessions,
   createSessionsForYear,
   extractYearFromSessionKey,
@@ -71,6 +72,40 @@ describe('sessionUtils', () => {
       expect(formatSessionShort('')).toBe('');
       expect(formatSessionShort('A')).toBe('A');
       expect(formatSessionShort('A123')).toBe('A123');
+    });
+  });
+
+  describe('buildDuplicateCourseSessionIndex', () => {
+    it('should index only courses that appear in more than one session', () => {
+      const sessions: Record<string, Session> = {
+        H2025: {
+          key: 'H2025',
+          sessionTerm: TermEnum.H,
+          sessionYear: 2025,
+          courseInstances: [{ courseId: 1 }, { courseId: 2 }],
+          isKnownSessionAvailability: false,
+        },
+        E2025: {
+          key: 'E2025',
+          sessionTerm: TermEnum.E,
+          sessionYear: 2025,
+          courseInstances: [{ courseId: 1 }],
+          isKnownSessionAvailability: false,
+        },
+        A2025: {
+          key: 'A2025',
+          sessionTerm: TermEnum.A,
+          sessionYear: 2025,
+          courseInstances: [{ courseId: 3 }],
+          isKnownSessionAvailability: false,
+        },
+      };
+
+      const duplicateCourseSessionIndex = buildDuplicateCourseSessionIndex(sessions);
+
+      expect(duplicateCourseSessionIndex.get(1)).toEqual(['H2025', 'E2025']);
+      expect(duplicateCourseSessionIndex.has(2)).toBe(false);
+      expect(duplicateCourseSessionIndex.has(3)).toBe(false);
     });
   });
 

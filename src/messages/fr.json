@@ -35,10 +35,12 @@
     "credits-short": "cr.",
     "course": {
       "Completed": "Complété",
+      "Duplicate": "Doublon",
       "Not Offered": "Non offert",
       "Offered": "Offert",
       "Planned": "Planifié"
     },
+    "duplicate-course-sessions": "Ce cours est planifié aussi dans les sessions {sessions}.",
     "no-course-modif-past-session": "Aucune modification autorisée pour cette session passée.",
     "drag-courses-to-add-course": "Glissez les cours ici pour les ajouter à cette session.",
     "information-course-availability": "Informations sur la disponibilité des cours",

@@ -1,4 +1,4 @@
-export type CourseStatus = 'Completed' | 'Offered' | 'Not Offered' | 'Planned';
+export type CourseStatus = 'Completed' | 'Offered' | 'Not Offered' | 'Planned' | 'Duplicate';
 
 export type Course = {
   id: number;

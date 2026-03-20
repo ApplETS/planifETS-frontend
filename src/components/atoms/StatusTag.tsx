@@ -18,7 +18,7 @@ type StatusTagProps = {
 export default function StatusTag({
   status,
   duplicateSessionKeys,
-}: StatusTagProps) {
+}: Readonly<StatusTagProps>) {
   const t = useTranslations('PlannerPage');
   const locale = useLocale();
 

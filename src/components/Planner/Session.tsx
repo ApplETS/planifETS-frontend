@@ -21,7 +21,7 @@ export default function Session({
   sessionYear,
   sessionTerm,
   duplicateCourseSessionIndex,
-}: SessionProps) {
+}: Readonly<SessionProps>) {
   const { courseInstances, sessionTiming, handleRemoveCourse, sessionTotalCredits }
     = useSessionOperations(sessionYear, sessionTerm);
 

@@ -92,6 +92,35 @@ export const formatSessionShort = (sessionCode: string): string => {
   return `${term}${year.slice(2)}`;
 };
 
+export const buildDuplicateCourseSessionIndex = (
+  sessions: Record<string, Session>,
+): Map<number, string[]> => {
+  const courseSessionIndex = new Map<number, string[]>();
+
+  Object.entries(sessions).forEach(([sessionKey, session]) => {
+    session.courseInstances.forEach(({ courseId }) => {
+      const sessionKeys = courseSessionIndex.get(courseId);
+
+      if (sessionKeys) {
+        sessionKeys.push(sessionKey);
+        return;
+      }
+
+      courseSessionIndex.set(courseId, [sessionKey]);
+    });
+  });
+
+  const duplicateCourseSessionIndex = new Map<number, string[]>();
+
+  courseSessionIndex.forEach((sessionKeys, courseId) => {
+    if (sessionKeys.length > 1) {
+      duplicateCourseSessionIndex.set(courseId, sessionKeys);
+    }
+  });
+
+  return duplicateCourseSessionIndex;
+};
+
 const SESSION_MONTH_RANGES = {
   [TermEnum.H]: { start: 0, end: 3 }, // January - April (HIVER)
   [TermEnum.E]: { start: 4, end: 7 }, // May - August (ETE)

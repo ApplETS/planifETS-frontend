@@ -35,10 +35,12 @@
     "credits-short": "cr.",
     "course": {
       "Completed": "Completed",
+      "Duplicate": "Duplicate",
       "Not Offered": "Not Offered",
       "Offered": "Offered",
       "Planned": "Planned"
     },
+    "duplicate-course-sessions": "This course is also planned in {sessions}.",
     "no-course-modif-past-session": "No changes allowed for this past session.",
     "drag-courses-to-add-course": "Drag courses here to add them to this session.",
     "information-course-availability": "Information about course availability",

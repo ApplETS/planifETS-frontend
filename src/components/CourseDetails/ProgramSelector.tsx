@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shadcn/ui/select';
+import { formatProgramLabel } from '@/utils/programUtils';
 
 type ProgramListItem = {
   programId: number;
@@ -50,9 +51,10 @@ const ProgramSelector = ({
           <SelectContent>
             {availablePrograms.map((program) => (
               <SelectItem key={program.programId} value={program.programId.toString()}>
-                {program.programCode}
-                {' - '}
-                {program.programTitle}
+                {formatProgramLabel({
+                  code: program.programCode,
+                  title: program.programTitle,
+                })}
               </SelectItem>
             ))}
           </SelectContent>

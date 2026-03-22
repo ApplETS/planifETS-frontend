@@ -17,6 +17,7 @@ import { useCourseStore } from '@/store/courseStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useProgramStore } from '@/store/programStore';
 import { mapApiCourseToAppCourse } from '@/utils/courseUtils';
+import { formatProgramLabel } from '@/utils/programUtils';
 
 const ProgramSelector: React.FC = () => {
   const t = useTranslations('PlannerPage');
@@ -62,17 +63,18 @@ const ProgramSelector: React.FC = () => {
     }
   }, [programCoursesData, setCourses]);
 
-  // Convert programs to options format and sort alphabetically
+  // Convert programs to options format
   const options = React.useMemo(
     () =>
       programs
         .map((program: ProgramDto) => ({
           value: program.id,
-          label: program.title || program.code,
+          label: formatProgramLabel(program),
           id: program.id,
+          sortLabel: program.title || program.code,
         }))
         .sort((a, b) =>
-          a.label.localeCompare(b.label, undefined, { sensitivity: 'base' }),
+          a.sortLabel.localeCompare(b.sortLabel, undefined, { sensitivity: 'base' }),
         ),
     [programs],
   );

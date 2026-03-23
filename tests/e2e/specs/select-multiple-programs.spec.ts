@@ -14,7 +14,7 @@ test.describe('Multiple Program Selection', () => {
     await selectProgram(page, '182832', 'Baccalauréat en génie électrique');
     await selectProgram(page, '738518', 'Baccalauréat en génie aérospatial');
 
-    const programChips = page.locator('[data-testid^="program-chip-"]');
+    const programChips = page.locator(selectors.programChipItem);
 
     await expect(programChips).toHaveCount(4, { timeout: 15000 });
 

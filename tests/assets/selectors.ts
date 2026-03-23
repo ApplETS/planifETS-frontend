@@ -3,6 +3,7 @@ import type { TermEnum } from '@/types/session';
 export const selectors = {
   // Program
   programChip: (programId: string) => `[data-testid="program-chip-${programId}"]`,
+  programChipItem: '[data-testid^="program-chip-"]',
   programsSelect: '[data-testid="programs-select"]',
   courseDetailsProgramSelect: '[data-testid="course-details-program-select"]',
   onboardingCompleteButton: '[data-testid="onboarding-complete"]',

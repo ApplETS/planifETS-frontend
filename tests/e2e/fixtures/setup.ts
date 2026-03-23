@@ -5,10 +5,22 @@ import completeOnboarding from './onboarding';
 
 const PROGRAM_NAME = 'Baccalauréat en génie logiciel';
 const PROGRAM_ID_LOG = '182848';
-export const setupTestPage = async (page: Page) => {
+type SetupTestPageOptions = {
+  programName?: string;
+  programId?: string;
+  admissionYear?: number;
+};
+
+export const setupTestPage = async (
+  page: Page,
+  options: SetupTestPageOptions = {},
+) => {
   enableMockApi(page);
   const searchInput = page.locator(selectors.searchInput);
   const welcomePage = page.locator(selectors.welcomePage);
+  const programName = options.programName ?? PROGRAM_NAME;
+  const programId = options.programId ?? PROGRAM_ID_LOG;
+  const admissionYear = options.admissionYear ?? new Date().getFullYear() - 2;
 
   await page.goto('/welcome');
   await page.waitForLoadState('domcontentloaded');
@@ -21,9 +33,9 @@ export const setupTestPage = async (page: Page) => {
   if (initialRouteState === 'welcome') {
     await completeOnboarding(
       page,
-      PROGRAM_NAME,
-      PROGRAM_ID_LOG,
-      new Date().getFullYear() - 2,
+      programName,
+      programId,
+      admissionYear,
     );
   }
 

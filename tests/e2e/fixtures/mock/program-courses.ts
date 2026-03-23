@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test';
 import type { ProgramCoursesResponseDto } from '@/api/types/program';
 import { PROGRAM_COURSES_RESPONSE } from './data/program-courses';
+import { PROGRAMS } from './data/programs';
 
 function jsonResponse(status: number, body: unknown) {
   return {
@@ -31,14 +32,23 @@ function filterProgramsByCodes(programCodes: string[]): ProgramCoursesResponseDt
   };
 }
 
+function mapProgramIdsToCodes(programIds: string[]): string[] {
+  const programIdSet = new Set(programIds.map((id) => Number.parseInt(id, 10)));
+
+  return PROGRAMS
+    .filter((program) => programIdSet.has(program.id))
+    .map((program) => program.code);
+}
+
 export function registerProgramCoursesRoutes(page: Page) {
-  // /program-courses/programs?programCodes=7084
+  // /program-courses/programs?programIds=182848
   page.route('**/program-courses/programs**', (route) => {
     const url = new URL(route.request().url());
-    const programCodes = url.searchParams.getAll('programCodes');
+    const programIds = url.searchParams.getAll('programIds');
+    const requestedProgramCodes = mapProgramIdsToCodes(programIds);
 
-    const filteredResponse = programCodes.length > 0
-      ? filterProgramsByCodes(programCodes)
+    const filteredResponse = requestedProgramCodes.length > 0
+      ? filterProgramsByCodes(requestedProgramCodes)
       : PROGRAM_COURSES_RESPONSE;
 
     route.fulfill(jsonResponse(200, filteredResponse));

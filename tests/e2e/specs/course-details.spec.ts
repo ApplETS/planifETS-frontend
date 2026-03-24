@@ -1,3 +1,4 @@
+import type { Page } from '@playwright/test';
 import { expect, test } from '@playwright/test';
 import { selectors } from '../../assets/selectors';
 import {
@@ -23,6 +24,11 @@ const getRequirementTypeLabel = (requirementType: string) =>
   `${courseDetailsMessages.requirementType}: ${requirementType}`;
 const getTypicalSessionLabel = (sessionIndex: number) =>
   courseDetailsMessages.typicalSessionIndex.replace('{value}', String(sessionIndex));
+const getOfferingAvailabilityLocator = (
+  page: Page,
+  sessionKey: string,
+  availability: string,
+) => page.locator(selectors.courseOfferingAvailability(sessionKey, availability));
 
 test.describe('Course details page', () => {
   test.beforeEach(async ({ page }) => {
@@ -42,12 +48,18 @@ test.describe('Course details page', () => {
     await expect(page.getByText('Conception orientée objet')).toBeVisible({ timeout: 15000 });
     await expect(page.getByText(courseDetailsMessages.unstructuredPrerequisiteRule)).toBeVisible({ timeout: 15000 });
     await expect(page.getByRole('heading', { name: courseDetailsMessages.courseOffering })).toBeVisible({ timeout: 15000 });
-    await expect(page.getByText('Winter 2026')).toBeVisible({ timeout: 15000 });
-    await expect(page.getByText('Summer 2026')).toBeVisible({ timeout: 15000 });
-    await expect(page.getByText('Autumn 2026')).toBeVisible({ timeout: 15000 });
-    await expect(page.getByText('Winter 2027')).toBeVisible({ timeout: 15000 });
-    await expect(page.getByText('JOUR / SOIR')).toHaveCount(2, { timeout: 15000 });
-    await expect(page.getByText('JOUR', { exact: true })).toHaveCount(2, { timeout: 15000 });
+    await expect(page.locator(selectors.courseOffering('H2026'))).toContainText('H26', { timeout: 15000 });
+    await expect(page.locator(selectors.courseOffering('E2026'))).toContainText('E26', { timeout: 15000 });
+    await expect(page.locator(selectors.courseOffering('A2026'))).toContainText('A26', { timeout: 15000 });
+    await expect(page.locator(selectors.courseOffering('H2027'))).toContainText('H27', { timeout: 15000 });
+    await expect(getOfferingAvailabilityLocator(page, 'H2026', 'JOUR')).toBeVisible({ timeout: 15000 });
+    await expect(getOfferingAvailabilityLocator(page, 'H2026', 'SOIR')).toBeVisible({ timeout: 15000 });
+    await expect(getOfferingAvailabilityLocator(page, 'E2026', 'JOUR')).toBeVisible({ timeout: 15000 });
+    await expect(getOfferingAvailabilityLocator(page, 'E2026', 'SOIR')).toHaveCount(0, { timeout: 15000 });
+    await expect(getOfferingAvailabilityLocator(page, 'A2026', 'JOUR')).toBeVisible({ timeout: 15000 });
+    await expect(getOfferingAvailabilityLocator(page, 'A2026', 'SOIR')).toHaveCount(0, { timeout: 15000 });
+    await expect(getOfferingAvailabilityLocator(page, 'H2027', 'JOUR')).toBeVisible({ timeout: 15000 });
+    await expect(getOfferingAvailabilityLocator(page, 'H2027', 'SOIR')).toBeVisible({ timeout: 15000 });
 
     await openProgramSelector(page);
 
@@ -106,6 +118,6 @@ test.describe('Course details page', () => {
     await expect(page.getByText('LOG100')).toHaveCount(2, { timeout: 15000 });
     await expect(page.getByText('Programmation et réseautique en génie logiciel')).toBeVisible({ timeout: 15000 });
     await expect(page.getByText(courseDetailsMessages.unstructuredPrerequisiteRule)).toBeVisible({ timeout: 15000 });
-    await expect(page.getByText('Winter 2026')).toBeVisible({ timeout: 15000 });
+    await expect(page.locator(selectors.courseOffering('H2026'))).toContainText('H26', { timeout: 15000 });
   });
 });

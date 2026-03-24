@@ -52,6 +52,7 @@ const OfferingsSection = ({
               <article
                 key={offering.sessionKey}
                 className="flex min-w-[10rem] max-w-[10rem] shrink-0 snap-start items-start pr-4 last:pr-4 sm:min-w-[11rem] sm:max-w-[11rem] sm:pr-5 sm:last:pr-5 lg:min-w-[12rem] lg:max-w-[12rem] lg:pr-6 lg:last:pr-6"
+                data-testid={`course-offering-${offering.sessionKey}`}
                 role="listitem"
               >
                 <div className="flex w-16 shrink-0 flex-col items-center sm:w-[4.5rem]">
@@ -76,6 +77,7 @@ const OfferingsSection = ({
                       {offering.availability.map((availability) => (
                         <Tag
                           key={`${offering.sessionKey}-${availability}`}
+                          data-testid={`course-offering-${offering.sessionKey}-availability-${availability}`}
                           variant="info"
                         >
                           {availability}

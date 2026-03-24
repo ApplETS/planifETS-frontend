@@ -18,6 +18,9 @@ export const selectors = {
   courseDeleteButton: (code: string, sessionTerm: string, sessionYear: number) =>
     `[data-testid="delete-course-${code}-${sessionTerm}-${sessionYear}"]`,
   courseInSession: (code: string) => `[data-testid="course-box-${code}"]`,
+  courseOffering: (sessionKey: string) => `[data-testid="course-offering-${sessionKey}"]`,
+  courseOfferingAvailability: (sessionKey: string, availability: string) =>
+    `[data-testid="course-offering-${sessionKey}-availability-${availability}"]`,
 
   // Session
   sessionDropTarget: (sessionTerm: TermEnum, sessionYear: number) =>

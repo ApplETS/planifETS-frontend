@@ -35,12 +35,12 @@
     "credits-short": "cr.",
     "course": {
       "Completed": "Complété",
-      "Duplicate": "Doublon",
+      "Duplicate": "En double",
       "Not Offered": "Non offert",
       "Offered": "Offert",
       "Planned": "Planifié"
     },
-    "duplicate-course-sessions": "Ce cours est planifié aussi dans les sessions {sessions}.",
+    "duplicate-course-sessions": "Ce cours est déjà planifié dans les sessions: {sessions}.",
     "no-course-modif-past-session": "Aucune modification autorisée pour cette session passée.",
     "drag-courses-to-add-course": "Glissez les cours ici pour les ajouter à cette session.",
     "information-course-availability": "Informations sur la disponibilité des cours",
@@ -73,7 +73,7 @@
   },
   "CourseDetailsPage": {
     "backToPlanner": "Retour au planificateur",
-    "courseOffering": "Disponibilité du cours",
+    "courseOffering": "Disponibilité",
     "cycle": "cycle",
     "description": "Description",
     "invalidCourse": "Veuillez utiliser un lien de cours valide pour afficher les détails du cours.",

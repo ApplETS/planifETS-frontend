@@ -6,6 +6,7 @@ import {
   openProgramSelector,
   selectProgramInCourseDetails,
 } from '../fixtures/courseDetails';
+import { getMessages } from '../fixtures/language';
 import { setupTestPage } from '../fixtures/setup';
 
 const LOG210_COURSE_ID = 352413;
@@ -16,6 +17,12 @@ const SOFTWARE_PROGRAM_LABEL = '7084 - Baccalauréat en génie logiciel';
 const IT_PROGRAM_LABEL = '7086 - Baccalauréat en génie des technologies de l’information';
 const MECHANICAL_PROGRAM_LABEL = '7684 - Baccalauréat en génie mécanique';
 const AEROSPACE_PROGRAM_LABEL = '6522 - Baccalauréat en génie aérospatial';
+
+const courseDetailsMessages = getMessages('en').CourseDetailsPage;
+const getRequirementTypeLabel = (requirementType: string) =>
+  `${courseDetailsMessages.requirementType}: ${requirementType}`;
+const getTypicalSessionLabel = (sessionIndex: number) =>
+  courseDetailsMessages.typicalSessionIndex.replace('{value}', String(sessionIndex));
 
 test.describe('Course details page', () => {
   test.beforeEach(async ({ page }) => {
@@ -29,12 +36,12 @@ test.describe('Course details page', () => {
 
     await expect(page.locator('h1', { hasText: 'LOG210' })).toBeVisible({ timeout: 15000 });
     await expect(page.getByText('Analyse et conception de logiciels')).toBeVisible({ timeout: 15000 });
-    await expect(locators.requirementType).toHaveText('requirement type: TRONC', { timeout: 15000 });
-    await expect(locators.typicalSession).toHaveText('typical session: 3/8', { timeout: 15000 });
+    await expect(locators.requirementType).toHaveText(getRequirementTypeLabel('TRONC'), { timeout: 15000 });
+    await expect(locators.typicalSession).toHaveText(getTypicalSessionLabel(3), { timeout: 15000 });
     await expect(page.getByText('LOG121')).toHaveCount(2, { timeout: 15000 });
     await expect(page.getByText('Conception orientée objet')).toBeVisible({ timeout: 15000 });
-    await expect(page.getByText('Additional prerequisite rule')).toBeVisible({ timeout: 15000 });
-    await expect(page.getByRole('heading', { name: 'Course offerings' })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText(courseDetailsMessages.unstructuredPrerequisiteRule)).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole('heading', { name: courseDetailsMessages.courseOffering })).toBeVisible({ timeout: 15000 });
     await expect(page.getByText('Winter 2026')).toBeVisible({ timeout: 15000 });
     await expect(page.getByText('Summer 2026')).toBeVisible({ timeout: 15000 });
     await expect(page.getByText('Autumn 2026')).toBeVisible({ timeout: 15000 });
@@ -56,8 +63,8 @@ test.describe('Course details page', () => {
 
     await expect(page.getByRole('heading', { name: 'MEC111' })).toBeVisible({ timeout: 15000 });
     await expect(programSelect).toContainText(MECHANICAL_PROGRAM_LABEL, { timeout: 15000 });
-    await expect(locators.requirementType).toHaveText('requirement type: TRONC', { timeout: 15000 });
-    await expect(locators.typicalSession).toHaveText('typical session: 1/8', { timeout: 15000 });
+    await expect(locators.requirementType).toHaveText(getRequirementTypeLabel('TRONC'), { timeout: 15000 });
+    await expect(locators.typicalSession).toHaveText(getTypicalSessionLabel(1), { timeout: 15000 });
     await expect(page.getByText('No prerequisites are listed for this course.')).toBeVisible({ timeout: 15000 });
 
     const detailsRequest = page.waitForResponse((response) => {
@@ -72,16 +79,16 @@ test.describe('Course details page', () => {
     await detailsRequest;
 
     await expect(programSelect).toContainText(AEROSPACE_PROGRAM_LABEL, { timeout: 15000 });
-    await expect(locators.requirementType).toHaveText('requirement type: TRONC', { timeout: 15000 });
-    await expect(locators.typicalSession).toHaveText('typical session: 1/8', { timeout: 15000 });
+    await expect(locators.requirementType).toHaveText(getRequirementTypeLabel('TRONC'), { timeout: 15000 });
+    await expect(locators.typicalSession).toHaveText(getTypicalSessionLabel(1), { timeout: 15000 });
     await expect(page.getByText('MEC111')).toBeVisible({ timeout: 15000 });
     await expect(page.getByText('No prerequisites are listed for this course.')).toBeVisible({ timeout: 15000 });
 
     await page.reload();
 
     await expect(programSelect).toContainText(AEROSPACE_PROGRAM_LABEL, { timeout: 15000 });
-    await expect(locators.requirementType).toHaveText('requirement type: TRONC', { timeout: 15000 });
-    await expect(locators.typicalSession).toHaveText('typical session: 1/8', { timeout: 15000 });
+    await expect(locators.requirementType).toHaveText(getRequirementTypeLabel('TRONC'), { timeout: 15000 });
+    await expect(locators.typicalSession).toHaveText(getTypicalSessionLabel(1), { timeout: 15000 });
     await expect(page.getByText('MEC111')).toBeVisible({ timeout: 15000 });
     await expect(page.getByText('No prerequisites are listed for this course.')).toBeVisible({ timeout: 15000 });
   });
@@ -94,11 +101,11 @@ test.describe('Course details page', () => {
 
     await expect(page.getByRole('heading', { name: 'LOG240' })).toBeVisible({ timeout: 15000 });
     await expect(programSelect).toContainText(SOFTWARE_PROGRAM_LABEL, { timeout: 15000 });
-    await expect(locators.requirementType).toHaveText('requirement type: TRONC', { timeout: 15000 });
-    await expect(locators.typicalSession).toHaveText('typical session: 3/8', { timeout: 15000 });
+    await expect(locators.requirementType).toHaveText(getRequirementTypeLabel('TRONC'), { timeout: 15000 });
+    await expect(locators.typicalSession).toHaveText(getTypicalSessionLabel(3), { timeout: 15000 });
     await expect(page.getByText('LOG100')).toHaveCount(2, { timeout: 15000 });
     await expect(page.getByText('Programmation et réseautique en génie logiciel')).toBeVisible({ timeout: 15000 });
-    await expect(page.getByText('Additional prerequisite rule')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText(courseDetailsMessages.unstructuredPrerequisiteRule)).toBeVisible({ timeout: 15000 });
     await expect(page.getByText('Winter 2026')).toBeVisible({ timeout: 15000 });
   });
 });

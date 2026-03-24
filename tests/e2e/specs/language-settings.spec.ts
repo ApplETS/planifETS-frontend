@@ -1,7 +1,10 @@
 import { expect, test } from '@playwright/test';
 import { selectors } from '../../assets/selectors';
-import { changeLanguage, getExpectedTranslation } from '../fixtures/language';
+import { changeLanguage, getMessages } from '../fixtures/language';
 import { setupTestPage } from '../fixtures/setup';
+
+const englishMessages = getMessages('en');
+const frenchMessages = getMessages('fr');
 
 test.describe('Language Settings', () => {
   test.beforeEach(async ({ page }) => {
@@ -15,21 +18,21 @@ test.describe('Language Settings', () => {
 
     await expect(searchInput).toHaveAttribute(
       'placeholder',
-      getExpectedTranslation('searchPlaceholder', 'en'),
+      englishMessages.PlannerPage['search-course'],
     );
 
     await changeLanguage(page, 'fr');
 
     await expect(searchInput).toHaveAttribute(
       'placeholder',
-      getExpectedTranslation('searchPlaceholder', 'fr'),
+      frenchMessages.PlannerPage['search-course'],
     );
 
     await changeLanguage(page, 'en');
 
     await expect(searchInput).toHaveAttribute(
       'placeholder',
-      getExpectedTranslation('searchPlaceholder', 'en'),
+      englishMessages.PlannerPage['search-course'],
     );
   });
 });

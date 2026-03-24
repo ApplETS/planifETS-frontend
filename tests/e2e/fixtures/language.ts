@@ -1,20 +1,17 @@
 import type { Page } from '@playwright/test';
+import enMessages from '@/messages/en.json';
+import frMessages from '@/messages/fr.json';
 import { selectors } from '../../assets/selectors';
 import { closeDialog } from './dialog';
 
-type TranslationKey = 'searchPlaceholder';
-type SupportedLocale = 'en' | 'fr';
+export type SupportedLocale = 'en' | 'fr';
 
-export function getExpectedTranslation(key: TranslationKey, locale: SupportedLocale): string {
-  const translations = {
-    searchPlaceholder: {
-      en: 'Search for a course',
-      fr: 'Chercher un cours',
-    },
-  };
+const messagesByLocale = {
+  en: enMessages,
+  fr: frMessages,
+} as const;
 
-  return translations[key]?.[locale] || key;
-}
+export const getMessages = (locale: SupportedLocale = 'en') => messagesByLocale[locale];
 
 export async function changeLanguage(page: Page, locale: SupportedLocale): Promise<void> {
   await page.click(selectors.settingsToggleButton);

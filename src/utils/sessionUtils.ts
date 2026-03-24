@@ -10,6 +10,28 @@ export const SESSION_SELECTION_BOUNDS = {
 // Regex pattern for session codes like 'A2025', 'H2024', etc.
 const SESSION_CODE_PATTERN = /^([AHE])(\d{4})$/;
 
+export const parseSessionKey = (
+  sessionKey: string,
+): { sessionTerm: TermEnum; sessionYear: number } | null => {
+  const match = sessionKey.match(SESSION_CODE_PATTERN);
+
+  if (!match) {
+    return null;
+  }
+
+  const sessionTerm = match[1] as TermEnum;
+  const sessionYearString = match[2];
+
+  if (!sessionYearString) {
+    return null;
+  }
+
+  return {
+    sessionTerm,
+    sessionYear: Number.parseInt(sessionYearString, 10),
+  };
+};
+
 export function setSessionKnownAvailability(
   sessions: Record<string, Session>,
   sessionKey: string,
@@ -33,15 +55,30 @@ export function setSessionKnownAvailability(
  */
 export const sortSessionsChronologically = (sessionCodes: string[]): string[] => {
   const sessionOrder = { H: 0, E: 1, A: 2 };
+
   return [...sessionCodes].sort((a, b) => {
-    const yearA = Number(a.substring(1));
-    const yearB = Number(b.substring(1));
-    if (yearA !== yearB) {
-      return yearA - yearB;
+    const sessionA = parseSessionKey(a);
+    const sessionB = parseSessionKey(b);
+
+    if (!sessionA || !sessionB) {
+      const yearA = Number(a.substring(1));
+      const yearB = Number(b.substring(1));
+
+      if (yearA !== yearB) {
+        return yearA - yearB;
+      }
+
+      const termA = a.charAt(0) as keyof typeof sessionOrder;
+      const termB = b.charAt(0) as keyof typeof sessionOrder;
+      return sessionOrder[termA] - sessionOrder[termB];
     }
-    const termA = a.charAt(0) as keyof typeof sessionOrder;
-    const termB = b.charAt(0) as keyof typeof sessionOrder;
-    return sessionOrder[termA] - sessionOrder[termB];
+
+    return compareSessions(
+      sessionA.sessionYear,
+      sessionA.sessionTerm,
+      sessionB.sessionYear,
+      sessionB.sessionTerm,
+    );
   });
 };
 
@@ -168,17 +205,13 @@ export const getSessionTiming = (
 
 export const filterCurrentAndFutureSessions = (sessionCodes: string[]): string[] => {
   return sessionCodes.filter((code) => {
-    const match = code.match(SESSION_CODE_PATTERN);
-    if (!match) {
+    const parsedSession = parseSessionKey(code);
+
+    if (!parsedSession) {
       return false;
     }
-    const term = match[1] as TermEnum;
-    const yearStr = match[2];
-    if (!yearStr) {
-      return false;
-    }
-    const year = Number.parseInt(yearStr, 10);
-    const timing = getSessionTiming(year, term);
+
+    const timing = getSessionTiming(parsedSession.sessionYear, parsedSession.sessionTerm);
     return timing.isCurrent || timing.isFuture;
   });
 };
@@ -228,7 +261,14 @@ export const generateSessionRange = (startYear: number, endYear: number): string
 };
 
 export const extractYearFromSessionKey = (sessionKey: string): number => {
+  const parsedSession = parseSessionKey(sessionKey);
+
+  if (parsedSession) {
+    return parsedSession.sessionYear;
+  }
+
   const yearStr = sessionKey.substring(1);
+
   if (!yearStr) {
     throw new Error(`Invalid session key format: ${sessionKey}`);
   }

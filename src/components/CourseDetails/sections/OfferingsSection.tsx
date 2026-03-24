@@ -2,7 +2,6 @@
 
 import type {
   DetailedProgramCourseInstanceDto,
-  SessionAvailabilityDto,
 } from '@/api/types/program';
 import { useTranslations } from 'next-intl';
 import Tag from '@/components/atoms/Tag';
@@ -16,21 +15,14 @@ import {
 
 type OfferingsSectionProps = {
   courseOfferings: DetailedProgramCourseInstanceDto[];
-  sessionAvailability?: SessionAvailabilityDto[];
 };
-
-const EMPTY_SESSION_AVAILABILITY: SessionAvailabilityDto[] = [];
 
 const OfferingsSection = ({
   courseOfferings,
-  sessionAvailability,
 }: OfferingsSectionProps) => {
   const t = useTranslations('CourseDetailsPage');
   const currentSessionKey = generateSessionKey(new Date().getFullYear(), getCurrentSession());
-  const timelineOfferings = buildFutureTimelineOfferings(
-    courseOfferings,
-    sessionAvailability ?? EMPTY_SESSION_AVAILABILITY,
-  );
+  const timelineOfferings = buildFutureTimelineOfferings(courseOfferings);
 
   if (timelineOfferings.length === 0) {
     return <p className="text-sm text-muted-foreground">{t('noOfferings')}</p>;
@@ -38,7 +30,7 @@ const OfferingsSection = ({
 
   return (
     <div className="w-full min-w-0 max-w-full">
-      <div className="scrollbar-thin w-full max-w-full overflow-x-auto overflow-y-hidden overscroll-x-contain pb-3">
+      <div className="scrollbar-thin w-full max-w-full overflow-x-auto overflow-y-hidden overscroll-x-contain">
         <div
           className="flex w-max min-w-max snap-x snap-mandatory items-start px-1 py-3 touch-pan-x sm:px-2"
           role="list"

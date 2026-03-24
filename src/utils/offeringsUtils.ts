@@ -15,7 +15,7 @@ import {
   trimesterToSessionTerm,
 } from '@/utils/sessionUtils';
 
-export type TimelineOffering = {
+type TimelineOffering = {
   availability: DetailedProgramCourseInstanceDto['availability'];
   sessionAlias: string;
   sessionKey: string;

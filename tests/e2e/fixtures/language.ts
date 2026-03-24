@@ -4,7 +4,7 @@ import frMessages from '@/messages/fr.json';
 import { selectors } from '../../assets/selectors';
 import { closeDialog } from './dialog';
 
-export type SupportedLocale = 'en' | 'fr';
+type SupportedLocale = 'en' | 'fr';
 
 const messagesByLocale = {
   en: enMessages,

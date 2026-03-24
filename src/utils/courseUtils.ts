@@ -1,6 +1,5 @@
 import type { SearchCourseResult } from '@/api/types/course';
 import type {
-  CourseAvailabilityDto,
   CoursePrerequisiteDto,
   ProgramCourseDetailedDto,
 } from '@/api/types/program';
@@ -45,14 +44,6 @@ export const getDisplayedPrerequisites = (course: Course): string[] => {
   }
 
   return ['N/A'];
-};
-
-export const formatCourseAvailability = (availability: CourseAvailabilityDto[]): string | null => {
-  if (availability.length === 0) {
-    return null;
-  }
-
-  return availability.join(' / ');
 };
 
 type TimingState = 'past' | 'current' | 'future';

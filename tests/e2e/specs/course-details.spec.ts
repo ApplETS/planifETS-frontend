@@ -129,7 +129,7 @@ test.describe('Course details page', () => {
     const programSelect = page.locator(selectors.courseDetailsProgramSelect);
 
     await expect(page.getByTestId('course-details-code')).toHaveCount(0, { timeout: 15000 });
-    await expect(page.getByText(courseDetailsMessages.invalidProgram).last()).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText(courseDetailsMessages.selectProgramDescription).last()).toBeVisible({ timeout: 15000 });
 
     const mec111Request = page.waitForResponse((response) => {
       const url = response.url();
@@ -151,7 +151,7 @@ test.describe('Course details page', () => {
     await page.reload();
 
     await expect(page.getByTestId('course-details-code')).toHaveCount(0, { timeout: 15000 });
-    await expect(page.getByText(courseDetailsMessages.invalidProgram).last()).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText(courseDetailsMessages.selectProgramDescription).last()).toBeVisible({ timeout: 15000 });
 
     const log240Request = page.waitForResponse((response) => {
       const url = response.url();

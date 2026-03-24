@@ -37,6 +37,8 @@ const CourseDetailsPage = () => {
   } = useProgramsListByCourseIdApi(courseId);
 
   React.useEffect(() => {
+    // Automatically select the first available program when the list becomes available
+    // and the user has not already selected one.
     if (!hasInvalidCourseParam || typeof rawCourseId !== 'string') {
       invalidToastCourseIdRef.current = null;
       return;
@@ -106,7 +108,7 @@ const CourseDetailsPage = () => {
   const emptyState = (() => {
     if (hasInvalidCourseParam) {
       return {
-        description: tCourseDetails('invalidCourse'),
+        description: tCourseDetails('invalidCourse', { courseId: rawCourseId }),
         testId: 'course-details-invalid-description',
         role: 'alert' as const,
         sectionClassName: 'border-destructive/20 bg-destructive/5',

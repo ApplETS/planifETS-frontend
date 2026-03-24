@@ -487,7 +487,8 @@
 }
 
 .scrollbar-thin::-webkit-scrollbar {
-  size: 8px;
+  width: 8px;
+  height: 8px;
 }
 
 .scrollbar-thin::-webkit-scrollbar-track {
@@ -511,7 +512,8 @@
 
 .scrollbar-thin::-webkit-scrollbar-button {
   display: none;
-  size: 0;
+  width: 0px;
+  height: 0px;
   background-color: var(--background);
 }
 

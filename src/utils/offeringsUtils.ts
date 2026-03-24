@@ -68,7 +68,7 @@ const mapCourseOfferings = (
 const buildTimelineSessionKeys = (sessionKeys: string[]): string[] => {
   const sortedSessionKeys = sortSessionsChronologically(sessionKeys);
   const firstSessionKey = sortedSessionKeys[0];
-  const lastSessionKey = sortedSessionKeys[sortedSessionKeys.length - 1];
+  const lastSessionKey = sortedSessionKeys.at(-1);
 
   if (!firstSessionKey || !lastSessionKey) {
     return [];

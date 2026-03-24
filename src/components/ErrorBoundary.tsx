@@ -52,7 +52,7 @@ class ErrorBoundary extends Component<Props, State> {
             </p>
             <Button
               type="button"
-              onClick={() => window.location.reload()}
+              onClick={() => globalThis.location.reload()}
             >
               Rafraîchir la page
             </Button>

@@ -25,11 +25,8 @@ const PrerequisitesSection = ({ courseDetails }: PrerequisitesSectionProps) => {
 
   return (
     <>
-      {!hasPrerequisites
+      {hasPrerequisites
         ? (
-          <p className="text-sm text-muted-foreground">{t('noPrerequisites')}</p>
-        )
-        : (
           <div className="grid gap-3">
             {structuredPrerequisites.length > 0
               ? (
@@ -74,6 +71,9 @@ const PrerequisitesSection = ({ courseDetails }: PrerequisitesSectionProps) => {
               )
               : null}
           </div>
+        )
+        : (
+          <p className="text-sm text-muted-foreground">{t('noPrerequisites')}</p>
         )}
     </>
   );

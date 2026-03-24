@@ -33,8 +33,8 @@ export function ThemeProvider({
     Promise.resolve().then(() => setCurrentTheme(getInitialTheme()));
 
     // Set up system theme change listener
-    if (typeof window !== 'undefined' && window.matchMedia) {
-      const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    if (typeof globalThis !== 'undefined' && globalThis.matchMedia) {
+      const colorSchemeQuery = globalThis.matchMedia('(prefers-color-scheme: dark)');
       const handleSystemThemeChange = (e: MediaQueryListEvent) => {
         if (!localStorage.getItem(LOCAL_STORAGE_THEME)) {
           setCurrentTheme({
@@ -56,8 +56,8 @@ export function ThemeProvider({
     theme: currentTheme,
     setTheme: (theme: Theme) => {
       setCurrentTheme(theme);
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(LOCAL_STORAGE_THEME, JSON.stringify(theme));
+      if (typeof globalThis !== 'undefined') {
+        globalThis.localStorage.setItem(LOCAL_STORAGE_THEME, JSON.stringify(theme));
       }
     },
   }), [currentTheme]);

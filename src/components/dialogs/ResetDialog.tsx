@@ -21,7 +21,7 @@ export default function ResetDialog({ isOpen, onCloseAction }: ResetDialogProps)
     setIsResetting(true);
     try {
       await resetStore();
-      window.location.reload();
+      globalThis.location.reload();
     } catch (err) {
       console.error('Failed to reset data:', err);
       setIsResetting(false);

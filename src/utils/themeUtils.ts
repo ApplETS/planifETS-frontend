@@ -29,19 +29,19 @@ export function getInitialTheme(): Theme {
     color: DEFAULT_COLOR.dark,
   };
 
-  if (typeof window === 'undefined') {
+  if (typeof globalThis === 'undefined' || (typeof globalThis.window === 'undefined' && typeof globalThis.document === 'undefined')) {
     console.warn('Window is undefined, returning default theme');
     return defaultTheme;
   }
 
   try {
-    const storedTheme = localStorage.getItem(LOCAL_STORAGE_THEME);
+    const storedTheme = globalThis.localStorage.getItem(LOCAL_STORAGE_THEME);
     if (storedTheme) {
       return JSON.parse(storedTheme);
     }
 
     // If no stored preference, check system preference
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+    if (globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: light)').matches) {
       return {
         mode: 'light',
         color: DEFAULT_COLOR.light,
@@ -92,7 +92,7 @@ export function getPrincipalColors(color: ThemeColors, mode: ThemeMode): string[
   tempElement.setAttribute('data-theme', `${color}-${mode}`);
   document.body.appendChild(tempElement);
 
-  const styles = window.getComputedStyle(tempElement);
+  const styles = globalThis.getComputedStyle(tempElement);
   const backgroundColor = styles.getPropertyValue('--background').trim();
   const primaryColor = styles.getPropertyValue('--primary').trim();
 

@@ -13,7 +13,7 @@ const SESSION_CODE_PATTERN = /^([AHE])(\d{4})$/;
 export const parseSessionKey = (
   sessionKey: string,
 ): { sessionTerm: TermEnum; sessionYear: number } | null => {
-  const match = sessionKey.match(SESSION_CODE_PATTERN);
+  const match = SESSION_CODE_PATTERN.exec(sessionKey);
 
   if (!match) {
     return null;
@@ -117,7 +117,7 @@ export const sortOfferingsBySession = <T extends { sessionYear: number; sessionT
  * If the input does not match the expected format, returns it unchanged.
  */
 export const formatSessionShort = (sessionCode: string): string => {
-  const match = sessionCode.match(SESSION_CODE_PATTERN);
+  const match = SESSION_CODE_PATTERN.exec(sessionCode);
   if (!match) {
     return sessionCode;
   }

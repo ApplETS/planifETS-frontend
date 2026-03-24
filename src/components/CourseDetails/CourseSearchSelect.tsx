@@ -106,7 +106,7 @@ const CourseSearchSelect = ({
     const requestId = requestIdRef.current + 1;
     requestIdRef.current = requestId;
 
-    const timeoutId = window.setTimeout(async () => {
+    const timeoutId = globalThis.setTimeout(async () => {
       dispatch({ type: 'start' });
 
       try {
@@ -136,7 +136,7 @@ const CourseSearchSelect = ({
     }, SEARCH_DEBOUNCE_MS);
 
     return () => {
-      window.clearTimeout(timeoutId);
+      globalThis.clearTimeout(timeoutId);
     };
   }, [open, trimmedQuery]);
 

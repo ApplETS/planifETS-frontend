@@ -57,7 +57,7 @@ export function Footer() {
       </div>
 
       {/* lower band: copyright + social icons */}
-      <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+      <div className="max-w-6xl mx-auto px-6 pt-6 pb-3 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-500 dark:text-gray-400">
         <p className="mb-4 sm:mb-0 text-gray-500 dark:text-gray-400">
           {t('signature')}
         </p>

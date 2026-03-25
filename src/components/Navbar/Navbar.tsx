@@ -1,20 +1,19 @@
 'use client';
 
-import { Menu, X } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { useState } from 'react';
 import Logo from '@/components/atoms/Logo';
 import ResetDialog from '@/components/dialogs/ResetDialog';
-import { SettingsDialog } from '@/components/Navbar/buttons/SettingsDialog';
+import { SettingsButton, SettingsDialog } from '@/components/Navbar/buttons/SettingsDialog';
 import NavContent from '@/components/Navbar/NavContent';
+import NavLinks from '@/components/Navbar/NavLinks';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/shadcn/ui/button';
 import {
   Sheet,
   SheetContent,
   SheetDescription,
-  SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from '@/shadcn/ui/sheet';
 
 if (process.env.NODE_ENV !== 'development') {
@@ -37,57 +36,57 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className="fixed top-0 z-20 w-full border-b border-border/30 bg-background/50 p-4 backdrop-blur-xl supports-[backdrop-filter]:bg-background/20 dark:border-border/45 dark:bg-background/30 dark:supports-[backdrop-filter]:bg-background/18"
+        className={`fixed top-0 z-[60] w-full border-b p-4 ${
+          sheetOpen && isMobile
+            ? 'border-border bg-background'
+            : 'border-border/30 bg-background/50 backdrop-blur-xl supports-[backdrop-filter]:bg-background/20 dark:border-border/45 dark:bg-background/30 dark:supports-[backdrop-filter]:bg-background/18'
+        }`}
         data-testid="navbar"
       >
         <div className="flex items-center justify-between">
-          <Logo textSize="text-2xl" position="relative" />
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex ml-auto">
+          <Logo />
+          {/* Center links for desktop */}
+          <div className="hidden md:flex flex-1 justify-center gap-8">
+            <NavLinks />
+          </div>
+
+          {/* Desktop Settings Button on right */}
+          <div className="hidden md:flex md:items-center">
             <NavContent onOpenSettingsAction={openSettings} />
           </div>
-          {/* Mobile Hamburger Menu */}
-          <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-            <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon">
+
+          <div className="flex items-center gap-2 md:hidden">
+            <SettingsButton onOpenSettingsAction={openSettings} />
+
+            {/* Mobile Hamburger Menu */}
+            <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+              <Button
+                variant="ghost"
+                onClick={() => setSheetOpen((prevOpen) => !prevOpen)}
+                aria-label={sheetOpen ? 'Close menu' : 'Open menu'}
+              >
                 <Menu className="size-5" />
-                <span className="sr-only">Open menu</span>
+                <span className="sr-only">{sheetOpen ? 'Close menu' : 'Open menu'}</span>
               </Button>
-            </SheetTrigger>
-            <SheetContent
-              side="right"
-              className={
-                isMobile
-                  ? 'inset-0 h-full w-full p-4 m-0 rounded-none'
-                  : 'top-0 right-0 h-full w-80 p-4 m-0 rounded-none'
-              }
-            >
-              <SheetHeader>
-                <div className="flex items-center justify-between">
-                  <SheetTitle>Menu</SheetTitle>
-                  <SheetDescription className="sr-only">
-                    Main navigation menu
-                  </SheetDescription>
-                  <Button
-                    type="button"
-                    size="icon"
-                    onClick={closeSheetAction}
-                    className="ml-2"
-                    aria-label="Close menu"
-                    variant="link"
-                  >
-                    <X className="size-5" />
-                  </Button>
+              <SheetContent
+                side="right"
+                hideCloseButton={true}
+                className={
+                  isMobile
+                    ? 'top-16 right-0 h-[calc(100vh-4rem)] w-full p-4 m-0 rounded-none border-t'
+                    : 'top-0 right-0 h-full w-80 p-4 m-0 rounded-none'
+                }
+              >
+                <SheetTitle className="sr-only">Navigation menu</SheetTitle>
+                <SheetDescription className="sr-only">
+                  Open the planner or course details pages.
+                </SheetDescription>
+                <div className="flex flex-col items-start gap-2 px-4 py-4">
+                  <NavLinks onNavigateAction={closeSheetAction} />
                 </div>
-              </SheetHeader>
-              <div className="mt-6 flex flex-col gap-4">
-                <NavContent
-                  closeSheetAction={closeSheetAction}
-                  onOpenSettingsAction={openSettings}
-                />
-              </div>
-            </SheetContent>
-          </Sheet>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </nav>
 

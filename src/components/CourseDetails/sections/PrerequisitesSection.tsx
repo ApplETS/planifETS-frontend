@@ -34,7 +34,7 @@ const PrerequisitesSection = ({ courseDetails }: PrerequisitesSectionProps) => {
                   {structuredPrerequisites.map((prerequisite) => (
                     <div
                       key={`${prerequisite.code}-${prerequisite.title}`}
-                      className="rounded-2xl border border-border/70 bg-muted/40 p-3"
+                      className="rounded-lg border border-border/70 bg-muted/40 p-3"
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div>

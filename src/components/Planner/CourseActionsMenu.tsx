@@ -36,11 +36,11 @@ export default function CourseActionsMenu({
 
   return (
     <DropdownMenu>
+
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
           size="icon"
-          className="size-6 border border-gray-400 hover:bg-primary/20 dark:hover:bg-primary/20"
           aria-label={t('delete-course')}
           data-testid={`course-actions-${courseCode}-${fromSessionTerm}-${fromSessionYear}`}
         >

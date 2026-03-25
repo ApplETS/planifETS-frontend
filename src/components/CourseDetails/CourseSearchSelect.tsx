@@ -162,7 +162,7 @@ const CourseSearchSelect = ({
     <div ref={containerRef} className="relative">
       <Command shouldFilter={false} className="overflow-visible bg-transparent">
         <div
-          className="flex h-10 items-center gap-3 rounded-2xl border border-border bg-background px-3"
+          className="flex h-10 items-center gap-3 rounded-md border border-border bg-background px-3"
           data-testid="course-details-search-shell"
         >
           <Search className="size-4 shrink-0 text-muted-foreground" />
@@ -184,7 +184,7 @@ const CourseSearchSelect = ({
 
         {showDropdown
           ? (
-            <div className="absolute inset-x-0 top-[calc(100%+0.1rem)] z-50 overflow-hidden rounded-2xl border border-border bg-popover shadow-lg">
+            <div className="absolute inset-x-0 top-[calc(100%+0.1rem)] z-50 overflow-hidden rounded-xl border border-border bg-popover shadow-lg">
               <CommandList className="max-h-80">
                 {loading
                   ? (

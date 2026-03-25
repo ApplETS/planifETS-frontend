@@ -261,7 +261,7 @@ const CourseDetailsPage = () => {
         {showEmptyState
           ? (
             <section
-              className={`rounded-[2rem] border p-6 sm:p-8 ${emptyState.sectionClassName}`}
+              className={`rounded-lg border p-6 sm:p-8 ${emptyState.sectionClassName}`}
               data-testid={emptyState.testId}
               role={emptyState.role}
             >

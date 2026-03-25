@@ -34,19 +34,13 @@ export function SettingsButton({
 
   return (
     <Button
-      variant="outline"
-      className="bg-background text-foreground border border-foreground"
+      variant="ghost"
+      className="normal-case flex items-center gap-2"
       onClick={handleClick}
       onPointerDown={(e) => e.stopPropagation()}
       onTouchStart={(e) => e.stopPropagation()}
       aria-label="settings"
       data-testid="settings-toggle-button"
-      style={{
-        textTransform: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.5rem',
-      }}
     >
       <Settings2 />
       {t('settings')}

@@ -46,7 +46,7 @@ const OfferingsSection = ({
                 <div className="flex w-16 shrink-0 flex-col items-center sm:w-[4.5rem]">
                   <div
                     className={cn(
-                      'relative z-10 flex size-14 shrink-0 flex-col items-center justify-center gap-1 rounded-2xl border border-border/70 bg-background px-2 shadow-sm',
+                      'relative z-10 flex size-14 shrink-0 flex-col items-center justify-center gap-1 rounded-xl border border-border/70 bg-background px-2 shadow-sm',
                       isCurrentSession && 'border-primary/60 ring-1 ring-primary/30',
                     )}
                   >

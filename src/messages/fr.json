@@ -20,7 +20,7 @@
     "welcome-title": "👋 Bienvenue sur PlanifETS",
     "program-label": "Sélectionner votre programme",
     "admission-day-label": "Sélectionner votre année d'admission",
-    "admission-day-note": "Cela va créer des sessions de votre année d'admission à aujourd'hui.",
+    "admission-day-note": "Ceci permet créer des sessions de votre année d'admission à aujourd'hui.",
     "complete": "Terminer"
   },
   "PlannerPage": {

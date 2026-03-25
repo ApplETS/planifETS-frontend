@@ -78,7 +78,7 @@ export function SettingsDialog({
         hideDescription={true}
         onClose={onCloseAction}
       >
-        <div className="p-4 w-full">
+        <div className="p-4 w-full text-foreground">
           <div className="mb-6">
             <h2 className="text-lg font-medium mb-2">{t('language')}</h2>
             <div className="ml-2">

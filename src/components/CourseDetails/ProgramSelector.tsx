@@ -14,7 +14,7 @@ type ProgramSelectorProps = {
   onProgramChange: (nextProgramId: string) => void;
 };
 
-const STATE_BLOCK_STYLES = 'rounded-2xl border p-5 text-sm';
+const STATE_BLOCK_STYLES = 'rounded-xl border p-5 text-sm';
 
 const ProgramSelector = ({
   availablePrograms,

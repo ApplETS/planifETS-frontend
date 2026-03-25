@@ -70,13 +70,13 @@ const WelcomePage = () => {
   return (
     <div className="px-4 py-8 sm:px-6 lg:px-8" data-testid="welcome-page">
       <div className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-3xl items-center">
-        <section className="w-full overflow-visible rounded-[2rem] border border-border/70 bg-background/95 p-6 shadow-sm backdrop-blur-sm sm:p-8">
-          <div className="mx-auto max-w-xl">
-            <h1 className="text-3xl font-black tracking-tight text-foreground sm:text-4xl">
+        <section className="w-full overflow-visible rounded-xl border border-border/70 bg-background/95 shadow-sm backdrop-blur-sm sm:p-8">
+          <div className="mx-auto max-w-xl py-12">
+            <h1 className="text-3xl font-black tracking-tight text-foreground sm:text-4xl px-2">
               {tOnboarding('welcome-title')}
             </h1>
 
-            <div className="mt-8 space-y-6">
+            <div className="mt-8 space-y-6 px-2">
               <fieldset className="min-w-0 border-0 p-0">
                 <legend
                   id="program-label"

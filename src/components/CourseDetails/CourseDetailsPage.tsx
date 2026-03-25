@@ -261,7 +261,7 @@ const CourseDetailsPage = () => {
         {showEmptyState
           ? (
             <section
-              className={`rounded-lg border p-6 sm:p-8 ${emptyState.sectionClassName}`}
+              className={`rounded-lg border p-8 ${emptyState.sectionClassName}`}
               data-testid={emptyState.testId}
               role={emptyState.role}
             >
@@ -274,7 +274,7 @@ const CourseDetailsPage = () => {
 
         {shouldRenderCourseSection
           ? (
-            <section className="overflow-hidden rounded-[2rem] border border-border/70 bg-background/95 shadow-sm backdrop-blur-sm">
+            <section className="overflow-hidden rounded-xl border border-border/70 bg-background/95 shadow-sm backdrop-blur-sm">
               <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_320px]">
                 <header className="border-b border-border/60 p-6 lg:border-b-0 lg:border-r">
                   <CourseHeaderContent

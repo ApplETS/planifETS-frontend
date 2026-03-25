@@ -17,7 +17,7 @@ export default function NavLinks({ onNavigateAction }: NavLinksProps) {
         <Link
           key={link.key}
           href={link.href}
-          className="flex items-center py-1 font-semibold text-lg hover:text-primary hover:underline underline-offset-2"
+          className="flex items-center py-1 font-semibold text-foreground text-lg hover:text-primary hover:underline underline-offset-2"
           onClick={onNavigateAction}
         >
           {t(link.labelKey)}

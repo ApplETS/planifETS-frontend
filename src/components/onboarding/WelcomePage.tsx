@@ -10,6 +10,7 @@ import { Button } from '@/shadcn/ui/button';
 import { useOnboardingStore } from '@/store/onboardingStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useProgramStore } from '@/store/programStore';
+import { appRoutes } from '@/utils/routesUtil';
 import { SESSION_SELECTION_BOUNDS } from '@/utils/sessionUtil';
 
 const WelcomePage = () => {
@@ -31,7 +32,7 @@ const WelcomePage = () => {
       return;
     }
 
-    router.replace('/planner');
+    router.replace(appRoutes.planner);
   }, [hasCompletedOnboarding, hasHydrated, router]);
 
   const minYear = currentYear - SESSION_SELECTION_BOUNDS.PAST_YEARS;
@@ -51,7 +52,7 @@ const WelcomePage = () => {
 
     initializePlanner(selectedYear);
     completeOnboarding(selectedYear);
-    router.replace('/planner');
+    router.replace(appRoutes.planner);
   };
 
   if (!hasHydrated) {

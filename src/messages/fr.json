@@ -95,6 +95,10 @@
     "typicalSessionIndex": "session typique: {value}/8",
     "visitCourseSite": "Voir le site du cours"
   },
+  "Navbar": {
+    "planner": "Planificateur",
+    "courseDetails": "Détails du cours"
+  },
   "Landing": {
     "headline": "Planifiez vos sessions à l'ÉTS, simplement.",
     "subheadline": "Une plateforme pour organiser vos cours, suivre votre progression et bâtir votre cheminement universitaire, le tout en un seul endroit.",

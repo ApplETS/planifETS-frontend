@@ -20,7 +20,7 @@ import {
   getActiveProgramId,
   getCourseDetailsEmptyState,
   getCourseHeaderDescription,
-} from '@/utils/courseDetailsUtils';
+} from '@/utils/courseDetailsUtil';
 import { parsePositiveInteger } from '@/utils/numberUtil';
 import { getETSCourseDetailsHref } from '@/utils/routesUtil';
 import CourseSearchSelect from './CourseSearchSelect';

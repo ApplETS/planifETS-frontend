@@ -1,7 +1,7 @@
 type CourseDetailsEmptyState = {
   description: string;
   testId: string;
-  role?: 'alert' | undefined;
+  role?: 'alert';
   sectionClassName: string;
   textClassName: string;
 };

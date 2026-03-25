@@ -16,7 +16,7 @@ import { MultiSelect } from '@/components/atoms/multi-select';
 import { useCourseStore } from '@/store/courseStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useProgramStore } from '@/store/programStore';
-import { mapApiCourseToAppCourse } from '@/utils/courseUtils';
+import { mapApiCourseToAppCourse } from '@/utils/courseUtil';
 import { formatProgramLabel } from '@/utils/programUtils';
 
 const ProgramSelector: React.FC = () => {

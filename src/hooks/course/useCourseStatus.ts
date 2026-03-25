@@ -2,7 +2,7 @@ import type { CourseStatus } from '@/types/course';
 import type { SessionTiming, TermEnum } from '@/types/session';
 import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
-import { determineStatus } from '@/utils/courseUtils';
+import { determineStatus } from '@/utils/courseUtil';
 import { generateSessionKey, isCourseAvailableInSession } from '@/utils/sessionUtils';
 
 export const useCourseStatus = () => {

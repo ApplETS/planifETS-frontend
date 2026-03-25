@@ -9,7 +9,7 @@ import { programService } from '@/api/services/program.service';
 import { useCourseStore } from '@/store/courseStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
-import { mapApiCourseToAppCourse } from '@/utils/courseUtils';
+import { mapApiCourseToAppCourse } from '@/utils/courseUtil';
 
 /**
  * Hook to preload courses that are in sessions or favorites

@@ -83,20 +83,20 @@ export function getButtonBgStyle(color: ThemeColors, mode: ThemeMode): string {
 
 export function getPrincipalColors(color: ThemeColors, mode: ThemeMode): string[] {
   // Safe check for browser environment
-  if (typeof window === 'undefined') {
+  if (!globalThis.window) {
     return [];
   }
 
   // Create a temporary element to get computed theme colors
   const tempElement = document.createElement('div');
-  tempElement.setAttribute('data-theme', `${color}-${mode}`);
+  tempElement.dataset.theme = `${color}-${mode}`;
   document.body.appendChild(tempElement);
 
   const styles = globalThis.getComputedStyle(tempElement);
   const backgroundColor = styles.getPropertyValue('--background').trim();
   const primaryColor = styles.getPropertyValue('--primary').trim();
 
-  document.body.removeChild(tempElement);
+  tempElement.remove();
 
   return [primaryColor, backgroundColor].filter(Boolean);
 }

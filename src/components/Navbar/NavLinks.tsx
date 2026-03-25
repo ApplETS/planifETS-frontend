@@ -4,9 +4,9 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { navbarLinks } from '@/utils/routesUtil';
 
-type NavLinksProps = {
+type NavLinksProps = Readonly<{
   onNavigateAction?: () => void;
-};
+}>;
 
 export default function NavLinks({ onNavigateAction }: NavLinksProps) {
   const t = useTranslations('Navbar');

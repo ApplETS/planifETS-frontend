@@ -2,9 +2,9 @@
 
 import { SettingsButton } from './buttons/SettingsDialog';
 
-type NavContentProps = {
+type NavContentProps = Readonly<{
   onOpenSettingsAction: () => void;
-};
+}>;
 
 export default function NavContent({ onOpenSettingsAction }: NavContentProps) {
   return (

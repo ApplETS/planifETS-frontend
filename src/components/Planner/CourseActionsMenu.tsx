@@ -36,7 +36,6 @@ export default function CourseActionsMenu({
 
   return (
     <DropdownMenu>
-
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"

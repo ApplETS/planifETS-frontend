@@ -12,7 +12,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'PlanifETS',
-  description: 'Planificateur de sessions pour les étudiants de l\'École de technologie supérieure',
+  description: 'Outil de planification de sessions pour les étudiants de l\'École de technologie supérieure',
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

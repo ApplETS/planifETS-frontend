@@ -3,7 +3,7 @@ import type { TermEnum } from '@/types/session';
 import { useCallback } from 'react';
 import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
-import { generateSessionKey } from '@/utils/sessionUtils';
+import { generateSessionKey } from '@/utils/sessionUtil';
 
 export const useCourseOperations = () => {
   const courseStore = useCourseStore();

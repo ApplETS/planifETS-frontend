@@ -26,7 +26,7 @@
   "PlannerPage": {
     "year-with-value": "Year {value}",
     "sessionTerms": {
-      "AUTOMNE": "Autumn",
+      "AUTOMNE": "Fall",
       "HIVER": "Winter",
       "ETE": "Summer"
     },
@@ -72,24 +72,23 @@
     "remove-from-favorites": "Remove from favorites"
   },
   "CourseDetailsPage": {
-    "backToPlanner": "Back to planner",
-    "courseOffering": "Course offerings",
+    "courseOffering": "Offerings",
     "cycle": "cycle",
     "description": "Description",
     "invalidCourse": "Please use a valid course link to view the course details.",
-    "invalidProgram": "Please select a valid program to view this course.",
     "loadingCourse": "Loading course details...",
     "loadingPrograms": "Loading programs...",
     "missingDescription": "No description is available for this course yet.",
     "noOfferings": "No offering details are available for this course yet.",
     "noPrerequisites": "No prerequisites are listed for this course.",
     "noPrograms": "No programs were found for this course.",
-    "notAvailable": "No schedule details available",
-    "pageDescription": "Select a program to load the course requirements and offering details.",
+    "pageDescription": "Select a course to view details.",
     "pageTitle": "Course details",
     "prerequisites": "Prerequisites",
     "unstructuredPrerequisiteRule": "Additional prerequisite rule",
     "requirementType": "requirement type",
+    "searchCourseLabel": "Find a course",
+    "selectProgramDescription": "Choose a program to load this course's details.",
     "selectProgramLabel": "Program",
     "selectProgramPlaceholder": "Choose a program",
     "selectedProgram": "Selected program",

@@ -56,6 +56,18 @@ export const selectors = {
   favoritesTab: 'role=tab[name=/favorites/i]',
   coursesTab: 'role=tab[name=/courses/i]',
 
-  // Onboarding dialog
+  /// Onboarding page
+  // Welcome Dialog
   admissionYearInput: '[data-testid="admission-year"]',
+
+  /// Course details page
+  // Search select
+  courseDetailsSearchInput: '[data-testid="course-details-search-input"]',
+  courseDetailsSearchOption: (courseId: number) =>
+    `[data-testid="course-details-search-option-${courseId}"]`,
+  // Offerings section
+  courseOffering: (sessionKey: string) => `[data-testid="course-offering-${sessionKey}"]`,
+  courseOfferingAvailability: (sessionKey: string, availability: string) =>
+    `[data-testid="course-offering-${sessionKey}-availability-${availability}"]`,
+
 } as const;

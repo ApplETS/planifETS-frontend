@@ -1,17 +1,13 @@
 'use client';
 
+import type { ProgramListDto } from '@/api/types/program';
+
 import { useTranslations } from 'next-intl';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shadcn/ui/select';
-import { formatProgramLabel } from '@/utils/programUtils';
-
-type ProgramListItem = {
-  programId: number;
-  programCode: string;
-  programTitle: string;
-};
+import { formatProgramLabel } from '@/utils/programUtil';
 
 type ProgramSelectorProps = {
-  availablePrograms: ProgramListItem[];
+  availablePrograms: ProgramListDto[];
   selectedProgramId: number | null;
   isLoading: boolean;
   error?: string | null;
@@ -33,33 +29,31 @@ const ProgramSelector = ({
     <section className="bg-muted/30 p-6">
       <p className="text-sm font-medium text-foreground">{t('selectProgramLabel')}</p>
 
-      <div className="mt-2">
-        <Select
-          value={selectedProgramId?.toString() ?? ''}
-          onValueChange={onProgramChange}
-          disabled={isLoading || availablePrograms.length === 0}
+      <Select
+        value={selectedProgramId?.toString() ?? ''}
+        onValueChange={onProgramChange}
+        disabled={isLoading || availablePrograms.length === 0}
+      >
+        <SelectTrigger
+          className="mt-2 w-full"
+          aria-label={t('selectProgramLabel')}
+          data-testid="course-details-program-select"
         >
-          <SelectTrigger
-            className="w-full"
-            aria-label={t('selectProgramLabel')}
-            data-testid="course-details-program-select"
-          >
-            <SelectValue
-              placeholder={isLoading ? t('loadingPrograms') : t('selectProgramPlaceholder')}
-            />
-          </SelectTrigger>
-          <SelectContent>
-            {availablePrograms.map((program) => (
-              <SelectItem key={program.programId} value={program.programId.toString()}>
-                {formatProgramLabel({
-                  code: program.programCode,
-                  title: program.programTitle,
-                })}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+          <SelectValue
+            placeholder={isLoading ? t('loadingPrograms') : t('selectProgramPlaceholder')}
+          />
+        </SelectTrigger>
+        <SelectContent>
+          {availablePrograms.map((program) => (
+            <SelectItem key={program.programId} value={program.programId.toString()}>
+              {formatProgramLabel({
+                code: program.programCode,
+                title: program.programTitle,
+              })}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
       {error
         ? (
@@ -73,14 +67,6 @@ const ProgramSelector = ({
         ? (
           <div className={`${STATE_BLOCK_STYLES} mt-4 border-border/70 bg-background text-muted-foreground`}>
             {t('noPrograms')}
-          </div>
-        )
-        : null}
-
-      {!isLoading && !error && availablePrograms.length > 0 && !selectedProgramId
-        ? (
-          <div className={`${STATE_BLOCK_STYLES} mt-4 border-border/70 bg-orange-300/60 text-foreground`}>
-            {t('invalidProgram')}
           </div>
         )
         : null}

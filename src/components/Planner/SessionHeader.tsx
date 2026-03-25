@@ -5,8 +5,8 @@ import CreditsTag from '@/components/atoms/CreditsTag';
 import Tag from '@/components/atoms/Tag';
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shadcn/ui/tooltip';
-import { getSeasonStyle } from '@/utils/seasonUtils';
-import { getTranslationKey } from '@/utils/sessionUtils';
+import { getSeasonStyle } from '@/utils/seasonUtil';
+import { getTranslationKey } from '@/utils/sessionUtil';
 
 type SessionHeaderProps = {
   sessionTerm: string;

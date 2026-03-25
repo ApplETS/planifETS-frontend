@@ -16,7 +16,7 @@ import { useCourseStore } from '@/store/courseStore';
 import { useOnboardingStore } from '@/store/onboardingStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
-import { buildDuplicateCourseSessionIndex } from '@/utils/sessionUtils';
+import { buildDuplicateCourseSessionIndex } from '@/utils/sessionUtil';
 
 export default function PlannerPage() {
   const t = useTranslations('Commons');

@@ -44,7 +44,7 @@ export default async function HomePage() {
             <defs>
               <radialGradient id="landingBlobAccentLight" cx="0" cy="0" r="1" gradientTransform="translate(392 260) rotate(25) scale(330 230)" gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stopColor="#f87171" />
-                <stop offset="55%" stopColor="#dc2626" />
+                <stop offset="55%" stopColor="#bb6565" />
                 <stop offset="100%" stopColor="#dc2626" stopOpacity="0" />
               </radialGradient>
             </defs>

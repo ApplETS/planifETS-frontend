@@ -11,7 +11,7 @@ import {
   mapApiCourseToAppCourse,
   moveCourseToSession,
   removeCourseFromSession,
-} from '@/utils/courseUtils';
+} from '@/utils/courseUtil';
 
 describe('courseUtils', () => {
   describe('mapApiCourseToAppCourse', () => {

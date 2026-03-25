@@ -1,7 +1,7 @@
 import { Leaf, Snowflake, Sun } from 'lucide-react';
 
 import { TermEnum } from '@/types/session';
-import { ORDERED_SESSION_TERMS } from '@/utils/sessionUtils';
+import { ORDERED_SESSION_TERMS } from '@/utils/sessionUtil';
 
 type SeasonStyle = {
   SeasonIcon: React.ComponentType<any>;

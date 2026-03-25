@@ -2,7 +2,7 @@
 
 import type { ThemeColors, ThemeMode } from '@/types/themes';
 import { useTheme } from '@/hooks/useTheme';
-import { COLORS_BY_MODE, getButtonBgStyle, getPrincipalColors } from '@/utils/themeUtils';
+import { COLORS_BY_MODE, getButtonBgStyle, getPrincipalColors } from '@/utils/themeUtil';
 
 export default function ThemeSelector() {
   const { setTheme, theme } = useTheme();

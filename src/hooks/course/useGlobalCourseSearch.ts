@@ -4,7 +4,7 @@ import type { Course } from '@/types/course';
 import { useCallback, useState } from 'react';
 
 import { courseService } from '@/api/services/course.service';
-import { mapApiCourseToAppCourse } from '@/utils/courseUtils';
+import { mapApiCourseToAppCourse } from '@/utils/courseUtil';
 
 type UseGlobalCourseSearchReturn = {
   courses: Course[];

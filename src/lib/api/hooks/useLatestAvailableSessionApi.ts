@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useApi } from '@/api/hooks/useApi';
 import { sessionService } from '@/api/services/session.service';
 import { useSessionStore } from '@/store/sessionStore';
-import { compareSessions, ORDERED_SESSION_TERMS, trimesterToSessionTerm } from '@/utils/sessionUtils';
+import { compareSessions, ORDERED_SESSION_TERMS, trimesterToSessionTerm } from '@/utils/sessionUtil';
 
 export function useLatestAvailableSessionApi() {
   const { data: latestSession, loading, error, execute, reset } = useApi(sessionService.getLatestAvailableSession);

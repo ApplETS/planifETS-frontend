@@ -16,7 +16,7 @@ import {
   generateSessionKey,
   generateSessionRange,
   ORDERED_SESSION_TERMS,
-} from '@/utils/sessionUtils';
+} from '@/utils/sessionUtil';
 
 import { useCourseStore } from './courseStore';
 import { useSessionStore } from './sessionStore';

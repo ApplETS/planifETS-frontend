@@ -14,8 +14,8 @@ import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shadcn/ui/tooltip';
 import { useSessionStore } from '@/store/sessionStore';
 import { DragType } from '@/types/dnd';
-import { getDisplayedPrerequisites } from '@/utils/courseUtils';
-import { filterCurrentAndFutureSessions, formatSessionShort, generateSessionKey, getCurrentSession, sortSessionsChronologically } from '@/utils/sessionUtils';
+import { getDisplayedPrerequisites } from '@/utils/courseUtil';
+import { filterCurrentAndFutureSessions, formatSessionShort, generateSessionKey, getCurrentSession, sortSessionsChronologically } from '@/utils/sessionUtil';
 
 type SectionProps = {
   title: string;

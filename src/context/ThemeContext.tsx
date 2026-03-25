@@ -2,7 +2,7 @@
 
 import type { Theme } from '@/types/themes';
 import { createContext } from 'react';
-import { DEFAULT_THEME } from '@/utils/themeUtils';
+import { DEFAULT_THEME } from '@/utils/themeUtil';
 
 type ThemeProviderState = {
   theme: Theme;

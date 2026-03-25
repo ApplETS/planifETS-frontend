@@ -22,7 +22,7 @@ import {
   trimesterToSessionTerm,
   updateMultipleSessions,
   updateSessionCourseInstances,
-} from '@/utils/sessionUtils';
+} from '@/utils/sessionUtil';
 
 describe('sessionUtils', () => {
   describe('generateSessionKey', () => {

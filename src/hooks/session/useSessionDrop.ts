@@ -6,7 +6,7 @@ import { useDrop } from 'react-dnd';
 import { useCourseOperations } from '@/hooks/course/useCourseOperations';
 import { useSessionStore } from '@/store/sessionStore';
 import { DragType } from '@/types/dnd';
-import { generateSessionKey } from '@/utils/sessionUtils';
+import { generateSessionKey } from '@/utils/sessionUtil';
 import { useSessionOperations } from './useSessionOperations';
 
 type UseSessionDropProps = {

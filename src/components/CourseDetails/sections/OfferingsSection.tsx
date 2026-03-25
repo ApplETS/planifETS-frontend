@@ -6,12 +6,12 @@ import type {
 import { useTranslations } from 'next-intl';
 import Tag from '@/components/atoms/Tag';
 import { cn } from '@/shadcn/lib/utils';
-import { buildFutureTimelineOfferings } from '@/utils/offeringsUtils';
-import { getSeasonStyle } from '@/utils/seasonUtils';
+import { buildFutureTimelineOfferings } from '@/utils/offeringsUtil';
+import { getSeasonStyle } from '@/utils/seasonUtil';
 import {
   generateSessionKey,
   getCurrentSession,
-} from '@/utils/sessionUtils';
+} from '@/utils/sessionUtil';
 
 type OfferingsSectionProps = {
   courseOfferings: DetailedProgramCourseInstanceDto[];

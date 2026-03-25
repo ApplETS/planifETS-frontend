@@ -21,7 +21,7 @@ import {
   ORDERED_SESSION_TERMS,
   updateMultipleSessions,
   updateSessionCourseInstances,
-} from '@/utils/sessionUtils';
+} from '@/utils/sessionUtil';
 
 type SessionState = {
   sessions: Record<string, Session>;

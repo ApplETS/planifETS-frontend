@@ -12,7 +12,7 @@ import {
   DEFAULT_COLOR,
   getInitialTheme,
   LOCAL_STORAGE_THEME,
-} from '@/utils/themeUtils';
+} from '@/utils/themeUtil';
 
 const defaultTheme: Theme = {
   mode: 'dark',

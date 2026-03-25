@@ -8,7 +8,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/shadcn/ui/tooltip';
 import {
   extractYearFromSessionKey,
   getTranslationKey,
-} from '@/utils/sessionUtils';
+} from '@/utils/sessionUtil';
 
 type StatusTagProps = {
   status: CourseStatus;

@@ -6,7 +6,7 @@ import { showSuccess } from '@/lib/toast';
 import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { safeGetNumber } from '@/utils/safeAccess';
-import { formatSessionShort, generateSessionKey, getSessionTiming } from '@/utils/sessionUtils';
+import { formatSessionShort, generateSessionKey, getSessionTiming } from '@/utils/sessionUtil';
 
 export const useSessionOperations = (year: number, sessionTerm: TermEnum) => {
   const sessionStore = useSessionStore();

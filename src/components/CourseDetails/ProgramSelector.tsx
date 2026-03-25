@@ -4,7 +4,7 @@ import type { ProgramListDto } from '@/api/types/program';
 
 import { useTranslations } from 'next-intl';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shadcn/ui/select';
-import { formatProgramLabel } from '@/utils/programUtils';
+import { formatProgramLabel } from '@/utils/programUtil';
 
 type ProgramSelectorProps = {
   availablePrograms: ProgramListDto[];

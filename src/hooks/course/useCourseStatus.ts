@@ -3,7 +3,7 @@ import type { SessionTiming, TermEnum } from '@/types/session';
 import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { determineStatus } from '@/utils/courseUtil';
-import { generateSessionKey, isCourseAvailableInSession } from '@/utils/sessionUtils';
+import { generateSessionKey, isCourseAvailableInSession } from '@/utils/sessionUtil';
 
 export const useCourseStatus = () => {
   const courseStore = useCourseStore();

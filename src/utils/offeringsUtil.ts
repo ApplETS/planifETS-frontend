@@ -13,7 +13,7 @@ import {
   sortOfferingsBySession,
   sortSessionsChronologically,
   trimesterToSessionTerm,
-} from '@/utils/sessionUtils';
+} from '@/utils/sessionUtil';
 
 type TimelineOffering = {
   availability: DetailedProgramCourseInstanceDto['availability'];

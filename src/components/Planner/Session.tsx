@@ -7,7 +7,7 @@ import { useSessionDrop } from '@/hooks/session/useSessionDrop';
 import { useSessionOperations } from '@/hooks/session/useSessionOperations';
 import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
-import { generateSessionKey, isCourseAvailableInSession } from '@/utils/sessionUtils';
+import { generateSessionKey, isCourseAvailableInSession } from '@/utils/sessionUtil';
 import CoursesList from './CoursesList';
 import SessionHeader from './SessionHeader';
 

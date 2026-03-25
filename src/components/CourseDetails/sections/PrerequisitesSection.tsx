@@ -4,7 +4,7 @@ import type { DetailedProgramCourseDto } from '@/api/types/program';
 import { useTranslations } from 'next-intl';
 
 import CourseActionsMenu from '@/components/Planner/CourseActionsMenu';
-import { getCurrentSession } from '@/utils/sessionUtils';
+import { getCurrentSession } from '@/utils/sessionUtil';
 
 type PrerequisitesSectionProps = {
   courseDetails: DetailedProgramCourseDto;

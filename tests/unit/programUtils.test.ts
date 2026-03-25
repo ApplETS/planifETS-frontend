@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { formatProgramLabel } from '@/utils/programUtils';
+import { formatProgramLabel } from '@/utils/programUtil';
 
 describe('formatProgramLabel', () => {
   it('formats labels with the program code before the title', () => {

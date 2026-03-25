@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useCourseStatus } from '@/hooks/course/useCourseStatus';
 import { useCourseStore } from '@/store/courseStore';
 import { safeGetNumber } from '@/utils/safeAccess';
-import { generateSessionKey } from '@/utils/sessionUtils';
+import { generateSessionKey } from '@/utils/sessionUtil';
 import CourseCardSkeleton from '../skeletons/CourseCardSkeleton';
 import CourseBox from './CourseBox';
 

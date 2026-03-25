@@ -17,7 +17,7 @@ import { useCourseStore } from '@/store/courseStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useProgramStore } from '@/store/programStore';
 import { mapApiCourseToAppCourse } from '@/utils/courseUtil';
-import { formatProgramLabel } from '@/utils/programUtils';
+import { formatProgramLabel } from '@/utils/programUtil';
 
 const ProgramSelector: React.FC = () => {
   const t = useTranslations('PlannerPage');

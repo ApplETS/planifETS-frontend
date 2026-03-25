@@ -10,7 +10,7 @@ import { Button } from '@/shadcn/ui/button';
 import { useOnboardingStore } from '@/store/onboardingStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useProgramStore } from '@/store/programStore';
-import { SESSION_SELECTION_BOUNDS } from '@/utils/sessionUtils';
+import { SESSION_SELECTION_BOUNDS } from '@/utils/sessionUtil';
 
 const WelcomePage = () => {
   const tOnboarding = useTranslations('Onboarding');

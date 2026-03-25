@@ -95,9 +95,13 @@
     "typicalSessionIndex": "typical session: {value}/8",
     "visitCourseSite": "View course site"
   },
+  "Navbar": {
+    "planner": "Planner",
+    "courseDetails": "Course details"
+  },
   "Landing": {
     "headline": "Plan your ÉTS sessions, simply.",
-    "subheadline": "A platform to organize your courses, track your progress, build your academic path, all in one place.",
+    "subheadline": "A platform to organize your courses, track your progress and build your academic path, all in one place.",
     "ctaPrimary": "Start planning",
     "ctaSecondary": "Join our Discord"
   },

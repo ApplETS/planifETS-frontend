@@ -34,19 +34,13 @@ export function SettingsButton({
 
   return (
     <Button
-      variant="outline"
-      className="bg-background text-foreground border border-foreground"
+      variant="ghost"
+      className="normal-case flex items-center gap-2"
       onClick={handleClick}
       onPointerDown={(e) => e.stopPropagation()}
       onTouchStart={(e) => e.stopPropagation()}
       aria-label="settings"
       data-testid="settings-toggle-button"
-      style={{
-        textTransform: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.5rem',
-      }}
     >
       <Settings2 />
       {t('settings')}
@@ -84,7 +78,7 @@ export function SettingsDialog({
         hideDescription={true}
         onClose={onCloseAction}
       >
-        <div className="p-4 w-full">
+        <div className="p-4 w-full text-foreground">
           <div className="mb-6">
             <h2 className="text-lg font-medium mb-2">{t('language')}</h2>
             <div className="ml-2">

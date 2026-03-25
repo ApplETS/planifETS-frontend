@@ -2,6 +2,12 @@
 @import 'tw-animate-css';
 @custom-variant dark (&:is(.dark *));
 
+/* Fixes scroll locking when using Dialog*/
+html body[data-scroll-locked] {
+  margin-right: 0px !important;
+  overflow: visible !important;
+}
+
 :root {
   --background: hsl(240 10% 3.9%);
   --foreground: hsl(0 0% 98%);

@@ -20,7 +20,7 @@ export default function PlannerLayout({ children }: { children: React.ReactNode 
         </aside>
       )}
       <main className={hasCompletedOnboarding ? 'w-full md:pl-[340px]' : 'w-full'}>
-        <div className="pl-2 pr-4 py-4">{children}</div>
+        <div className="pl-2 pr-2 py-4">{children}</div>
       </main>
     </div>
   );

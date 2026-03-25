@@ -8,7 +8,7 @@ type LogoProps = {
   position?: string;
 };
 
-const Logo: FC<LogoProps> = ({ textSize = 'text-4xl', position }) => (
+const Logo: FC<LogoProps> = ({ textSize = 'text-3xl', position = 'relative' }) => (
   <div className={`${position} flex items-center select-none`}>
     <Link href="/" className="flex items-center">
       <span className={`${textSize} font-bold text-foreground`}>Planif</span>

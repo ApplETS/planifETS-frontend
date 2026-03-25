@@ -37,7 +37,7 @@ export async function openProgramSelector(page: Page) {
   await page.getByRole('listbox').waitFor({ timeout: 15000 });
 }
 
-export async function searchCourseFromCourseDetails(
+async function searchCourseFromCourseDetails(
   page: Page,
   query: string,
   courseId: number,
@@ -71,7 +71,7 @@ export async function searchCourseAndWaitForDetails(
   await detailsRequest;
 }
 
-export function getCourseDetailLocators(page: Page) {
+function getCourseDetailLocators(page: Page) {
   return {
     requirementType: page.getByText(/Requirement type:/i),
     typicalSession: page.getByText(/typical session:/i),

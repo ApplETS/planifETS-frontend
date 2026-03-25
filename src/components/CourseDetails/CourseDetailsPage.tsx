@@ -9,6 +9,11 @@ import * as React from 'react';
 import { useDetailedProgramCourseApi } from '@/api/hooks/useDetailedProgramCourseApi';
 import { useProgramsListByCourseIdApi } from '@/api/hooks/useProgramsListByCourseIdApi';
 import Tag from '@/components/atoms/Tag';
+import {
+  getActiveProgramId,
+  getCourseDetailsEmptyState,
+  getCourseHeaderDescription,
+} from '@/components/CourseDetails/courseDetailsUtils';
 import CourseSearchSelect from '@/components/CourseDetails/CourseSearchSelect';
 import ProgramSelector from '@/components/CourseDetails/ProgramSelector';
 import OfferingsSection from '@/components/CourseDetails/sections/OfferingsSection';
@@ -19,26 +24,14 @@ import { useProgramStore } from '@/store/programStore';
 import { parsePositiveInteger } from '@/utils/numberUtil';
 import { getETSCourseDetailsHref } from '@/utils/routesUtil';
 
-const CourseDetailsPage = () => {
-  const params = useParams<{ courseId?: string }>();
-  const tCourseDetails = useTranslations('CourseDetailsPage');
-  const tCommons = useTranslations('Commons');
-
-  const rawCourseId = params.courseId;
-  const courseId = parsePositiveInteger(rawCourseId);
-  const hasSelectedCourse = courseId !== null;
-  const hasInvalidCourseParam = rawCourseId !== undefined && courseId === null;
+const useInvalidCourseParamToast = (
+  rawCourseId: string | undefined,
+  hasInvalidCourseParam: boolean,
+  tCourseDetails: (key: string, values?: Record<string, unknown>) => string,
+) => {
   const invalidToastCourseIdRef = React.useRef<string | null>(null);
 
-  const {
-    data: programs,
-    error: programsError,
-    loading: programsLoading,
-  } = useProgramsListByCourseIdApi(courseId);
-
   React.useEffect(() => {
-    // Automatically select the first available program when the list becomes available
-    // and the user has not already selected one.
     if (!hasInvalidCourseParam || typeof rawCourseId !== 'string') {
       invalidToastCourseIdRef.current = null;
       return;
@@ -51,6 +44,29 @@ const CourseDetailsPage = () => {
     invalidToastCourseIdRef.current = rawCourseId;
     showError(tCourseDetails('invalidCourse'));
   }, [hasInvalidCourseParam, rawCourseId, tCourseDetails]);
+};
+
+const CourseDetailsPage = () => {
+  const params = useParams<{ courseId?: string }>();
+  const tCourseDetails = useTranslations('CourseDetailsPage');
+  const tCommons = useTranslations('Commons');
+
+  const rawCourseId = params.courseId;
+  const courseId = parsePositiveInteger(rawCourseId);
+  const hasSelectedCourse = courseId !== null;
+  const hasInvalidCourseParam = rawCourseId !== undefined && courseId === null;
+
+  useInvalidCourseParamToast(
+    rawCourseId,
+    hasInvalidCourseParam,
+    tCourseDetails as (key: string, values?: Record<string, unknown>) => string,
+  );
+
+  const {
+    data: programs,
+    error: programsError,
+    loading: programsLoading,
+  } = useProgramsListByCourseIdApi(courseId);
 
   const availablePrograms = programs ?? [];
   const isProgramsLoading = programsLoading || (hasSelectedCourse && programs === null && !programsError);
@@ -62,10 +78,11 @@ const CourseDetailsPage = () => {
     availablePrograms.some((program) => program.programId === id)) ?? null;
   const [selectedProgramId, setSelectedProgramId] = React.useState<number | null>(null);
 
-  const activeProgramId = selectedProgramId !== null
-    && availablePrograms.some((program) => program.programId === selectedProgramId)
-    ? selectedProgramId
-    : selectedPlannerProgramId;
+  const activeProgramId = getActiveProgramId(
+    selectedProgramId,
+    availablePrograms,
+    selectedPlannerProgramId,
+  );
 
   const {
     data: courseDetails,
@@ -81,59 +98,25 @@ const CourseDetailsPage = () => {
     setSelectedProgramId(Number.parseInt(nextProgramId, 10));
   };
 
-  const courseHeaderDescription = (() => {
-    if (courseDetailsError) {
-      return courseDetailsError;
-    }
+  const courseHeaderDescription = getCourseHeaderDescription(
+    {
+      courseDetailsError: courseDetailsError ?? undefined,
+      programsError: programsError ?? undefined,
+      isProgramsLoading,
+      courseDetailsLoading,
+      activeProgramId,
+    },
+    tCourseDetails as (key: string, values?: Record<string, unknown>) => string,
+  );
 
-    if (programsError) {
-      return programsError;
-    }
-
-    if (isProgramsLoading) {
-      return tCourseDetails('loadingPrograms');
-    }
-
-    if (courseDetailsLoading) {
-      return tCourseDetails('loadingCourse');
-    }
-
-    if (!activeProgramId) {
-      return tCourseDetails('selectProgramDescription');
-    }
-
-    return tCourseDetails('loadingCourse');
-  })();
-
-  const emptyState = (() => {
-    if (hasInvalidCourseParam) {
-      return {
-        description: tCourseDetails('invalidCourse', { courseId: rawCourseId }),
-        testId: 'course-details-invalid-description',
-        role: 'alert' as const,
-        sectionClassName: 'border-destructive/20 bg-destructive/5',
-        textClassName: 'text-destructive',
-      };
-    }
-
-    if (showNoProgramsState) {
-      return {
-        description: tCourseDetails('noPrograms'),
-        testId: 'course-details-no-programs-description',
-        role: undefined,
-        sectionClassName: 'border-border/70 bg-background/95 shadow-sm backdrop-blur-sm',
-        textClassName: 'text-muted-foreground',
-      };
-    }
-
-    return {
-      description: tCourseDetails('pageDescription'),
-      testId: 'course-details-empty-description',
-      role: undefined,
-      sectionClassName: 'border-border/70 bg-background/95 shadow-sm backdrop-blur-sm',
-      textClassName: 'text-muted-foreground',
-    };
-  })();
+  const emptyState = getCourseDetailsEmptyState(
+    {
+      hasInvalidCourseParam,
+      showNoProgramsState,
+      rawCourseId: rawCourseId ?? undefined,
+    },
+    tCourseDetails as (key: string, values?: Record<string, unknown>) => string,
+  );
   const showEmptyState = !hasSelectedCourse || showNoProgramsState;
 
   return (
@@ -233,9 +216,6 @@ const CourseDetailsPage = () => {
                     )
                     : (
                       <>
-                        {/* <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-                          {tCourseDetails('pageTitle')}
-                        </h2> */}
                         <p className="mt-1 max-w-3xl text-lg leading-tight text-muted-foreground">
                           {courseHeaderDescription}
                         </p>

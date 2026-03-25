@@ -29,7 +29,7 @@ export function getInitialTheme(): Theme {
     color: DEFAULT_COLOR.dark,
   };
 
-  if (typeof globalThis === 'undefined' || (typeof globalThis.window === 'undefined' && typeof globalThis.document === 'undefined')) {
+  if (globalThis === undefined || (globalThis.window === undefined && globalThis.document === undefined)) {
     console.warn('Window is undefined, returning default theme');
     return defaultTheme;
   }
@@ -41,7 +41,7 @@ export function getInitialTheme(): Theme {
     }
 
     // If no stored preference, check system preference
-    if (globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: light)').matches) {
+    if (globalThis.matchMedia?.('(prefers-color-scheme: light)').matches) {
       return {
         mode: 'light',
         color: DEFAULT_COLOR.light,

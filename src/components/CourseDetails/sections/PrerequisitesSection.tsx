@@ -57,7 +57,7 @@ const PrerequisitesSection = ({ courseDetails }: PrerequisitesSectionProps) => {
 
             {unstructuredPrerequisite
               ? (
-                <div>
+                <div className="px-2">
                   <p className="text-sm font-semibold text-muted-foreground">
                     {t('unstructuredPrerequisiteRule')}
                   </p>

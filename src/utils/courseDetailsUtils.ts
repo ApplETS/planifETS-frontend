@@ -1,4 +1,4 @@
-export type CourseDetailsEmptyState = {
+type CourseDetailsEmptyState = {
   description: string;
   testId: string;
   role?: 'alert' | undefined;

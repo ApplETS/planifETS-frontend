@@ -1,5 +1,6 @@
 'use client';
 
+import type { DetailedProgramCourseDto } from '@/api/types/program';
 import { ExternalLink } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -9,25 +10,27 @@ import * as React from 'react';
 import { useDetailedProgramCourseApi } from '@/api/hooks/useDetailedProgramCourseApi';
 import { useProgramsListByCourseIdApi } from '@/api/hooks/useProgramsListByCourseIdApi';
 import Tag from '@/components/atoms/Tag';
-import {
-  getActiveProgramId,
-  getCourseDetailsEmptyState,
-  getCourseHeaderDescription,
-} from '@/components/CourseDetails/courseDetailsUtils';
-import CourseSearchSelect from '@/components/CourseDetails/CourseSearchSelect';
 import ProgramSelector from '@/components/CourseDetails/ProgramSelector';
 import OfferingsSection from '@/components/CourseDetails/sections/OfferingsSection';
 import PageSection from '@/components/CourseDetails/sections/PageSection';
 import PrerequisitesSection from '@/components/CourseDetails/sections/PrerequisitesSection';
 import { showError } from '@/lib/toast';
 import { useProgramStore } from '@/store/programStore';
+import {
+  getActiveProgramId,
+  getCourseDetailsEmptyState,
+  getCourseHeaderDescription,
+} from '@/utils/courseDetailsUtils';
 import { parsePositiveInteger } from '@/utils/numberUtil';
 import { getETSCourseDetailsHref } from '@/utils/routesUtil';
+import CourseSearchSelect from './CourseSearchSelect';
+
+type TranslationFn = (key: string, values?: Record<string, unknown>) => string;
 
 const useInvalidCourseParamToast = (
   rawCourseId: string | undefined,
   hasInvalidCourseParam: boolean,
-  tCourseDetails: (key: string, values?: Record<string, unknown>) => string,
+  tCourseDetails: TranslationFn,
 ) => {
   const invalidToastCourseIdRef = React.useRef<string | null>(null);
 
@@ -46,6 +49,128 @@ const useInvalidCourseParamToast = (
   }, [hasInvalidCourseParam, rawCourseId, tCourseDetails]);
 };
 
+type CourseHeaderContentProps = {
+  courseDetails: DetailedProgramCourseDto | null;
+  courseHeaderDescription: string;
+  tCourseDetails: TranslationFn;
+  tCommons: TranslationFn;
+};
+
+const CourseHeaderContent = ({
+  courseDetails,
+  courseHeaderDescription,
+  tCourseDetails,
+  tCommons,
+}: CourseHeaderContentProps) => {
+  if (!courseDetails) {
+    return (
+      <p className="mt-1 max-w-3xl text-lg leading-tight text-muted-foreground">
+        {courseHeaderDescription}
+      </p>
+    );
+  }
+
+  return (
+    <>
+      <h2
+        className="text-2xl font-semibold tracking-tight text-foreground"
+        data-testid="course-details-code"
+      >
+        {courseDetails.course.code}
+      </h2>
+      <p
+        className="mt-1 max-w-3xl text-lg leading-tight text-foreground"
+        data-testid="course-details-title"
+      >
+        {courseDetails.course.title}
+      </p>
+
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-wrap gap-2">
+          <Tag variant="credits">
+            {courseDetails.course.credits}
+            {' '}
+            {tCommons('credits')}
+          </Tag>
+          <Tag variant="sessionAvailable">
+            {tCourseDetails('cycle')}
+            {' '}
+            {courseDetails.course.cycle}
+          </Tag>
+          {courseDetails.type
+            ? (
+              <Tag variant="sessionAvailable">
+                {tCourseDetails('requirementType')}
+                {': '}
+                {courseDetails.type}
+              </Tag>
+            )
+            : null}
+          {courseDetails.typicalSessionIndex == null
+            ? null
+            : (
+              <Tag variant="sessionAvailable">
+                {tCourseDetails('typicalSessionIndex', { value: courseDetails.typicalSessionIndex })}
+              </Tag>
+            )}
+        </div>
+
+        <Link
+          href={getETSCourseDetailsHref(courseDetails.course.code)}
+          className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {tCourseDetails('visitCourseSite')}
+          <ExternalLink className="size-4" />
+        </Link>
+      </div>
+    </>
+  );
+};
+
+type CourseContentSectionsProps = {
+  courseDetails: DetailedProgramCourseDto | null;
+  courseDetailsError: unknown;
+  courseDetailsLoading: boolean;
+  tCourseDetails: TranslationFn;
+};
+
+const CourseContentSections = ({
+  courseDetails,
+  courseDetailsError,
+  courseDetailsLoading,
+  tCourseDetails,
+}: CourseContentSectionsProps) => {
+  if (courseDetailsLoading || courseDetailsError || !courseDetails) {
+    return null;
+  }
+
+  return (
+    <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
+      <div className="grid gap-6">
+        <PageSection title={tCourseDetails('description')}>
+          <p className="text-sm leading-7">
+            {courseDetails.course.description || tCourseDetails('missingDescription')}
+          </p>
+        </PageSection>
+      </div>
+
+      <div className="grid gap-6">
+        <PageSection title={tCourseDetails('prerequisites')}>
+          <PrerequisitesSection courseDetails={courseDetails} />
+        </PageSection>
+      </div>
+
+      <div className="grid gap-6 lg:col-span-2">
+        <PageSection title={tCourseDetails('courseOffering')}>
+          <OfferingsSection courseOfferings={courseDetails.course.courseInstances} />
+        </PageSection>
+      </div>
+    </div>
+  );
+};
+
 const CourseDetailsPage = () => {
   const params = useParams<{ courseId?: string }>();
   const tCourseDetails = useTranslations('CourseDetailsPage');
@@ -59,7 +184,7 @@ const CourseDetailsPage = () => {
   useInvalidCourseParamToast(
     rawCourseId,
     hasInvalidCourseParam,
-    tCourseDetails as (key: string, values?: Record<string, unknown>) => string,
+    tCourseDetails as TranslationFn,
   );
 
   const {
@@ -90,10 +215,6 @@ const CourseDetailsPage = () => {
     loading: courseDetailsLoading,
   } = useDetailedProgramCourseApi(courseId, activeProgramId);
 
-  const courseOfferings = courseDetails
-    ? courseDetails.course.courseInstances
-    : [];
-
   const handleProgramChange = (nextProgramId: string) => {
     setSelectedProgramId(Number.parseInt(nextProgramId, 10));
   };
@@ -106,7 +227,7 @@ const CourseDetailsPage = () => {
       courseDetailsLoading,
       activeProgramId,
     },
-    tCourseDetails as (key: string, values?: Record<string, unknown>) => string,
+    tCourseDetails as TranslationFn,
   );
 
   const emptyState = getCourseDetailsEmptyState(
@@ -115,7 +236,7 @@ const CourseDetailsPage = () => {
       showNoProgramsState,
       rawCourseId: rawCourseId ?? undefined,
     },
-    tCourseDetails as (key: string, values?: Record<string, unknown>) => string,
+    tCourseDetails as TranslationFn,
   );
   const showEmptyState = !hasSelectedCourse || showNoProgramsState;
 
@@ -156,71 +277,12 @@ const CourseDetailsPage = () => {
             <section className="overflow-hidden rounded-[2rem] border border-border/70 bg-background/95 shadow-sm backdrop-blur-sm">
               <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_320px]">
                 <header className="border-b border-border/60 p-6 lg:border-b-0 lg:border-r">
-                  {courseDetails
-                    ? (
-                      <>
-                        <h2
-                          className="text-2xl font-semibold tracking-tight text-foreground"
-                          data-testid="course-details-code"
-                        >
-                          {courseDetails.course.code}
-                        </h2>
-                        <p
-                          className="mt-1 max-w-3xl text-lg leading-tight text-foreground"
-                          data-testid="course-details-title"
-                        >
-                          {courseDetails.course.title}
-                        </p>
-
-                        <div className="mt-5 flex flex-wrap items-center justify-between gap-2">
-                          <div className="flex flex-wrap gap-2">
-                            <Tag variant="credits">
-                              {courseDetails.course.credits}
-                              {' '}
-                              {tCommons('credits')}
-                            </Tag>
-                            <Tag variant="sessionAvailable">
-                              {tCourseDetails('cycle')}
-                              {' '}
-                              {courseDetails.course.cycle}
-                            </Tag>
-                            {courseDetails.type
-                              ? (
-                                <Tag variant="sessionAvailable">
-                                  {tCourseDetails('requirementType')}
-                                  {': '}
-                                  {courseDetails.type}
-                                </Tag>
-                              )
-                              : null}
-                            {courseDetails.typicalSessionIndex == null
-                              ? null
-                              : (
-                                <Tag variant="sessionAvailable">
-                                  {tCourseDetails('typicalSessionIndex', { value: courseDetails.typicalSessionIndex })}
-                                </Tag>
-                              )}
-                          </div>
-
-                          <Link
-                            href={getETSCourseDetailsHref(courseDetails.course.code)}
-                            className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {tCourseDetails('visitCourseSite')}
-                            <ExternalLink className="size-4" />
-                          </Link>
-                        </div>
-                      </>
-                    )
-                    : (
-                      <>
-                        <p className="mt-1 max-w-3xl text-lg leading-tight text-muted-foreground">
-                          {courseHeaderDescription}
-                        </p>
-                      </>
-                    )}
+                  <CourseHeaderContent
+                    courseDetails={courseDetails}
+                    courseHeaderDescription={courseHeaderDescription}
+                    tCourseDetails={tCourseDetails as TranslationFn}
+                    tCommons={tCommons as TranslationFn}
+                  />
                 </header>
 
                 <ProgramSelector
@@ -235,31 +297,12 @@ const CourseDetailsPage = () => {
           )
           : null}
 
-        {!courseDetailsLoading && !courseDetailsError && courseDetails
-          ? (
-            <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-              <div className="grid gap-6">
-                <PageSection title={tCourseDetails('description')}>
-                  <p className="text-sm leading-7">
-                    {courseDetails.course.description || tCourseDetails('missingDescription')}
-                  </p>
-                </PageSection>
-              </div>
-
-              <div className="grid gap-6">
-                <PageSection title={tCourseDetails('prerequisites')}>
-                  <PrerequisitesSection courseDetails={courseDetails} />
-                </PageSection>
-              </div>
-
-              <div className="grid gap-6 lg:col-span-2">
-                <PageSection title={tCourseDetails('courseOffering')}>
-                  <OfferingsSection courseOfferings={courseOfferings} />
-                </PageSection>
-              </div>
-            </div>
-          )
-          : null}
+        <CourseContentSections
+          courseDetails={courseDetails}
+          courseDetailsError={courseDetailsError}
+          courseDetailsLoading={courseDetailsLoading}
+          tCourseDetails={tCourseDetails as TranslationFn}
+        />
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { Check } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import Loading from '@/components/atoms/Loading';
 import ProgramSelector from '@/components/Planner/ProgramMultiSelector';
 import { useStoreHydration } from '@/hooks/useStoreHydration';
 import { Button } from '@/shadcn/ui/button';
@@ -15,9 +16,8 @@ import { SESSION_SELECTION_BOUNDS } from '@/utils/sessionUtil';
 
 const WelcomePage = () => {
   const tOnboarding = useTranslations('Onboarding');
-  const tCommons = useTranslations('Commons');
   const router = useRouter();
-  const hasHydrated = useStoreHydration();
+  const { onboardingHydrated } = useStoreHydration();
 
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState<number>(currentYear);
@@ -28,12 +28,12 @@ const WelcomePage = () => {
   const initializePlanner = usePlannerStore((state) => state.initializePlanner);
 
   useEffect(() => {
-    if (!hasHydrated || !hasCompletedOnboarding) {
+    if (!onboardingHydrated || !hasCompletedOnboarding) {
       return;
     }
 
     router.replace(appRoutes.planner);
-  }, [hasCompletedOnboarding, hasHydrated, router]);
+  }, [hasCompletedOnboarding, onboardingHydrated, router]);
 
   const minYear = currentYear - SESSION_SELECTION_BOUNDS.PAST_YEARS;
   const maxYear = currentYear + SESSION_SELECTION_BOUNDS.FUTURE_YEARS;
@@ -45,7 +45,11 @@ const WelcomePage = () => {
     }
   };
 
-  const handleComplete = () => {
+  if (!onboardingHydrated) {
+    return <Loading />;
+  }
+
+  const handleCompleteOnboarding = () => {
     if (selectedPrograms.length === 0) {
       return;
     }
@@ -54,14 +58,6 @@ const WelcomePage = () => {
     completeOnboarding(selectedYear);
     router.replace(appRoutes.planner);
   };
-
-  if (!hasHydrated) {
-    return (
-      <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-3xl items-center justify-center px-4 py-10">
-        <p className="text-sm text-muted-foreground">{tCommons('loading')}</p>
-      </div>
-    );
-  }
 
   if (hasCompletedOnboarding) {
     return null;
@@ -117,7 +113,7 @@ const WelcomePage = () => {
 
               <Button
                 data-testid="onboarding-complete"
-                onClick={handleComplete}
+                onClick={handleCompleteOnboarding}
                 disabled={selectedPrograms.length === 0}
                 className="w-full"
               >

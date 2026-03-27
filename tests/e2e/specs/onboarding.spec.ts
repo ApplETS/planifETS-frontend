@@ -63,6 +63,32 @@ test.describe('Onboarding', () => {
     });
   });
 
+  test('revisiting /welcome after onboarding complete redirects to /planner', async ({ page }) => {
+    await completeOnboarding(page, 'Baccalauréat en génie logiciel', '182848', CURRENT_YEAR);
+
+    await page.goto('/welcome');
+
+    await expect(page).toHaveURL(/\/planner$/, { timeout: 15000 });
+    await expect(page.locator(selectors.searchInput)).toBeVisible({ timeout: 15000 });
+  });
+
+  test('reloading /welcome after onboarding complete still keeps /planner', async ({ page }) => {
+    await completeOnboarding(page, 'Baccalauréat en génie logiciel', '182848', CURRENT_YEAR);
+
+    await page.goto('/welcome');
+    await page.reload();
+
+    await expect(page).toHaveURL(/\/planner$/, { timeout: 15000 });
+    await expect(page.locator(selectors.searchInput)).toBeVisible({ timeout: 15000 });
+  });
+
+  test('navigating to /planner before onboarding redirects to /welcome', async ({ page }) => {
+    await page.goto('/planner');
+
+    await expect(page).toHaveURL(/\/welcome$/, { timeout: 15000 });
+    await expect(page.locator(selectors.welcomePage)).toBeVisible({ timeout: 15000 });
+  });
+
   test.describe('Onboarding Input Validation', () => {
     test('complete button disabled when admission year is more than 1 year in future', async ({ page }) => {
       const tooFar = CURRENT_YEAR + 2;

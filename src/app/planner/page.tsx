@@ -26,13 +26,13 @@ export default function PlannerPage() {
   const { getSessionsByYear, sessions } = useSessionStore();
   const { courses } = useCourseStore();
   const { hasCompletedOnboarding } = useOnboardingStore();
-  const hasHydrated = useStoreHydration();
+  const { onboardingHydrated, allHydrated } = useStoreHydration();
 
   useLatestAvailableSessionApi();
-  usePreloadCourses(hasHydrated);
+  usePreloadCourses(allHydrated);
 
   useEffect(() => {
-    if (!hasHydrated) {
+    if (!onboardingHydrated) {
       return;
     }
 
@@ -41,24 +41,25 @@ export default function PlannerPage() {
       return;
     }
 
-    // Only initialize if onboarding is complete and stores are empty
-    if (hasCompletedOnboarding) {
-      const plannerState = usePlannerStore.getState();
-      const sessionState = useSessionStore.getState();
-      const onboardingState = useOnboardingStore.getState();
+    if (!allHydrated) {
+      return;
+    }
 
-      // Only initialize if both stores are empty (first time after onboarding)
-      if (
-        plannerState.sessionKeys.length === 0
-        && Object.keys(sessionState.sessions).length === 0
-      ) {
-        const startSession = onboardingState.getStartYear();
-        if (startSession) {
-          initializePlanner(startSession.startYear);
-        }
+    const plannerState = usePlannerStore.getState();
+    const sessionState = useSessionStore.getState();
+    const onboardingState = useOnboardingStore.getState();
+
+    // Only initialize if both stores are empty (first time after onboarding)
+    if (
+      plannerState.sessionKeys.length === 0
+      && Object.keys(sessionState.sessions).length === 0
+    ) {
+      const startSession = onboardingState.getStartYear();
+      if (startSession) {
+        initializePlanner(startSession.startYear);
       }
     }
-  }, [initializePlanner, hasHydrated, hasCompletedOnboarding, router]);
+  }, [initializePlanner, onboardingHydrated, allHydrated, hasCompletedOnboarding, router]);
 
   const years = getYears();
 
@@ -79,7 +80,7 @@ export default function PlannerPage() {
     [sessions],
   );
 
-  if (hasHydrated && !hasCompletedOnboarding) {
+  if (onboardingHydrated && !hasCompletedOnboarding) {
     return null;
   }
 

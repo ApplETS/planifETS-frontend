@@ -22,10 +22,12 @@ export function SettingsButton({
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
     // Close the sheet first, then open settings
     if (closeSheetAction) {
       closeSheetAction();
     }
+
     // Small delay to let sheet close animation start
     setTimeout(() => {
       onOpenSettingsAction();

@@ -34,13 +34,47 @@ export const mapApiCourseToAppCourse = (
 /**
  * Determines either structured prerequisites or unstructured prerequisite string to display
  */
-export const getDisplayedPrerequisites = (course: Course): string[] => {
-  if (course.prerequisites.length > 0) {
-    return course.prerequisites;
+const normalizePrerequisiteCode = (code: string): string =>
+  code.trim().toUpperCase().replace(/\*$/, '');
+
+type PrerequisiteDisplayDataType = {
+  structuredPrerquisites: string[];
+  unstructuredPrerequisite: string | null;
+};
+
+export const getPrerequisiteDisplayData = (
+  structuredPrerequisites: string[],
+  unstructuredPrerequisite?: string | null,
+): PrerequisiteDisplayDataType => {
+  const normalizedUnstructured = unstructuredPrerequisite?.trim() || '';
+
+  if (!normalizedUnstructured) {
+    return {
+      structuredPrerquisites: structuredPrerequisites,
+      unstructuredPrerequisite: null,
+    };
   }
 
-  if (course.unstructuredPrerequisite) {
-    return [course.unstructuredPrerequisite];
+  const structuredSet = new Set(structuredPrerequisites.map(normalizePrerequisiteCode));
+  const normalizedUnstructuredCode = normalizePrerequisiteCode(normalizedUnstructured);
+
+  const isFullyRedundant = structuredSet.has(normalizedUnstructuredCode);
+
+  return {
+    structuredPrerquisites: structuredPrerequisites,
+    unstructuredPrerequisite: isFullyRedundant ? null : normalizedUnstructured,
+  };
+};
+
+export const getDisplayedPrerequisites = (course: Course): string[] => {
+  const displayData = getPrerequisiteDisplayData(course.prerequisites, course.unstructuredPrerequisite);
+
+  if (displayData.structuredPrerquisites.length > 0) {
+    return displayData.structuredPrerquisites;
+  }
+
+  if (displayData.unstructuredPrerequisite) {
+    return [displayData.unstructuredPrerequisite];
   }
 
   return ['N/A'];

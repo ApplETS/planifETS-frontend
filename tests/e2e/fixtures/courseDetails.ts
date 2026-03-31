@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { selectors } from '../../assets/selectors';
 
-export const COURSE_DETAILS_ASSERTION_TIMEOUT = { timeout: 15000 };
+export const TIMEOUT = { timeout: 15000 };
 
 type SelectedCourseAssertions = {
   courseCode?: string;
@@ -87,17 +87,17 @@ export async function expectCourseMetadata(
 
   await expect(locators.requirementType).toHaveText(
     requirementTypeLabel,
-    COURSE_DETAILS_ASSERTION_TIMEOUT,
+    TIMEOUT,
   );
   await expect(locators.typicalSession).toHaveText(
     typicalSessionLabel,
-    COURSE_DETAILS_ASSERTION_TIMEOUT,
+    TIMEOUT,
   );
 }
 
 export async function expectProgramSelectionRequired(page: Page, description: string) {
-  await expect(page.getByTestId('course-details-code')).toHaveCount(0, COURSE_DETAILS_ASSERTION_TIMEOUT);
-  await expect(page.getByText(description).last()).toBeVisible(COURSE_DETAILS_ASSERTION_TIMEOUT);
+  await expect(page.getByTestId('course-details-code')).toHaveCount(0, TIMEOUT);
+  await expect(page.getByText(description).last()).toBeVisible(TIMEOUT);
 }
 
 export async function expectSelectedCourse(
@@ -106,26 +106,26 @@ export async function expectSelectedCourse(
 ) {
   const programSelect = page.locator(selectors.courseDetailsProgramSelect);
 
-  await expect(page).toHaveURL(new RegExp(`/course/${courseId}$`), COURSE_DETAILS_ASSERTION_TIMEOUT);
-  await expect(programSelect).toContainText(programLabel, COURSE_DETAILS_ASSERTION_TIMEOUT);
+  await expect(page).toHaveURL(new RegExp(`/course/${courseId}$`), TIMEOUT);
+  await expect(programSelect).toContainText(programLabel, TIMEOUT);
 
   if (courseCode) {
     await expect(page.getByTestId('course-details-code')).toHaveText(
       courseCode,
-      COURSE_DETAILS_ASSERTION_TIMEOUT,
+      TIMEOUT,
     );
   }
 
   if (courseHeading) {
     await expect(page.getByRole('heading', { name: courseHeading })).toBeVisible(
-      COURSE_DETAILS_ASSERTION_TIMEOUT,
+      TIMEOUT,
     );
   }
 
   if (courseTitle) {
     await expect(page.getByTestId('course-details-title')).toHaveText(
       courseTitle,
-      COURSE_DETAILS_ASSERTION_TIMEOUT,
+      TIMEOUT,
     );
   }
 }

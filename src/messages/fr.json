@@ -67,6 +67,7 @@
     "session-not-created": "La session {session} n'est pas encore créée. Veuillez d'abord ajouter l'année.",
     "year-deleted": "Année {year} supprimée",
     "current-session": "Session en cours",
+    "noProgramsFound": "Aucun programme n'a été trouvé.",
     "course-details": "Détails du cours",
     "add-to-favorites": "Ajouter aux favoris",
     "remove-from-favorites": "Retirer des favoris"

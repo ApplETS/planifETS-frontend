@@ -11,7 +11,7 @@ import * as React from 'react';
 import { courseService } from '@/api/services/course.service';
 import { handleApiError } from '@/api/utils/error-handler';
 import { cn } from '@/shadcn/lib/utils';
-import { Command, CommandGroup, CommandItem, CommandList } from '@/shadcn/ui/command';
+import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from '@/shadcn/ui/command';
 
 type CourseSearchSelectProps = {
   currentCourseId: number | null;
@@ -81,7 +81,6 @@ const CourseSearchSelect = ({
   currentCourseId,
 }: CourseSearchSelectProps) => {
   const router = useRouter();
-  const tCommons = useTranslations('Commons');
   const tPlanner = useTranslations('PlannerPage');
 
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -158,6 +157,22 @@ const CourseSearchSelect = ({
     dispatch({ type: 'clearError' });
   };
 
+  React.useEffect(() => {
+    const onOutsideClick = (event: MouseEvent | TouchEvent) => {
+      if (!containerRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', onOutsideClick);
+    document.addEventListener('touchstart', onOutsideClick);
+
+    return () => {
+      document.removeEventListener('mousedown', onOutsideClick);
+      document.removeEventListener('touchstart', onOutsideClick);
+    };
+  }, []);
+
   return (
     <div ref={containerRef} className="relative">
       <Command shouldFilter={false} className="overflow-visible bg-transparent">
@@ -168,14 +183,11 @@ const CourseSearchSelect = ({
           <Search className="size-4 shrink-0 text-muted-foreground" />
           <CommandPrimitive.Input
             value={query}
-            onValueChange={handleValueChange}
-            onFocus={() => setOpen(true)}
-            onBlur={(event) => {
-              const nextTarget = event.relatedTarget as Node | null;
-              if (!containerRef.current?.contains(nextTarget)) {
-                setOpen(false);
-              }
+            onValueChange={(value) => {
+              handleValueChange(value);
+              setOpen(true);
             }}
+            onFocus={() => setOpen(true)}
             placeholder={tPlanner('search-course')}
             className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
             data-testid="course-details-search-input"
@@ -184,70 +196,57 @@ const CourseSearchSelect = ({
 
         {showDropdown
           ? (
-            <div className="absolute inset-x-0 top-[calc(100%+0.1rem)] z-50 overflow-hidden rounded-xl border border-border bg-popover shadow-lg">
+            <div className="absolute inset-x-0 top-[calc(100%+0.1rem)] z-50 overflow-hidden rounded-xl border border-border bg-popover g">
               <CommandList className="max-h-80">
-                {loading
-                  ? (
-                    <div
-                      className="px-4 py-6 text-sm text-muted-foreground"
-                      data-testid="course-details-search-loading"
-                    >
-                      {tCommons('loading')}
-                    </div>
-                  )
-                  : null}
-
                 {error
                   ? (
                     <div
-                      className="px-4 py-6 text-sm text-destructive"
+                      className="px-4 py-4 text-sm text-destructive"
                       data-testid="course-details-search-error"
                     >
                       {error}
                     </div>
                   )
-                  : null}
+                  : (
+                    <>
+                      {results.length > 0
+                        ? (
+                          <CommandGroup>
+                            {results.map((course) => (
+                              <CommandItem
+                                key={course.id}
+                                value={getCourseLabel(course)}
+                                onMouseDown={(event) => {
+                                  event.preventDefault();
+                                }}
+                                onSelect={() => handleSelect(course)}
+                                className="justify-between gap-4 px-4 py-3"
+                                data-testid={`course-details-search-option-${course.id}`}
+                              >
+                                <div className="min-w-0">
+                                  <p className="font-medium">{course.code}</p>
+                                  <p className="truncate text-xs text-muted-foreground">{course.title}</p>
+                                </div>
+                                <Check
+                                  className={cn(
+                                    'size-4 shrink-0',
+                                    course.id === currentCourseId ? 'opacity-100' : 'opacity-0',
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        )
+                        : null}
 
-                {!loading && !error && trimmedQuery && results.length === 0
-                  ? (
-                    <div
-                      className="px-4 py-6 text-sm text-muted-foreground"
-                      data-testid="course-details-search-empty"
-                    >
-                      {tPlanner('no-courses-found')}
-                    </div>
-                  )
-                  : null}
-
-                {!loading && !error && results.length > 0
-                  ? (
-                    <CommandGroup>
-                      {results.map((course) => (
-                        <CommandItem
-                          key={course.id}
-                          value={getCourseLabel(course)}
-                          onMouseDown={(event) => {
-                            event.preventDefault();
-                          }}
-                          onSelect={() => handleSelect(course)}
-                          className="justify-between gap-4 px-4 py-3"
-                          data-testid={`course-details-search-option-${course.id}`}
-                        >
-                          <div className="min-w-0">
-                            <p className="font-medium">{course.code}</p>
-                            <p className="truncate text-xs text-muted-foreground">{course.title}</p>
-                          </div>
-                          <Check
-                            className={cn(
-                              'size-4 shrink-0',
-                              course.id === currentCourseId ? 'opacity-100' : 'opacity-0',
-                            )}
-                          />
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  )
-                  : null}
+                      <CommandEmpty
+                        className="px-4 py-4 text-sm text-muted-foreground"
+                        data-testid="course-details-search-empty"
+                      >
+                        {tPlanner('no-courses-found')}
+                      </CommandEmpty>
+                    </>
+                  )}
               </CommandList>
             </div>
           )

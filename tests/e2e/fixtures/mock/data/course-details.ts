@@ -13,6 +13,7 @@ const PROGRAM_IDS_BY_COURSE = new Map<number, number[]>([
   [352413, [182848, 182912]],
   [352716, [182864, 738518]],
   [352421, [182848]],
+  [352429, [182848]],
 ]);
 
 function createCourseInstance(
@@ -108,6 +109,26 @@ const LOG240_PREREQUISITES = [
   createPrerequisite(352399, 'LOG100', 'Programmation et réseautique en génie logiciel'),
 ];
 
+const LOG320_COURSE = createCourseInfo({
+  code: 'LOG320',
+  title: 'Structures de données et algorithmes',
+  credits: 4,
+  description: 'Acquérir une connaissance spécifique au génie logiciel des structures de données et des algorithmes. Comprendre et utiliser l\'analyse asymptotique afin de choisir judicieusement les structures de données appropriées et le type d\'algorithme optimal pour résoudre efficacement un problème tout en respectant les contraintes imposées et les ressources disponibles. Au terme de ce cours, l\'étudiante ou l\'étudiant sera en mesure de choisir parmi une multitude de structures de données de...',
+  cycle: 1,
+  courseInstances: [
+    createCourseInstance('HIVER', 2026, ['JOUR']),
+    createCourseInstance('ETE', 2026, ['JOUR', 'SOIR']),
+    createCourseInstance('AUTOMNE', 2026, ['JOUR', 'SOIR']),
+    createCourseInstance('HIVER', 2027, ['JOUR']),
+    createCourseInstance('AUTOMNE', 2025, ['JOUR']),
+  ],
+});
+
+const LOG320_PREREQUISITES = [
+  createPrerequisite(352637, 'MAT210', 'Logique et mathématiques discrètes'),
+  createPrerequisite(352405, 'LOG121', 'Conception orientée objet'),
+];
+
 const DETAILED_PROGRAM_COURSES: DetailedProgramCourseDto[] = [
   createDetailedProgramCourse({
     courseId: 352413,
@@ -153,6 +174,15 @@ const DETAILED_PROGRAM_COURSES: DetailedProgramCourseDto[] = [
     unstructuredPrerequisite: 'LOG100',
     course: LOG240_COURSE,
     prerequisites: LOG240_PREREQUISITES,
+  }),
+  createDetailedProgramCourse({
+    courseId: 352429,
+    programId: 182848,
+    type: 'TRONC',
+    typicalSessionIndex: 4,
+    unstructuredPrerequisite: 'MAT210, LOG121',
+    course: LOG320_COURSE,
+    prerequisites: LOG320_PREREQUISITES,
   }),
 ];
 

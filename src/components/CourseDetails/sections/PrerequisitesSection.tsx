@@ -1,9 +1,10 @@
 'use client';
 
 import type { DetailedProgramCourseDto } from '@/api/types/program';
-import { useTranslations } from 'next-intl';
 
+import { useTranslations } from 'next-intl';
 import CourseActionsMenu from '@/components/Planner/CourseActionsMenu';
+import { getPrerequisiteDisplayData } from '@/utils/courseUtil';
 import { getCurrentSession } from '@/utils/sessionUtil';
 
 type PrerequisitesSectionProps = {
@@ -20,7 +21,12 @@ const PrerequisitesSection = ({ courseDetails }: PrerequisitesSectionProps) => {
     code: prerequisite.course.code,
     title: prerequisite.course.title,
   }));
-  const unstructuredPrerequisite = courseDetails.unstructuredPrerequisite?.trim() || null;
+
+  const { unstructuredPrerequisite } = getPrerequisiteDisplayData(
+    structuredPrerequisites.map((candidate) => candidate.code),
+    courseDetails.unstructuredPrerequisite,
+  );
+
   const hasPrerequisites = structuredPrerequisites.length > 0 || unstructuredPrerequisite !== null;
 
   return (

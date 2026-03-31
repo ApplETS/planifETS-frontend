@@ -34,13 +34,61 @@ export const mapApiCourseToAppCourse = (
 /**
  * Determines either structured prerequisites or unstructured prerequisite string to display
  */
-export const getDisplayedPrerequisites = (course: Course): string[] => {
-  if (course.prerequisites.length > 0) {
-    return course.prerequisites;
+const normalizePrerequisiteCode = (code: string): string =>
+  code.trim().toUpperCase().replace(/\*$/, '');
+
+const extractPrerequisiteCodes = (unstructuredPrerequisite: string): string[] => {
+  const matches = unstructuredPrerequisite.match(/[A-Z]{2,}\d{2,}\*?/gi);
+
+  if (!matches) {
+    return [];
   }
 
-  if (course.unstructuredPrerequisite) {
-    return [course.unstructuredPrerequisite];
+  return matches.map((code) => normalizePrerequisiteCode(code));
+};
+
+export type PrerequisiteDisplayData = {
+  structuredPrerquisites: string[];
+  unstructuredPrerequisite: string | null;
+};
+
+export const getPrerequisiteDisplayData = (
+  structuredPrerequisites: string[],
+  unstructuredPrerequisite?: string | null,
+): PrerequisiteDisplayData => {
+  const normalizedUnstructured = unstructuredPrerequisite?.trim() || '';
+
+  if (!normalizedUnstructured) {
+    return {
+      structuredPrerquisites: structuredPrerequisites,
+      unstructuredPrerequisite: null,
+    };
+  }
+
+  const structuredSet = new Set(structuredPrerequisites.map(normalizePrerequisiteCode));
+  const unstructuredPrerequisiteCodes = extractPrerequisiteCodes(normalizedUnstructured);
+
+  let isFullyRedundant = false;
+
+  if (unstructuredPrerequisiteCodes.length > 0 && unstructuredPrerequisiteCodes.every((code) => structuredSet.has(code))) {
+    isFullyRedundant = true;
+  }
+
+  return {
+    structuredPrerquisites: structuredPrerequisites,
+    unstructuredPrerequisite: isFullyRedundant ? null : normalizedUnstructured,
+  };
+};
+
+export const getDisplayedPrerequisites = (course: Course): string[] => {
+  const displayData = getPrerequisiteDisplayData(course.prerequisites, course.unstructuredPrerequisite);
+
+  if (displayData.structuredPrerquisites.length > 0) {
+    return displayData.structuredPrerquisites;
+  }
+
+  if (displayData.unstructuredPrerequisite) {
+    return [displayData.unstructuredPrerequisite];
   }
 
   return ['N/A'];

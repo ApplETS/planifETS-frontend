@@ -108,11 +108,12 @@ test.describe('Course details page', () => {
 
     await expect(page.getByText('LOG121')).toHaveCount(2, COURSE_DETAILS_ASSERTION_TIMEOUT);
     await expect(page.getByText('Conception orientée objet')).toBeVisible(COURSE_DETAILS_ASSERTION_TIMEOUT);
-    await expect(page.getByText(courseDetailsMessages.unstructuredPrerequisiteRule)).toBeVisible(
+    await expect(page.getByText(courseDetailsMessages.unstructuredPrerequisiteRule)).toHaveCount(
+      0,
       COURSE_DETAILS_ASSERTION_TIMEOUT,
     );
-    await expect(page.getByTestId('course-details-unstructured-prerequisite')).toContainText(
-      'LOG121',
+    await expect(page.getByTestId('course-details-unstructured-prerequisite')).toHaveCount(
+      0,
       COURSE_DETAILS_ASSERTION_TIMEOUT,
     );
     await expect(page.getByRole('heading', { name: courseDetailsMessages.courseOffering })).toBeVisible(
@@ -184,11 +185,12 @@ test.describe('Course details page', () => {
     await expect(page.getByText('Programmation et réseautique en génie logiciel')).toBeVisible(
       COURSE_DETAILS_ASSERTION_TIMEOUT,
     );
-    await expect(page.getByText(courseDetailsMessages.unstructuredPrerequisiteRule)).toBeVisible(
+    await expect(page.getByText(courseDetailsMessages.unstructuredPrerequisiteRule)).toHaveCount(
+      0,
       COURSE_DETAILS_ASSERTION_TIMEOUT,
     );
-    await expect(page.getByTestId('course-details-unstructured-prerequisite')).toContainText(
-      'LOG100',
+    await expect(page.getByTestId('course-details-unstructured-prerequisite')).toHaveCount(
+      0,
       COURSE_DETAILS_ASSERTION_TIMEOUT,
     );
     await expect(page.locator(selectors.courseOffering('H2026'))).toContainText('H26', COURSE_DETAILS_ASSERTION_TIMEOUT);

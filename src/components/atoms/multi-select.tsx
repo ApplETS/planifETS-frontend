@@ -1,6 +1,6 @@
 'use client';
 
-import { Command as CommandPrimitive } from 'cmdk';
+import { CommandEmpty, Command as CommandPrimitive } from 'cmdk';
 import { X } from 'lucide-react';
 import * as React from 'react';
 
@@ -19,6 +19,7 @@ type MultiSelectProps = {
   selected: Option[];
   onChangeAction: (selected: Option[]) => void;
   placeholder?: string;
+  emptyStateMessage: string;
 };
 
 export function MultiSelect({
@@ -26,6 +27,7 @@ export function MultiSelect({
   selected,
   onChangeAction,
   placeholder,
+  emptyStateMessage,
 }: MultiSelectProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
@@ -94,17 +96,16 @@ export function MultiSelect({
             <Badge
               key={option.value}
               variant="secondary"
-              className="text-foreground font-semibold py-1"
+              className="flex items-center gap-1 text-foreground font-semibold py-1 rounded-lg"
               data-testid={`program-chip-${option.id}`}
             >
-              {option.label || option.value || 'No name'}
+              <span>{option.label || option.value || 'No name'}</span>
               <button
                 type="button"
                 name="remove-option"
                 aria-label={`Remove ${option.label || option.value}`}
                 title={`Remove ${option.label || option.value}`}
-                className=" py-0.5 rounded-full outline-none ring-offset-background
-                focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                className="py-0.5 outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     handleUnselectOption(option);
@@ -116,7 +117,7 @@ export function MultiSelect({
                 }}
                 onClick={() => handleUnselectOption(option)}
               >
-                <X className="size-3 text-muted-foreground hover:text-foreground" />
+                <X className="size-4 text-muted-foreground hover:text-foreground" />
               </button>
             </Badge>
           ))}
@@ -145,7 +146,7 @@ export function MultiSelect({
           {open && selectables.length > 0
             ? (
               <div
-                className="absolute top-0 z-50 w-full rounded-md border bg-popover text-popover-foreground
+                className="absolute top-0 z-50 w-full rounded-md border border-input bg-popover text-popover-foreground
               shadow-md outline-none animate-in"
               >
                 <CommandGroup className="max-h-80 overflow-auto">
@@ -168,6 +169,12 @@ export function MultiSelect({
                     </CommandItem>
                   ))}
                 </CommandGroup>
+                <CommandEmpty
+                  className="py-3 text-center text-sm text-muted-foreground"
+                  data-testid="no-options-message"
+                >
+                  {emptyStateMessage}
+                </CommandEmpty>
               </div>
             )
             : null}

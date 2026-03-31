@@ -99,6 +99,7 @@ const ProgramSelector: React.FC = () => {
         selected={selectedOptions}
         onChangeAction={handleProgramChange}
         placeholder={t('programs')}
+        emptyStateMessage={t('noProgramsFound')}
       />
     </div>
   );

@@ -8,6 +8,7 @@ import {
   addCourseToSession,
   determineStatus,
   getDisplayedPrerequisites,
+  getPrerequisiteDisplayData,
   mapApiCourseToAppCourse,
   moveCourseToSession,
   removeCourseFromSession,
@@ -141,6 +142,38 @@ describe('courseUtils', () => {
       };
 
       expect(getDisplayedPrerequisites(course)).toEqual(['N/A']);
+    });
+  });
+
+  describe('getPrerequisiteDisplayData', () => {
+    it('returns null unstructured when unstructured is redundant with structured prerequisites', () => {
+      const { unstructuredPrerequisite } = getPrerequisiteDisplayData(['LOG121'], ' LOG121 ');
+
+      expect(unstructuredPrerequisite).toBeNull();
+    });
+
+    it('returns unstructured when it is not redundant and structured exists', () => {
+      const { unstructuredPrerequisite } = getPrerequisiteDisplayData(['MEC111'], 'LOG121');
+
+      expect(unstructuredPrerequisite).toBe('LOG121');
+    });
+
+    it('returns unstructured when it has additional non-structured codes', () => {
+      const { unstructuredPrerequisite } = getPrerequisiteDisplayData(['MEC111'], 'MEC111 et LOG121');
+
+      expect(unstructuredPrerequisite).toBe('MEC111 et LOG121');
+    });
+
+    it('returns unstructured when no structured prerequisites exist', () => {
+      const { unstructuredPrerequisite } = getPrerequisiteDisplayData([], 'INF135 et MEC329*');
+
+      expect(unstructuredPrerequisite).toBe('INF135 et MEC329*');
+    });
+
+    it('returns null when unstructured is empty', () => {
+      const { unstructuredPrerequisite } = getPrerequisiteDisplayData(['LOG100'], ' ');
+
+      expect(unstructuredPrerequisite).toBeNull();
     });
   });
 

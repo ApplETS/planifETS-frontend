@@ -37,16 +37,6 @@ export const mapApiCourseToAppCourse = (
 const normalizePrerequisiteCode = (code: string): string =>
   code.trim().toUpperCase().replace(/\*$/, '');
 
-const extractPrerequisiteCodes = (unstructuredPrerequisite: string): string[] => {
-  const matches = unstructuredPrerequisite.match(/[A-Z]{2,}\d{2,}\*?/gi);
-
-  if (!matches) {
-    return [];
-  }
-
-  return matches.map((code) => normalizePrerequisiteCode(code));
-};
-
 export type PrerequisiteDisplayData = {
   structuredPrerquisites: string[];
   unstructuredPrerequisite: string | null;
@@ -66,13 +56,9 @@ export const getPrerequisiteDisplayData = (
   }
 
   const structuredSet = new Set(structuredPrerequisites.map(normalizePrerequisiteCode));
-  const unstructuredPrerequisiteCodes = extractPrerequisiteCodes(normalizedUnstructured);
+  const normalizedUnstructuredCode = normalizePrerequisiteCode(normalizedUnstructured);
 
-  let isFullyRedundant = false;
-
-  if (unstructuredPrerequisiteCodes.length > 0 && unstructuredPrerequisiteCodes.every((code) => structuredSet.has(code))) {
-    isFullyRedundant = true;
-  }
+  const isFullyRedundant = structuredSet.has(normalizedUnstructuredCode);
 
   return {
     structuredPrerquisites: structuredPrerequisites,

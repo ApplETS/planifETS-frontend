@@ -37,7 +37,7 @@ export const mapApiCourseToAppCourse = (
 const normalizePrerequisiteCode = (code: string): string =>
   code.trim().toUpperCase().replace(/\*$/, '');
 
-export type PrerequisiteDisplayData = {
+type PrerequisiteDisplayDataType = {
   structuredPrerquisites: string[];
   unstructuredPrerequisite: string | null;
 };
@@ -45,7 +45,7 @@ export type PrerequisiteDisplayData = {
 export const getPrerequisiteDisplayData = (
   structuredPrerequisites: string[],
   unstructuredPrerequisite?: string | null,
-): PrerequisiteDisplayData => {
+): PrerequisiteDisplayDataType => {
   const normalizedUnstructured = unstructuredPrerequisite?.trim() || '';
 
   if (!normalizedUnstructured) {

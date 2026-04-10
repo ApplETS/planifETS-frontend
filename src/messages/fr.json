@@ -10,6 +10,8 @@
     "loading": "Chargement...",
     "cancel": "Annuler",
     "add-year": "Ajouter une année",
+    "export-data": "Exporter les données",
+    "export-data-description": "Enregistrer votre planification en PDF.",
     "reset-data": "Réinitialiser toutes les données",
     "reset-data-description": "Effacer toutes vos données, cours et paramètres. Cette action est irréversible.",
     "reset-data-warning": "Cela supprimera toutes vos données de façon permanente!",

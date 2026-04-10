@@ -1,0 +1,133 @@
+@media print {
+  @page {
+    size: auto;
+    margin: 12mm;
+  }
+
+  /* Apply red-light theme. */
+  :root,
+  [data-theme] {
+    --background: hsl(0 0% 100%);
+    --foreground: hsl(0 0% 3.9%);
+    --card: hsl(0 0% 100%);
+    --card-foreground: hsl(0 0% 3.9%);
+    --popover: hsl(0 0% 100%);
+    --popover-foreground: hsl(0 0% 3.9%);
+    --primary: hsl(0 72.2% 50.6%);
+    --primary-foreground: hsl(0 72.2% 20%);
+    --secondary: hsl(0 0% 96.1%);
+    --secondary-foreground: hsl(0 0% 9%);
+    --muted: hsl(0 0% 96.1%);
+    --muted-foreground: hsl(0 0% 45.1%);
+    --accent: hsl(0 0% 96.1%);
+    --accent-foreground: hsl(0 0% 9%);
+    --destructive: hsl(0 84.2% 50.2%);
+    --destructive-foreground: hsl(0 0% 98%);
+    --border: hsl(0 0% 89.8%);
+    --input: hsl(0 0% 89.8%);
+    --ring: hsl(0 72.2% 50.6%);
+    --radius: 0.5rem;
+    --sidebar: var(--primary-foreground);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--primary-foreground);
+    --sidebar-accent: var(--secondary);
+    --sidebar-accent-foreground: var(--secondary-foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
+  }
+
+  html,
+  body {
+    background: white !important;
+    color: black !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  [data-app-shell='true'] {
+    padding-top: 0 !important;
+  }
+
+  [data-testid='navbar'] {
+    display: none !important;
+  }
+
+  [data-planner-layout='true'] {
+    display: block !important;
+    min-height: auto !important;
+  }
+
+  [data-planner-main='true'] {
+    width: 100% !important;
+    padding-left: 0 !important;
+  }
+
+  [data-planner-main-inner='true'] {
+    padding: 0 !important;
+  }
+
+  [data-print-hidden='true'],
+  [data-slot='dialog-overlay'],
+  [data-slot='dialog-content'],
+  [data-slot='drawer-overlay'],
+  [data-slot='drawer-content'],
+  [data-sonner-toaster] {
+    display: none !important;
+  }
+
+  [data-print-root='planner'] {
+    padding: 0 !important;
+  }
+
+  [data-print-section='programs'] {
+    margin-bottom: 12px !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  [data-testid='programs-select'] input,
+  [data-testid='programs-select'] button[name='remove-option'],
+  [data-testid='programs-select'] [data-slot='command-list'] {
+    display: none !important;
+  }
+
+  [data-testid='programs-select'] [data-slot='command'] {
+    background: transparent !important;
+  }
+
+  [data-testid='programs-select'] [data-slot='badge'] {
+    border: 1px solid var(--border) !important;
+    background: var(--secondary) !important;
+    color: var(--secondary-foreground) !important;
+  }
+
+  [data-print-grid='sessions'] {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    align-items: start !important;
+  }
+
+  [data-print-section='programs'],
+  [data-print-keep='together'] {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  [data-print-card='year'],
+  [data-print-card='session'] {
+    break-inside: auto;
+    page-break-inside: auto;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  [data-print-keep-with-next='true'] {
+    break-after: avoid-page;
+    page-break-after: avoid;
+  }
+
+  [data-print-overflow='visible'] {
+    overflow: visible !important;
+    max-height: none !important;
+  }
+}

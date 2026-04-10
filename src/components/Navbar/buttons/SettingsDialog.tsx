@@ -2,8 +2,10 @@
 
 import { Settings2, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useEffect, useRef } from 'react';
 
 import BaseDialog from '@/components/dialogs/BaseDialog';
+import PlannerExportButton from '@/components/Planner/PlannerExportButton';
 import LanguageSelector from '@/components/settings/LanguageSelector';
 import ThemeSelector from '@/components/settings/ThemeSelector';
 import { Button } from '@/shadcn/ui/button';
@@ -62,6 +64,15 @@ export function SettingsDialog({
   onOpenResetAction,
 }: SettingsDialogProps) {
   const t = useTranslations('Commons');
+  const pendingPrintResolveRef = useRef<(() => void) | null>(null);
+
+  useEffect(() => {
+    if (!isOpen && pendingPrintResolveRef.current) {
+      pendingPrintResolveRef.current();
+      pendingPrintResolveRef.current = null;
+    }
+  }, [isOpen]);
+
   const openConfirm = () => {
     // Close settings first, then open the reset dialog mounted at a higher level
     onCloseAction();
@@ -70,6 +81,11 @@ export function SettingsDialog({
       onOpenResetAction?.();
     }, 50);
   };
+  const preparePlannerExport = () =>
+    new Promise<void>((resolve) => {
+      pendingPrintResolveRef.current = resolve;
+      onCloseAction();
+    });
 
   return (
     <>
@@ -92,6 +108,17 @@ export function SettingsDialog({
             <h2 className="text-lg font-medium mb-2">{t('theme')}</h2>
             <div className="ml-2">
               <ThemeSelector />
+            </div>
+          </div>
+
+          <div className="mb-6 border-t pt-6">
+            <h2 className="text-lg font-medium mb-2">{t('export-data')}</h2>
+            <p className="text-sm text-muted-foreground mb-3 ml-2">
+              {t('export-data-description')}
+            </p>
+
+            <div className="ml-2 flex gap-2">
+              <PlannerExportButton onBeforeExportAction={preparePlannerExport} />
             </div>
           </div>
 

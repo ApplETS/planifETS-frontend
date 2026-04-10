@@ -76,6 +76,7 @@ const CourseBox: FC<CourseBoxProps> = ({
         ${isDragging && unknownAvailability ? 'border-2 border-blue-200' : ''}
       `}
       data-testid={`course-box-${code}`}
+      data-print-keep="together"
     >
       <div className="flex flex-col flex-wrap sm:flex-row mb-2">
         <div className="flex flex-col w-full">

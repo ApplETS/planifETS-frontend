@@ -39,7 +39,7 @@ const CoursesList: FC<CoursesListProps> = ({
   const currentSessionKey = generateSessionKey(sessionYear, sessionTerm);
 
   return (
-    <div className="flex-1 overflow-y-auto">
+    <div className="flex-1 overflow-y-auto" data-print-overflow="visible">
       {hasCourses
         ? (
           <div className="space-y-2">

@@ -27,6 +27,9 @@
   "search.exclude": {
     "yarn.lock": true
   },
+  "css.customData": [
+    ".vscode/css-custom-data.json"
+  ],
   "i18n-ally.localesPaths": [
     "src/i18n",
     "src/messages"

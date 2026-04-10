@@ -43,6 +43,7 @@ const YearSection: React.FC<YearSectionProps> = ({
           variant="destructive"
           size="icon"
           className="absolute -right-1 z-10 size-7"
+          data-print-hidden="true"
           onClick={() => {
             deleteYear(year);
             showSuccess(t('year-deleted', { year }));
@@ -52,11 +53,18 @@ const YearSection: React.FC<YearSectionProps> = ({
           <Trash className="size-4" />
         </Button>
       )}
-      <div className="rounded-lg border border-primary bg-secondary p-4 shadow-lg">
-        <h2 className="mb-2.5 text-xl font-semibold text-foreground">
+      <div className="rounded-lg border border-primary bg-secondary p-4 shadow-lg" data-print-card="year">
+        <h2
+          className="mb-2.5 text-xl font-semibold text-foreground"
+          data-print-keep-with-next="true"
+        >
           {t('year-with-value', { value: year })}
         </h2>
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-3" data-testid={`year-${year}-sessions`}>
+        <div
+          className="grid grid-cols-1 gap-3 md:grid-cols-3"
+          data-testid={`year-${year}-sessions`}
+          data-print-grid="sessions"
+        >
           {sessions.map((session) => (
             <Session
               key={session.key}

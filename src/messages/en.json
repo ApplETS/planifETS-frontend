@@ -10,6 +10,8 @@
     "loading": "Loading...",
     "cancel": "Cancel",
     "add-year": "Add Year",
+    "export-data": "Export Data",
+    "export-data-description": "Save your planner as a PDF.",
     "reset-data": "Reset All Data",
     "reset-data-description": "Clear all your planner data, courses, and settings. This action cannot be undone.",
     "reset-data-warning": "This will delete all your data permanently!",

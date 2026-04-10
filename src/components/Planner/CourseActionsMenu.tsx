@@ -42,11 +42,12 @@ export default function CourseActionsMenu({
           size="icon"
           aria-label={t('delete-course')}
           data-testid={`course-actions-${courseCode}-${fromSessionTerm}-${fromSessionYear}`}
+          data-print-hidden="true"
         >
           <MoreHorizontal className="size-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent side="bottom" align="end">
+      <DropdownMenuContent side="bottom" align="end" data-print-hidden="true">
         <DropdownMenuItem asChild>
           <Link
             href={getCourseDetailsHref(courseId)}

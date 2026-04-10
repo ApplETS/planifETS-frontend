@@ -11,7 +11,7 @@ type PlannerExportButtonProps = {
 
 export default function PlannerExportButton({
   onBeforeExportAction,
-}: PlannerExportButtonProps) {
+}: Readonly<PlannerExportButtonProps>) {
   const t = useTranslations('Commons');
 
   const handleClick = async () => {

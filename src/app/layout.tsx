@@ -7,8 +7,9 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import Navbar from '@/components/Navbar/Navbar';
 import { ThemeProvider } from '@/components/Providers/ThemeProvider';
 import { Toaster } from '@/shadcn/ui/sonner';
-import DndContext from '../context/dnd/DndContext';
-import './globals.css';
+import DndContext from '../context/DndContext';
+import '@/css/globals.css';
+import '@/css/print.css';
 
 export const metadata: Metadata = {
   title: 'PlanifETS',
@@ -40,7 +41,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <NextIntlClientProvider messages={messages}>
                 <Toaster richColors />
                 <DndContext>
-                  <div className="min-h-screen pt-16 text-foreground bg-background">
+                  <div className="min-h-screen pt-16 text-foreground bg-background" data-app-shell="true">
                     <main>
                       <Navbar />
                       {children}

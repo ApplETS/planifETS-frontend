@@ -85,7 +85,7 @@ export default function PlannerPage() {
   }
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-col" data-print-root="planner">
       <div className="w-full">
         <ProgramSection />
       </div>
@@ -115,7 +115,13 @@ export default function PlannerPage() {
           {' '}
           {t('total-credits')}
         </Button>
-        <Button variant="default" size="default" onClick={addYear} data-testid="add-year-button">
+        <Button
+          variant="default"
+          size="default"
+          onClick={addYear}
+          data-testid="add-year-button"
+          data-print-hidden="true"
+        >
           <Plus />
           {t('add-year')}
         </Button>

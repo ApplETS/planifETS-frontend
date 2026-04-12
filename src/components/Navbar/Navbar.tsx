@@ -42,6 +42,7 @@ export default function Navbar() {
             : 'border-border/30 bg-background/50 backdrop-blur-xl supports-[backdrop-filter]:bg-background/20 dark:border-border/45 dark:bg-background/30 dark:supports-[backdrop-filter]:bg-background/18'
         }`}
         data-testid="navbar"
+        data-print-hidden="true"
       >
         <div className="flex items-center justify-between">
           <Logo />
@@ -94,6 +95,7 @@ export default function Navbar() {
         isOpen={settingsOpen}
         onCloseAction={closeSettings}
         onOpenResetAction={openReset}
+        data-print-hidden="true"
       />
       <ResetDialog isOpen={resetOpen} onCloseAction={closeReset} />
     </>

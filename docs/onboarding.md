@@ -11,7 +11,50 @@
 
 - Docker Desktop
 
-## 1. Clone the project
+## Option A - Docker (recommended)
+
+### 1. Clone the project
+
+```bash
+git clone git@github.com:ApplETS/planifETS-frontend.git
+cd planifETS-frontend
+```
+
+### 2. Create the environment file
+
+```bash
+cp .env.example .env
+```
+
+> **Note:** On Windows, port `3000` may be reserved by Hyper-V. The compose file maps the app to host port `3500` to avoid conflicts.
+
+### 3. Start the backend
+
+Start the backend stack first — see the [backend onboarding](https://github.com/ApplETS/planifETS-backend/blob/main/docs/onboarding.md).
+
+The frontend will connect to `http://localhost:3501/api` by default when running via Docker.
+
+### 4. Start the app
+
+**Development** (hot reload, source mounted as volume):
+
+```bash
+docker compose --profile dev up --build
+```
+
+**Production** (full optimized build):
+
+```bash
+docker compose --profile production up --build
+```
+
+Once running, open `http://localhost:3500`.
+
+---
+
+## Option B - Local setup
+
+### 1. Clone the project
 
 ```bash
 git clone git@github.com:ApplETS/planifETS-frontend.git
@@ -21,18 +64,18 @@ yarn install
 
 If you use `nvm`, run `nvm use` first.
 
-## 2. Create the environment file
+### 2. Create the environment file
 
 Duplicate `.env.example` in the project root and rename the copy to `.env`.
 
-## 3. Start the backend
+### 3. Start the backend
 
 - Backend repo: `https://github.com/ApplETS/planifETS-backend`
 - Default local API URL: `http://localhost:3001/api`
 
 If you already have a running backend, reuse its URL in `.env`.
 
-## 4. Start the app
+### 4. Start the app
 
 ```bash
 yarn dev
@@ -40,7 +83,7 @@ yarn dev
 
 Once the dev server is running, open `http://localhost:3000`.
 
-## 5. Verify the setup
+### 5. Verify the setup
 
 To verify that the project builds correctly:
 

@@ -150,7 +150,7 @@ const CourseContentSections = ({
     <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
       <div className="grid gap-6">
         <PageSection title={tCourseDetails('description')}>
-          <p className="text-sm leading-7">
+          <p className="whitespace-pre-line text-sm leading-7">
             {courseDetails.course.description || tCourseDetails('missingDescription')}
           </p>
         </PageSection>

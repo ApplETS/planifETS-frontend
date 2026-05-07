@@ -9,6 +9,43 @@ type SetupTestPageOptions = {
   programName?: string;
   programId?: string;
   admissionYear?: number;
+  currentDateIso?: string;
+};
+
+const freezeBrowserDate = async (page: Page, currentDateIso: string) => {
+  await page.addInitScript((dateIso) => {
+    const fixedDate = new Date(dateIso);
+    const fixedTime = fixedDate.getTime();
+    const RealDate = Date;
+
+    const mockDateImpl = function (this: unknown, ...args: unknown[]) {
+      if (new.target) {
+        if (args.length === 0) {
+          return new RealDate(fixedTime);
+        }
+
+        return new RealDate(...(args as ConstructorParameters<typeof Date>));
+      }
+
+      return new RealDate(fixedTime).toString();
+    };
+    const MockDate = mockDateImpl as unknown as DateConstructor;
+
+    Object.defineProperty(MockDate, 'UTC', { value: RealDate.UTC });
+    Object.defineProperty(MockDate, 'parse', { value: RealDate.parse });
+    Object.defineProperty(MockDate, 'now', { value: () => fixedTime });
+    Object.defineProperty(MockDate, Symbol.hasInstance, {
+      value: (instance: unknown) => instance instanceof RealDate,
+    });
+    Object.setPrototypeOf(MockDate, RealDate);
+    Object.defineProperty(mockDateImpl, 'prototype', { value: RealDate.prototype });
+
+    Object.defineProperty(window, 'Date', {
+      value: MockDate,
+      configurable: true,
+      writable: true,
+    });
+  }, currentDateIso);
 };
 
 export const setupTestPage = async (
@@ -20,7 +57,13 @@ export const setupTestPage = async (
   const welcomePage = page.locator(selectors.welcomePage);
   const programName = options.programName ?? PROGRAM_NAME;
   const programId = options.programId ?? PROGRAM_ID_LOG;
-  const admissionYear = options.admissionYear ?? new Date().getFullYear() - 2;
+  const currentDateIso = options.currentDateIso;
+  const currentDate = currentDateIso ? new Date(currentDateIso) : new Date();
+  const admissionYear = options.admissionYear ?? currentDate.getFullYear() - 2;
+
+  if (currentDateIso) {
+    await freezeBrowserDate(page, currentDateIso);
+  }
 
   await page.goto('/welcome');
   await page.waitForLoadState('domcontentloaded');

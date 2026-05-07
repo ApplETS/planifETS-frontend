@@ -36,7 +36,9 @@ The frontend will connect to `http://localhost:3501/api` by default when running
 
 ### 4. Start the app
 
-**Development** (hot reload, source mounted as volume):
+> **Warning:** Hot-reload does not work with Docker on Windows. The Next.js Turbopack watcher relies on filesystem events that are not propagated across the WSL2/Windows boundary. Use [Option B](#option-b---local-setup) if you need hot-reload during development.
+
+**Development** (source mounted as volume):
 
 ```bash
 docker compose --profile dev up --build

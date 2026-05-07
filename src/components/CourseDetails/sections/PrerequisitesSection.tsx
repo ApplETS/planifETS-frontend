@@ -53,6 +53,7 @@ const PrerequisitesSection = ({ courseDetails }: PrerequisitesSectionProps) => {
                           courseCode={prerequisite.code}
                           fromSessionYear={currentSessionYear}
                           fromSessionTerm={currentSessionTerm}
+                          testIdContext="prerequisite"
                         />
                       </div>
                     </div>

@@ -20,6 +20,7 @@ type CourseActionsMenuProps = Readonly<{
   courseCode: string;
   fromSessionYear: number;
   fromSessionTerm: string;
+  testIdContext?: string;
   onDeleteAction?: () => void;
 }>;
 
@@ -28,6 +29,7 @@ export default function CourseActionsMenu({
   courseCode,
   fromSessionYear,
   fromSessionTerm,
+  testIdContext = 'default',
   onDeleteAction,
 }: CourseActionsMenuProps) {
   const t = useTranslations('PlannerPage');
@@ -41,7 +43,7 @@ export default function CourseActionsMenu({
           variant="ghost"
           size="icon"
           aria-label={t('delete-course')}
-          data-testid={`course-actions-${courseCode}-${fromSessionTerm}-${fromSessionYear}`}
+          data-testid={`course-actions-${testIdContext}-${courseCode}-${fromSessionTerm}-${fromSessionYear}`}
           data-print-hidden="true"
         >
           <MoreHorizontal className="size-4" />
@@ -63,7 +65,7 @@ export default function CourseActionsMenu({
             e.stopPropagation();
             toggleFavorite(courseId);
           }}
-          data-testid={`favorite-course-${courseId}-${fromSessionTerm}-${fromSessionYear}`}
+          data-testid={`favorite-course-${testIdContext}-${courseId}-${fromSessionTerm}-${fromSessionYear}`}
         >
           <Heart
             className={`size-4 ${isCourseFavorited ? 'text-red-600' : 'text-foreground'}`}
@@ -81,7 +83,7 @@ export default function CourseActionsMenu({
                   e.stopPropagation();
                   onDeleteAction();
                 }}
-                data-testid={`delete-course-${courseCode}-${fromSessionTerm}-${fromSessionYear}`}
+                data-testid={`delete-course-${testIdContext}-${courseCode}-${fromSessionTerm}-${fromSessionYear}`}
               >
                 <Trash className="size-4 text-destructive" />
                 {t('delete-course')}

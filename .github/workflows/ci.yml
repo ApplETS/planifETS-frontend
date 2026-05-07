@@ -19,16 +19,28 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: 22.x
           cache: yarn
+          cache-dependency-path: yarn.lock
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Run dependency audit
-        run: yarn audit --groups dependencies --level critical
+
+      - name: Run Dependency Audit
+        run: |
+          yarn audit --groups dependencies | tee audit.log
+          if grep -E 'critical' audit.log; then
+            echo 'Critical vulnerabilities found!';
+            exit 1;
+          else
+            echo 'No critical vulnerabilities.';
+          fi
 
   lint-and-typecheck:
     name: Lint & Type Check

@@ -136,6 +136,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
                 courseCode={course.code}
                 fromSessionYear={currentSessionYear}
                 fromSessionTerm={currentSessionTerm}
+                testIdContext="sidebar"
               />
             )}
           />

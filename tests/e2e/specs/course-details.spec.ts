@@ -16,6 +16,8 @@ import {
 import { getMessages } from '../fixtures/language';
 import { setupTestPage } from '../fixtures/setup';
 
+const FIXED_WINTER_DATE_ISO = '2026-02-15T12:00:00.000Z';
+
 const LOG210_COURSE_ID = 352413;
 const MEC111_COURSE_ID = 352716;
 const LOG240_COURSE_ID = 352421;
@@ -41,7 +43,10 @@ const getOfferingAvailabilityLocator = (
 
 test.describe('Course details page', () => {
   test.beforeEach(async ({ page }) => {
-    await setupTestPage(page);
+    await setupTestPage(page, {
+      admissionYear: 2024,
+      currentDateIso: FIXED_WINTER_DATE_ISO,
+    });
   });
 
   test('loads /course without a selected course and lets the user search from there', async ({ page }) => {

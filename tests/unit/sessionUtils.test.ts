@@ -1,6 +1,6 @@
 import type { Course, CourseInstance } from '@/types/course';
 import type { Session } from '@/types/session';
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { TermEnum } from '@/types/session';
 import {
   buildDuplicateCourseSessionIndex,
@@ -25,6 +25,8 @@ import {
 } from '@/utils/sessionUtil';
 
 describe('sessionUtils', () => {
+  const FIXED_WINTER_DATE = new Date('2026-02-15T12:00:00.000Z');
+
   describe('generateSessionKey', () => {
     it('should generate correct session key', () => {
       expect(generateSessionKey(2025, TermEnum.A)).toBe('A2025');
@@ -146,6 +148,15 @@ describe('sessionUtils', () => {
   });
 
   describe('getCurrentSession', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+      vi.setSystemTime(FIXED_WINTER_DATE);
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
     it('should return H for winter months (0-3)', () => {
       expect(getCurrentSession(0)).toBe(TermEnum.H); // Jan
       expect(getCurrentSession(3)).toBe(TermEnum.H); // Apr
@@ -162,12 +173,20 @@ describe('sessionUtils', () => {
     });
 
     it('should default to current month', () => {
-      // Assuming current date is Feb 2026, month 1, should be H
       expect(getCurrentSession()).toBe(TermEnum.H);
     });
   });
 
   describe('getSessionTiming', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+      vi.setSystemTime(FIXED_WINTER_DATE);
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
     it('should identify past session', () => {
       const timing = getSessionTiming(2025, TermEnum.A);
 
@@ -194,6 +213,15 @@ describe('sessionUtils', () => {
   });
 
   describe('filterCurrentAndFutureSessions', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+      vi.setSystemTime(FIXED_WINTER_DATE);
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
     it('should filter current and future sessions', () => {
       const sessions = ['H2025', 'A2025', 'H2026', 'E2026', 'A2026'];
       const filtered = filterCurrentAndFutureSessions(sessions);

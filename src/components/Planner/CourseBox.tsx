@@ -91,6 +91,7 @@ const CourseBox: FC<CourseBoxProps> = ({
                 courseCode={code}
                 fromSessionYear={fromSessionYear}
                 fromSessionTerm={fromSessionTerm}
+                testIdContext="planner"
                 onDeleteAction={onDeleteAction}
               />
             )}

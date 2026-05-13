@@ -3,7 +3,31 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: runner
+      args:
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL}
     ports:
-      - '3000:3000'
+      - '${PORT:-3500}:3000'
     environment:
       APP_ENV: production
+      NODE_ENV: production
+    profiles:
+      - production
+
+  frontend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - '${PORT:-3500}:3000'
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      APP_ENV: development
+      NODE_ENV: development
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:3001/api}
+    profiles:
+      - dev

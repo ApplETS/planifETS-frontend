@@ -18,6 +18,17 @@ RUN \
   fi
 
 
+# Development
+FROM base AS dev
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
+EXPOSE 3000
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+CMD ["yarn", "dev"]
+
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app

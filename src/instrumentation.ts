@@ -10,6 +10,9 @@ export const onRequestError = async (
 ) => {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     const posthog = getPostHogServer();
+    if (!posthog) {
+      return;
+    }
 
     let distinctId: string | undefined;
     const cookie = request.headers.cookie;

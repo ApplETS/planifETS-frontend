@@ -3,11 +3,13 @@ import type { ApiError } from '@/types/api';
 export class ApiNetworkError extends Error {
   statusCode: number | null;
   raw: unknown;
-  constructor(message: string, raw?: unknown) {
+  url?: string;
+  constructor(message: string, raw?: unknown, url?: string) {
     super(message);
     this.name = 'ApiNetworkError';
     this.statusCode = null;
     this.raw = raw;
+    this.url = url;
   }
 }
 

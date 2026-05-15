@@ -8,6 +8,8 @@ if (process.env.NEXT_PUBLIC_APP_ENV !== 'development') {
       defaults: '2026-01-30',
       capture_exceptions: true,
     });
+  } else {
+    console.error('PostHog initialization skipped: NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN is not defined.');
   }
 }
 

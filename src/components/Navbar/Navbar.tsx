@@ -16,7 +16,7 @@ import {
   SheetTitle,
 } from '@/shadcn/ui/sheet';
 
-if (process.env.NODE_ENV !== 'development') {
+if (process.env.NEXT_PUBLIC_APP_ENV !== 'development') {
   // eslint-disable-next-line no-console
   console.log('Version:', process.env.NEXT_PUBLIC_APP_GIT_SHORT_SHA);
 }

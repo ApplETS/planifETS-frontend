@@ -114,7 +114,7 @@ class ApiClient {
     } catch (err) {
       const message = 'Unable to reach backend. Please check your network connection.';
 
-      throw new ApiNetworkError(message, err);
+      throw new ApiNetworkError(message, err, url);
     }
 
     return this.handleResponse<T>(response);

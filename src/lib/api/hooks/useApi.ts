@@ -2,8 +2,9 @@
 
 import type { ApiResponse } from '@/types/api';
 import { useCallback, useState } from 'react';
+import { monitoring } from '@/lib/monitoring';
 import { showError } from '@/lib/toast';
-import { ApiErrorHandler, handleApiError } from '../utils/error-handler';
+import { ApiErrorHandler, ApiNetworkError, handleApiError } from '../utils/error-handler';
 
 type UseApiState<T> = {
   data: T | null;
@@ -48,11 +49,13 @@ export function useApi<T>(
       return response;
     } catch (err) {
       const isOffline = ApiErrorHandler.isNetworkError(err);
-
       const errorMessage = handleApiError(err);
 
-      showError(errorMessage);
+      const error = err instanceof Error ? err : new Error(errorMessage);
+      const url = err instanceof ApiNetworkError ? err.url : undefined;
+      monitoring.captureException(error, { api: { isOffline, url } });
 
+      showError(errorMessage);
       setState({ data: null, loading: false, error: errorMessage, isOffline });
       return null;
     }

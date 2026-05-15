@@ -18,7 +18,7 @@ export const onRequestError = async (
     const cookie = request.headers.cookie;
     if (cookie) {
       const cookieString = Array.isArray(cookie) ? cookie.join('; ') : cookie;
-      const match = cookieString.match(/ph_phc_.*?_posthog=([^;]+)/);
+      const match = /ph_phc_.*?_posthog=([^;]+)/.exec(cookieString);
       if (match?.[1]) {
         try {
           const data = JSON.parse(decodeURIComponent(match[1])) as { distinct_id?: string };

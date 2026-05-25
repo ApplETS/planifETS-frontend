@@ -53,9 +53,9 @@ const YearSection: React.FC<YearSectionProps> = ({
           <Trash className="size-4" />
         </Button>
       )}
-      <div className="rounded-lg border border-primary bg-secondary p-4 shadow-lg" data-print-card="year">
+      <div className="rounded-lg bg-transparent py-3 px-3 shadow border border-border/60" data-print-card="year">
         <h2
-          className="mb-2.5 text-xl font-semibold text-foreground"
+          className="mb-2 text-xl font-semibold text-foreground"
           data-print-keep-with-next="true"
         >
           {t('year-with-value', { value: year })}

@@ -1,7 +1,7 @@
 'use client';
 
 import { CommandEmpty, Command as CommandPrimitive } from 'cmdk';
-import { X } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import * as React from 'react';
 
 import { Badge } from '@/shadcn/ui/badge';
@@ -76,9 +76,8 @@ export function MultiSelect({
       className="overflow-visible bg-transparent select-none"
     >
       <div
-        className="group rounded-md border border-input ring-offset-background
-        text-sm text-foreground
-        px-3 py-2 w-full max-w-full select-none"
+        className="group flex flex-wrap items-center gap-2 rounded-md border border-border bg-background
+        px-3 py-1.5 min-h-10 w-full max-w-full select-none"
         style={{ boxSizing: 'border-box' }}
         // Open ONLY on pointer interaction (click/tap) on the control.
         onPointerDown={(e) => {
@@ -91,7 +90,7 @@ export function MultiSelect({
           }
         }}
       >
-        <div className="flex flex-wrap gap-1 w-full">
+        <div className="flex flex-wrap gap-1 flex-1">
           {selected.map((option) => (
             <Badge
               key={option.value}
@@ -122,22 +121,25 @@ export function MultiSelect({
             </Badge>
           ))}
 
-          <CommandPrimitive.Input
-            ref={inputRef}
-            value={inputValue}
-            // Typing is user intent: open the list if it’s closed.
-            onValueChange={(v) => {
-              setInputValue(v);
-              if (!open) {
-                setOpen(true);
-              }
-            }}
-            // Do NOT open on focus (prevents auto-open from Dialog/Drawer autofocus)
-            onBlur={() => setOpen(false)}
-            placeholder={placeholder || 'Select options...'}
-            className="ml-2 flex-1 bg-transparent text-foreground text-xs outline-none"
-            style={{ width: 'auto', minWidth: 0 }}
-          />
+          <div className="flex items-center gap-2 flex-1 ml-1">
+            <Search className="size-4 shrink-0 text-muted-foreground" />
+            <CommandPrimitive.Input
+              ref={inputRef}
+              value={inputValue}
+              // Typing is user intent: open the list if it’s closed.
+              onValueChange={(v) => {
+                setInputValue(v);
+                if (!open) {
+                  setOpen(true);
+                }
+              }}
+              // Do NOT open on focus (prevents auto-open from Dialog/Drawer autofocus)
+              onBlur={() => setOpen(false)}
+              placeholder={placeholder ?? 'Select options...'}
+              className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+              style={{ width: 'auto', minWidth: 0 }}
+            />
+          </div>
         </div>
       </div>
 
@@ -146,14 +148,14 @@ export function MultiSelect({
           {open && selectables.length > 0
             ? (
               <div
-                className="absolute top-0 z-50 w-full rounded-md border border-input bg-popover text-popover-foreground
-              shadow-md outline-none animate-in"
+                className="absolute top-0 z-50 w-full overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-md outline-none animate-in"
               >
                 <CommandGroup className="max-h-80 overflow-auto">
                   {selectables.map((option) => (
                     <CommandItem
                       role="option"
                       key={option.value}
+                      className="px-4 py-2.5"
                       onMouseDown={(e) => {
                         e.preventDefault();
                         e.stopPropagation();

@@ -25,7 +25,7 @@ html body[data-scroll-locked] {
   --accent-foreground: hsl(0 0% 98%);
   --destructive: hsl(0 74.8% 50.6%);
   --destructive-foreground: hsl(0 0% 98%);
-  --border: hsl(240 3.7% 15.9%);
+  --border: hsl(240 3.7% 30%);
   --input: hsl(240 3.7% 15.9%);
   --ring: hsl(240 4.9% 83.9%);
   --radius: 0.5rem;
@@ -131,7 +131,7 @@ html body[data-scroll-locked] {
   --accent-foreground: hsl(0 0% 98%);
   --destructive: hsl(0 74.8% 50.6%);
   --destructive-foreground: hsl(0 0% 98%);
-  --border: hsl(240 3.7% 15.9%);
+  --border: hsl(240 3.7% 30%);
   --input: hsl(240 3.7% 15.9%);
   --ring: hsl(240 4.9% 83.9%);
   --radius: 0.5rem;
@@ -193,7 +193,7 @@ html body[data-scroll-locked] {
   --accent-foreground: hsl(0 0% 98%);
   --destructive: hsl(0 74.8% 50.6%);
   --destructive-foreground: hsl(0 0% 98%);
-  --border: hsl(0 0% 14.9%);
+  --border: hsl(0 0% 30%);
   --input: hsl(0 0% 14.9%);
   --ring: hsl(0 72.2% 50.6%);
   --radius: 0.5rem;
@@ -286,7 +286,7 @@ html body[data-scroll-locked] {
   --accent-foreground: hsl(0 0% 98%);
   --destructive: hsl(0 74.8% 50.6%);
   --destructive-foreground: hsl(0 85.7% 97.3%);
-  --border: hsl(240 3.7% 15.9%);
+  --border: hsl(240 3.7% 30%);
   --input: hsl(240 3.7% 15.9%);
   --ring: hsl(142.4 71.8% 29.2%);
   --radius: 0.5rem;
@@ -348,7 +348,7 @@ html body[data-scroll-locked] {
   --accent-foreground: hsl(210 40% 98%);
   --destructive: hsl(0 74.8% 50.6%);
   --destructive-foreground: hsl(210 40% 98%);
-  --border: hsl(217.2 32.6% 17.5%);
+  --border: hsl(217.2 32.6% 30%);
   --input: hsl(217.2 32.6% 17.5%);
   --ring: hsl(224.3 76.3% 48%);
   --radius: 0.5rem;
@@ -410,7 +410,7 @@ html body[data-scroll-locked] {
   --accent-foreground: hsl(60 9.1% 97.8%);
   --destructive: hsl(0 74.8% 50.6%);
   --destructive-foreground: hsl(60 9.1% 97.8%);
-  --border: hsl(12 6.5% 15.1%);
+  --border: hsl(12 6.5% 30%);
   --input: hsl(12 6.5% 15.1%);
   --ring: hsl(35.5 91.7% 32.9%);
   --radius: 0.5rem;
@@ -472,7 +472,7 @@ html body[data-scroll-locked] {
   --accent-foreground: hsl(210 20% 98%);
   --destructive: hsl(0 74.8% 50.6%);
   --destructive-foreground: hsl(210 20% 98%);
-  --border: hsl(215 27.9% 16.9%);
+  --border: hsl(215 27.9% 30%);
   --input: hsl(215 27.9% 16.9%);
   --ring: hsl(263.4 70% 50.4%);
   --radius: 0.5rem;

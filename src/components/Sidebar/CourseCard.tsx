@@ -119,8 +119,8 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
           dragRef(node);
         }
       }}
-      className={`relative w-full cursor-grab rounded-md bg-background p-4 shadow-md
-        ${isDragging ? 'opacity-50' : 'opacity-100'}`}
+      className={`relative w-full cursor-grab active:cursor-grabbing rounded-md bg-background p-4 shadow-md
+        ${isDragging ? 'opacity-50 cursor-grabbing' : 'opacity-100'}`}
       data-testid={`course-card-${course.code}`}
     >
       <div className="flex items-start justify-between">

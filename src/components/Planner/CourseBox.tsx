@@ -70,7 +70,7 @@ const CourseBox: FC<CourseBoxProps> = ({
       className={`
         shadow-xs
         relative cursor-grab active:cursor-grabbing rounded-lg
-        bg-muted p-3
+        bg-background p-3
         hover:shadow-md text-foreground
         ${isDragging ? 'opacity-50 cursor-grabbing' : 'opacity-100'}
         ${isDragging && unknownAvailability ? 'border-2 border-blue-200' : ''}

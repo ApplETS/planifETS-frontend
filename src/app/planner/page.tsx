@@ -3,18 +3,21 @@
 import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { useLatestAvailableSessionApi } from '@/api/hooks/useLatestAvailableSessionApi';
+import ChatbotButton from '@/components/Chatbot/ChatbotButton';
+import ChatbotPanel from '@/components/Chatbot/ChatbotPanel';
+
 import { ProgramSection } from '@/components/Planner/ProgramSection';
 import YearSection from '@/components/Planner/YearSection';
-
 import { usePreloadCourses } from '@/hooks/course/usePreloadCourses';
 import { useStoreHydration } from '@/hooks/useStoreHydration';
 import { Button } from '@/shadcn/ui/button';
 import { useCourseStore } from '@/store/courseStore';
 import { useOnboardingStore } from '@/store/onboardingStore';
 import { usePlannerStore } from '@/store/plannerStore';
+
 import { useSessionStore } from '@/store/sessionStore';
 import { buildDuplicateCourseSessionIndex } from '@/utils/sessionUtil';
 
@@ -27,6 +30,7 @@ export default function PlannerPage() {
   const { courses } = useCourseStore();
   const { hasCompletedOnboarding } = useOnboardingStore();
   const { onboardingHydrated, allHydrated } = useStoreHydration();
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   useLatestAvailableSessionApi();
   usePreloadCourses(allHydrated);
@@ -126,6 +130,13 @@ export default function PlannerPage() {
           {t('add-year')}
         </Button>
       </div>
+      {/* Assistant PlanifETS */}
+      {isChatOpen && <ChatbotPanel />}
+
+      <ChatbotButton
+        isOpen={isChatOpen}
+        onClick={() => setIsChatOpen((prev) => !prev)}
+      />
     </div>
   );
 }

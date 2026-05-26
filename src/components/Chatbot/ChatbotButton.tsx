@@ -18,7 +18,6 @@ export default function ChatbotButton({
       <Button
         onClick={onClick}
         size="lg"
-        className="rounded-full shadow-lg px-5 py-6 flex items-center gap-2"
         data-testid="chatbot-button"
       >
         {isOpen

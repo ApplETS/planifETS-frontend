@@ -2,7 +2,9 @@
 
 import type { ChatMessage as ChatMessageType } from './types';
 
+import { X } from 'lucide-react';
 import { useState } from 'react';
+import { Button } from '@/shadcn/ui/button';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 import { mockMessages } from './mock';
@@ -37,34 +39,44 @@ export default function ChatbotPanel() {
     <div
       className="
         fixed
-        bottom-24
-        right-4
-        z-50
+        right-0
+        top-0
+        z-40
         flex
-        h-[600px]
-        w-[380px]
+        h-screen
+        w-full
+        max-w-[420px]
         flex-col
-        overflow-hidden
-        rounded-2xl
-        border
+        border-l
         bg-background
         shadow-2xl
 
-        max-md:
-        w-[calc(100vw-2rem)]
-        max-md:h-[70vh]
+        md:w-[420px]
+
+        max-md:max-w-full
       "
       data-testid="chatbot-panel"
     >
       {/* Header */}
-      <div className="border-b p-4">
-        <h2 className="font-semibold">
-          Assistant PlanifETS
-        </h2>
+      <div className="flex items-start justify-between border-b p-4">
+        <div>
+          <h2 className="font-semibold">
+            Assistant PlanifETS
+          </h2>
 
-        <p className="text-sm text-muted-foreground">
-          Posez vos questions sur votre cheminement.
-        </p>
+          <p className="text-sm text-muted-foreground">
+            Posez vos questions sur votre cheminement.
+          </p>
+        </div>
+
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          data-testid="close-chatbot-button"
+        >
+          <X className="h-5 w-5" />
+        </Button>
       </div>
 
       {/* Messages */}

@@ -89,7 +89,12 @@ export default function PlannerPage() {
   }
 
   return (
-    <div className="flex w-full flex-col" data-print-root="planner">
+    <div
+      className={`flex w-full flex-col transition-all duration-300 ${
+        isChatOpen ? 'md:pr-[420px]' : ''
+      }`}
+      data-print-root="planner"
+    >
       <div className="w-full">
         <ProgramSection />
       </div>

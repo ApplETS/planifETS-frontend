@@ -27,7 +27,7 @@ export default function ChatMessage({
           shadow-sm
           ${
     isUser
-      ? 'bg-primary text-primary-foreground'
+      ? 'bg-violet-600 text-white'
       : 'bg-muted text-foreground'
     }
         `}

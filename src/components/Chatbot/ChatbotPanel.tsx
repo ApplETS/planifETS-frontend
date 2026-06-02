@@ -61,7 +61,7 @@ export default function ChatbotPanel({
         border
         border-violet-500/30
 
-        bg-[#2B2A30]
+        bg-secondary
 
         shadow-2xl
       "
@@ -70,7 +70,7 @@ export default function ChatbotPanel({
       {/* Header */}
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-violet-500" />
+          <Sparkles className="h-5 w-5 text-violet-500 dark:text-violet-300" />
 
           <span className="font-semibold">
             Assistant PlanifETS
@@ -80,11 +80,13 @@ export default function ChatbotPanel({
             className="
               rounded-md
               bg-violet-600/20
+              dark:bg-violet-300/20
               px-2
               py-0.5
               text-xs
               font-medium
-              text-violet-300
+              text-violet-500
+              dark:text-violet-300
             "
           >
             BETA

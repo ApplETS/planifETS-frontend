@@ -34,16 +34,18 @@ export default function ChatInput({
           flex-1
           rounded-md
           border
-          border-violet-500/30
+          border-muted-foreground
 
-          bg-[#1E1D23]
+          bg-input
+          text-foreground
 
           px-3
           py-2
           text-sm
 
-          focus:ring-2
-          focus:ring-violet-500
+          focus:outline-hidden
+          focus:ring-1
+          focus:ring-primary
         "
         onKeyDown={(e) => {
           if (e.key === 'Enter') {

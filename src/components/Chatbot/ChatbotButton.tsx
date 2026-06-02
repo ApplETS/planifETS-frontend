@@ -1,6 +1,6 @@
 'use client';
 
-import { BotMessageSquare, X } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 import { Button } from '@/shadcn/ui/button';
 
@@ -13,20 +13,26 @@ export default function ChatbotButton({
   isOpen,
   onClick,
 }: ChatbotButtonProps) {
+  if (isOpen) {
+    return null;
+  }
+
   return (
     <div className="fixed bottom-4 right-4 z-50">
       <Button
         onClick={onClick}
-        size="lg"
-        data-testid="chatbot-button"
-      >
-        {isOpen
-          ? <X className="h-5 w-5" />
-          : <BotMessageSquare className="h-5 w-5" />}
+        className="
+          rounded-md
+          shadow-lg
 
-        <span className="hidden sm:inline">
-          Assistant PlanifETS
-        </span>
+          bg-violet-600
+          hover:bg-violet-700
+
+          text-white
+        "
+      >
+        <Sparkles className="mr-2 h-4 w-4 text-white" />
+        Assistant PlanifETS
       </Button>
     </div>
   );

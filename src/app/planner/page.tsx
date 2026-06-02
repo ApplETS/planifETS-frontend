@@ -136,7 +136,11 @@ export default function PlannerPage() {
         </Button>
       </div>
       {/* Assistant PlanifETS */}
-      {isChatOpen && <ChatbotPanel />}
+      {isChatOpen && (
+        <ChatbotPanel
+          onClose={() => setIsChatOpen(false)}
+        />
+      )}
 
       <ChatbotButton
         isOpen={isChatOpen}

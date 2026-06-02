@@ -2,14 +2,20 @@
 
 import type { ChatMessage as ChatMessageType } from './types';
 
-import { X } from 'lucide-react';
+import { Sparkles, X } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/shadcn/ui/button';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 import { mockMessages } from './mock';
 
-export default function ChatbotPanel() {
+type ChatbotPanelProps = {
+  onClose: () => void;
+};
+
+export default function ChatbotPanel({
+  onClose,
+}: ChatbotPanelProps) {
   const [messages, setMessages]
     = useState<ChatMessageType[]>(mockMessages);
 
@@ -39,43 +45,59 @@ export default function ChatbotPanel() {
     <div
       className="
         fixed
-        right-0
-        top-0
+        top-20
+        right-4
+
         z-40
+
         flex
-        h-screen
-        w-full
-        max-w-[420px]
         flex-col
-        border-l
-        bg-background
+
+        w-[380px]
+        h-[calc(100vh-6rem)]
+
+        rounded-xl
+
+        border
+        border-violet-500/30
+
+        bg-[#2B2A30]
+
         shadow-2xl
-
-        md:w-[420px]
-
-        max-md:max-w-full
       "
       data-testid="chatbot-panel"
     >
       {/* Header */}
-      <div className="flex items-start justify-between border-b p-4">
-        <div>
-          <h2 className="font-semibold">
-            Assistant PlanifETS
-          </h2>
+      <div className="flex items-center justify-between p-4">
+        <div className="flex items-center gap-2">
+          <Sparkles className="h-5 w-5 text-violet-500" />
 
-          <p className="text-sm text-muted-foreground">
-            Posez vos questions sur votre cheminement.
-          </p>
+          <span className="font-semibold">
+            Assistant PlanifETS
+          </span>
+
+          <span
+            className="
+              rounded-md
+              bg-violet-600/20
+              px-2
+              py-0.5
+              text-xs
+              font-medium
+              text-violet-300
+            "
+          >
+            BETA
+          </span>
         </div>
 
         <Button
-          type="button"
           variant="ghost"
           size="icon"
+          onClick={onClose}
           data-testid="close-chatbot-button"
         >
-          <X className="h-5 w-5" />
+          <X className="h-4 w-4" />
         </Button>
       </div>
 

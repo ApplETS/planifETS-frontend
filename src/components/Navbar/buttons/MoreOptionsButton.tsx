@@ -17,7 +17,7 @@ const LINKS = {
   backendSource: 'https://github.com/ApplETS/planifETS-backend',
 } as const;
 
-export default function MoreOptionsButton({ iconOnly = false }: { iconOnly?: boolean }) {
+export default function MoreOptionsButton({ iconOnly = false }: Readonly<{ iconOnly?: boolean }>) {
   const t = useTranslations('Navbar');
 
   return (

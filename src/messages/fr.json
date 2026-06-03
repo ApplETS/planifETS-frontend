@@ -100,7 +100,11 @@
   },
   "Navbar": {
     "planner": "Planification",
-    "courseDetails": "Détails du cours"
+    "courseDetails": "Détails du cours",
+    "more-options": "À propos",
+    "feedback": "Feedback",
+    "frontend-source-code": "Code source frontend",
+    "backend-source-code": "Code source backend"
   },
   "Landing": {
     "headline": "Planifiez vos sessions à l'ÉTS, simplement.",

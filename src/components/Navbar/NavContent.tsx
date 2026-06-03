@@ -1,5 +1,6 @@
 'use client';
 
+import MoreOptionsButton from './buttons/MoreOptionsButton';
 import { SettingsButton } from './buttons/SettingsDialog';
 
 type NavContentProps = Readonly<{
@@ -9,6 +10,7 @@ type NavContentProps = Readonly<{
 export default function NavContent({ onOpenSettingsAction }: NavContentProps) {
   return (
     <div className="flex items-center">
+      <MoreOptionsButton />
       <SettingsButton onOpenSettingsAction={onOpenSettingsAction} />
     </div>
   );

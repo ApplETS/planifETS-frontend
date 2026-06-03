@@ -47,7 +47,7 @@ const BaseDialog: React.FC<BaseDialogProps> = ({
     return (
       <Drawer open={isOpen} onOpenChange={(open) => !open && onClose()}>
         <DrawerContent>
-          <DrawerHeader className={hideHeader ? 'sr-only' : ''}>
+          <DrawerHeader className={hideHeader ? 'sr-only' : 'border-b border-border pb-4 -mx-4 px-4'}>
             <DrawerTitle>{title}</DrawerTitle>
             <div
               className={hideDescription ? 'sr-only' : 'text-sm text-muted-foreground'}
@@ -56,12 +56,11 @@ const BaseDialog: React.FC<BaseDialogProps> = ({
             </div>
           </DrawerHeader>
           <div className="px-4 pb-4 overflow-y-auto">{children}</div>
-          <DrawerFooter>
+          <DrawerFooter className="border-t border-border -mx-4 px-4">
             <div className="flex items-center justify-end gap-2 w-full">
               <Button
                 onClick={onClose}
                 variant="outline"
-                className="border-secondary-foreground hover:bg-secondary-foreground/10"
               >
                 {t('cancel')}
               </Button>
@@ -77,7 +76,7 @@ const BaseDialog: React.FC<BaseDialogProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className={` border border-border`}>
-        <DialogHeader className={hideHeader ? 'sr-only' : ''}>
+        <DialogHeader className={hideHeader ? 'sr-only' : 'border-b border-border pb-4 -mx-6 px-6'}>
           <DialogTitle className="rounded-t-md ">{title}</DialogTitle>
           <DialogDescription
             className={hideDescription ? 'sr-only' : 'text-sm text-muted-foreground'}
@@ -85,13 +84,12 @@ const BaseDialog: React.FC<BaseDialogProps> = ({
             {description}
           </DialogDescription>
         </DialogHeader>
-        <div className="rounded-b-md p-4">{children}</div>
-        <DialogFooter className="rounded-b-md p-2">
+        <div className="overflow-y-auto flex-1 scrollbar-thin -mr-6 pr-4">{children}</div>
+        <DialogFooter className="border-t border-border pt-4 -mx-6 px-6">
           <div className="flex items-center justify-end gap-2 w-full">
             <Button
               onClick={onClose}
               variant="outline"
-              className="border-secondary-foreground hover:bg-secondary-foreground/10"
             >
               {t('cancel')}
             </Button>

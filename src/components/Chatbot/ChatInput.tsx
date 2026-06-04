@@ -24,7 +24,7 @@ export default function ChatInput({
   };
 
   return (
-    <div className="flex items-center gap-2 p-3">
+    <div className="flex items-center gap-2 border-t border-violet-500/30 p-3">
       <input
         type="text"
         value={message}

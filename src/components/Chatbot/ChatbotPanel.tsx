@@ -68,7 +68,7 @@ export default function ChatbotPanel({
       data-testid="chatbot-panel"
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-4">
+      <div className="flex items-center justify-between border-b border-violet-500/30 p-4">
         <div className="flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-violet-500 dark:text-violet-300" />
 

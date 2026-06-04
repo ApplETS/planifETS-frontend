@@ -53,7 +53,7 @@ export default function ChatbotPanel({
         flex
         flex-col
 
-        w-[380px]
+        w-[350px]
         h-[calc(100vh-6rem)]
 
         rounded-xl

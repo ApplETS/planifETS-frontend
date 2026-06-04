@@ -1,6 +1,6 @@
 'use client';
 
-import { Settings2, Trash2 } from 'lucide-react';
+import { Settings, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
 
@@ -13,11 +13,13 @@ import { Button } from '@/shadcn/ui/button';
 type SettingsButtonProps = {
   onOpenSettingsAction: () => void;
   closeSheetAction?: () => void;
+  iconOnly?: boolean;
 };
 
 export function SettingsButton({
   onOpenSettingsAction,
   closeSheetAction,
+  iconOnly = false,
 }: SettingsButtonProps) {
   const t = useTranslations('Commons');
 
@@ -39,15 +41,15 @@ export function SettingsButton({
   return (
     <Button
       variant="ghost"
-      className="normal-case flex items-center gap-2"
+      className="normal-case flex items-center gap-1"
       onClick={handleClick}
       onPointerDown={(e) => e.stopPropagation()}
       onTouchStart={(e) => e.stopPropagation()}
       aria-label="settings"
       data-testid="settings-toggle-button"
     >
-      <Settings2 />
-      {t('settings')}
+      <Settings className="size-4" />
+      {!iconOnly && t('settings')}
     </Button>
   );
 }

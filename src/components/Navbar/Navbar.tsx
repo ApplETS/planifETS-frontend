@@ -4,6 +4,7 @@ import { Menu } from 'lucide-react';
 import { useState } from 'react';
 import Logo from '@/components/atoms/Logo';
 import ResetDialog from '@/components/dialogs/ResetDialog';
+import MoreOptionsButton from '@/components/Navbar/buttons/MoreOptionsButton';
 import { SettingsButton, SettingsDialog } from '@/components/Navbar/buttons/SettingsDialog';
 import NavContent from '@/components/Navbar/NavContent';
 import NavLinks from '@/components/Navbar/NavLinks';
@@ -39,7 +40,7 @@ export default function Navbar() {
         className={`fixed top-0 z-[60] w-full border-b p-4 ${
           sheetOpen && isMobile
             ? 'border-border bg-background'
-            : 'border-border/30 bg-background/50 backdrop-blur-xl supports-[backdrop-filter]:bg-background/20 dark:border-border/45 dark:bg-background/30 dark:supports-[backdrop-filter]:bg-background/18'
+            : 'border-border/60 bg-background/50 backdrop-blur-xl supports-[backdrop-filter]:bg-background/20 dark:border-border/45 dark:bg-background/30 dark:supports-[backdrop-filter]:bg-background/18'
         }`}
         data-testid="navbar"
         data-print-hidden="true"
@@ -57,7 +58,8 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-2 md:hidden">
-            <SettingsButton onOpenSettingsAction={openSettings} />
+            <MoreOptionsButton iconOnly />
+            <SettingsButton onOpenSettingsAction={openSettings} iconOnly />
 
             {/* Mobile Hamburger Menu */}
             <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>

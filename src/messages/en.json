@@ -100,7 +100,11 @@
   },
   "Navbar": {
     "planner": "Planner",
-    "courseDetails": "Course details"
+    "courseDetails": "Course details",
+    "more-options": "About",
+    "feedback": "Feedback",
+    "frontend-source-code": "Frontend source code",
+    "backend-source-code": "Backend source code"
   },
   "Landing": {
     "headline": "Plan your ÉTS sessions, simply.",

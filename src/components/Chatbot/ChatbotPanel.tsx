@@ -61,7 +61,7 @@ export default function ChatbotPanel({
         border
         border-violet-500/30
 
-        bg-secondary
+        bg-violet-100/50 dark:bg-violet-900/30
 
         shadow-2xl
       "

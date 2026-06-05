@@ -17,6 +17,21 @@ export const COLORS_BY_MODE = {
   light: ['zinc', 'green', 'orange', 'blue', 'red'] as const,
 };
 
+// Theme labels
+export const THEME_LABELS: Record<string, string> = {
+  'dark-zinc': 'Batman',
+  'dark-blue': 'Blue Lock',
+  'dark-violet': 'Thanos',
+  'dark-yellow': 'Pikachu',
+  'dark-green': 'Goblin Slayer',
+  'dark-red': 'Red Flag',
+  'light-zinc': 'Flashbang',
+  'light-green': 'Touch Grass',
+  'light-orange': 'Golden Hour',
+  'light-blue': 'Chill Guy',
+  'light-red': 'Red Light',
+};
+
 // Default theme object
 export const DEFAULT_THEME: Theme = {
   mode: 'dark',

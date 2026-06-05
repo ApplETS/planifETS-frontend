@@ -2,7 +2,7 @@
 
 import type { ThemeColors, ThemeMode } from '@/types/themes';
 import { useTheme } from '@/hooks/useTheme';
-import { COLORS_BY_MODE, getButtonBgStyle, getPrincipalColors } from '@/utils/themeUtil';
+import { COLORS_BY_MODE, getButtonBgStyle, getPrincipalColors, THEME_LABELS } from '@/utils/themeUtil';
 
 export default function ThemeSelector() {
   const { setTheme, theme } = useTheme();
@@ -11,7 +11,7 @@ export default function ThemeSelector() {
     colors.map((color) => ({
       mode: mode as ThemeMode,
       color: color as ThemeColors,
-      label: `${mode === 'light' ? 'Light' : 'Dark'} ${color.charAt(0).toUpperCase() + color.slice(1)}`,
+      label: THEME_LABELS[`${mode}-${color}`],
     })),
   );
 

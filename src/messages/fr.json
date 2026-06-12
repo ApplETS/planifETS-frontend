@@ -72,7 +72,8 @@
     "noProgramsFound": "Aucun programme n'a été trouvé.",
     "course-details": "Détails du cours",
     "add-to-favorites": "Ajouter aux favoris",
-    "remove-from-favorites": "Retirer des favoris"
+    "remove-from-favorites": "Retirer des favoris",
+    "add-course": "Ajouter un cours"
   },
   "CourseDetailsPage": {
     "courseOffering": "Disponibilité",

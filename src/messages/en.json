@@ -72,7 +72,8 @@
     "noProgramsFound": "No programs were found.",
     "course-details": "Course details",
     "add-to-favorites": "Add to favorites",
-    "remove-from-favorites": "Remove from favorites"
+    "remove-from-favorites": "Remove from favorites",
+    "add-course": "Add a course"
   },
   "CourseDetailsPage": {
     "courseOffering": "Offerings",

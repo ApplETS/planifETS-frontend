@@ -3,11 +3,12 @@
 import { Check } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Loading from '@/components/atoms/Loading';
 import ProgramSelector from '@/components/Planner/ProgramMultiSelector';
 import { useStoreHydration } from '@/hooks/useStoreHydration';
 import { Button } from '@/shadcn/ui/button';
+import { NumberField } from '@/shadcn/ui/number-field';
 import { useOnboardingStore } from '@/store/onboardingStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useProgramStore } from '@/store/programStore';
@@ -38,11 +39,8 @@ const WelcomePage = () => {
   const minYear = currentYear - SESSION_SELECTION_BOUNDS.PAST_YEARS;
   const maxYear = currentYear + SESSION_SELECTION_BOUNDS.FUTURE_YEARS;
 
-  const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const year = Number(e.target.value);
-    if (year >= minYear && year <= maxYear) {
-      setSelectedYear(year);
-    }
+  const handleYearChange = (year: number) => {
+    setSelectedYear(year);
   };
 
   if (!onboardingHydrated) {
@@ -92,21 +90,17 @@ const WelcomePage = () => {
                 >
                   {tOnboarding('admission-day-label')}
                 </label>
-                <div className="flex gap-2">
-                  <input
-                    id="admission-year"
-                    name="admission-year"
-                    data-testid="admission-year"
-                    type="number"
-                    value={selectedYear}
-                    onChange={handleYearChange}
-                    min={minYear}
-                    max={maxYear}
-                    aria-labelledby="admission-day-label"
-                    className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background focus-visible:outline-none"
-                  />
-                </div>
-                <p className="text-sm text-muted-foreground">
+                <NumberField
+                  id="admission-year"
+                  name="admission-year"
+                  data-testid="admission-year"
+                  value={selectedYear}
+                  onChange={handleYearChange}
+                  min={minYear}
+                  max={maxYear}
+                  aria-labelledby="admission-day-label"
+                />
+                <p className="select-none text-sm text-muted-foreground">
                   {tOnboarding('admission-day-note')}
                 </p>
               </div>

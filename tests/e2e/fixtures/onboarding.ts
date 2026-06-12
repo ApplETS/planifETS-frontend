@@ -2,6 +2,20 @@ import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { selectors } from '../../assets/selectors';
 
+export async function setAdmissionYear(page: Page, year: number) {
+  const yearInput = page.locator(selectors.admissionYearInput);
+  const currentValue = Number.parseInt(await yearInput.inputValue(), 10);
+  const delta = year - currentValue;
+  if (delta !== 0) {
+    const button = yearInput.locator('..').locator(
+      delta > 0 ? 'button[aria-label="Increment"]' : 'button[aria-label="Decrement"]',
+    );
+    for (let i = 0; i < Math.abs(delta); i++) {
+      await button.click();
+    }
+  }
+}
+
 export default async function completeOnboarding(
   page: Page,
   programName: string = 'Baccalauréat en génie logiciel',
@@ -29,20 +43,7 @@ export default async function completeOnboarding(
   }
 
   if (admissionYear !== undefined) {
-    const yearInput = page.locator(selectors.admissionYearInput);
-    const currentValue = Number.parseInt(await yearInput.inputValue(), 10);
-    const delta = admissionYear - currentValue;
-
-    if (delta !== 0) {
-      const container = yearInput.locator('..');
-      const button = container.locator(
-        delta > 0 ? 'button[aria-label="Increment"]' : 'button[aria-label="Decrement"]',
-      );
-
-      for (let i = 0; i < Math.abs(delta); i++) {
-        await button.click();
-      }
-    }
+    await setAdmissionYear(page, admissionYear);
   }
 
   const completeButton = page.locator(selectors.onboardingCompleteButton);

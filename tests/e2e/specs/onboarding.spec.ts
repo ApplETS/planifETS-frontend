@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { selectors } from '../../assets/selectors';
 import enableMockApi from '../fixtures/mock';
-import completeOnboarding from '../fixtures/onboarding';
+import completeOnboarding, { setAdmissionYear } from '../fixtures/onboarding';
 import { expectYear } from '../fixtures/session';
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -90,28 +90,22 @@ test.describe('Onboarding', () => {
   });
 
   test.describe('Onboarding Input Validation', () => {
-    test('complete button disabled when admission year is more than 1 year in future', async ({ page }) => {
-      const tooFar = CURRENT_YEAR + 2;
-
-      // open dialog but do not select program
+    test('increment button is disabled when admission year is at maximum', async ({ page }) => {
       const programsSelect = page.locator(selectors.programsSelect);
 
       await expect(programsSelect).toBeVisible({ timeout: 15000 });
 
-      const input = programsSelect.locator('input');
-      await input.focus();
+      await setAdmissionYear(page, CURRENT_YEAR + 1);
 
-      await page.fill(selectors.admissionYearInput, String(tooFar));
+      const incrementButton = page
+        .locator(selectors.admissionYearInput)
+        .locator('..')
+        .locator('button[aria-label="Increment"]');
 
-      const completeButton = page.locator(selectors.onboardingCompleteButton);
-
-      await expect(completeButton).toBeVisible({ timeout: 15000 });
-      await expect(completeButton).toBeDisabled();
+      await expect(incrementButton).toBeDisabled();
     });
 
     test('cannot complete dialog with no selected programs', async ({ page }) => {
-      await page.fill(selectors.admissionYearInput, String(CURRENT_YEAR));
-
       const completeButton = page.locator(selectors.onboardingCompleteButton);
 
       await expect(completeButton).toBeVisible({ timeout: 15000 });

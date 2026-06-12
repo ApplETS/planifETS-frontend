@@ -29,7 +29,20 @@ export default async function completeOnboarding(
   }
 
   if (admissionYear !== undefined) {
-    await page.fill(selectors.admissionYearInput, String(admissionYear));
+    const yearInput = page.locator(selectors.admissionYearInput);
+    const currentValue = Number.parseInt(await yearInput.inputValue(), 10);
+    const delta = admissionYear - currentValue;
+
+    if (delta !== 0) {
+      const container = yearInput.locator('..');
+      const button = container.locator(
+        delta > 0 ? 'button[aria-label="Increment"]' : 'button[aria-label="Decrement"]',
+      );
+
+      for (let i = 0; i < Math.abs(delta); i++) {
+        await button.click();
+      }
+    }
   }
 
   const completeButton = page.locator(selectors.onboardingCompleteButton);

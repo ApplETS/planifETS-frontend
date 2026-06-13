@@ -82,7 +82,8 @@ const CoursesList: FC<CoursesListProps> = ({
         )
         : (
           <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-            {t('drag-courses-to-add-course')}
+            <span className="md:hidden">{t('add-course')}</span>
+            <span className="hidden md:inline">{t('drag-courses-to-add-course')}</span>
           </div>
         )}
     </div>

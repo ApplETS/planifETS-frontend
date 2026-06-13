@@ -8,7 +8,7 @@ export type SearchCourseResult = {
   cycle?: number;
   sessionAvailability: SessionAvailabilityDto[];
   prerequisites: CoursePrerequisiteDto[];
-  type?: 'TRONC' | 'CONCE' | 'CONDI' | 'PROFI' | null;
+  type?: 'TRONC' | 'CONCE' | 'CONDI' | 'PROFI' | 'STAGE' | null;
   typicalSessionIndex?: number | null;
   unstructuredPrerequisite?: string | null;
 };

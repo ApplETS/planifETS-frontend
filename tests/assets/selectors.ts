@@ -29,6 +29,7 @@ export const selectors = {
 
   // Credits
   totalCredits: '[data-testid="total-credits"]',
+  totalStageCredits: '[data-testid="total-stage-credits"]',
   sessionCredits: (sessionTerm: TermEnum, sessionYear: number) =>
     `[data-testid="session-${sessionTerm}-${sessionYear}-credits"]`,
 

@@ -293,4 +293,29 @@ export const COURSE_SEARCH_RESULTS: Record<string, SearchCoursesDto> = {
     total: 1,
     hasMore: false,
   },
+  STG001: {
+    courses: [
+      {
+        id: 9000001,
+        code: 'STG001',
+        title: 'Stage I',
+        credits: 9,
+        cycle: 1,
+        type: 'STAGE',
+        sessionAvailability: [
+          {
+            sessionCode: `E${new Date().getFullYear()}`,
+            availability: ['JOUR'],
+          },
+          {
+            sessionCode: `A${new Date().getFullYear()}`,
+            availability: ['JOUR'],
+          },
+        ],
+        prerequisites: [],
+      },
+    ],
+    total: 1,
+    hasMore: false,
+  },
 };

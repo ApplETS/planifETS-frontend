@@ -229,7 +229,7 @@ export const isCourseAvailableInSession = (
     return false;
   }
 
-  if (course.type === 'STAGE') {
+  if (course.type === 'STAGE' || course.title.startsWith('Stage')) {
     return true;
   }
 

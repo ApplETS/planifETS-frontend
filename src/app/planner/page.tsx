@@ -105,7 +105,7 @@ export default function PlannerPage() {
         ))}
       </div>
 
-      <div className="mt-2 flex justify-center items-center gap-4">
+      <div className="mt-2 flex flex-wrap justify-center items-center gap-4">
         <Button
           variant="secondary"
           size="default"
@@ -117,19 +117,17 @@ export default function PlannerPage() {
           {' '}
           {t('total-credits')}
         </Button>
-        {totalStageCredits > 0 && (
-          <Button
-            variant="secondary"
-            size="default"
-            className="pointer-events-none select-none cursor-default"
-            tabIndex={-1}
-            data-testid="total-stage-credits"
-          >
-            {totalStageCredits}
-            {' '}
-            {t('stage-credits')}
-          </Button>
-        )}
+        <Button
+          variant="secondary"
+          size="default"
+          className="pointer-events-none select-none cursor-default"
+          tabIndex={-1}
+          data-testid="total-stage-credits"
+        >
+          {totalStageCredits}
+          {' '}
+          {t('stage-credits')}
+        </Button>
         <Button
           variant="default"
           size="default"

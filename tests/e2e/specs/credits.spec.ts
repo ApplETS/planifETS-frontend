@@ -87,7 +87,7 @@ test.describe('Credits Management', () => {
     );
   });
 
-  test('should hide internship credit total when no Stage courses are in the plan', async ({ page }) => {
+  test('should show zero internship credits when no Stage courses are in the plan', async ({ page }) => {
     const course = TEST_COURSES.LOG240;
 
     await searchCourseInSidebar(page, course.code);
@@ -95,6 +95,7 @@ test.describe('Credits Management', () => {
 
     const totalStageCredits = page.locator(selectors.totalStageCredits);
 
-    await expect(totalStageCredits).not.toBeVisible({ timeout: 15000 });
+    await expect(totalStageCredits).toBeVisible({ timeout: 15000 });
+    await expect(totalStageCredits).toContainText('0');
   });
 });

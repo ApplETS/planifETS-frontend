@@ -55,4 +55,17 @@ export const TEST_COURSES: Record<string, TestCourse> = {
     sessionTerm: TermEnum.E,
     sessionYear: CURRENT_YEAR,
   },
+  // stage placeholders: linked to every active cycle-1 program
+  STG001: {
+    code: 'STG001',
+    credits: 9,
+    sessionTerm: TermEnum.E,
+    sessionYear: CURRENT_YEAR,
+  },
+  STG001_A: {
+    code: 'STG001',
+    credits: 9,
+    sessionTerm: TermEnum.A,
+    sessionYear: CURRENT_YEAR,
+  },
 };

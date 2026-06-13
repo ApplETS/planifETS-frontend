@@ -1,7 +1,8 @@
 {
   "Commons": {
     "credits": "crédits",
-    "total-credits": "crédits au total",
+    "total-credits": "crédits de cours",
+    "stage-credits": "crédits de stage",
     "credits-short": "cr.",
     "logout": "Se déconnecter",
     "settings": "Paramètres",

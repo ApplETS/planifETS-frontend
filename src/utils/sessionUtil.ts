@@ -229,6 +229,10 @@ export const isCourseAvailableInSession = (
     return false;
   }
 
+  if (course.type === 'STAGE') {
+    return true;
+  }
+
   const sessionCode = generateSessionCode(sessionTerm, sessionYear);
   return course.availability.includes(sessionCode);
 };

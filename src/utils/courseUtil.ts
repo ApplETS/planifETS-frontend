@@ -1,4 +1,4 @@
-import type { SearchCourseResult } from '@/api/types/course';
+import type { BasicCourseDto, SearchCourseResult } from '@/api/types/course';
 import type {
   CoursePrerequisiteDto,
   ProgramCourseDetailedDto,
@@ -28,6 +28,23 @@ export const mapApiCourseToAppCourse = (
     unstructuredPrerequisite: apiCourse.unstructuredPrerequisite || undefined,
     type: apiCourse.type,
     typicalSessionIndex: apiCourse.typicalSessionIndex,
+  };
+};
+
+export const mapBasicCourseToAppCourse = (apiCourse: BasicCourseDto): Course | null => {
+  if (!apiCourse?.code || !apiCourse?.id) {
+    return null;
+  }
+
+  return {
+    id: apiCourse.id,
+    code: apiCourse.code,
+    title: apiCourse.title,
+    credits: apiCourse.credits ?? 0,
+    prerequisites: [],
+    availability: [],
+    type: null,
+    typicalSessionIndex: null,
   };
 };
 

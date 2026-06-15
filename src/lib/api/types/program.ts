@@ -102,6 +102,7 @@ export type ProgramCoursesDto = {
 
 export type ProgramCoursesErrorDto = {
   invalidProgramCodes: string[];
+  invalidCourseIds?: number[];
 };
 
 export type ProgramCoursesResponseDto = {

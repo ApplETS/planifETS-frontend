@@ -1,4 +1,5 @@
 import type {
+  BasicCourseDto,
   CourseSearchParams,
   DetailedProgramCourseDto,
   SearchCoursesDto,
@@ -65,5 +66,9 @@ export const courseService = {
     return apiClient.get<DetailedProgramCourseDto>(
       `${API_ENDPOINTS.PROGRAM_COURSES.COURSE_DETAILS}?${queryParams.toString()}`,
     );
+  },
+
+  async getCourseById(id: number): Promise<ApiResponse<BasicCourseDto>> {
+    return apiClient.get<BasicCourseDto>(API_ENDPOINTS.COURSES.BY_ID(id));
   },
 };

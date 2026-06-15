@@ -12,6 +12,7 @@ export const API_ENDPOINTS = {
   },
   COURSES: {
     SEARCH: '/api/courses/search',
+    BY_ID: (id: number) => `/api/courses/${id}`,
   },
   SESSIONS: {
     LATEST_AVAILABLE: () => `/api/sessions/latest-available`,

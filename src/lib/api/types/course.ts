@@ -1,5 +1,16 @@
 import type { CoursePrerequisiteDto, SessionAvailabilityDto } from './program';
 
+export type BasicCourseDto = {
+  id: number;
+  code: string;
+  title: string;
+  description?: string;
+  credits: number;
+  cycle?: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type SearchCourseResult = {
   id: number;
   code: string;

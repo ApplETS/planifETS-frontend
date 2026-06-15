@@ -5,11 +5,12 @@ import type {
 import type { Course } from '@/types/course';
 import { useEffect, useRef, useState } from 'react';
 
+import { courseService } from '@/api/services/course.service';
 import { programService } from '@/api/services/program.service';
 import { useCourseStore } from '@/store/courseStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
-import { mapApiCourseToAppCourse } from '@/utils/courseUtil';
+import { mapApiCourseToAppCourse, mapBasicCourseToAppCourse } from '@/utils/courseUtil';
 
 /**
  * Hook to preload courses that are in sessions or favorites
@@ -68,6 +69,17 @@ export const usePreloadCourses = (hasHydrated: boolean) => {
               }
             });
           });
+
+          const invalidIds = response.data.errors?.invalidCourseIds ?? [];
+          if (invalidIds.length > 0) {
+            const results = await Promise.all(invalidIds.map((id) => courseService.getCourseById(id)));
+            results.forEach((res) => {
+              const mapped = res.data ? mapBasicCourseToAppCourse(res.data) : null;
+              if (mapped) {
+                coursesByCode.set(mapped.code, mapped);
+              }
+            });
+          }
 
           setCourses(Array.from(coursesByCode.values()));
         }

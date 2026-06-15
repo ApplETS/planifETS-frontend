@@ -2,6 +2,7 @@
   "Commons": {
     "credits": "credits",
     "total-credits": "total credits",
+    "stage-credits": "internship credits",
     "credits-short": "cr.",
     "logout": "Sign out",
     "settings": "Settings",
@@ -72,7 +73,8 @@
     "noProgramsFound": "No programs were found.",
     "course-details": "Course details",
     "add-to-favorites": "Add to favorites",
-    "remove-from-favorites": "Remove from favorites"
+    "remove-from-favorites": "Remove from favorites",
+    "add-course": "Tap + to add courses"
   },
   "CourseDetailsPage": {
     "courseOffering": "Offerings",

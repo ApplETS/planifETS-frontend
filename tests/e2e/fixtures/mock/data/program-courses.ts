@@ -3246,6 +3246,43 @@ export const PROGRAM_COURSES_RESPONSE: ProgramCoursesResponseDto = {
           typicalSessionIndex: 8,
           unstructuredPrerequisite: '',
         },
+        {
+          id: 9000001,
+          code: 'STG001',
+          title: 'Stage I',
+          credits: 9,
+          cycle: 1,
+          sessionAvailability: [
+            {
+              sessionCode: 'E2025',
+              availability: [
+                'JOUR',
+              ],
+            },
+            {
+              sessionCode: 'A2025',
+              availability: [
+                'JOUR',
+              ],
+            },
+            {
+              sessionCode: 'E2026',
+              availability: [
+                'JOUR',
+              ],
+            },
+            {
+              sessionCode: 'A2026',
+              availability: [
+                'JOUR',
+              ],
+            },
+          ],
+          prerequisites: [],
+          type: 'STAGE',
+          typicalSessionIndex: null,
+          unstructuredPrerequisite: null,
+        },
       ],
     },
     {
@@ -5972,6 +6009,43 @@ export const PROGRAM_COURSES_RESPONSE: ProgramCoursesResponseDto = {
           prerequisites: [],
           type: 'CONCE',
           typicalSessionIndex: 8,
+          unstructuredPrerequisite: null,
+        },
+        {
+          id: 9000001,
+          code: 'STG001',
+          title: 'Stage I',
+          credits: 9,
+          cycle: 1,
+          sessionAvailability: [
+            {
+              sessionCode: 'E2025',
+              availability: [
+                'JOUR',
+              ],
+            },
+            {
+              sessionCode: 'A2025',
+              availability: [
+                'JOUR',
+              ],
+            },
+            {
+              sessionCode: 'E2026',
+              availability: [
+                'JOUR',
+              ],
+            },
+            {
+              sessionCode: 'A2026',
+              availability: [
+                'JOUR',
+              ],
+            },
+          ],
+          prerequisites: [],
+          type: 'STAGE',
+          typicalSessionIndex: null,
           unstructuredPrerequisite: null,
         },
       ],

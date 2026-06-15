@@ -1,19 +1,22 @@
 import type { FC } from 'react';
-import { Info } from 'lucide-react';
+import type { TermEnum } from '@/types/session';
+import { Info, Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import CreditsTag from '@/components/atoms/CreditsTag';
 import Tag from '@/components/atoms/Tag';
 
+import { Button } from '@/shadcn/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shadcn/ui/tooltip';
 import { getSeasonStyle } from '@/utils/seasonUtil';
 import { getTranslationKey } from '@/utils/sessionUtil';
 
 type SessionHeaderProps = {
-  sessionTerm: string;
+  sessionTerm: TermEnum;
   sessionYear: number;
   totalCredits: number;
   isNoAvailabilityData: boolean;
   isCurrentSession?: boolean;
+  onAddCourse?: () => void;
 };
 
 const SessionHeader: FC<SessionHeaderProps> = ({
@@ -22,6 +25,7 @@ const SessionHeader: FC<SessionHeaderProps> = ({
   totalCredits,
   isNoAvailabilityData,
   isCurrentSession = false,
+  onAddCourse,
 }) => {
   const t = useTranslations('PlannerPage');
 
@@ -61,11 +65,22 @@ const SessionHeader: FC<SessionHeaderProps> = ({
           </Tag>
         )}
       </div>
-      <CreditsTag
-        credits={totalCredits}
-        variant="credits"
-        data-testid={`session-${sessionTerm}-${sessionYear}-credits`}
-      />
+      <div className="flex items-center gap-1">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="transition-opacity md:opacity-0 md:group-hover:opacity-100"
+          onClick={onAddCourse}
+          aria-label={t('add-course')}
+        >
+          <Plus />
+        </Button>
+        <CreditsTag
+          credits={totalCredits}
+          variant="credits"
+          data-testid={`session-${sessionTerm}-${sessionYear}-credits`}
+        />
+      </div>
     </div>
   );
 };

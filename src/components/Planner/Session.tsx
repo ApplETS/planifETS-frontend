@@ -1,13 +1,14 @@
 'use client';
 
 import type { TermEnum } from '@/types/session';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import { useSessionDrop } from '@/hooks/session/useSessionDrop';
 import { useSessionOperations } from '@/hooks/session/useSessionOperations';
 import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { generateSessionKey, isCourseAvailableInSession } from '@/utils/sessionUtil';
+import AddCourseSelector from './AddCourseSelector';
 import CoursesList from './CoursesList';
 import SessionHeader from './SessionHeader';
 
@@ -62,6 +63,8 @@ export default function Session({
     return 'border-border';
   };
 
+  const [showAddCourse, setShowAddCourse] = useState(false);
+
   const dropRef = useCallback(
     (node: HTMLDivElement | null) => {
       drop(node);
@@ -72,7 +75,7 @@ export default function Session({
   return (
     <div
       ref={dropRef}
-      className={`rounded-lg border-2 p-4 transition-all duration-300 bg-muted shadow-sm ${getSessionBorderColor()}`}
+      className={`group rounded-lg border-2 p-4 transition-all duration-300 bg-muted shadow-sm ${getSessionBorderColor()}`}
       data-testid={`session-${sessionTerm}-${sessionYear}-drop-target`}
       data-print-card="session"
       style={{ position: 'relative', zIndex: isOver ? 10 : undefined }}
@@ -83,7 +86,17 @@ export default function Session({
         totalCredits={sessionTotalCredits}
         isNoAvailabilityData={isKnownSessionAvailability === false && courseInstances.length > 0}
         isCurrentSession={sessionTiming.isCurrent}
+        onAddCourse={() => setShowAddCourse(true)}
       />
+      {showAddCourse && (
+        <div className="mb-2">
+          <AddCourseSelector
+            sessionYear={sessionYear}
+            sessionTerm={sessionTerm}
+            onClose={() => setShowAddCourse(false)}
+          />
+        </div>
+      )}
       <CoursesList
         hasCourses={courseInstances.length > 0}
         courseInstances={courseInstances}

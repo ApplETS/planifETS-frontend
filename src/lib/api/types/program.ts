@@ -20,7 +20,7 @@ export type ProgramListDto = {
   programTitle: string;
 };
 
-export type CourseRequirementType = 'TRONC' | 'CONCE' | 'CONDI' | 'PROFI';
+export type CourseRequirementType = 'TRONC' | 'CONCE' | 'CONDI' | 'PROFI' | 'STAGE';
 
 export type CourseAvailabilityDto = 'JOUR' | 'SOIR' | 'INTENSIF';
 
@@ -102,6 +102,7 @@ export type ProgramCoursesDto = {
 
 export type ProgramCoursesErrorDto = {
   invalidProgramCodes: string[];
+  invalidCourseIds?: number[];
 };
 
 export type ProgramCoursesResponseDto = {

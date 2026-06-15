@@ -37,7 +37,7 @@ export default function CourseActionsMenu({
   const isCourseFavorited = isFavorite(courseId);
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"

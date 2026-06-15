@@ -1,4 +1,4 @@
-import type { ProgramCourseDetailedDto, SearchCourseResult } from '@/api/types';
+import type { BasicCourseDto, ProgramCourseDetailedDto, SearchCourseResult } from '@/api/types';
 import type { Course } from '@/types/course';
 import type { YearData } from '@/types/planner';
 import type { SessionTiming } from '@/types/session';
@@ -10,6 +10,7 @@ import {
   getDisplayedPrerequisites,
   getPrerequisiteDisplayData,
   mapApiCourseToAppCourse,
+  mapBasicCourseToAppCourse,
   moveCourseToSession,
   removeCourseFromSession,
 } from '@/utils/courseUtil';
@@ -90,6 +91,58 @@ describe('courseUtils', () => {
 
     it('should return null for null input', () => {
       const result = mapApiCourseToAppCourse(null as any);
+
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('mapBasicCourseToAppCourse', () => {
+    const mockBasicCourse: BasicCourseDto = {
+      id: 351827,
+      code: 'LOG123',
+      title: 'Logiciel sans programme',
+      credits: 3,
+      cycle: 1,
+      createdAt: '2024-01-01T00:00:00.000Z',
+      updatedAt: '2024-01-01T00:00:00.000Z',
+    };
+
+    it('should map a BasicCourseDto to a Course with empty prerequisites and availability', () => {
+      const result = mapBasicCourseToAppCourse(mockBasicCourse);
+
+      expect(result).toEqual({
+        id: 351827,
+        code: 'LOG123',
+        title: 'Logiciel sans programme',
+        credits: 3,
+        prerequisites: [],
+        availability: [],
+        type: null,
+        typicalSessionIndex: null,
+      });
+    });
+
+    it('should default credits to 0 when undefined', () => {
+      const course = { ...mockBasicCourse, credits: undefined } as unknown as BasicCourseDto;
+      const result = mapBasicCourseToAppCourse(course);
+
+      expect(result?.credits).toBe(0);
+    });
+
+    it('should return null when code is empty', () => {
+      const result = mapBasicCourseToAppCourse({ ...mockBasicCourse, code: '' });
+
+      expect(result).toBeNull();
+    });
+
+    it('should return null when id is falsy', () => {
+      const result = mapBasicCourseToAppCourse({ ...mockBasicCourse, id: 0 });
+
+      expect(result).toBeNull();
+    });
+
+    it('should return null for null input', () => {
+      const result = mapBasicCourseToAppCourse(null as unknown as BasicCourseDto);
 
       expect(result).toBeNull();
     });

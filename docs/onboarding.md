@@ -32,7 +32,7 @@ cp .env.example .env
 
 Start the backend stack first — see the [backend onboarding](https://github.com/ApplETS/planifETS-backend/blob/main/docs/onboarding.md).
 
-The frontend will connect to `http://localhost:3501/api` by default when running via Docker.
+The frontend will connect to `http://localhost:3001/api` by default when running via Docker.
 
 ### 4. Start the app
 

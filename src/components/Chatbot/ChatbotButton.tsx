@@ -1,6 +1,7 @@
 'use client';
 
 import { Sparkles } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { Button } from '@/shadcn/ui/button';
 
@@ -13,6 +14,8 @@ export default function ChatbotButton({
   isOpen,
   onClick,
 }: ChatbotButtonProps) {
+  const t = useTranslations('Chatbot');
+
   if (isOpen) {
     return null;
   }
@@ -32,7 +35,7 @@ export default function ChatbotButton({
         "
       >
         <Sparkles className="mr-2 h-4 w-4 text-white" />
-        Assistant PlanifETS
+        {t('buttonLabel')}
       </Button>
     </div>
   );

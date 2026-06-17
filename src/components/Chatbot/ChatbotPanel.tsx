@@ -3,11 +3,11 @@
 import type { ChatMessage as ChatMessageType } from './types';
 
 import { Sparkles, X } from 'lucide-react';
-import { useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
 import { Button } from '@/shadcn/ui/button';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
-import { mockMessages } from './mock';
 
 type ChatbotPanelProps = {
   onClose: () => void;
@@ -16,8 +16,19 @@ type ChatbotPanelProps = {
 export default function ChatbotPanel({
   onClose,
 }: ChatbotPanelProps) {
-  const [messages, setMessages]
-    = useState<ChatMessageType[]>(mockMessages);
+  const t = useTranslations('Chatbot');
+  const [messages, setMessages] = useState<ChatMessageType[]>([]);
+
+  // Initialize messages with translated initial message
+  useEffect(() => {
+    setMessages([
+      {
+        id: '1',
+        role: 'assistant',
+        content: t('initialMessage'),
+      },
+    ]);
+  }, [t]);
 
   const handleSendMessage = (content: string) => {
     const userMessage: ChatMessageType = {
@@ -33,8 +44,7 @@ export default function ChatbotPanel({
       const assistantMessage: ChatMessageType = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content:
-          'Ceci est une réponse mockée du chatbot PlanifETS.',
+        content: t('mockResponse'),
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
@@ -73,7 +83,7 @@ export default function ChatbotPanel({
           <Sparkles className="h-5 w-5 text-violet-500 dark:text-violet-300" />
 
           <span className="font-semibold">
-            Assistant PlanifETS
+            {t('buttonLabel')}
           </span>
 
           <span
@@ -89,7 +99,7 @@ export default function ChatbotPanel({
               dark:text-violet-300
             "
           >
-            BETA
+            {t('beta')}
           </span>
         </div>
 
@@ -98,6 +108,7 @@ export default function ChatbotPanel({
           size="icon"
           onClick={onClose}
           data-testid="close-chatbot-button"
+          aria-label={t('closeButtonAriaLabel')}
         >
           <X className="h-4 w-4" />
         </Button>

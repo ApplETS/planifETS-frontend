@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 import Tag from '@/components/atoms/Tag';
 import { cn } from '@/shadcn/lib/utils';
 import { buildFutureTimelineOfferings } from '@/utils/offeringsUtil';
-import { getSeasonStyle } from '@/utils/seasonUtil';
+import { getSeasonBorder, getSeasonStyle } from '@/utils/seasonUtil';
 import {
   generateSessionKey,
   getCurrentSession,
@@ -46,8 +46,9 @@ const OfferingsSection = ({
                 <div className="flex w-16 shrink-0 flex-col items-center sm:w-[4.5rem]">
                   <div
                     className={cn(
-                      'relative z-10 flex size-14 shrink-0 flex-col items-center justify-center gap-1 rounded-xl border border-border/70 bg-background px-2 shadow-sm',
-                      isCurrentSession && 'border-primary/60 ring-1 ring-primary/30',
+                      'relative z-10 flex size-14 shrink-0 flex-col items-center justify-center gap-1 rounded-xl border bg-background px-2 shadow-sm',
+                      getSeasonBorder(offering.sessionTerm),
+                      isCurrentSession && 'ring-1 ring-primary/30',
                     )}
                   >
                     <div className="flex items-center justify-center">

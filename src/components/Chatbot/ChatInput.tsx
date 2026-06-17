@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Send } from 'lucide-react';
 import { useState } from 'react';
 
@@ -12,6 +13,7 @@ type ChatInputProps = {
 export default function ChatInput({
   onSendMessage,
 }: ChatInputProps) {
+  const t = useTranslations('Chatbot');
   const [message, setMessage] = useState('');
 
   const handleSend = () => {
@@ -29,7 +31,7 @@ export default function ChatInput({
         type="text"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        placeholder="Écrire un message..."
+        placeholder={t('inputPlaceholder')}
         className="
           flex-1
           rounded-md
@@ -69,3 +71,4 @@ export default function ChatInput({
     </div>
   );
 }
+

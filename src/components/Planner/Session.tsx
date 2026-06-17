@@ -1,12 +1,13 @@
 'use client';
 
 import type { TermEnum } from '@/types/session';
-import { useCallback, useState } from 'react';
 
+import { useCallback, useState } from 'react';
 import { useSessionDrop } from '@/hooks/session/useSessionDrop';
 import { useSessionOperations } from '@/hooks/session/useSessionOperations';
 import { useCourseStore } from '@/store/courseStore';
 import { useSessionStore } from '@/store/sessionStore';
+import { getSeasonBorder } from '@/utils/seasonUtil';
 import { generateSessionKey, isCourseAvailableInSession } from '@/utils/sessionUtil';
 import AddCourseSelector from './AddCourseSelector';
 import CoursesList from './CoursesList';
@@ -37,7 +38,7 @@ export default function Session({
   });
   const getSessionBorderColor = () => {
     if (!draggedItem || !draggedItem.course) {
-      return isOver ? 'border-blue-400' : 'border-border';
+      return isOver ? 'border-blue-400' : getSeasonBorder(sessionTerm);
     }
     if (isKnownSessionAvailability === false) {
       if (isOver) {
@@ -60,7 +61,7 @@ export default function Session({
     if (isOver) {
       return 'border-red-500';
     }
-    return 'border-border';
+    return getSeasonBorder(sessionTerm);
   };
 
   const [showAddCourse, setShowAddCourse] = useState(false);

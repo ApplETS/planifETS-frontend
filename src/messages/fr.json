@@ -76,6 +76,14 @@
     "remove-from-favorites": "Retirer des favoris",
     "add-course": "Appuyer sur + pour ajouter des cours"
   },
+  "Chatbot": {
+    "buttonLabel": "Assistant PlanifETS",
+    "beta": "BÊTA",
+    "inputPlaceholder": "Écrire un message...",
+    "initialMessage": "Bonjour 👋 Je suis l'assistant PlanifETS. Comment puis-je vous aider ?",
+    "mockResponse": "Ceci est une réponse mockée du chatbot PlanifETS.",
+    "closeButtonAriaLabel": "Fermer le chatbot"
+  },
   "CourseDetailsPage": {
     "courseOffering": "Disponibilité",
     "cycle": "cycle",

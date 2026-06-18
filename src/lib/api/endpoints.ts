@@ -1,4 +1,5 @@
 export const API_ENDPOINTS = {
+  INFO: '/api/info',
   PROGRAMS: {
     LIST: '/api/programs',
     BY_ID: (programId: string) => `/api/programs/${programId}`,

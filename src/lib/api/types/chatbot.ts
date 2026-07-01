@@ -4,6 +4,7 @@ export type ChatbotRecommendRequestDto = {
 
 export type ChatbotCourseSuggestionDto = {
   code: string;
+  reason?: string;
 };
 
 export type ChatbotRecommendResponseDto = {

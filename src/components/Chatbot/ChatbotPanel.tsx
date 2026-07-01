@@ -1,5 +1,6 @@
 'use client';
 
+import type { RecommendationCardData } from './recommendations';
 import type { ChatMessage as ChatMessageType } from './types';
 import type { ChatbotCourseSuggestionDto } from '@/api/types';
 
@@ -7,11 +8,15 @@ import { Sparkles, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { chatbotService } from '@/api/services/chatbot.service';
+import { courseService } from '@/api/services/course.service';
 import { handleApiError } from '@/api/utils/error-handler';
+import CourseCard from '@/components/Sidebar/CourseCard';
 import { showError } from '@/lib/toast';
 import { Button } from '@/shadcn/ui/button';
+import { mapApiCourseToAppCourse } from '@/utils/courseUtil';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
+import { buildRecommendationCards } from './recommendations';
 
 type ChatbotPanelProps = {
   onClose: () => void;
@@ -21,7 +26,7 @@ export default function ChatbotPanel({
   onClose,
 }: ChatbotPanelProps) {
   const t = useTranslations('Chatbot');
-  const [messages, setMessages] = useState<ChatMessageType[]>([
+  const [messages, setMessages] = useState<ChatMessageType[]>(() => [
     {
       id: '1',
       role: 'assistant',
@@ -29,8 +34,38 @@ export default function ChatbotPanel({
     },
   ]);
   const [loading, setLoading] = useState(false);
-  const [suggestedCourses, setSuggestedCourses] = useState<ChatbotCourseSuggestionDto[]>([]);
-  void suggestedCourses;
+  const [suggestedCourses, setSuggestedCourses] = useState<RecommendationCardData[]>([]);
+
+  const resolveSuggestedCourses = async (
+    courses: ChatbotCourseSuggestionDto[],
+    fallbackReason: string,
+  ) => {
+    const cards = buildRecommendationCards(courses, fallbackReason);
+
+    const resolvedCards = await Promise.all(
+      cards.map(async (card) => {
+        try {
+          const response = await courseService.searchCourses({
+            query: card.code,
+            limit: 1,
+          });
+
+          const course = response.data.courses[0]
+            ? mapApiCourseToAppCourse(response.data.courses[0])
+            : null;
+
+          return {
+            ...card,
+            course,
+          };
+        } catch {
+          return card;
+        }
+      }),
+    );
+
+    return resolvedCards.filter((card) => card.course ?? card.code);
+  };
 
   const handleSendMessage = async (content: string) => {
     const userMessage: ChatMessageType = {
@@ -51,7 +86,12 @@ export default function ChatbotPanel({
 
     try {
       const response = await chatbotService.recommend({ prompt: content });
-      setSuggestedCourses(response.data.courses);
+      const resolvedCourses = await resolveSuggestedCourses(
+        response.data.courses,
+        response.data.explanation,
+      );
+
+      setSuggestedCourses(resolvedCourses);
 
       setMessages((prev) =>
         prev.map((message) =>
@@ -63,6 +103,8 @@ export default function ChatbotPanel({
     } catch (error) {
       const errorMessage = handleApiError(error);
       showError(errorMessage);
+
+      setSuggestedCourses([]);
 
       setMessages((prev) =>
         prev.map((message) =>
@@ -147,6 +189,33 @@ export default function ChatbotPanel({
             message={message}
           />
         ))}
+
+        {suggestedCourses.length > 0 && (
+          <div className="space-y-3">
+            <div className="text-sm font-semibold text-foreground">
+              Cours recommandés
+            </div>
+            {suggestedCourses.map((course) => (
+              <div key={course.code} className="rounded-lg border border-violet-200/70 bg-background/80 shadow-sm dark:border-violet-800/50">
+                {course.course
+                  ? (
+                    <CourseCard course={course.course} />
+                  )
+                  : (
+                    <div className="rounded-md border border-dashed border-violet-300/70 bg-violet-50/80 text-sm text-foreground dark:border-violet-700/70 dark:bg-violet-900/20">
+                      <div className="font-semibold">{course.code}</div>
+                    </div>
+                  )}
+
+                {course.reason && (
+                  <p className="p-3 text-sm text-muted-foreground">
+                    {course.reason}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Input */}

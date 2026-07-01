@@ -16,7 +16,10 @@ class ApiClient {
     };
   }
 
-  private buildURL(endpoint: string, params?: Record<string, string | number | boolean>): string {
+  private buildURL(
+    endpoint: string,
+    params?: Record<string, string | number | boolean>,
+  ): string {
     const url = new URL(endpoint, this.baseURL);
 
     if (params) {
@@ -109,6 +112,34 @@ class ApiClient {
           ...this.defaultHeaders,
           ...config?.headers,
         },
+        ...config,
+      });
+    } catch (err) {
+      const message = 'Unable to reach backend. Please check your network connection.';
+
+      throw new ApiNetworkError(message, err, url);
+    }
+
+    return this.handleResponse<T>(response);
+  }
+
+  async post<T>(
+    endpoint: string,
+    data: unknown,
+    config?: RequestConfig,
+  ): Promise<ApiResponse<T>> {
+    const url = this.buildURL(endpoint, config?.params);
+
+    let response: Response;
+
+    try {
+      response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          ...this.defaultHeaders,
+          ...config?.headers,
+        },
+        body: JSON.stringify(data),
         ...config,
       });
     } catch (err) {

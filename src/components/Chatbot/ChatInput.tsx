@@ -1,23 +1,25 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import { Send } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { Button } from '@/shadcn/ui/button';
 
 type ChatInputProps = {
   onSendMessage: (message: string) => void;
+  disabled?: boolean;
 };
 
 export default function ChatInput({
   onSendMessage,
+  disabled = false,
 }: ChatInputProps) {
   const t = useTranslations('Chatbot');
   const [message, setMessage] = useState('');
 
   const handleSend = () => {
-    if (!message.trim()) {
+    if (!message.trim() || disabled) {
       return;
     }
 
@@ -49,6 +51,7 @@ export default function ChatInput({
           focus:ring-1
           focus:ring-primary
         "
+        disabled={disabled}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             handleSend();
@@ -59,6 +62,7 @@ export default function ChatInput({
       <Button
         size="icon"
         onClick={handleSend}
+        disabled={disabled}
         className="
           bg-violet-700
           hover:bg-violet-800
@@ -71,4 +75,3 @@ export default function ChatInput({
     </div>
   );
 }
-

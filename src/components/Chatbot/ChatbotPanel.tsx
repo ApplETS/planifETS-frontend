@@ -1,10 +1,14 @@
 'use client';
 
 import type { ChatMessage as ChatMessageType } from './types';
+import type { ChatbotCourseSuggestionDto } from '@/api/types';
 
 import { Sparkles, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { chatbotService } from '@/api/services/chatbot.service';
+import { handleApiError } from '@/api/utils/error-handler';
+import { showError } from '@/lib/toast';
 import { Button } from '@/shadcn/ui/button';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
@@ -17,38 +21,59 @@ export default function ChatbotPanel({
   onClose,
 }: ChatbotPanelProps) {
   const t = useTranslations('Chatbot');
-  const [messages, setMessages] = useState<ChatMessageType[]>([]);
+  const [messages, setMessages] = useState<ChatMessageType[]>([
+    {
+      id: '1',
+      role: 'assistant',
+      content: t('initialMessage'),
+    },
+  ]);
+  const [loading, setLoading] = useState(false);
+  const [suggestedCourses, setSuggestedCourses] = useState<ChatbotCourseSuggestionDto[]>([]);
+  void suggestedCourses;
 
-  // Initialize messages with translated initial message
-  useEffect(() => {
-    setMessages([
-      {
-        id: '1',
-        role: 'assistant',
-        content: t('initialMessage'),
-      },
-    ]);
-  }, [t]);
-
-  const handleSendMessage = (content: string) => {
+  const handleSendMessage = async (content: string) => {
     const userMessage: ChatMessageType = {
       id: crypto.randomUUID(),
       role: 'user',
       content,
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    const loadingMessageId = crypto.randomUUID();
+    const loadingMessage: ChatMessageType = {
+      id: loadingMessageId,
+      role: 'assistant',
+      content: '...',
+    };
 
-    // Mock assistant response
-    setTimeout(() => {
-      const assistantMessage: ChatMessageType = {
-        id: crypto.randomUUID(),
-        role: 'assistant',
-        content: t('mockResponse'),
-      };
+    setMessages((prev) => [...prev, userMessage, loadingMessage]);
+    setLoading(true);
 
-      setMessages((prev) => [...prev, assistantMessage]);
-    }, 1000);
+    try {
+      const response = await chatbotService.recommend({ prompt: content });
+      setSuggestedCourses(response.data.courses);
+
+      setMessages((prev) =>
+        prev.map((message) =>
+          message.id === loadingMessageId
+            ? { ...message, content: response.data.explanation }
+            : message,
+        ),
+      );
+    } catch (error) {
+      const errorMessage = handleApiError(error);
+      showError(errorMessage);
+
+      setMessages((prev) =>
+        prev.map((message) =>
+          message.id === loadingMessageId
+            ? { ...message, content: errorMessage }
+            : message,
+        ),
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -125,7 +150,7 @@ export default function ChatbotPanel({
       </div>
 
       {/* Input */}
-      <ChatInput onSendMessage={handleSendMessage} />
+      <ChatInput onSendMessage={handleSendMessage} disabled={loading} />
     </div>
   );
 }

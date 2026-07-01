@@ -6,6 +6,7 @@ import type { ChatbotCourseSuggestionDto } from '@/api/types';
 
 import { Sparkles, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useState } from 'react';
 import { chatbotService } from '@/api/services/chatbot.service';
 import { courseService } from '@/api/services/course.service';
@@ -14,6 +15,7 @@ import CourseCard from '@/components/Sidebar/CourseCard';
 import { showError } from '@/lib/toast';
 import { Button } from '@/shadcn/ui/button';
 import { mapApiCourseToAppCourse } from '@/utils/courseUtil';
+import { getCourseDetailsHref } from '@/utils/routesUtil';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 import { buildRecommendationCards } from './recommendations';
@@ -211,6 +213,17 @@ export default function ChatbotPanel({
                   <p className="p-3 text-sm text-muted-foreground">
                     {course.reason}
                   </p>
+                )}
+
+                {course.course && (
+                  <div className="px-3 pb-3">
+                    <Link
+                      href={getCourseDetailsHref(course.course.id)}
+                      className="text-sm font-medium text-violet-600 underline-offset-4 hover:underline dark:text-violet-300"
+                    >
+                      {t('courseDetails')}
+                    </Link>
+                  </div>
                 )}
               </div>
             ))}

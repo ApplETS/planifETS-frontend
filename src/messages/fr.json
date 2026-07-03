@@ -125,6 +125,9 @@
   "Footer": {
     "addressLabel": "Adresse",
     "contactLabel": "Contact",
-    "signature": "Fait par le club ApplETS de l'École de technologie supérieure"
+    "signature": "Fait par le club ApplETS de l'École de technologie supérieure",
+    "environment": "Env",
+    "frontend": "Frontend",
+    "backend": "Backend"
   }
 }

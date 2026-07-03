@@ -8,21 +8,21 @@ type StoreHydrationState = {
   allHydrated: boolean;
 };
 
-export const useStoreHydration = () => {
-  const isPlannerHydrated = () => usePlannerStore.persist.hasHydrated();
-  const isOnboardingHydrated = () => useOnboardingStore.persist.hasHydrated();
+const isPlannerHydrated = () => usePlannerStore.persist.hasHydrated();
+const isOnboardingHydrated = () => useOnboardingStore.persist.hasHydrated();
 
-  const getHydrationState = (): StoreHydrationState => {
-    const plannerHydrated = isPlannerHydrated();
-    const onboardingHydrated = isOnboardingHydrated();
+const getHydrationState = (): StoreHydrationState => {
+  const plannerHydrated = isPlannerHydrated();
+  const onboardingHydrated = isOnboardingHydrated();
 
-    return {
-      plannerHydrated,
-      onboardingHydrated,
-      allHydrated: plannerHydrated && onboardingHydrated,
-    };
+  return {
+    plannerHydrated,
+    onboardingHydrated,
+    allHydrated: plannerHydrated && onboardingHydrated,
   };
+};
 
+export const useStoreHydration = () => {
   const [hydrationState, setHydrationState] = useState<StoreHydrationState>(getHydrationState);
 
   useEffect(() => {

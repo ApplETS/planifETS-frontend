@@ -20,7 +20,7 @@ export function Footer() {
     apiClient
       .get<BackendInfo>(API_ENDPOINTS.INFO)
       .then((res) => {
-        if (res.data) setBackendInfo(res.data);
+        if (res.data) { setBackendInfo(res.data); }
       })
       .catch(() => {
         // silently ignore — info is non-critical
@@ -141,9 +141,23 @@ export function Footer() {
       {/* build info band */}
       <div className="max-w-6xl mx-auto px-6 pb-3 flex justify-end">
         <p className="text-xs text-gray-400 dark:text-gray-600 font-mono">
-          {environment && <span className="mr-3">{t('environment')}: {environment}</span>}
-          <span className="mr-3">{t('frontend')}: {frontendSha ?? 'dev'}</span>
-          <span>{t('backend')}: {backendInfo ? (backendInfo.gitSha ?? 'dev') : '…'}</span>
+          {environment && (
+            <span className="mr-3">
+              {t('environment')}
+              {': '}
+              {environment}
+            </span>
+          )}
+          <span className="mr-3">
+            {t('frontend')}
+            {': '}
+            {frontendSha ?? 'dev'}
+          </span>
+          <span>
+            {t('backend')}
+            {': '}
+            {backendInfo ? (backendInfo.gitSha ?? 'dev') : '…'}
+          </span>
         </p>
       </div>
     </footer>

@@ -14,8 +14,8 @@ export function buildRecommendationCards(
   return courses.map((course) => ({
     code: course.code,
     reason:
-      course.reason?.trim() ||
-      fallbackReason?.trim() ||
-      'Suggested because it matches your request.',
+      course.reason?.trim()
+      || fallbackReason?.trim()
+      || 'Suggested because it matches your request.',
   }));
 }

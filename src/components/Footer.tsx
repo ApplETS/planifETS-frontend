@@ -20,7 +20,9 @@ export function Footer() {
     apiClient
       .get<BackendInfo>(API_ENDPOINTS.INFO)
       .then((res) => {
-        if (res.data) { setBackendInfo(res.data); }
+        if (res.data) {
+          setBackendInfo(res.data);
+        }
       })
       .catch(() => {
         // silently ignore — info is non-critical

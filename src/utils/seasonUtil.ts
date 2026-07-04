@@ -52,17 +52,3 @@ export const getSeasonBorder = (sessionTerm: string | TermEnum): string => {
       return 'border border-border';
   }
 };
-
-export const getSeasonBorderFromTypicalSessionIndex = (
-  typicalSessionIndex: number,
-): string => {
-  if (!Number.isInteger(typicalSessionIndex) || typicalSessionIndex < 1) {
-    return 'border-border';
-  }
-  const index = (typicalSessionIndex - 1) % ORDERED_SESSION_TERMS.length;
-  const seasonTerm = ORDERED_SESSION_TERMS[index];
-  if (!seasonTerm) {
-    return 'border-border';
-  }
-  return getSeasonBorder(seasonTerm);
-};

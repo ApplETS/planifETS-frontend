@@ -7,8 +7,8 @@ import { useState } from 'react';
 import { Button } from '@/shadcn/ui/button';
 
 type ChatInputProps = {
-  onSendMessage: (message: string) => void;
-  disabled?: boolean;
+  readonly onSendMessage: (message: string) => void;
+  readonly disabled?: boolean;
 };
 
 export default function ChatInput({

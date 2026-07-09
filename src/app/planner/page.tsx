@@ -8,9 +8,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLatestAvailableSessionApi } from '@/api/hooks/useLatestAvailableSessionApi';
 import ChatbotButton from '@/components/Chatbot/ChatbotButton';
 import ChatbotPanel from '@/components/Chatbot/ChatbotPanel';
-
 import { ProgramSection } from '@/components/Planner/ProgramSection';
+
 import YearSection from '@/components/Planner/YearSection';
+import { CHATBOT_ENABLED } from '@/config/chatbot';
 import { usePreloadCourses } from '@/hooks/course/usePreloadCourses';
 import { useStoreHydration } from '@/hooks/useStoreHydration';
 import { Button } from '@/shadcn/ui/button';
@@ -149,16 +150,18 @@ export default function PlannerPage() {
         </Button>
       </div>
       {/* Assistant PlanifETS */}
-      {isChatOpen && (
+      {CHATBOT_ENABLED && isChatOpen && (
         <ChatbotPanel
           onClose={() => setIsChatOpen(false)}
         />
       )}
 
-      <ChatbotButton
-        isOpen={isChatOpen}
-        onClick={() => setIsChatOpen((prev) => !prev)}
-      />
+      {CHATBOT_ENABLED && (
+        <ChatbotButton
+          isOpen={isChatOpen}
+          onClick={() => setIsChatOpen((prev) => !prev)}
+        />
+      )}
     </div>
   );
 }

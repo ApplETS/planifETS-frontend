@@ -29,6 +29,8 @@ type ChatbotPanelProps = {
 export default function ChatbotPanel({
   onClose,
 }: ChatbotPanelProps) {
+  const DESCRIPTION_SUMMARY_MAX_LENGTH = 180;
+  const DESCRIPTION_FALLBACK = 'No course description available.';
   const t = useTranslations('Chatbot');
   const selectedProgramIds = useProgramStore((state) => state.getSelectedProgramIds());
   const [messages, setMessages] = useState<ChatMessageType[]>(() => [
@@ -61,9 +63,23 @@ export default function ChatbotPanel({
             limit: 1,
           });
 
-          const course = response.data.courses[0]
+          const mappedCourse = response.data.courses[0]
             ? mapApiCourseToAppCourse(response.data.courses[0])
             : null;
+
+          let course = mappedCourse;
+
+          if (mappedCourse) {
+            try {
+              const detailsResponse = await courseService.getCourseById(mappedCourse.id);
+              course = {
+                ...mappedCourse,
+                description: detailsResponse.data.description,
+              };
+            } catch {
+              course = mappedCourse;
+            }
+          }
 
           return {
             ...card,
@@ -76,6 +92,20 @@ export default function ChatbotPanel({
     );
 
     return resolvedCards.filter((card) => card.course ?? card.code);
+  };
+
+  const summarizeCourseDescription = (description?: string) => {
+    const normalized = description?.replace(/\s+/g, ' ').trim();
+
+    if (!normalized) {
+      return DESCRIPTION_FALLBACK;
+    }
+
+    if (normalized.length <= DESCRIPTION_SUMMARY_MAX_LENGTH) {
+      return normalized;
+    }
+
+    return `${normalized.slice(0, DESCRIPTION_SUMMARY_MAX_LENGTH).trimEnd()}...`;
   };
 
   const handleSendMessage = async (content: string) => {
@@ -271,11 +301,9 @@ export default function ChatbotPanel({
                     </div>
                   )}
 
-                {course.reason && (
-                  <p className="p-3 text-sm text-muted-foreground">
-                    {course.reason}
-                  </p>
-                )}
+                <p className="p-3 text-sm text-muted-foreground">
+                  {summarizeCourseDescription(course.course?.description)}
+                </p>
 
                 {course.course && (
                   <div className="px-3 pb-3">

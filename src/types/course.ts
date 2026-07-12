@@ -4,6 +4,7 @@ export type Course = {
   id: number;
   code: string;
   title: string;
+  description?: string;
   credits: number;
   prerequisites: string[];
   availability: string[];

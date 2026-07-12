@@ -82,7 +82,8 @@
     "inputPlaceholder": "Write a message...",
     "initialMessage": "Hello 👋 I'm the PlanifETS assistant. How can I help you?",
     "mockResponse": "This is a mocked response from the PlanifETS chatbot.",
-    "closeButtonAriaLabel": "Close chatbot"
+    "closeButtonAriaLabel": "Close chatbot",
+    "courseDetails": "Course details"
   },
   "CourseDetailsPage": {
     "courseOffering": "Offerings",

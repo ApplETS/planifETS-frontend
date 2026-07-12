@@ -26,6 +26,18 @@ type ChatbotPanelProps = {
   onClose: () => void;
 };
 
+function updateLoadingAssistantMessage(
+  messages: ChatMessageType[],
+  loadingMessageId: string,
+  newContent: string,
+): ChatMessageType[] {
+  return messages.map((message) =>
+    message.id === loadingMessageId
+      ? { ...message, content: newContent }
+      : message,
+  );
+}
+
 export default function ChatbotPanel({
   onClose,
 }: ChatbotPanelProps) {
@@ -126,13 +138,9 @@ export default function ChatbotPanel({
     setSuggestedCourses([]);
     setLoading(true);
 
-    const setAssistantMessage = (nextContent: string) => {
+    const updateAssistantMessage = (nextContent: string) => {
       setMessages((prev) =>
-        prev.map((message) =>
-          message.id === loadingMessageId
-            ? { ...message, content: nextContent }
-            : message,
-        ),
+        updateLoadingAssistantMessage(prev, loadingMessageId, nextContent),
       );
     };
 
@@ -141,7 +149,7 @@ export default function ChatbotPanel({
 
       showError(errorMessage);
       setSuggestedCourses([]);
-      setAssistantMessage(errorMessage);
+      updateAssistantMessage(errorMessage);
       setLoading(false);
     };
 
@@ -153,7 +161,7 @@ export default function ChatbotPanel({
       );
 
       setSuggestedCourses(resolvedCourses);
-      setAssistantMessage(response.data.explanation);
+      updateAssistantMessage(response.data.explanation);
       setLoading(false);
     };
 
@@ -177,7 +185,7 @@ export default function ChatbotPanel({
           {
             onReason: (reasonChunk) => {
               reasoning += reasonChunk;
-              setAssistantMessage(reasoning);
+              updateAssistantMessage(reasoning);
             },
             onCourses: async (courses) => {
               streamRef.current = null;
@@ -187,7 +195,7 @@ export default function ChatbotPanel({
                 const resolvedCourses = await resolveSuggestedCourses(courses, fallbackReason);
 
                 setSuggestedCourses(resolvedCourses);
-                setAssistantMessage(reasoning || fallbackReason);
+                updateAssistantMessage(reasoning || fallbackReason);
                 setLoading(false);
                 resolve();
               } catch (error) {

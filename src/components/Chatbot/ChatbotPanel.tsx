@@ -7,13 +7,15 @@ import type { ChatbotCourseSuggestionDto } from '@/api/types';
 import { Sparkles, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { chatbotService } from '@/api/services/chatbot.service';
 import { courseService } from '@/api/services/course.service';
 import { handleApiError } from '@/api/utils/error-handler';
 import CourseCard from '@/components/Sidebar/CourseCard';
+import { CHATBOT_SSE_ENABLED } from '@/config/chatbot';
 import { showError } from '@/lib/toast';
 import { Button } from '@/shadcn/ui/button';
+import { useProgramStore } from '@/store/programStore';
 import { mapApiCourseToAppCourse } from '@/utils/courseUtil';
 import { getCourseDetailsHref } from '@/utils/routesUtil';
 import ChatInput from './ChatInput';
@@ -28,6 +30,7 @@ export default function ChatbotPanel({
   onClose,
 }: ChatbotPanelProps) {
   const t = useTranslations('Chatbot');
+  const selectedProgramIds = useProgramStore((state) => state.getSelectedProgramIds());
   const [messages, setMessages] = useState<ChatMessageType[]>(() => [
     {
       id: '1',
@@ -37,6 +40,12 @@ export default function ChatbotPanel({
   ]);
   const [loading, setLoading] = useState(false);
   const [suggestedCourses, setSuggestedCourses] = useState<RecommendationCardData[]>([]);
+  const streamRef = useRef<ReturnType<typeof chatbotService.recommendStream> | null>(null);
+
+  useEffect(() => () => {
+    streamRef.current?.close();
+    streamRef.current = null;
+  }, []);
 
   const resolveSuggestedCourses = async (
     courses: ChatbotCourseSuggestionDto[],
@@ -84,9 +93,29 @@ export default function ChatbotPanel({
     };
 
     setMessages((prev) => [...prev, userMessage, loadingMessage]);
+    setSuggestedCourses([]);
     setLoading(true);
 
-    try {
+    const setAssistantMessage = (nextContent: string) => {
+      setMessages((prev) =>
+        prev.map((message) =>
+          message.id === loadingMessageId
+            ? { ...message, content: nextContent }
+            : message,
+        ),
+      );
+    };
+
+    const handleFailure = (error: unknown) => {
+      const errorMessage = handleApiError(error);
+
+      showError(errorMessage);
+      setSuggestedCourses([]);
+      setAssistantMessage(errorMessage);
+      setLoading(false);
+    };
+
+    const runLegacyRecommendation = async () => {
       const response = await chatbotService.recommend({ prompt: content });
       const resolvedCourses = await resolveSuggestedCourses(
         response.data.courses,
@@ -94,29 +123,62 @@ export default function ChatbotPanel({
       );
 
       setSuggestedCourses(resolvedCourses);
-
-      setMessages((prev) =>
-        prev.map((message) =>
-          message.id === loadingMessageId
-            ? { ...message, content: response.data.explanation }
-            : message,
-        ),
-      );
-    } catch (error) {
-      const errorMessage = handleApiError(error);
-      showError(errorMessage);
-
-      setSuggestedCourses([]);
-
-      setMessages((prev) =>
-        prev.map((message) =>
-          message.id === loadingMessageId
-            ? { ...message, content: errorMessage }
-            : message,
-        ),
-      );
-    } finally {
+      setAssistantMessage(response.data.explanation);
       setLoading(false);
+    };
+
+    try {
+      streamRef.current?.close();
+      streamRef.current = null;
+
+      if (!CHATBOT_SSE_ENABLED) {
+        await runLegacyRecommendation();
+        return;
+      }
+
+      await new Promise<void>((resolve, reject) => {
+        let reasoning = '';
+
+        streamRef.current = chatbotService.recommendStream(
+          {
+            prompt: content,
+            programIds: selectedProgramIds,
+          },
+          {
+            onReason: (reasonChunk) => {
+              reasoning += reasonChunk;
+              setAssistantMessage(reasoning);
+            },
+            onCourses: async (courses) => {
+              streamRef.current = null;
+
+              try {
+                const fallbackReason = reasoning || '...';
+                const resolvedCourses = await resolveSuggestedCourses(courses, fallbackReason);
+
+                setSuggestedCourses(resolvedCourses);
+                setAssistantMessage(reasoning || fallbackReason);
+                setLoading(false);
+                resolve();
+              } catch (error) {
+                reject(error);
+              }
+            },
+            onError: async (error) => {
+              streamRef.current = null;
+
+              try {
+                await runLegacyRecommendation();
+                resolve();
+              } catch {
+                reject(error);
+              }
+            },
+          },
+        );
+      });
+    } catch (error) {
+      handleFailure(error);
     }
   };
 

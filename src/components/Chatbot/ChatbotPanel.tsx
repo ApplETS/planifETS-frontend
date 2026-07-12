@@ -7,13 +7,15 @@ import type { ChatbotCourseSuggestionDto } from '@/api/types';
 import { Sparkles, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { chatbotService } from '@/api/services/chatbot.service';
 import { courseService } from '@/api/services/course.service';
 import { handleApiError } from '@/api/utils/error-handler';
 import CourseCard from '@/components/Sidebar/CourseCard';
+import { CHATBOT_SSE_ENABLED } from '@/config/chatbot';
 import { showError } from '@/lib/toast';
 import { Button } from '@/shadcn/ui/button';
+import { useProgramStore } from '@/store/programStore';
 import { mapApiCourseToAppCourse } from '@/utils/courseUtil';
 import { getCourseDetailsHref } from '@/utils/routesUtil';
 import ChatInput from './ChatInput';
@@ -24,10 +26,25 @@ type ChatbotPanelProps = {
   onClose: () => void;
 };
 
+function updateLoadingAssistantMessage(
+  messages: ChatMessageType[],
+  loadingMessageId: string,
+  newContent: string,
+): ChatMessageType[] {
+  return messages.map((message) =>
+    message.id === loadingMessageId
+      ? { ...message, content: newContent }
+      : message,
+  );
+}
+
 export default function ChatbotPanel({
   onClose,
 }: ChatbotPanelProps) {
+  const DESCRIPTION_SUMMARY_MAX_LENGTH = 180;
+  const DESCRIPTION_FALLBACK = 'No course description available.';
   const t = useTranslations('Chatbot');
+  const selectedProgramIds = useProgramStore((state) => state.getSelectedProgramIds());
   const [messages, setMessages] = useState<ChatMessageType[]>(() => [
     {
       id: '1',
@@ -37,6 +54,12 @@ export default function ChatbotPanel({
   ]);
   const [loading, setLoading] = useState(false);
   const [suggestedCourses, setSuggestedCourses] = useState<RecommendationCardData[]>([]);
+  const streamRef = useRef<ReturnType<typeof chatbotService.recommendStream> | null>(null);
+
+  useEffect(() => () => {
+    streamRef.current?.close();
+    streamRef.current = null;
+  }, []);
 
   const resolveSuggestedCourses = async (
     courses: ChatbotCourseSuggestionDto[],
@@ -52,9 +75,23 @@ export default function ChatbotPanel({
             limit: 1,
           });
 
-          const course = response.data.courses[0]
+          const mappedCourse = response.data.courses[0]
             ? mapApiCourseToAppCourse(response.data.courses[0])
             : null;
+
+          let course = mappedCourse;
+
+          if (mappedCourse) {
+            try {
+              const detailsResponse = await courseService.getCourseById(mappedCourse.id);
+              course = {
+                ...mappedCourse,
+                description: detailsResponse.data.description,
+              };
+            } catch {
+              course = mappedCourse;
+            }
+          }
 
           return {
             ...card,
@@ -67,6 +104,20 @@ export default function ChatbotPanel({
     );
 
     return resolvedCards.filter((card) => card.course ?? card.code);
+  };
+
+  const summarizeCourseDescription = (description?: string) => {
+    const normalized = description?.replace(/\s+/g, ' ').trim();
+
+    if (!normalized) {
+      return DESCRIPTION_FALLBACK;
+    }
+
+    if (normalized.length <= DESCRIPTION_SUMMARY_MAX_LENGTH) {
+      return normalized;
+    }
+
+    return `${normalized.slice(0, DESCRIPTION_SUMMARY_MAX_LENGTH).trimEnd()}...`;
   };
 
   const handleSendMessage = async (content: string) => {
@@ -84,9 +135,25 @@ export default function ChatbotPanel({
     };
 
     setMessages((prev) => [...prev, userMessage, loadingMessage]);
+    setSuggestedCourses([]);
     setLoading(true);
 
-    try {
+    const updateAssistantMessage = (nextContent: string) => {
+      setMessages((prev) =>
+        updateLoadingAssistantMessage(prev, loadingMessageId, nextContent),
+      );
+    };
+
+    const handleFailure = (error: unknown) => {
+      const errorMessage = handleApiError(error);
+
+      showError(errorMessage);
+      setSuggestedCourses([]);
+      updateAssistantMessage(errorMessage);
+      setLoading(false);
+    };
+
+    const runLegacyRecommendation = async () => {
       const response = await chatbotService.recommend({ prompt: content });
       const resolvedCourses = await resolveSuggestedCourses(
         response.data.courses,
@@ -94,29 +161,62 @@ export default function ChatbotPanel({
       );
 
       setSuggestedCourses(resolvedCourses);
-
-      setMessages((prev) =>
-        prev.map((message) =>
-          message.id === loadingMessageId
-            ? { ...message, content: response.data.explanation }
-            : message,
-        ),
-      );
-    } catch (error) {
-      const errorMessage = handleApiError(error);
-      showError(errorMessage);
-
-      setSuggestedCourses([]);
-
-      setMessages((prev) =>
-        prev.map((message) =>
-          message.id === loadingMessageId
-            ? { ...message, content: errorMessage }
-            : message,
-        ),
-      );
-    } finally {
+      updateAssistantMessage(response.data.explanation);
       setLoading(false);
+    };
+
+    try {
+      streamRef.current?.close();
+      streamRef.current = null;
+
+      if (!CHATBOT_SSE_ENABLED) {
+        await runLegacyRecommendation();
+        return;
+      }
+
+      await new Promise<void>((resolve, reject) => {
+        let reasoning = '';
+
+        streamRef.current = chatbotService.recommendStream(
+          {
+            prompt: content,
+            programIds: selectedProgramIds,
+          },
+          {
+            onReason: (reasonChunk) => {
+              reasoning += reasonChunk;
+              updateAssistantMessage(reasoning);
+            },
+            onCourses: async (courses) => {
+              streamRef.current = null;
+
+              try {
+                const fallbackReason = reasoning || '...';
+                const resolvedCourses = await resolveSuggestedCourses(courses, fallbackReason);
+
+                setSuggestedCourses(resolvedCourses);
+                updateAssistantMessage(reasoning || fallbackReason);
+                setLoading(false);
+                resolve();
+              } catch (error) {
+                reject(error);
+              }
+            },
+            onError: async (error) => {
+              streamRef.current = null;
+
+              try {
+                await runLegacyRecommendation();
+                resolve();
+              } catch {
+                reject(error);
+              }
+            },
+          },
+        );
+      });
+    } catch (error) {
+      handleFailure(error);
     }
   };
 
@@ -209,11 +309,9 @@ export default function ChatbotPanel({
                     </div>
                   )}
 
-                {course.reason && (
-                  <p className="p-3 text-sm text-muted-foreground">
-                    {course.reason}
-                  </p>
-                )}
+                <p className="p-3 text-sm text-muted-foreground">
+                  {summarizeCourseDescription(course.course?.description)}
+                </p>
 
                 {course.course && (
                   <div className="px-3 pb-3">

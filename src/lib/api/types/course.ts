@@ -15,6 +15,7 @@ export type SearchCourseResult = {
   id: number;
   code: string;
   title: string;
+  description?: string;
   credits: number;
   cycle?: number;
   sessionAvailability: SessionAvailabilityDto[];

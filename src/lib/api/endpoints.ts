@@ -18,6 +18,7 @@ export const API_ENDPOINTS = {
   },
   CHATBOT: {
     RECOMMEND: '/api/chatbot/recommend',
+    RECOMMEND_STREAM: '/api/chatbot/recommend/stream',
   },
   SESSIONS: {
     LATEST_AVAILABLE: () => `/api/sessions/latest-available`,

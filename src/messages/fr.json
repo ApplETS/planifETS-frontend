@@ -82,7 +82,8 @@
     "inputPlaceholder": "Écrire un message...",
     "initialMessage": "Bonjour 👋 Je suis l'assistant PlanifETS. Comment puis-je vous aider ?",
     "mockResponse": "Ceci est une réponse mockée du chatbot PlanifETS.",
-    "closeButtonAriaLabel": "Fermer le chatbot"
+    "closeButtonAriaLabel": "Fermer le chatbot",
+    "courseDetails": "Détails du cours"
   },
   "CourseDetailsPage": {
     "courseOffering": "Disponibilité",

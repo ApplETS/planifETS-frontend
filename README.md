@@ -29,6 +29,10 @@ For local setup instructions, see [docs/onboarding.md](docs/onboarding.md).
 
 Project documentation and team context are also available in the [docs](docs/).
 
+## Deployment
+
+For an in-depth look at how we handle deployments, see [docs/deployment.md](docs/deployment.md).
+
 ## ⚖️ License
 
 This project is licensed under the MIT License. See the [LICENSE](https://github.com/ApplETS/planifETS-frontend/blob/main/LICENSE) file for more information.

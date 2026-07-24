@@ -1,9 +1,11 @@
 export const API_ENDPOINTS = {
+  INFO: '/api/info',
   PROGRAMS: {
     LIST: '/api/programs',
     BY_ID: (programId: string) => `/api/programs/${programId}`,
     COURSES: (programId: string) => `/api/programs/${programId}/courses`,
-    LIST_BY_COURSE: (courseId: string | number) => `/api/programs/list/course/${courseId}`,
+    LIST_BY_COURSE: (courseId: string | number) =>
+      `/api/programs/list/course/${courseId}`,
   },
   PROGRAM_COURSES: {
     IDS: '/api/program-courses/ids',
@@ -13,6 +15,10 @@ export const API_ENDPOINTS = {
   COURSES: {
     SEARCH: '/api/courses/search',
     BY_ID: (id: number) => `/api/courses/${id}`,
+  },
+  CHATBOT: {
+    RECOMMEND: '/api/chatbot/recommend',
+    RECOMMEND_STREAM: '/api/chatbot/recommend/stream',
   },
   SESSIONS: {
     LATEST_AVAILABLE: () => `/api/sessions/latest-available`,

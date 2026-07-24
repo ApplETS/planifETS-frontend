@@ -33,3 +33,22 @@ export const getSeasonStyle = (sessionTerm: string): SeasonStyle => {
 
   return seasonConfig;
 };
+
+export const getSeasonBorder = (sessionTerm: string | TermEnum): string => {
+  // eslint-disable-next-line style/operator-linebreak
+  const season =
+    typeof sessionTerm === 'string'
+      ? ORDERED_SESSION_TERMS.find((s) => sessionTerm.includes(s))
+      : sessionTerm;
+
+  switch (season) {
+    case TermEnum.H:
+      return 'border-2 border-blue-500 dark:border-blue-400';
+    case TermEnum.E:
+      return 'border-2 border-yellow-500 dark:border-yellow-400';
+    case TermEnum.A:
+      return 'border-2 border-orange-500 dark:border-orange-400';
+    default:
+      return 'border border-border';
+  }
+};

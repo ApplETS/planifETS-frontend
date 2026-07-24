@@ -44,6 +44,7 @@ export type ProgramCourseDetailedDto = {
   id: number;
   code: string;
   title: string;
+  description?: string;
   credits: number;
   cycle?: number;
   sessionAvailability: SessionAvailabilityDto[];

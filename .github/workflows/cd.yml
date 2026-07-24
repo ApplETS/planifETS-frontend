@@ -16,8 +16,8 @@ on:
         required: true
         type: choice
         options:
-          - dev
           - staging
+          - dev
           - prod
 
 env:
@@ -46,12 +46,11 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=sha,prefix=main-,format=short,enable=${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-            type=sha,prefix=dev-,format=short,enable=${{ inputs.environment == 'dev' }}
             type=sha,prefix=staging-,format=short,enable=${{ inputs.environment == 'staging' }}
-            type=sha,prefix=prod-,format=short,enable=${{ inputs.environment == 'prod' }}
-            type=raw,value=dev,enable=${{ inputs.environment == 'dev' }}
-            type=raw,value=staging,enable=${{ inputs.environment == 'staging' }}
+            type=sha,prefix=dev-,format=short,enable=${{ inputs.environment == 'dev' }}
             type=raw,value=latest,enable=${{ inputs.environment == 'prod' }}
+            type=raw,value=staging,enable=${{ inputs.environment == 'staging' }}
+            type=raw,value=dev,enable=${{ inputs.environment == 'dev' }}
 
       - name: Login to Registry
         uses: docker/login-action@v3
@@ -65,19 +64,17 @@ jobs:
         shell: bash
         run: echo "SHORT_SHA=$(git rev-parse --short=7 HEAD)" >> "$GITHUB_ENV"
 
-      - name: Configure target environment
-        if: github.event_name == 'workflow_dispatch'
+      - name: Set API base URL
+        id: api-url
         shell: bash
-        env:
-          TARGET_ENVIRONMENT: ${{ inputs.environment }}
         run: |
-          case "${TARGET_ENVIRONMENT}" in
-            dev) api_base_url=https://planifets.dev.cedille.club/api ;;
-            staging) api_base_url=https://planifets.staging.cedille.club/api ;;
-            prod) api_base_url=https://planifets.clubapplets.ca/api ;;
-            *) echo "Unsupported environment: ${TARGET_ENVIRONMENT}" >&2; exit 1 ;;
-          esac
-          echo "API_BASE_URL=${api_base_url}" >> "$GITHUB_ENV"
+          if [ "${{ inputs.environment }}" = "staging" ]; then
+            echo "url=https://planifets.staging.cedille.club" >> "$GITHUB_OUTPUT"
+          elif [ "${{ inputs.environment }}" = "dev" ]; then
+            echo "url=https://planifets.dev.cedille.club" >> "$GITHUB_OUTPUT"
+          else
+            echo "url=https://planifets.prodv2.cedille.club" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Build and push
         uses: docker/build-push-action@v5
@@ -89,7 +86,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             NEXT_PUBLIC_APP_GIT_SHORT_SHA=${{ env.SHORT_SHA }}
-            NEXT_PUBLIC_API_BASE_URL=${{ env.API_BASE_URL }}
+            NEXT_PUBLIC_APP_ENV=${{ inputs.environment == 'prod' && 'production' || inputs.environment || 'production' }}
+            NEXT_PUBLIC_API_BASE_URL=https://planifets.prodv2.cedille.club
             NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
             NEXT_PUBLIC_POSTHOG_UI_HOST=https://us.posthog.com
             NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=${{ secrets.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN }}

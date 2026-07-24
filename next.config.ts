@@ -3,15 +3,12 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin();
 
-const appEnv = process.env.APP_ENV ?? 'development';
+const appEnv = process.env.NEXT_PUBLIC_APP_ENV ?? 'development';
 const posthogApiHost = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com';
 const posthogAssetsHost = posthogApiHost.replace(/\/\/(\w+)\./, '//$1-assets.'); // https://eu.i.posthog.com → https://eu-assets.i.posthog.com
 
 const baseConfig: NextConfig = {
   output: 'standalone',
-  env: {
-    NEXT_PUBLIC_APP_ENV: appEnv,
-  },
   // Required for PostHog
   // SDK sends requests with trailing slashes that Next.js would otherwise redirect, breaking the proxy.
   skipTrailingSlashRedirect: true,

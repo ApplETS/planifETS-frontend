@@ -76,6 +76,15 @@
     "remove-from-favorites": "Remove from favorites",
     "add-course": "Tap + to add courses"
   },
+  "Chatbot": {
+    "buttonLabel": "Assistant PlanifETS",
+    "beta": "BETA",
+    "inputPlaceholder": "Write a message...",
+    "initialMessage": "Hello 👋 I'm the PlanifETS assistant. How can I help you?",
+    "mockResponse": "This is a mocked response from the PlanifETS chatbot.",
+    "closeButtonAriaLabel": "Close chatbot",
+    "courseDetails": "Course details"
+  },
   "CourseDetailsPage": {
     "courseOffering": "Offerings",
     "cycle": "cycle",
@@ -117,6 +126,9 @@
   "Footer": {
     "addressLabel": "Adresse",
     "contactLabel": "Contact",
-    "signature": "Made by the ApplETS club at École de technologie supérieure"
+    "signature": "Made by the ApplETS club at École de technologie supérieure",
+    "environment": "Env",
+    "frontend": "Frontend",
+    "backend": "Backend"
   }
 }

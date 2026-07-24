@@ -76,6 +76,18 @@ jobs:
             echo "url=https://planifets.prodv2.cedille.club" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Configure chatbot feature flags
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        env:
+          CHATBOT_ENABLED: ${{ vars.NEXT_PUBLIC_CHATBOT_ENABLED }}
+          CHATBOT_SSE_ENABLED: ${{ vars.NEXT_PUBLIC_CHATBOT_SSE_ENABLED }}
+        run: |
+          printf 'NEXT_PUBLIC_CHATBOT_ENABLED=%s\n' \
+            "${CHATBOT_ENABLED:-false}" > .env.production.local
+          printf 'NEXT_PUBLIC_CHATBOT_SSE_ENABLED=%s\n' \
+            "${CHATBOT_SSE_ENABLED:-false}" >> .env.production.local
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:

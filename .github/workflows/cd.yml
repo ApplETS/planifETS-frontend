@@ -76,18 +76,6 @@ jobs:
             echo "url=https://planifets.prodv2.cedille.club" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Configure chatbot feature flags
-        if: github.event_name == 'workflow_dispatch'
-        shell: bash
-        env:
-          CHATBOT_ENABLED: ${{ vars.NEXT_PUBLIC_CHATBOT_ENABLED }}
-          CHATBOT_SSE_ENABLED: ${{ vars.NEXT_PUBLIC_CHATBOT_SSE_ENABLED }}
-        run: |
-          printf 'NEXT_PUBLIC_CHATBOT_ENABLED=%s\n' \
-            "${CHATBOT_ENABLED:-false}" > .env.production.local
-          printf 'NEXT_PUBLIC_CHATBOT_SSE_ENABLED=%s\n' \
-            "${CHATBOT_SSE_ENABLED:-false}" >> .env.production.local
-
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
@@ -104,3 +92,5 @@ jobs:
             NEXT_PUBLIC_POSTHOG_UI_HOST=https://us.posthog.com
             NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=${{ secrets.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN }}
             NEXT_PUBLIC_UMAMI_WEBSITE_ID=${{ secrets.NEXT_PUBLIC_UMAMI_WEBSITE_ID }}
+            NEXT_PUBLIC_CHATBOT_ENABLED=${{ vars.NEXT_PUBLIC_CHATBOT_ENABLED || 'false' }}
+            NEXT_PUBLIC_CHATBOT_SSE_ENABLED=${{ vars.NEXT_PUBLIC_CHATBOT_SSE_ENABLED || 'false' }}

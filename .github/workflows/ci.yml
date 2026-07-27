@@ -136,6 +136,7 @@ jobs:
         run: yarn run build
         env:
           CI: true
+          NEXT_PUBLIC_CHATBOT_ENABLED: true
       - name: Get installed Playwright version
         id: playwright-version
         run: |

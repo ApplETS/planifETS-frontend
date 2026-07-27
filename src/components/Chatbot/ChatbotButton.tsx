@@ -24,6 +24,7 @@ export default function ChatbotButton({
     <div className="fixed bottom-4 right-4 z-50">
       <Button
         onClick={onClick}
+        data-testid="chatbot-button"
         className="
           rounded-md
           shadow-lg

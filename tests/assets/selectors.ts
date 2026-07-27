@@ -47,6 +47,11 @@ export const selectors = {
   themeOption: (themeName: string) => `[data-testid="theme-option-${themeName}"]`,
   themeContainer: '[data-testid="theme-container"]',
 
+  // Chatbot
+  chatbotButton: '[data-testid="chatbot-button"]',
+  chatbotPanel: '[data-testid="chatbot-panel"]',
+  closeChatbotButton: '[data-testid="close-chatbot-button"]',
+
   // Global Search
   globalSearchLink: '[data-testid="global-search-link"]',
   globalSearchButton: '[data-testid="global-search-button"]',

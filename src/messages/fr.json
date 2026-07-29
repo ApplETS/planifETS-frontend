@@ -80,6 +80,7 @@
     "buttonLabel": "Assistant PlanifETS",
     "beta": "BÊTA",
     "inputPlaceholder": "Écrire un message...",
+    "sendButtonAriaLabel": "Envoyer le message",
     "initialMessage": "Bonjour 👋 Je suis l'assistant PlanifETS. Comment puis-je vous aider ?",
     "mockResponse": "Ceci est une réponse mockée du chatbot PlanifETS.",
     "closeButtonAriaLabel": "Fermer le chatbot",

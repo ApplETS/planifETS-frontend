@@ -80,7 +80,8 @@
     "buttonLabel": "Assistant PlanifETS",
     "beta": "BETA",
     "inputPlaceholder": "Write a message...",
-    "initialMessage": "Hello 👋 I'm the PlanifETS assistant. How can I help you?",
+    "sendButtonAriaLabel": "Send message",
+    "initialMessage": "Hello 👋 I can recommend ÉTS courses based on your interests, goals, or topics you want to explore. What kind of courses are you interested in?",
     "mockResponse": "This is a mocked response from the PlanifETS chatbot.",
     "closeButtonAriaLabel": "Close chatbot",
     "courseDetails": "Course details"

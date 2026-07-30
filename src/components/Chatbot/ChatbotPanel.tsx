@@ -1,8 +1,8 @@
 'use client';
 
-import type { RecommendationCardData } from './recommendations';
+import type { ResolvedRecommendationCardData } from './recommendations';
 import type { ChatMessage as ChatMessageType } from './types';
-import type { ChatbotCourseSuggestionDto } from '@/api/types';
+import type { ChatbotCourseSuggestionDto, ChatbotStreamStatus } from '@/api/types';
 
 import { Sparkles, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -20,7 +20,7 @@ import { mapApiCourseToAppCourse } from '@/utils/courseUtil';
 import { getCourseDetailsHref } from '@/utils/routesUtil';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
-import { buildRecommendationCards } from './recommendations';
+import { buildRecommendationCards, hasCourseDescription } from './recommendations';
 
 type ChatbotPanelProps = {
   onClose: () => void;
@@ -30,10 +30,11 @@ function updateLoadingAssistantMessage(
   messages: ChatMessageType[],
   loadingMessageId: string,
   newContent: string,
+  isLoading = false,
 ): ChatMessageType[] {
   return messages.map((message) =>
     message.id === loadingMessageId
-      ? { ...message, content: newContent }
+      ? { ...message, content: newContent, isLoading }
       : message,
   );
 }
@@ -42,7 +43,6 @@ export default function ChatbotPanel({
   onClose,
 }: ChatbotPanelProps) {
   const DESCRIPTION_SUMMARY_MAX_LENGTH = 180;
-  const DESCRIPTION_FALLBACK = 'No course description available.';
   const t = useTranslations('Chatbot');
   const selectedProgramIds = useProgramStore((state) => state.getSelectedProgramIds());
   const [messages, setMessages] = useState<ChatMessageType[]>(() => [
@@ -53,7 +53,7 @@ export default function ChatbotPanel({
     },
   ]);
   const [loading, setLoading] = useState(false);
-  const [suggestedCourses, setSuggestedCourses] = useState<RecommendationCardData[]>([]);
+  const [suggestedCourses, setSuggestedCourses] = useState<ResolvedRecommendationCardData[]>([]);
   const streamRef = useRef<ReturnType<typeof chatbotService.recommendStream> | null>(null);
 
   useEffect(() => () => {
@@ -103,15 +103,11 @@ export default function ChatbotPanel({
       }),
     );
 
-    return resolvedCards.filter((card) => card.course ?? card.code);
+    return resolvedCards.filter(hasCourseDescription);
   };
 
-  const summarizeCourseDescription = (description?: string) => {
-    const normalized = description?.replace(/\s+/g, ' ').trim();
-
-    if (!normalized) {
-      return DESCRIPTION_FALLBACK;
-    }
+  const summarizeCourseDescription = (description: string) => {
+    const normalized = description.replace(/\s+/g, ' ').trim();
 
     if (normalized.length <= DESCRIPTION_SUMMARY_MAX_LENGTH) {
       return normalized;
@@ -131,7 +127,8 @@ export default function ChatbotPanel({
     const loadingMessage: ChatMessageType = {
       id: loadingMessageId,
       role: 'assistant',
-      content: '...',
+      content: t('searchingCourses'),
+      isLoading: true,
     };
 
     setMessages((prev) => [...prev, userMessage, loadingMessage]);
@@ -141,6 +138,17 @@ export default function ChatbotPanel({
     const updateAssistantMessage = (nextContent: string) => {
       setMessages((prev) =>
         updateLoadingAssistantMessage(prev, loadingMessageId, nextContent),
+      );
+    };
+
+    const updateStatus = (status: ChatbotStreamStatus) => {
+      setMessages((prev) =>
+        updateLoadingAssistantMessage(
+          prev,
+          loadingMessageId,
+          t(status === 'SEARCHING_EMBEDDINGS' ? 'searchingCourses' : 'thinkingAi'),
+          true,
+        ),
       );
     };
 
@@ -183,6 +191,7 @@ export default function ChatbotPanel({
             programIds: selectedProgramIds,
           },
           {
+            onStatus: updateStatus,
             onReason: (reasonChunk) => {
               reasoning += reasonChunk;
               updateAssistantMessage(reasoning);
@@ -298,30 +307,20 @@ export default function ChatbotPanel({
             </div>
             {suggestedCourses.map((course) => (
               <div key={course.code} className="rounded-lg border border-violet-200/70 bg-background/80 shadow-sm dark:border-border">
-                {course.course
-                  ? (
-                    <CourseCard course={course.course} />
-                  )
-                  : (
-                    <div className="rounded-md border border-dashed border-violet-300/70 bg-violet-50/80 text-sm text-foreground dark:border-border dark:bg-muted/50">
-                      <div className="font-semibold">{course.code}</div>
-                    </div>
-                  )}
+                <CourseCard course={course.course} />
 
                 <p className="p-3 text-sm text-muted-foreground">
-                  {summarizeCourseDescription(course.course?.description)}
+                  {summarizeCourseDescription(course.course.description)}
                 </p>
 
-                {course.course && (
-                  <div className="px-3 pb-3">
-                    <Link
-                      href={getCourseDetailsHref(course.course.id)}
-                      className="text-sm font-medium text-violet-600 underline-offset-4 hover:underline dark:text-violet-300"
-                    >
-                      {t('courseDetails')}
-                    </Link>
-                  </div>
-                )}
+                <div className="px-3 pb-3">
+                  <Link
+                    href={getCourseDetailsHref(course.course.id)}
+                    className="text-sm font-medium text-violet-600 underline-offset-4 hover:underline dark:text-violet-300"
+                  >
+                    {t('courseDetails')}
+                  </Link>
+                </div>
               </div>
             ))}
           </div>

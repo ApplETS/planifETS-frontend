@@ -224,25 +224,22 @@ export default function ChatbotPanel({
     <div
       className="
         fixed
-        top-20
-        right-4
-
+        inset-x-0
+        top-16
+        bottom-0
         z-40
-
         flex
         flex-col
-
-        w-[350px]
-        h-[calc(100vh-6rem)]
-
-        rounded-xl
-
         border
         border-violet-500/30
-
-        bg-violet-100/50 dark:bg-violet-900/30
-
+        bg-violet-50 dark:bg-violet-950
         shadow-2xl
+        lg:inset-x-auto
+        lg:top-20
+        lg:right-4
+        lg:bottom-4
+        lg:w-96
+        lg:rounded-xl
       "
       data-testid="chatbot-panel"
     >

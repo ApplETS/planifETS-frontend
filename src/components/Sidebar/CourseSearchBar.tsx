@@ -1,6 +1,7 @@
 import { Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
+import { Input } from '@/shadcn/ui/input';
 
 type CourseSearchProps = {
   onSearch: (query: string) => void;
@@ -33,13 +34,13 @@ export default function CourseSearchbar({ onSearch, value = '' }: CourseSearchPr
   return (
     <div className="relative mt-4" data-testid="search-bar">
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground size-4.5" />
-      <input
+      <Input
         name="course-search"
         type="text"
         placeholder={t('search-course')}
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="border border-muted-foreground w-full rounded-md bg-input text-foreground p-2 pl-10 focus:outline-hidden focus:ring-1 focus:ring-primary"
+        className="h-10 rounded-xl bg-background pl-10 focus-visible:border-input focus-visible:ring-0 focus-visible:shadow-sm"
         data-testid="course-search-input"
       />
     </div>

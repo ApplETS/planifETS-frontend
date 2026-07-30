@@ -84,7 +84,7 @@ export default function CourseSidebar() {
 
     if (displayedCourses.length > 0) {
       return (
-        <div className="flex flex-col gap-4 pl-1">
+        <div className="flex flex-col gap-4 px-2">
           {displayedCourses.map((course) => (
             <CourseCard key={course.id} course={course} />
           ))}
@@ -152,7 +152,7 @@ export default function CourseSidebar() {
             )
             : (
               <ScrollArea className="mt-4 flex-1 min-h-0 max-h-[400px] md:max-h-none rounded-md">
-                <div className="p-1">{renderCoursesContent()}</div>
+                {renderCoursesContent()}
               </ScrollArea>
             )}
         </TabsContent>
@@ -174,7 +174,7 @@ export default function CourseSidebar() {
             )
             : (
               <ScrollArea className="mt-4 flex-1 min-h-0 max-h-[400px] md:max-h-none rounded-md">
-                <div className="p-1">{renderCoursesContent()}</div>
+                {renderCoursesContent()}
               </ScrollArea>
             )}
         </TabsContent>

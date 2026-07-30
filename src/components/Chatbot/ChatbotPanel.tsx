@@ -232,7 +232,9 @@ export default function ChatbotPanel({
         flex-col
         border
         border-violet-500/30
-        bg-violet-50 dark:bg-violet-950
+        bg-violet-50
+        dark:border-violet-500/50
+        dark:bg-background
         shadow-2xl
         lg:inset-x-auto
         lg:top-20
@@ -295,13 +297,13 @@ export default function ChatbotPanel({
               Cours recommandés
             </div>
             {suggestedCourses.map((course) => (
-              <div key={course.code} className="rounded-lg border border-violet-200/70 bg-background/80 shadow-sm dark:border-violet-800/50">
+              <div key={course.code} className="rounded-lg border border-violet-200/70 bg-background/80 shadow-sm dark:border-border">
                 {course.course
                   ? (
                     <CourseCard course={course.course} />
                   )
                   : (
-                    <div className="rounded-md border border-dashed border-violet-300/70 bg-violet-50/80 text-sm text-foreground dark:border-violet-700/70 dark:bg-violet-900/20">
+                    <div className="rounded-md border border-dashed border-violet-300/70 bg-violet-50/80 text-sm text-foreground dark:border-border dark:bg-muted/50">
                       <div className="font-semibold">{course.code}</div>
                     </div>
                   )}

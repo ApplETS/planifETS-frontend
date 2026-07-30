@@ -32,7 +32,7 @@ export default function CourseSearchbar({ onSearch, value = '' }: CourseSearchPr
   }, [searchQuery, onSearch]);
 
   return (
-    <div className="relative mt-4" data-testid="search-bar">
+    <div className="relative mx-2 mt-4" data-testid="search-bar">
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground size-4.5" />
       <Input
         name="course-search"
@@ -40,7 +40,7 @@ export default function CourseSearchbar({ onSearch, value = '' }: CourseSearchPr
         placeholder={t('search-course')}
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="h-10 rounded-xl bg-background pl-10 focus-visible:border-input focus-visible:ring-0 focus-visible:shadow-sm"
+        className="h-10 rounded-xl bg-input pl-10 dark:border-muted-foreground/60 dark:bg-background focus-visible:border-primary/60 focus-visible:ring-0 focus-visible:shadow-sm"
         data-testid="course-search-input"
       />
     </div>

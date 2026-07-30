@@ -13,10 +13,10 @@ export default function ChatMessage({
 
   if (message.isLoading) {
     return (
-      <div role="status" className="px-1 text-sm text-muted-foreground">
+      <output className="px-1 text-sm text-muted-foreground">
         {message.content}
         <span aria-hidden="true">...</span>
-      </div>
+      </output>
     );
   }
 

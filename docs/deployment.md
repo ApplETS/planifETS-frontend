@@ -1,13 +1,15 @@
 # Deployment Workflows
 
-The `CD` workflow publishes an immutable `main-<sha>` image for each push to `main`. To deploy, run the workflow manually from the tested commit and select `dev`, `staging` or `prod`; it publishes both an immutable environment SHA tag and the mutable tag watched by ArgoCD:
+Each push to `main` builds three immutable frontend images from the same commit. Each build uses the variables from its matching GitHub Environment, so values embedded by Next.js can differ without rebuilding during deployment.
 
-| Environment | Mutable tag | API URL |
-| --- | --- | --- |
-| Development | `dev` | `https://planifets.dev.cedille.club/api` |
-| Staging | `staging` | `https://planifets.staging.cedille.club/api` |
-| Production | `latest` | `https://planifets.clubapplets.ca/api` |
+| Environment | Immutable tag        | Mutable tag watched by ArgoCD |
+| ----------- | -------------------- | ----------------------------- |
+| Development | `main-<sha>-dev`     | `dev`                         |
+| Staging     | `main-<sha>-staging` | `staging`                     |
+| Production  | `main-<sha>-prod`    | `latest`                      |
 
-Create matching GitHub Environments before enabling the workflow. Restrict staging and production to `main`, and require reviewers for production. The public analytics identifiers are read from the existing repository secrets.
+Configure `NEXT_PUBLIC_CHATBOT_ENABLED` and `NEXT_PUBLIC_CHATBOT_SSE_ENABLED` in each GitHub Environment. Both default to `false` when absent. `NEXT_PUBLIC_API_BASE_URL` can also be configured per environment; it defaults to the production API URL for backward compatibility. Public analytics identifiers continue to use the existing secrets.
 
-Unlike the backend, the frontend currently embeds `NEXT_PUBLIC_*` values during the Next.js build. It therefore creates a separate image digest for each environment. Promote the same commit through dev, staging and production; do not retag a dev frontend image for production.
+To deploy, run the workflow manually, select the target environment, and optionally provide the base immutable tag such as `main-a1b2c3d`. The workflow selects that environment's variant and retags it without rebuilding. For example, promoting `main-a1b2c3d` to staging retags `main-a1b2c3d-staging` as `staging`.
+
+Promotion moves the same source commit between environments, but not the same image digest: each environment variant contains different compiled configuration. The immutable tags remain available for audit and rollback.

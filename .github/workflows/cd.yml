@@ -19,6 +19,10 @@ on:
           - staging
           - dev
           - prod
+      source_tag:
+        description: Immutable GHCR tag to promote (for example main-a1b2c3d). Defaults to the latest main commit.
+        required: false
+        type: string
 
 env:
   REGISTRY: ghcr.io
@@ -26,9 +30,35 @@ env:
   API_BASE_URL: https://planifets.clubapplets.ca/api
 
 jobs:
-  docker:
+  build:
+    if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts
+
+      - name: Type check
+        run: yarn typecheck
+
+      - name: Lint
+        run: yarn lint
+
+  docker:
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    needs: [build]
     permissions:
       contents: read
       packages: write
@@ -46,11 +76,6 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=sha,prefix=main-,format=short,enable=${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-            type=sha,prefix=staging-,format=short,enable=${{ inputs.environment == 'staging' }}
-            type=sha,prefix=dev-,format=short,enable=${{ inputs.environment == 'dev' }}
-            type=raw,value=latest,enable=${{ inputs.environment == 'prod' }}
-            type=raw,value=staging,enable=${{ inputs.environment == 'staging' }}
-            type=raw,value=dev,enable=${{ inputs.environment == 'dev' }}
 
       - name: Login to Registry
         uses: docker/login-action@v3
@@ -64,18 +89,6 @@ jobs:
         shell: bash
         run: echo "SHORT_SHA=$(git rev-parse --short=7 HEAD)" >> "$GITHUB_ENV"
 
-      - name: Set API base URL
-        id: api-url
-        shell: bash
-        run: |
-          if [ "${{ inputs.environment }}" = "staging" ]; then
-            echo "url=https://planifets.staging.cedille.club" >> "$GITHUB_OUTPUT"
-          elif [ "${{ inputs.environment }}" = "dev" ]; then
-            echo "url=https://planifets.dev.cedille.club" >> "$GITHUB_OUTPUT"
-          else
-            echo "url=https://planifets.prodv2.cedille.club" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
@@ -86,11 +99,80 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             NEXT_PUBLIC_APP_GIT_SHORT_SHA=${{ env.SHORT_SHA }}
-            NEXT_PUBLIC_APP_ENV=${{ inputs.environment == 'prod' && 'production' || inputs.environment || 'production' }}
             NEXT_PUBLIC_API_BASE_URL=https://planifets.prodv2.cedille.club
             NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
             NEXT_PUBLIC_POSTHOG_UI_HOST=https://us.posthog.com
             NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=${{ secrets.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN }}
             NEXT_PUBLIC_UMAMI_WEBSITE_ID=${{ secrets.NEXT_PUBLIC_UMAMI_WEBSITE_ID }}
-            NEXT_PUBLIC_CHATBOT_ENABLED=${{ vars.NEXT_PUBLIC_CHATBOT_ENABLED || 'false' }}
-            NEXT_PUBLIC_CHATBOT_SSE_ENABLED=${{ vars.NEXT_PUBLIC_CHATBOT_SSE_ENABLED || 'false' }}
+
+  promote:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Resolve source tag
+        id: resolve-tag
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_SOURCE_TAG: ${{ inputs.source_tag }}
+        shell: bash
+        run: |
+          if [[ -n "${INPUT_SOURCE_TAG}" ]]; then
+            source_tag="${INPUT_SOURCE_TAG}"
+          else
+            package="${GITHUB_REPOSITORY,,}"
+            package="${package#*/}"
+            owner="${GITHUB_REPOSITORY_OWNER}"
+
+            if gh api "/orgs/${owner}/packages/container/${package}/versions" > /dev/null 2>&1; then
+              endpoint="/orgs/${owner}/packages/container/${package}/versions"
+            else
+              endpoint="/users/${owner}/packages/container/${package}/versions"
+            fi
+
+            latest=$(gh api --paginate \
+              -H "Accept: application/vnd.github+json" \
+              "${endpoint}" \
+              | jq -r '[.[] | select(.metadata.container.tags | map(startswith("main-")) | any)] | sort_by(.updated_at) | last | .metadata.container.tags[] | select(startswith("main-"))')
+
+            source_tag="${latest}"
+          fi
+
+          echo "SOURCE_TAG=${source_tag}" >> "$GITHUB_OUTPUT"
+          # Extract the short SHA from the tag (e.g. main-a1b2c3d -> a1b2c3d)
+          echo "SHA=${source_tag#main-}" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout code at source commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.resolve-tag.outputs.SHA }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Promote image with environment config
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          target: runner
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.environment == 'prod' && 'latest' || inputs.environment }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.resolve-tag.outputs.SOURCE_TAG }}
+          build-args: |
+            NEXT_PUBLIC_APP_GIT_SHORT_SHA=${{ steps.resolve-tag.outputs.SHA }}
+            NEXT_PUBLIC_APP_ENV=${{ inputs.environment == 'prod' && 'production' || inputs.environment }}
+            NEXT_PUBLIC_API_BASE_URL=https://planifets.prodv2.cedille.club
+            NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+            NEXT_PUBLIC_POSTHOG_UI_HOST=https://us.posthog.com
+            NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=${{ secrets.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN }}
+            NEXT_PUBLIC_UMAMI_WEBSITE_ID=${{ secrets.NEXT_PUBLIC_UMAMI_WEBSITE_ID }}

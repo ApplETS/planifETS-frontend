@@ -5,7 +5,7 @@ on:
     branches:
       - main
     tags:
-      - 'v*'
+      - "v*"
   pull_request:
     branches:
       - main
@@ -110,6 +110,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     permissions:
+      contents: read
       packages: write
     steps:
       - name: Resolve source tag
@@ -119,7 +120,7 @@ jobs:
         shell: bash
         run: |
           if [[ -n "${{ inputs.source_tag }}" ]]; then
-            echo "SOURCE_TAG=${{ inputs.source_tag }}" >> "$GITHUB_OUTPUT"
+            source_tag="${{ inputs.source_tag }}"
           else
             package="${GITHUB_REPOSITORY,,}"
             package="${package#*/}"
@@ -136,8 +137,17 @@ jobs:
               "${endpoint}" \
               | jq -r '[.[] | select(.metadata.container.tags | map(startswith("main-")) | any)] | sort_by(.updated_at) | last | .metadata.container.tags[] | select(startswith("main-"))')
 
-            echo "SOURCE_TAG=${latest}" >> "$GITHUB_OUTPUT"
+            source_tag="${latest}"
           fi
+
+          echo "SOURCE_TAG=${source_tag}" >> "$GITHUB_OUTPUT"
+          # Extract the short SHA from the tag (e.g. main-a1b2c3d -> a1b2c3d)
+          echo "SHA=${source_tag#main-}" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout code at source commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.resolve-tag.outputs.SHA }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -149,24 +159,19 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Promote immutable image
-        shell: bash
-        env:
-          SOURCE_TAG: ${{ steps.resolve-tag.outputs.SOURCE_TAG }}
-          TARGET_ENVIRONMENT: ${{ inputs.environment }}
-        run: |
-          set -euo pipefail
-
-          image="${REGISTRY}/${GITHUB_REPOSITORY,,}"
-          case "${TARGET_ENVIRONMENT}" in
-            dev) target_tag=dev ;;
-            staging) target_tag=staging ;;
-            prod) target_tag=latest ;;
-            *) echo "Unsupported environment: ${TARGET_ENVIRONMENT}" >&2; exit 1 ;;
-          esac
-
-          docker buildx imagetools inspect "${image}:${SOURCE_TAG}"
-          docker buildx imagetools create \
-            --tag "${image}:${target_tag}" \
-            "${image}:${SOURCE_TAG}"
-          docker buildx imagetools inspect "${image}:${target_tag}"
+      - name: Promote image with environment config
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          target: runner
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.environment == 'prod' && 'latest' || inputs.environment }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.resolve-tag.outputs.SOURCE_TAG }}
+          build-args: |
+            NEXT_PUBLIC_APP_GIT_SHORT_SHA=${{ steps.resolve-tag.outputs.SHA }}
+            NEXT_PUBLIC_APP_ENV=${{ inputs.environment == 'prod' && 'production' || inputs.environment }}
+            NEXT_PUBLIC_API_BASE_URL=https://planifets.prodv2.cedille.club
+            NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+            NEXT_PUBLIC_POSTHOG_UI_HOST=https://us.posthog.com
+            NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=${{ secrets.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN }}
+            NEXT_PUBLIC_UMAMI_WEBSITE_ID=${{ secrets.NEXT_PUBLIC_UMAMI_WEBSITE_ID }}

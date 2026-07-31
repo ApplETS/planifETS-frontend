@@ -94,7 +94,9 @@ export default function PlannerPage() {
   return (
     <div
       className={`flex w-full flex-col transition-all duration-300 ${
-        isChatOpen ? 'md:pr-[370px]' : ''
+        CHATBOT_ENABLED ? 'pb-20' : ''
+      } ${
+        isChatOpen ? 'lg:pr-[25rem]' : ''
       }`}
       data-print-root="planner"
     >

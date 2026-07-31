@@ -4,6 +4,7 @@ import { useCourseStore } from '@/store/courseStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useProgramStore } from '@/store/programStore';
 import { FAVORITE_TAB_INDEX } from '@/utils/constants';
+import { normalizeSearchText } from '@/utils/stringUtil';
 
 export const useProgramCoursesOperations = (searchQuery: string, activeTab: number) => {
   const selectedProgramIds = useProgramStore((state) => state.getSelectedProgramIds());
@@ -35,27 +36,30 @@ export const useProgramCoursesOperations = (searchQuery: string, activeTab: numb
 
   const favoriteCourses = useMemo(() => {
     const coursesArray = Object.values(courses);
-    return coursesArray.filter((course) => course && favoriteCourseIds.includes(course.id));
+    return coursesArray.filter(
+      (course) => course && favoriteCourseIds.includes(course.id),
+    );
   }, [courses, favoriteCourseIds]);
 
   const displayedCourses = useMemo(() => {
-    const coursesToDisplay = activeTab === FAVORITE_TAB_INDEX
-      ? favoriteCourses
-      : programCoursesData.courses;
+    const coursesToDisplay
+      = activeTab === FAVORITE_TAB_INDEX ? favoriteCourses : programCoursesData.courses;
 
     if (!searchQuery.trim()) {
       return coursesToDisplay;
     }
 
-    const lowerQuery = searchQuery.toLowerCase();
+    const normalizedQuery = normalizeSearchText(searchQuery);
 
-    return coursesToDisplay.filter((course) =>
-      course.code.toLowerCase().includes(lowerQuery)
-      || course.title.toLowerCase().includes(lowerQuery),
+    return coursesToDisplay.filter(
+      (course) =>
+        normalizeSearchText(course.code).includes(normalizedQuery)
+        || normalizeSearchText(course.title).includes(normalizedQuery),
     );
   }, [activeTab, favoriteCourses, programCoursesData.courses, searchQuery]);
 
-  const hasCoursesInStore = Object.values(courses).length > 0 && selectedProgramIds.length > 0;
+  const hasCoursesInStore
+    = Object.values(courses).length > 0 && selectedProgramIds.length > 0;
 
   return {
     displayedCourses,

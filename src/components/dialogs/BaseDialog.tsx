@@ -62,7 +62,7 @@ const BaseDialog: React.FC<BaseDialogProps> = ({
                 onClick={onClose}
                 variant="outline"
               >
-                {t('cancel')}
+                {t('close')}
               </Button>
               <div className="flex items-center gap-2">{footerActions}</div>
             </div>
@@ -91,7 +91,7 @@ const BaseDialog: React.FC<BaseDialogProps> = ({
               onClick={onClose}
               variant="outline"
             >
-              {t('cancel')}
+              {t('close')}
             </Button>
             <div className="flex items-center gap-2">{footerActions}</div>
           </div>

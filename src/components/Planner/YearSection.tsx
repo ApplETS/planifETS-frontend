@@ -61,7 +61,7 @@ const YearSection: React.FC<YearSectionProps> = ({
           {t('year-with-value', { value: year })}
         </h2>
         <div
-          className="grid grid-cols-1 gap-3 md:grid-cols-3"
+          className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))] gap-3"
           data-testid={`year-${year}-sessions`}
           data-print-grid="sessions"
         >

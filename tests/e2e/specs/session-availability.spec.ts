@@ -86,13 +86,19 @@ test.describe('Session Availability Icon', () => {
 
   test('should not show info icon for old sessions', async ({ page }) => {
     const course = TEST_COURSES.LOG460;
+    const session = page.locator(
+      selectors.sessionDropTarget(course.sessionTerm, course.sessionYear),
+    );
 
-    // Add a course to an old session
-    await searchCourseInSidebar(page, course.code);
-    await addCourseToSession(page, course);
+    await session.getByRole('button', { name: 'Add course' }).click();
+    await session.getByPlaceholder('Search for a course').fill('LOG');
+    await session.getByRole('option').filter({ hasText: course.code }).click();
 
-    // Check that the info icon is not visible
-    const infoIcon = page.locator(selectors.infoIcon(course.sessionTerm, course.sessionYear));
+    await expect(page.locator(selectors.courseInSession(course.code))).toBeVisible();
+
+    const infoIcon = session.locator(
+      selectors.infoIcon(course.sessionTerm, course.sessionYear),
+    );
 
     await expect(infoIcon).toBeHidden();
   });

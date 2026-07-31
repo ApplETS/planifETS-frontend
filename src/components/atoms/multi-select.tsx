@@ -6,6 +6,7 @@ import * as React from 'react';
 
 import { Badge } from '@/shadcn/ui/badge';
 import { Command, CommandGroup, CommandItem, CommandList } from '@/shadcn/ui/command';
+import { normalizeSearchText } from '@/utils/stringUtil';
 
 type Option = {
   value: number;
@@ -73,6 +74,8 @@ export function MultiSelect({
   return (
     <Command
       onKeyDown={handleKeyDown}
+      filter={(value, search) =>
+        normalizeSearchText(value).includes(normalizeSearchText(search)) ? 1 : 0}
       className="overflow-visible bg-transparent select-none"
     >
       <div
@@ -147,14 +150,13 @@ export function MultiSelect({
         <CommandList>
           {open && selectables.length > 0
             ? (
-              <div
-                className="absolute top-0 z-50 w-full overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-md outline-none animate-in"
-              >
+              <div className="absolute top-0 z-50 w-full overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-md outline-none animate-in">
                 <CommandGroup className="max-h-80 overflow-auto">
                   {selectables.map((option) => (
                     <CommandItem
                       role="option"
                       key={option.value}
+                      value={option.label}
                       className="px-4 py-2.5"
                       onMouseDown={(e) => {
                         e.preventDefault();

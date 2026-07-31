@@ -76,7 +76,7 @@ export default function Session({
   return (
     <div
       ref={dropRef}
-      className={`group rounded-lg border-2 p-4 transition-all duration-300 bg-muted shadow-sm ${getSessionBorderColor()}`}
+      className={`group rounded-lg border p-4 transition-all duration-300 bg-muted shadow-sm ${getSessionBorderColor()}`}
       data-testid={`session-${sessionTerm}-${sessionYear}-drop-target`}
       data-print-card="session"
       style={{ position: 'relative', zIndex: isOver ? 10 : undefined }}

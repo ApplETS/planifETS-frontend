@@ -7,6 +7,16 @@ export type RecommendationCardData = {
   course?: Course | null;
 };
 
+export type ResolvedRecommendationCardData = RecommendationCardData & {
+  course: Course & { description: string };
+};
+
+export function hasCourseDescription(
+  card: RecommendationCardData,
+): card is ResolvedRecommendationCardData {
+  return Boolean(card.course?.description?.trim());
+}
+
 export function buildRecommendationCards(
   courses: ChatbotCourseSuggestionDto[],
   fallbackReason?: string,

@@ -89,7 +89,6 @@ class ApiClient {
     }
 
     if (error) {
-      console.error('API Error:', error);
       throw error;
     }
 

@@ -11,6 +11,15 @@ export default function ChatMessage({
 }: ChatMessageProps) {
   const isUser = message.role === 'user';
 
+  if (message.isLoading) {
+    return (
+      <output className="px-1 text-sm text-muted-foreground">
+        {message.content}
+        <span aria-hidden="true">...</span>
+      </output>
+    );
+  }
+
   return (
     <div
       className={`flex ${

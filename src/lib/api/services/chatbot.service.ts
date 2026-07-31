@@ -5,6 +5,7 @@ import type {
   ChatbotRecommendResponseDto,
   ChatbotRecommendStreamHandlers,
   ChatbotRecommendStreamRequestDto,
+  ChatbotStreamStatus,
 } from '../types';
 import type { ApiResponse } from '@/types/api';
 import { apiClient } from '../client';
@@ -74,6 +75,10 @@ function extractCourses(data: string): ChatbotCourseSuggestionDto[] | null {
   return null;
 }
 
+function extractStatus(data: string): ChatbotStreamStatus | null {
+  return data === 'SEARCHING_EMBEDDINGS' || data === 'THINKING_AI' ? data : null;
+}
+
 export const chatbotService = {
   async recommend(
     request: ChatbotRecommendRequestDto,
@@ -94,6 +99,18 @@ export const chatbotService = {
     const close = () => {
       eventSource.close();
     };
+
+    eventSource.addEventListener('status', (event) => {
+      const status = extractStatus((event as MessageEvent<string>).data);
+
+      if (!status) {
+        close();
+        handlers.onError(new Error('Received an invalid chatbot status event.'));
+        return;
+      }
+
+      handlers.onStatus(status);
+    });
 
     eventSource.addEventListener('reason', (event) => {
       const reason = extractReason((event as MessageEvent<string>).data);

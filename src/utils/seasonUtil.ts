@@ -43,11 +43,11 @@ export const getSeasonBorder = (sessionTerm: string | TermEnum): string => {
 
   switch (season) {
     case TermEnum.H:
-      return 'border-2 border-blue-500 dark:border-blue-400';
+      return 'border-blue-500 dark:border-blue-400';
     case TermEnum.E:
-      return 'border-2 border-yellow-500 dark:border-yellow-400';
+      return 'border-yellow-500 dark:border-yellow-400';
     case TermEnum.A:
-      return 'border-2 border-orange-500 dark:border-orange-400';
+      return 'border-orange-500 dark:border-orange-400';
     default:
       return 'border border-border';
   }

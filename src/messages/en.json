@@ -10,6 +10,7 @@
     "theme": "Theme",
     "loading": "Loading...",
     "cancel": "Cancel",
+    "close": "Close",
     "add-year": "Add Year",
     "export-data": "Export Data",
     "export-data-description": "Save your planner as a PDF.",
@@ -80,10 +81,13 @@
     "buttonLabel": "Assistant PlanifETS",
     "beta": "BETA",
     "inputPlaceholder": "Write a message...",
-    "initialMessage": "Hello 👋 I'm the PlanifETS assistant. How can I help you?",
+    "sendButtonAriaLabel": "Send message",
+    "initialMessage": "Hello 👋 I can recommend ÉTS courses based on your interests, goals, or topics you want to explore. What kind of courses are you interested in?",
     "mockResponse": "This is a mocked response from the PlanifETS chatbot.",
     "closeButtonAriaLabel": "Close chatbot",
-    "courseDetails": "Course details"
+    "courseDetails": "Course details",
+    "searchingCourses": "Searching courses",
+    "thinkingAi": "Thinking"
   },
   "CourseDetailsPage": {
     "courseOffering": "Offerings",

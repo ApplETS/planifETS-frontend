@@ -10,6 +10,7 @@
     "theme": "Thème",
     "loading": "Chargement...",
     "cancel": "Annuler",
+    "close": "Fermer",
     "add-year": "Ajouter une année",
     "export-data": "Exporter les données",
     "export-data-description": "Enregistrer votre planification en PDF.",
@@ -80,10 +81,13 @@
     "buttonLabel": "Assistant PlanifETS",
     "beta": "BÊTA",
     "inputPlaceholder": "Écrire un message...",
-    "initialMessage": "Bonjour 👋 Je suis l'assistant PlanifETS. Comment puis-je vous aider ?",
+    "sendButtonAriaLabel": "Envoyer le message",
+    "initialMessage": "Bonjour 👋 Je peux te recommander des cours de l'ÉTS selon tes intérêts, tes objectifs ou les sujets que tu veux explorer. Quel genre de cours t'intéresse ?",
     "mockResponse": "Ceci est une réponse mockée du chatbot PlanifETS.",
     "closeButtonAriaLabel": "Fermer le chatbot",
-    "courseDetails": "Détails du cours"
+    "courseDetails": "Détails du cours",
+    "searchingCourses": "Recherche de cours",
+    "thinkingAi": "Réflexion en cours"
   },
   "CourseDetailsPage": {
     "courseOffering": "Disponibilité",

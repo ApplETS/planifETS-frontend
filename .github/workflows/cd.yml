@@ -102,7 +102,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             NEXT_PUBLIC_APP_GIT_SHORT_SHA=${{ env.SHORT_SHA }}
-            NEXT_PUBLIC_API_BASE_URL=https://planifets.dev.cedille.club
+            NEXT_PUBLIC_API_BASE_URL=https://planifets.${{ matrix.environment == 'prod' && 'prodv2' || matrix.environment }}.cedille.club
             NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
             NEXT_PUBLIC_POSTHOG_UI_HOST=https://us.posthog.com
             NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=${{ secrets.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN }}

@@ -1,5 +1,6 @@
 export type ChatbotRecommendRequestDto = {
   prompt: string;
+  programIds?: number[];
 };
 
 export type ChatbotRecommendStreamRequestDto = {
@@ -19,10 +20,14 @@ export type ChatbotRecommendResponseDto = {
   explanation: string;
 };
 
+export type ChatbotRecommendStreamCoursesPayload =
+  | ChatbotCourseSuggestionDto[]
+  | ChatbotRecommendResponseDto;
+
 export type ChatbotRecommendStreamHandlers = {
   onStatus: (status: ChatbotStreamStatus) => void;
   onReason: (reason: string) => void;
-  onCourses: (courses: ChatbotCourseSuggestionDto[]) => void;
+  onCourses: (payload: ChatbotRecommendStreamCoursesPayload) => void;
   onError: (error: Error) => void;
 };
 

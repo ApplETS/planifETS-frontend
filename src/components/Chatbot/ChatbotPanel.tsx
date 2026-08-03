@@ -2,7 +2,11 @@
 
 import type { ResolvedRecommendationCardData } from './recommendations';
 import type { ChatMessage as ChatMessageType } from './types';
-import type { ChatbotCourseSuggestionDto, ChatbotStreamStatus } from '@/api/types';
+import type {
+  ChatbotCourseSuggestionDto,
+  ChatbotRecommendStreamCoursesPayload,
+  ChatbotStreamStatus,
+} from '@/api/types';
 
 import { Sparkles, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -162,7 +166,10 @@ export default function ChatbotPanel({
     };
 
     const runLegacyRecommendation = async () => {
-      const response = await chatbotService.recommend({ prompt: content });
+      const response = await chatbotService.recommend({
+        prompt: content,
+        programIds: selectedProgramIds,
+      });
       const resolvedCourses = await resolveSuggestedCourses(
         response.data.courses,
         response.data.explanation,
@@ -196,11 +203,17 @@ export default function ChatbotPanel({
               reasoning += reasonChunk;
               updateAssistantMessage(reasoning);
             },
-            onCourses: async (courses) => {
+            onCourses: async (payload: ChatbotRecommendStreamCoursesPayload) => {
               streamRef.current = null;
 
               try {
-                const fallbackReason = reasoning || '...';
+                const courses = Array.isArray(payload)
+                  ? payload
+                  : payload.courses;
+                const payloadExplanation = Array.isArray(payload)
+                  ? ''
+                  : payload.explanation;
+                const fallbackReason = reasoning || payloadExplanation || '...';
                 const resolvedCourses = await resolveSuggestedCourses(courses, fallbackReason);
 
                 setSuggestedCourses(resolvedCourses);

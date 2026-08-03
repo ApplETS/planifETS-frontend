@@ -20,6 +20,9 @@ export const API_ENDPOINTS = {
     RECOMMEND: '/api/chatbot/recommend',
     RECOMMEND_STREAM: '/api/chatbot/recommend/stream',
   },
+  RETRIEVAL: {
+    QUERY_COURSES: '/api/retrieval/query-courses',
+  },
   SESSIONS: {
     LATEST_AVAILABLE: () => `/api/sessions/latest-available`,
   },

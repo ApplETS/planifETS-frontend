@@ -29,6 +29,9 @@ type ChatbotPanelProps = {
   onClose: () => void;
 };
 
+const BACKEND_LLM_EXHAUSTED_MESSAGE
+  = 'All LLM providers have been exhausted without a successful response.';
+
 function updateLoadingAssistantMessage(
   messages: ChatMessageType[],
   loadingMessageId: string,
@@ -119,7 +122,9 @@ export default function ChatbotPanel({
 
     return statusCode === 500
       && typeof message === 'string'
-      && message.includes(t('llmExhaustedErrorMessage'));
+      && (
+        message.includes(BACKEND_LLM_EXHAUSTED_MESSAGE)
+      );
   };
 
   const summarizeCourseDescription = (description: string) => {

@@ -29,11 +29,6 @@ type ChatbotPanelProps = {
   onClose: () => void;
 };
 
-const LLM_EXHAUSTED_MESSAGE
-  = 'All LLM providers have been exhausted without a successful response.';
-const RETRIEVAL_FALLBACK_MESSAGE
-  = 'I\'m currently unable to generate a conversational response. Here are the most relevant courses matching your request.';
-
 function updateLoadingAssistantMessage(
   messages: ChatMessageType[],
   loadingMessageId: string,
@@ -124,7 +119,7 @@ export default function ChatbotPanel({
 
     return statusCode === 500
       && typeof message === 'string'
-      && message.includes(LLM_EXHAUSTED_MESSAGE);
+      && message.includes(t('llmExhaustedErrorMessage'));
   };
 
   const summarizeCourseDescription = (description: string) => {
@@ -174,7 +169,15 @@ export default function ChatbotPanel({
     };
 
     const handleFailure = (error: unknown) => {
-      const errorMessage = handleApiError(error);
+      const rawErrorMessage = handleApiError(error);
+      const streamErrorMap: Record<string, string> = {
+        'Received an invalid chatbot status event.': t('invalidStatusEventError'),
+        'Received an invalid chatbot reasoning event.': t('invalidReasoningEventError'),
+        'Received an invalid chatbot courses event.': t('invalidCoursesEventError'),
+        'The recommendation stream closed before returning courses.': t('streamClosedBeforeCoursesError'),
+        'Unable to receive chatbot recommendations.': t('unableToReceiveRecommendationsError'),
+      };
+      const errorMessage = streamErrorMap[rawErrorMessage] ?? rawErrorMessage;
 
       showError(errorMessage);
       setSuggestedCourses([]);
@@ -212,11 +215,11 @@ export default function ChatbotPanel({
           .map((course) => ({ code: course.code }));
         const resolvedCourses = await resolveSuggestedCourses(
           retrievalSuggestions,
-          RETRIEVAL_FALLBACK_MESSAGE,
+          t('retrievalFallbackMessage'),
         );
 
         setSuggestedCourses(resolvedCourses);
-        updateAssistantMessage(RETRIEVAL_FALLBACK_MESSAGE);
+        updateAssistantMessage(t('retrievalFallbackMessage'));
         setLoading(false);
       }
     };
@@ -248,7 +251,7 @@ export default function ChatbotPanel({
               streamRef.current = null;
 
               try {
-                const fallbackReason = reasoning || '...';
+                const fallbackReason = reasoning || t('thinkingAi');
                 const resolvedCourses = await resolveSuggestedCourses(courses, fallbackReason);
 
                 setSuggestedCourses(resolvedCourses);
@@ -351,7 +354,7 @@ export default function ChatbotPanel({
         {suggestedCourses.length > 0 && (
           <div className="space-y-3">
             <div className="text-sm font-semibold text-foreground">
-              Cours recommandés
+              {t('recommendedCourses')}
             </div>
             {suggestedCourses.map((course) => (
               <div key={course.code} className="rounded-lg border border-violet-200/70 bg-background/80 shadow-sm dark:border-border">

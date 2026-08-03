@@ -20,14 +20,10 @@ export type ChatbotRecommendResponseDto = {
   explanation: string;
 };
 
-export type ChatbotRecommendStreamCoursesPayload =
-  | ChatbotCourseSuggestionDto[]
-  | ChatbotRecommendResponseDto;
-
 export type ChatbotRecommendStreamHandlers = {
   onStatus: (status: ChatbotStreamStatus) => void;
   onReason: (reason: string) => void;
-  onCourses: (payload: ChatbotRecommendStreamCoursesPayload) => void;
+  onCourses: (courses: ChatbotCourseSuggestionDto[]) => void;
   onError: (error: Error) => void;
 };
 

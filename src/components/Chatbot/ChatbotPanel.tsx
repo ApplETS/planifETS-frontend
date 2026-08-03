@@ -4,7 +4,6 @@ import type { ResolvedRecommendationCardData } from './recommendations';
 import type { ChatMessage as ChatMessageType } from './types';
 import type {
   ChatbotCourseSuggestionDto,
-  ChatbotRecommendStreamCoursesPayload,
   ChatbotStreamStatus,
 } from '@/api/types';
 
@@ -29,6 +28,11 @@ import { buildRecommendationCards, hasCourseDescription } from './recommendation
 type ChatbotPanelProps = {
   onClose: () => void;
 };
+
+const LLM_EXHAUSTED_MESSAGE
+  = 'All LLM providers have been exhausted without a successful response.';
+const RETRIEVAL_FALLBACK_MESSAGE
+  = 'I\'m currently unable to generate a conversational response. Here are the most relevant courses matching your request.';
 
 function updateLoadingAssistantMessage(
   messages: ChatMessageType[],
@@ -110,6 +114,19 @@ export default function ChatbotPanel({
     return resolvedCards.filter(hasCourseDescription);
   };
 
+  const isLlmExhaustedError = (error: unknown) => {
+    if (typeof error !== 'object' || error === null) {
+      return false;
+    }
+
+    const statusCode = 'statusCode' in error ? (error as { statusCode?: unknown }).statusCode : undefined;
+    const message = 'message' in error ? (error as { message?: unknown }).message : undefined;
+
+    return statusCode === 500
+      && typeof message === 'string'
+      && message.includes(LLM_EXHAUSTED_MESSAGE);
+  };
+
   const summarizeCourseDescription = (description: string) => {
     const normalized = description.replace(/\s+/g, ' ').trim();
 
@@ -166,18 +183,42 @@ export default function ChatbotPanel({
     };
 
     const runLegacyRecommendation = async () => {
-      const response = await chatbotService.recommend({
-        prompt: content,
-        programIds: selectedProgramIds,
-      });
-      const resolvedCourses = await resolveSuggestedCourses(
-        response.data.courses,
-        response.data.explanation,
-      );
+      try {
+        const response = await chatbotService.recommend({
+          prompt: content,
+          programIds: selectedProgramIds,
+        });
+        const resolvedCourses = await resolveSuggestedCourses(
+          response.data.courses,
+          response.data.explanation,
+        );
 
-      setSuggestedCourses(resolvedCourses);
-      updateAssistantMessage(response.data.explanation);
-      setLoading(false);
+        setSuggestedCourses(resolvedCourses);
+        updateAssistantMessage(response.data.explanation);
+        setLoading(false);
+      } catch (error) {
+        if (!isLlmExhaustedError(error)) {
+          throw error;
+        }
+
+        const retrievalResponse = await courseService.retrieveCourses({
+          query: content,
+          context: selectedProgramIds.length > 0
+            ? { programIds: selectedProgramIds }
+            : undefined,
+        });
+        const retrievalSuggestions: ChatbotCourseSuggestionDto[] = retrievalResponse.data.courses
+          .slice(0, 10)
+          .map((course) => ({ code: course.code }));
+        const resolvedCourses = await resolveSuggestedCourses(
+          retrievalSuggestions,
+          RETRIEVAL_FALLBACK_MESSAGE,
+        );
+
+        setSuggestedCourses(resolvedCourses);
+        updateAssistantMessage(RETRIEVAL_FALLBACK_MESSAGE);
+        setLoading(false);
+      }
     };
 
     try {
@@ -203,17 +244,11 @@ export default function ChatbotPanel({
               reasoning += reasonChunk;
               updateAssistantMessage(reasoning);
             },
-            onCourses: async (payload: ChatbotRecommendStreamCoursesPayload) => {
+            onCourses: async (courses) => {
               streamRef.current = null;
 
               try {
-                const courses = Array.isArray(payload)
-                  ? payload
-                  : payload.courses;
-                const payloadExplanation = Array.isArray(payload)
-                  ? ''
-                  : payload.explanation;
-                const fallbackReason = reasoning || payloadExplanation || '...';
+                const fallbackReason = reasoning || '...';
                 const resolvedCourses = await resolveSuggestedCourses(courses, fallbackReason);
 
                 setSuggestedCourses(resolvedCourses);

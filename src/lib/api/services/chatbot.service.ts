@@ -58,8 +58,8 @@ function extractCourses(data: string): ChatbotRecommendStreamCoursesPayload | nu
   const payload = parseJsonPayload(data);
 
   if (
-    Array.isArray(payload) &&
-    payload.every((course) => typeof course === 'object' && course !== null)
+    Array.isArray(payload)
+    && payload.every((course) => typeof course === 'object' && course !== null)
   ) {
     return payload as ChatbotCourseSuggestionDto[];
   }
@@ -69,8 +69,8 @@ function extractCourses(data: string): ChatbotRecommendStreamCoursesPayload | nu
     const courses = typedPayload.courses;
 
     if (
-      Array.isArray(courses) &&
-      courses.every((course) => typeof course === 'object' && course !== null)
+      Array.isArray(courses)
+      && courses.every((course) => typeof course === 'object' && course !== null)
     ) {
       return {
         courses: courses as ChatbotCourseSuggestionDto[],
@@ -151,8 +151,8 @@ export const chatbotService = {
         return;
       }
 
-      const message =
-        eventSource.readyState === EventSource.CLOSED
+      const message
+        = eventSource.readyState === EventSource.CLOSED
           ? 'The recommendation stream closed before returning courses.'
           : 'Unable to receive chatbot recommendations.';
 

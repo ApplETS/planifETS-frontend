@@ -17,12 +17,15 @@ on:
         type: choice
         options:
           - staging
-          - dev
           - prod
       source_tag:
         description: Base immutable GHCR tag to promote (for example main-a1b2c3d). Defaults to the latest image for the target environment.
         required: false
         type: string
+
+concurrency:
+  group: cd-${{ github.event_name == 'workflow_dispatch' && github.run_id || github.ref }}
+  cancel-in-progress: true
 
 env:
   REGISTRY: ghcr.io
@@ -136,7 +139,9 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: type=raw,value=main-${{ env.SHORT_SHA }}-${{ matrix.environment }}
+          tags: |
+            type=raw,value=main-${{ env.SHORT_SHA }}-${{ matrix.environment }}
+            type=raw,value=dev,enable=${{ matrix.environment == 'dev' }}
 
       - name: Login to Registry
         uses: docker/login-action@v3
@@ -241,7 +246,6 @@ jobs:
 
           image="${REGISTRY}/${IMAGE_NAME}"
           case "${TARGET_ENVIRONMENT}" in
-            dev) target_tag=dev ;;
             staging) target_tag=staging ;;
             prod) target_tag=latest ;;
             *) echo "Unsupported environment: ${TARGET_ENVIRONMENT}" >&2; exit 1 ;;

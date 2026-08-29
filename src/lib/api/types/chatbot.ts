@@ -1,5 +1,6 @@
 export type ChatbotRecommendRequestDto = {
   prompt: string;
+  programIds?: number[];
 };
 
 export type ChatbotRecommendStreamRequestDto = {

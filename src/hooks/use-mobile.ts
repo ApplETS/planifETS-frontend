@@ -9,7 +9,7 @@ export function useIsMobile(mobileBreakpoint = 850) {
       setIsMobile(globalThis.innerWidth < mobileBreakpoint);
     };
     mql.addEventListener('change', onChange);
-    // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
+    // eslint-disable-next-line react/set-state-in-effect
     setIsMobile(globalThis.innerWidth < mobileBreakpoint);
     return () => mql.removeEventListener('change', onChange);
   }, [mobileBreakpoint]);

@@ -20,7 +20,7 @@ export type ProgramListDto = {
   programTitle: string;
 };
 
-export type CourseRequirementType = 'TRONC' | 'CONCE' | 'CONDI' | 'PROFI' | 'STAGE';
+type CourseRequirementType = 'TRONC' | 'CONCE' | 'CONDI' | 'PROFI' | 'STAGE';
 
 export type CourseAvailabilityDto = 'JOUR' | 'SOIR' | 'INTENSIF';
 
@@ -54,7 +54,7 @@ export type ProgramCourseDetailedDto = {
   unstructuredPrerequisite: string | null;
 };
 
-export type DetailedProgramCourseSessionDto = {
+type DetailedProgramCourseSessionDto = {
   trimester: SessionTrimesterDto;
   year: number;
 };
@@ -101,7 +101,7 @@ export type ProgramCoursesDto = {
   courses: ProgramCourseDetailedDto[];
 };
 
-export type ProgramCoursesErrorDto = {
+type ProgramCoursesErrorDto = {
   invalidProgramCodes: string[];
   invalidCourseIds?: number[];
 };

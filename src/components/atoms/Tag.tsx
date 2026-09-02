@@ -6,20 +6,20 @@ import { cva } from 'class-variance-authority';
 
 import { cn } from '@/shadcn/lib/utils';
 
-export type TagVariant =
-  | 'default'
-  | 'primary'
-  | 'secondary'
-  | 'credits'
-  | 'credits-subtle'
-  | 'duplicate'
-  | 'success'
-  | 'warning'
-  | 'danger'
-  | 'info'
-  | 'sessionDisabled'
-  | 'sessionAvailable'
-  | 'currentSession';
+export type TagVariant
+  = | 'default'
+    | 'primary'
+    | 'secondary'
+    | 'credits'
+    | 'credits-subtle'
+    | 'duplicate'
+    | 'success'
+    | 'warning'
+    | 'danger'
+    | 'info'
+    | 'sessionDisabled'
+    | 'sessionAvailable'
+    | 'currentSession';
 
 const tagVariants = cva(
   'inline-flex items-center justify-center rounded-md text-xs font-medium select-none',
@@ -51,8 +51,8 @@ const tagVariants = cva(
   },
 );
 
-type TagProps = React.HTMLAttributes<HTMLSpanElement> &
-  VariantProps<typeof tagVariants> & {
+type TagProps = React.HTMLAttributes<HTMLSpanElement>
+  & VariantProps<typeof tagVariants> & {
     children: ReactNode;
   };
 

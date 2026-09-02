@@ -20,7 +20,7 @@ export function useProgramCoursesApi(programIds: number[]) {
     }
     previousProgramIds.current = currentProgramIds;
     execute();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react/exhaustive-deps
   }, [programIds]);
 
   return { data, loading, error, reset };

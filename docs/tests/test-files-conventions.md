@@ -3,7 +3,7 @@
 - `*.test.ts` (under `tests/unit/`): unit/component tests (Vitest)
 - `*.spec.ts` / `*.e2e.ts` (under `tests/e2e/specs/`): end-to-end tests (Playwright)
 
-# Folder structure
+## Folder structure
 
 E2E tests live under `tests/e2e`:
 
@@ -12,7 +12,7 @@ E2E tests live under `tests/e2e`:
 
 Shared static data lives under `tests/assets/`, notably `selectors.ts` for `data-testid` lookups.
 
-# Test Suites
+## Test Suites
 
 - `yarn test`: unit tests (Vitest)
 - `yarn test:e2e`: Playwright end-to-end tests

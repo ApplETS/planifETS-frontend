@@ -13,7 +13,7 @@ export function registerProgramRoutes(page: Page) {
   // /programs
   page.route('**/programs', (route: Route) => {
     const url = route.request().url();
-    if (url.match(/\/programs(\?|$)/)) {
+    if (/\/programs(?:\?|$)/.test(url)) {
       route.fulfill(jsonResponse(200, PROGRAMS));
       return;
     }

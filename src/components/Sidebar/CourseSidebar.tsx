@@ -37,7 +37,7 @@ export default function CourseSidebar() {
     if (isGlobalSearchActive) {
       clearSearch();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react/exhaustive-deps
   }, [searchQuery]);
 
   // Auto-clear global search when switching to favorites
@@ -45,7 +45,7 @@ export default function CourseSidebar() {
     if (activeTab === FAVORITE_TAB_INDEX && isGlobalSearchActive) {
       clearSearch();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react/exhaustive-deps
   }, [activeTab]);
 
   const handleTabChange = (val: string) => {

@@ -6,12 +6,12 @@ export enum DragType {
   COURSE_BOX = 'COURSE_BOX',
 }
 
-export type DraggedCourseCard = {
+type DraggedCourseCard = {
   type: DragType.COURSE_CARD;
   course: Course;
 };
 
-export type DraggedCourseBox = {
+type DraggedCourseBox = {
   type: DragType.COURSE_BOX;
   courseId: number;
   course: Course;

@@ -90,10 +90,9 @@ test.describe('Global Course Search', () => {
     // Verify search input was cleared and course count matches initial
     await expect(searchInput).toHaveValue('');
 
-    const finalCourseCount = await page.locator(selectors.courseCardItem).count();
+    const finalCourseCount = page.locator(selectors.courseCardItem);
 
-    expect(finalCourseCount).toBeGreaterThan(0);
-    expect(finalCourseCount).toBe(initialCourseCount);
+    await expect(finalCourseCount).toHaveCount(initialCourseCount);
   });
 
   test('does not show global search link on favorites tab', async ({ page }) => {

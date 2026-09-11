@@ -1,4 +1,3 @@
-/* eslint-disable react/no-context-provider */
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import * as React from 'react';
 

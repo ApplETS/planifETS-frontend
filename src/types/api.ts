@@ -11,7 +11,7 @@ export type ApiResponse<T> = {
 
 type BackendApiMessage = string | string[] | Record<string, unknown>;
 
-export type BackendErrorDto = {
+type BackendErrorDto = {
   statusCode: number;
   timestamp: string; // ISO string
   path: string;

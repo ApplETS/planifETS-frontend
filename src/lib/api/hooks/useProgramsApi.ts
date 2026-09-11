@@ -18,7 +18,7 @@ export function useProgramsApi() {
 
   useEffect(() => {
     execute();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react/exhaustive-deps
   }, []);
 
   return { data, loading, error, reset };

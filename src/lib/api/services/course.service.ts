@@ -2,6 +2,8 @@ import type {
   BasicCourseDto,
   CourseSearchParams,
   DetailedProgramCourseDto,
+  RetrieveCoursesRequestDto,
+  RetrieveCoursesResponseDto,
   SearchCoursesDto,
 } from '../types';
 import type { ApiResponse } from '@/types/api';
@@ -28,7 +30,9 @@ export const courseService = {
    * @param params - Search parameters including query, programCodes, limit, and offset
    * @returns Paginated search results with courses, total count, and hasMore flag
    */
-  async searchCourses(params: CourseSearchParams): Promise<ApiResponse<SearchCoursesDto>> {
+  async searchCourses(
+    params: CourseSearchParams,
+  ): Promise<ApiResponse<SearchCoursesDto>> {
     const queryParams = new URLSearchParams();
 
     queryParams.append('query', params.query);
@@ -70,5 +74,14 @@ export const courseService = {
 
   async getCourseById(id: number): Promise<ApiResponse<BasicCourseDto>> {
     return apiClient.get<BasicCourseDto>(API_ENDPOINTS.COURSES.BY_ID(id));
+  },
+
+  async retrieveCourses(
+    request: RetrieveCoursesRequestDto,
+  ): Promise<ApiResponse<RetrieveCoursesResponseDto>> {
+    return apiClient.post<RetrieveCoursesResponseDto>(
+      API_ENDPOINTS.RETRIEVAL.QUERY_COURSES,
+      request,
+    );
   },
 };

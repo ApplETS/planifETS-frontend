@@ -86,8 +86,16 @@
     "mockResponse": "Ceci est une réponse mockée du chatbot PlanifETS.",
     "closeButtonAriaLabel": "Fermer le chatbot",
     "courseDetails": "Détails du cours",
+    "recommendedCourses": "Cours recommandés",
     "searchingCourses": "Recherche de cours",
-    "thinkingAi": "Réflexion en cours"
+    "thinkingAi": "Réflexion en cours",
+    "retrievalFallbackMessage": "Je ne peux pas générer une réponse conversationnelle pour le moment. Voici les cours les plus pertinents correspondant à ta demande.",
+    "llmExhaustedErrorMessage": "Tous les fournisseurs de LLM ont été épuisés sans qu'une réponse valide puisse être générée.",
+    "invalidStatusEventError": "Un événement de statut du chatbot invalide a été reçu.",
+    "invalidReasoningEventError": "Un événement de raisonnement du chatbot invalide a été reçu.",
+    "invalidCoursesEventError": "Un événement de cours du chatbot invalide a été reçu.",
+    "streamClosedBeforeCoursesError": "Le flux de recommandations s'est fermé avant de retourner des cours.",
+    "unableToReceiveRecommendationsError": "Impossible de recevoir les recommandations du chatbot."
   },
   "CourseDetailsPage": {
     "courseOffering": "Disponibilité",

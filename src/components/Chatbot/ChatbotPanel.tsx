@@ -2,7 +2,10 @@
 
 import type { ResolvedRecommendationCardData } from './recommendations';
 import type { ChatMessage as ChatMessageType } from './types';
-import type { ChatbotCourseSuggestionDto, ChatbotStreamStatus } from '@/api/types';
+import type {
+  ChatbotCourseSuggestionDto,
+  ChatbotStreamStatus,
+} from '@/api/types';
 
 import { Sparkles, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -25,6 +28,9 @@ import { buildRecommendationCards, hasCourseDescription } from './recommendation
 type ChatbotPanelProps = {
   onClose: () => void;
 };
+
+const BACKEND_LLM_EXHAUSTED_MESSAGE
+  = 'All LLM providers have been exhausted without a successful response.';
 
 function updateLoadingAssistantMessage(
   messages: ChatMessageType[],
@@ -106,6 +112,21 @@ export default function ChatbotPanel({
     return resolvedCards.filter(hasCourseDescription);
   };
 
+  const isLlmExhaustedError = (error: unknown) => {
+    if (typeof error !== 'object' || error === null) {
+      return false;
+    }
+
+    const statusCode = 'statusCode' in error ? (error as { statusCode?: unknown }).statusCode : undefined;
+    const message = 'message' in error ? (error as { message?: unknown }).message : undefined;
+
+    return statusCode === 500
+      && typeof message === 'string'
+      && (
+        message.includes(BACKEND_LLM_EXHAUSTED_MESSAGE)
+      );
+  };
+
   const summarizeCourseDescription = (description: string) => {
     const normalized = description.replace(/\s+/g, ' ').trim();
 
@@ -153,7 +174,15 @@ export default function ChatbotPanel({
     };
 
     const handleFailure = (error: unknown) => {
-      const errorMessage = handleApiError(error);
+      const rawErrorMessage = handleApiError(error);
+      const streamErrorMap: Record<string, string> = {
+        'Received an invalid chatbot status event.': t('invalidStatusEventError'),
+        'Received an invalid chatbot reasoning event.': t('invalidReasoningEventError'),
+        'Received an invalid chatbot courses event.': t('invalidCoursesEventError'),
+        'The recommendation stream closed before returning courses.': t('streamClosedBeforeCoursesError'),
+        'Unable to receive chatbot recommendations.': t('unableToReceiveRecommendationsError'),
+      };
+      const errorMessage = streamErrorMap[rawErrorMessage] ?? rawErrorMessage;
 
       showError(errorMessage);
       setSuggestedCourses([]);
@@ -162,15 +191,42 @@ export default function ChatbotPanel({
     };
 
     const runLegacyRecommendation = async () => {
-      const response = await chatbotService.recommend({ prompt: content });
-      const resolvedCourses = await resolveSuggestedCourses(
-        response.data.courses,
-        response.data.explanation,
-      );
+      try {
+        const response = await chatbotService.recommend({
+          prompt: content,
+          programIds: selectedProgramIds,
+        });
+        const resolvedCourses = await resolveSuggestedCourses(
+          response.data.courses,
+          response.data.explanation,
+        );
 
-      setSuggestedCourses(resolvedCourses);
-      updateAssistantMessage(response.data.explanation);
-      setLoading(false);
+        setSuggestedCourses(resolvedCourses);
+        updateAssistantMessage(response.data.explanation);
+        setLoading(false);
+      } catch (error) {
+        if (!isLlmExhaustedError(error)) {
+          throw error;
+        }
+
+        const retrievalResponse = await courseService.retrieveCourses({
+          query: content,
+          context: selectedProgramIds.length > 0
+            ? { programIds: selectedProgramIds }
+            : undefined,
+        });
+        const retrievalSuggestions: ChatbotCourseSuggestionDto[] = retrievalResponse.data.courses
+          .slice(0, 10)
+          .map((course) => ({ code: course.code }));
+        const resolvedCourses = await resolveSuggestedCourses(
+          retrievalSuggestions,
+          t('retrievalFallbackMessage'),
+        );
+
+        setSuggestedCourses(resolvedCourses);
+        updateAssistantMessage(t('retrievalFallbackMessage'));
+        setLoading(false);
+      }
     };
 
     try {
@@ -200,7 +256,7 @@ export default function ChatbotPanel({
               streamRef.current = null;
 
               try {
-                const fallbackReason = reasoning || '...';
+                const fallbackReason = reasoning || t('thinkingAi');
                 const resolvedCourses = await resolveSuggestedCourses(courses, fallbackReason);
 
                 setSuggestedCourses(resolvedCourses);
@@ -303,7 +359,7 @@ export default function ChatbotPanel({
         {suggestedCourses.length > 0 && (
           <div className="space-y-3">
             <div className="text-sm font-semibold text-foreground">
-              Cours recommandés
+              {t('recommendedCourses')}
             </div>
             {suggestedCourses.map((course) => (
               <div key={course.code} className="rounded-lg border border-violet-200/70 bg-background/80 shadow-sm dark:border-border">

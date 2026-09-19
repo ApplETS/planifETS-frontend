@@ -37,3 +37,24 @@ export type CourseSearchParams = {
   limit?: number;
   offset?: number;
 };
+
+export type RetrievalContextDto = {
+  programIds?: number[];
+};
+
+export type RetrievalCourseDto = {
+  code: string;
+  title: string;
+  description: string;
+  score: number;
+  prerequisite_codes: string[];
+};
+
+export type RetrieveCoursesRequestDto = {
+  query: string;
+  context?: RetrievalContextDto;
+};
+
+export type RetrieveCoursesResponseDto = {
+  courses: RetrievalCourseDto[];
+};

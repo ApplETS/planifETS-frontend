@@ -9,6 +9,7 @@ export type BasicCourseDto = {
   cycle?: number;
   createdAt: string;
   updatedAt: string;
+  sessionAvailability?: SessionAvailabilityDto[];
 };
 
 export type SearchCourseResult = {

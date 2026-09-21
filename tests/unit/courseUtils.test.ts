@@ -105,9 +105,12 @@ describe('courseUtils', () => {
       cycle: 1,
       createdAt: '2024-01-01T00:00:00.000Z',
       updatedAt: '2024-01-01T00:00:00.000Z',
+      sessionAvailability: [
+        { sessionCode: 'A2026', availability: ['JOUR', 'SOIR'] },
+      ],
     };
 
-    it('should map a BasicCourseDto to a Course with empty prerequisites and availability', () => {
+    it('should map a BasicCourseDto to a Course with session availability', () => {
       const result = mapBasicCourseToAppCourse(mockBasicCourse);
 
       expect(result).toEqual({
@@ -116,7 +119,7 @@ describe('courseUtils', () => {
         title: 'Logiciel sans programme',
         credits: 3,
         prerequisites: [],
-        availability: [],
+        availability: ['A2026'],
         type: null,
         typicalSessionIndex: null,
       });

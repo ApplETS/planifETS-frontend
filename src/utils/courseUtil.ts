@@ -44,7 +44,7 @@ export const mapBasicCourseToAppCourse = (apiCourse: BasicCourseDto): Course | n
     description: apiCourse.description,
     credits: apiCourse.credits ?? 0,
     prerequisites: [],
-    availability: [],
+    availability: apiCourse.sessionAvailability?.map((session) => session.sessionCode) ?? [],
     type: null,
     typicalSessionIndex: null,
   };

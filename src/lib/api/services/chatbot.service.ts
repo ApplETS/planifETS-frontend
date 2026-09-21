@@ -41,13 +41,9 @@ function extractReason(data: string): string | null {
   }
 
   if (payload && typeof payload === 'object') {
-    const candidate = [
-      'reason',
-      'text',
-      'content',
-      'message',
-      'delta',
-    ].find((key) => typeof (payload as Record<string, unknown>)[key] === 'string');
+    const candidate = ['reason', 'text', 'content', 'message', 'delta'].find(
+      (key) => typeof (payload as Record<string, unknown>)[key] === 'string',
+    );
 
     if (candidate) {
       return (payload as Record<string, string | undefined>)[candidate] ?? null;
@@ -60,14 +56,21 @@ function extractReason(data: string): string | null {
 function extractCourses(data: string): ChatbotCourseSuggestionDto[] | null {
   const payload = parseJsonPayload(data);
 
-  if (Array.isArray(payload) && payload.every((course) => typeof course === 'object' && course !== null)) {
+  if (
+    Array.isArray(payload)
+    && payload.every((course) => typeof course === 'object' && course !== null)
+  ) {
     return payload as ChatbotCourseSuggestionDto[];
   }
 
   if (payload && typeof payload === 'object') {
-    const courses = (payload as Record<string, unknown>).courses;
+    const typedPayload = payload as Record<string, unknown>;
+    const courses = typedPayload.courses;
 
-    if (Array.isArray(courses) && courses.every((course) => typeof course === 'object' && course !== null)) {
+    if (
+      Array.isArray(courses)
+      && courses.every((course) => typeof course === 'object' && course !== null)
+    ) {
       return courses as ChatbotCourseSuggestionDto[];
     }
   }
@@ -125,9 +128,9 @@ export const chatbotService = {
     });
 
     eventSource.addEventListener('courses', (event) => {
-      const courses = extractCourses((event as MessageEvent<string>).data);
+      const payload = extractCourses((event as MessageEvent<string>).data);
 
-      if (!courses) {
+      if (!payload) {
         close();
         handlers.onError(new Error('Received an invalid chatbot courses event.'));
         return;
@@ -135,7 +138,7 @@ export const chatbotService = {
 
       completed = true;
       close();
-      handlers.onCourses(courses);
+      handlers.onCourses(payload);
     });
 
     eventSource.onerror = () => {
@@ -143,9 +146,10 @@ export const chatbotService = {
         return;
       }
 
-      const message = eventSource.readyState === EventSource.CLOSED
-        ? 'The recommendation stream closed before returning courses.'
-        : 'Unable to receive chatbot recommendations.';
+      const message
+        = eventSource.readyState === EventSource.CLOSED
+          ? 'The recommendation stream closed before returning courses.'
+          : 'Unable to receive chatbot recommendations.';
 
       close();
       handlers.onError(new Error(message));

@@ -86,8 +86,16 @@
     "mockResponse": "This is a mocked response from the PlanifETS chatbot.",
     "closeButtonAriaLabel": "Close chatbot",
     "courseDetails": "Course details",
+    "recommendedCourses": "Recommended courses",
     "searchingCourses": "Searching courses",
-    "thinkingAi": "Thinking"
+    "thinkingAi": "Thinking",
+    "retrievalFallbackMessage": "I'm currently unable to generate a conversational response. Here are the most relevant courses matching your request.",
+    "llmExhaustedErrorMessage": "All LLM providers have been exhausted without a successful response.",
+    "invalidStatusEventError": "Received an invalid chatbot status event.",
+    "invalidReasoningEventError": "Received an invalid chatbot reasoning event.",
+    "invalidCoursesEventError": "Received an invalid chatbot courses event.",
+    "streamClosedBeforeCoursesError": "The recommendation stream closed before returning courses.",
+    "unableToReceiveRecommendationsError": "Unable to receive chatbot recommendations."
   },
   "CourseDetailsPage": {
     "courseOffering": "Offerings",

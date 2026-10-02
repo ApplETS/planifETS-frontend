@@ -39,11 +39,11 @@ export type CourseSearchParams = {
   offset?: number;
 };
 
-export type RetrievalContextDto = {
+type RetrievalContextDto = {
   programIds?: number[];
 };
 
-export type RetrievalCourseDto = {
+type RetrievalCourseDto = {
   code: string;
   title: string;
   description: string;

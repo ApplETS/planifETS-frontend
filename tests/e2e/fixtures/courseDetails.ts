@@ -95,11 +95,6 @@ export async function expectCourseMetadata(
   );
 }
 
-export async function expectProgramSelectionRequired(page: Page, description: string) {
-  await expect(page.getByTestId('course-details-code')).toHaveCount(0, TIMEOUT);
-  await expect(page.getByText(description).last()).toBeVisible(TIMEOUT);
-}
-
 export async function expectSelectedCourse(
   page: Page,
   { courseCode, courseHeading, courseId, courseTitle, programLabel }: SelectedCourseAssertions,

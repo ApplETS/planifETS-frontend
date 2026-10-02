@@ -2,6 +2,7 @@
 
 import type {
   DetailedProgramCourseInstanceDto,
+  SessionAvailabilityDto,
 } from '@/api/types/program';
 import type { TimelineOffering } from '@/utils/offeringsUtil';
 import { useTranslations } from 'next-intl';
@@ -15,7 +16,8 @@ import {
 } from '@/utils/sessionUtil';
 
 type OfferingsSectionProps = {
-  courseOfferings: DetailedProgramCourseInstanceDto[];
+  courseOfferings?: DetailedProgramCourseInstanceDto[];
+  sessionAvailability?: SessionAvailabilityDto[];
 };
 
 // Declared at module scope so no components are created during render
@@ -67,11 +69,12 @@ const SeasonBadge = ({
 };
 
 const OfferingsSection = ({
-  courseOfferings,
+  courseOfferings = [],
+  sessionAvailability = [],
 }: OfferingsSectionProps) => {
   const t = useTranslations('CourseDetailsPage');
   const currentSessionKey = generateSessionKey(new Date().getFullYear(), getCurrentSession());
-  const timelineOfferings = buildFutureTimelineOfferings(courseOfferings);
+  const timelineOfferings = buildFutureTimelineOfferings(courseOfferings, sessionAvailability);
 
   if (timelineOfferings.length === 0) {
     return <p className="text-sm text-muted-foreground">{t('noOfferings')}</p>;

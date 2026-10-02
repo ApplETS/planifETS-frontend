@@ -1,12 +1,14 @@
 'use client';
 
-import type { DetailedProgramCourseDto } from '@/api/types/program';
+import type { BasicCourseDto } from '@/api/types/course';
+import type { DetailedProgramCourseDto, DetailedProgramCourseInfoDto } from '@/api/types/program';
 import { ExternalLink } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import * as React from 'react';
 
+import { useCourseByIdApi } from '@/api/hooks/useCourseByIdApi';
 import { useDetailedProgramCourseApi } from '@/api/hooks/useDetailedProgramCourseApi';
 import { useProgramsListByCourseIdApi } from '@/api/hooks/useProgramsListByCourseIdApi';
 import Tag from '@/components/atoms/Tag';
@@ -15,6 +17,7 @@ import OfferingsSection from '@/components/CourseDetails/sections/OfferingsSecti
 import PageSection from '@/components/CourseDetails/sections/PageSection';
 import PrerequisitesSection from '@/components/CourseDetails/sections/PrerequisitesSection';
 import { showError } from '@/lib/toast';
+import { cn } from '@/shadcn/lib/utils';
 import { useProgramStore } from '@/store/programStore';
 import {
   getActiveProgramId,
@@ -26,6 +29,7 @@ import { getETSCourseDetailsHref } from '@/utils/routesUtil';
 import CourseSearchSelect from './CourseSearchSelect';
 
 type TranslationFn = (key: string, values?: Record<string, unknown>) => string;
+type DisplayCourse = BasicCourseDto | DetailedProgramCourseInfoDto;
 
 const useInvalidCourseParamToast = (
   rawCourseId: string | undefined,
@@ -50,6 +54,7 @@ const useInvalidCourseParamToast = (
 };
 
 type CourseHeaderContentProps = {
+  course: DisplayCourse | null;
   courseDetails: DetailedProgramCourseDto | null;
   courseHeaderDescription: string;
   tCourseDetails: TranslationFn;
@@ -57,12 +62,13 @@ type CourseHeaderContentProps = {
 };
 
 const CourseHeaderContent = ({
+  course,
   courseDetails,
   courseHeaderDescription,
   tCourseDetails,
   tCommons,
 }: CourseHeaderContentProps) => {
-  if (!courseDetails) {
+  if (!course) {
     return (
       <p className="mt-1 max-w-3xl text-lg leading-tight text-muted-foreground">
         {courseHeaderDescription}
@@ -76,28 +82,28 @@ const CourseHeaderContent = ({
         className="text-2xl font-semibold tracking-tight text-foreground"
         data-testid="course-details-code"
       >
-        {courseDetails.course.code}
+        {course.code}
       </h2>
       <p
         className="mt-1 max-w-3xl text-lg leading-tight text-foreground"
         data-testid="course-details-title"
       >
-        {courseDetails.course.title}
+        {course.title}
       </p>
 
       <div className="mt-5 flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap gap-2">
           <Tag variant="credits">
-            {courseDetails.course.credits}
+            {course.credits}
             {' '}
             {tCommons('credits')}
           </Tag>
           <Tag variant="sessionAvailable">
             {tCourseDetails('cycle')}
             {' '}
-            {courseDetails.course.cycle}
+            {course.cycle}
           </Tag>
-          {courseDetails.type
+          {courseDetails?.type
             ? (
               <Tag variant="sessionAvailable">
                 {tCourseDetails('requirementType')}
@@ -106,7 +112,7 @@ const CourseHeaderContent = ({
               </Tag>
             )
             : null}
-          {courseDetails.typicalSessionIndex == null
+          {courseDetails?.typicalSessionIndex == null
             ? null
             : (
               <Tag variant="sessionAvailable">
@@ -116,7 +122,7 @@ const CourseHeaderContent = ({
         </div>
 
         <Link
-          href={getETSCourseDetailsHref(courseDetails.course.code)}
+          href={getETSCourseDetailsHref(course.code)}
           className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
           target="_blank"
           rel="noopener noreferrer"
@@ -130,19 +136,19 @@ const CourseHeaderContent = ({
 };
 
 type CourseContentSectionsProps = {
+  course: DisplayCourse | null;
   courseDetails: DetailedProgramCourseDto | null;
-  courseDetailsError: unknown;
-  courseDetailsLoading: boolean;
+  basicCourse: BasicCourseDto | null;
   tCourseDetails: TranslationFn;
 };
 
 const CourseContentSections = ({
+  course,
   courseDetails,
-  courseDetailsError,
-  courseDetailsLoading,
+  basicCourse,
   tCourseDetails,
 }: CourseContentSectionsProps) => {
-  if (courseDetailsLoading || courseDetailsError || !courseDetails) {
+  if (!course) {
     return null;
   }
 
@@ -151,20 +157,27 @@ const CourseContentSections = ({
       <div className="grid gap-6">
         <PageSection title={tCourseDetails('description')}>
           <p className="whitespace-pre-line text-sm leading-7">
-            {courseDetails.course.description || tCourseDetails('missingDescription')}
+            {course.description || tCourseDetails('missingDescription')}
           </p>
         </PageSection>
       </div>
 
-      <div className="grid gap-6">
-        <PageSection title={tCourseDetails('prerequisites')}>
-          <PrerequisitesSection courseDetails={courseDetails} />
-        </PageSection>
-      </div>
+      {courseDetails
+        ? (
+          <div className="grid gap-6">
+            <PageSection title={tCourseDetails('prerequisites')}>
+              <PrerequisitesSection courseDetails={courseDetails} />
+            </PageSection>
+          </div>
+        )
+        : null}
 
       <div className="grid gap-6 lg:col-span-2">
         <PageSection title={tCourseDetails('courseOffering')}>
-          <OfferingsSection courseOfferings={courseDetails.course.courseInstances} />
+          <OfferingsSection
+            courseOfferings={courseDetails?.course.courseInstances}
+            sessionAvailability={courseDetails ? undefined : basicCourse?.sessionAvailability}
+          />
         </PageSection>
       </div>
     </div>
@@ -210,10 +223,23 @@ const CourseDetailsPage = () => {
   );
 
   const {
-    data: courseDetails,
+    data: fetchedCourseDetails,
     error: courseDetailsError,
     loading: courseDetailsLoading,
   } = useDetailedProgramCourseApi(courseId, activeProgramId);
+  const courseDetails = fetchedCourseDetails?.courseId === courseId
+    && fetchedCourseDetails.programId === activeProgramId
+    ? fetchedCourseDetails
+    : null;
+  const {
+    data: fetchedBasicCourse,
+    loading: basicCourseLoading,
+    error: basicCourseError,
+  } = useCourseByIdApi(!isProgramsLoading && activeProgramId === null ? courseId : null);
+  const basicCourse = activeProgramId === null && fetchedBasicCourse?.id === courseId
+    ? fetchedBasicCourse
+    : null;
+  const displayCourse = courseDetails?.course ?? basicCourse;
 
   const handleProgramChange = (nextProgramId: string) => {
     setSelectedProgramId(Number.parseInt(nextProgramId, 10));
@@ -238,7 +264,7 @@ const CourseDetailsPage = () => {
     },
     tCourseDetails as TranslationFn,
   );
-  const showEmptyState = !hasSelectedCourse || showNoProgramsState;
+  const showEmptyState = !hasSelectedCourse || (showNoProgramsState && !basicCourse && !basicCourseLoading);
 
   return (
     <div className="px-4 py-8 sm:px-6 lg:px-8">
@@ -272,35 +298,42 @@ const CourseDetailsPage = () => {
           )
           : null}
 
-        {shouldRenderCourseSection
+        {(shouldRenderCourseSection || (showNoProgramsState && (basicCourse || basicCourseLoading)))
           ? (
             <section className="overflow-hidden rounded-xl border border-border/70 bg-background/95 shadow-sm backdrop-blur-sm">
-              <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_320px]">
-                <header className="border-b border-border/60 p-6 lg:border-b-0 lg:border-r">
+              <div className={cn('grid gap-0', hasPrograms && 'lg:grid-cols-[minmax(0,1fr)_320px]')}>
+                <header className={cn('p-6', hasPrograms && 'border-b border-border/60 lg:border-b-0 lg:border-r')}>
                   <CourseHeaderContent
+                    course={displayCourse}
                     courseDetails={courseDetails}
-                    courseHeaderDescription={courseHeaderDescription}
+                    courseHeaderDescription={activeProgramId === null && !basicCourseError
+                      ? tCourseDetails('loadingCourse')
+                      : basicCourseError ?? courseHeaderDescription}
                     tCourseDetails={tCourseDetails as TranslationFn}
                     tCommons={tCommons as TranslationFn}
                   />
                 </header>
 
-                <ProgramSelector
-                  availablePrograms={availablePrograms}
-                  selectedProgramId={activeProgramId}
-                  isLoading={isProgramsLoading}
-                  error={programsError}
-                  onProgramChange={handleProgramChange}
-                />
+                {hasPrograms
+                  ? (
+                    <ProgramSelector
+                      availablePrograms={availablePrograms}
+                      selectedProgramId={activeProgramId}
+                      isLoading={isProgramsLoading}
+                      error={programsError}
+                      onProgramChange={handleProgramChange}
+                    />
+                  )
+                  : null}
               </div>
             </section>
           )
           : null}
 
         <CourseContentSections
+          course={displayCourse}
           courseDetails={courseDetails}
-          courseDetailsError={courseDetailsError}
-          courseDetailsLoading={courseDetailsLoading}
+          basicCourse={basicCourse}
           tCourseDetails={tCourseDetails as TranslationFn}
         />
       </div>

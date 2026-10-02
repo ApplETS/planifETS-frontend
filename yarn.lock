@@ -1399,25 +1399,25 @@
   dependencies:
     playwright "1.62.1"
 
-"@posthog/browser-common@^0.6.1":
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/@posthog/browser-common/-/browser-common-0.6.1.tgz#38fc333bb0b4bb3efdb9ada81e9365e854d5b255"
-  integrity sha512-dhx4CFm9FnyfJYiEGFtH5HWvhDm/6zAUPUG+euDBO8rYE92fAoBtplmxoqe6E3RD49HyOIyDJv93iBwrcxxBrQ==
+"@posthog/browser-common@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@posthog/browser-common/-/browser-common-0.9.0.tgz#329c5de42123aaafa4953f2ebde6bbd4e44aabe1"
+  integrity sha512-EWoVzs1vVY7ihpn8yOjj3jyjriHUEEMVSBNL/TW3hk09fTriWRe76vJXrRg0G0yjTYxHmtlSkNn4mOV24ZEzzA==
   dependencies:
-    "@posthog/core" "^1.49.1"
-    "@posthog/types" "^1.407.0"
+    "@posthog/core" "^1.54.2"
+    "@posthog/types" "^1.412.1"
 
-"@posthog/core@^1.49.1":
-  version "1.49.1"
-  resolved "https://registry.yarnpkg.com/@posthog/core/-/core-1.49.1.tgz#25b17a024505d44cf90f2a300ab24c70d50adc51"
-  integrity sha512-jdZh85tG56OXLH881CVwBZyiXCPPaZasfYeWwm9kVUvxC/Rb+lz7wYN9GuqSEmNPJgVnK4v8wS0bCaFc3OmVEA==
+"@posthog/core@^1.54.2", "@posthog/core@^1.55.0", "@posthog/core@^1.55.1":
+  version "1.55.1"
+  resolved "https://registry.yarnpkg.com/@posthog/core/-/core-1.55.1.tgz#d0d794d113155ae7ecb8107d93ad02f877e5e3ce"
+  integrity sha512-S76bSbCHGVC8oQa1zyue6A6WzkNf1Ue4oRvfvBNLRnFM3UoWnpWnQ4T/4IzrIEtVCQYv1OI7gk8uL8/U6Tuu7w==
   dependencies:
-    "@posthog/types" "^1.407.0"
+    "@posthog/types" "^1.412.3"
 
-"@posthog/types@^1.407.0":
-  version "1.407.0"
-  resolved "https://registry.yarnpkg.com/@posthog/types/-/types-1.407.0.tgz#6917269f3c90eba5b5b75b63da3b18aa55925da0"
-  integrity sha512-7J/aFVi7JWFt/ekGVsMFvkTcADoE9MTNf1N9cpBSMUQ/SPLiBjbg386Fzk5OlgWG/u5OemBy4wlgD7YebqeppQ==
+"@posthog/types@^1.412.1", "@posthog/types@^1.412.2", "@posthog/types@^1.412.3":
+  version "1.412.3"
+  resolved "https://registry.yarnpkg.com/@posthog/types/-/types-1.412.3.tgz#b379fc35861026da3dc6c2721e871636b0bbdca4"
+  integrity sha512-SObrE2wqXic4/1B0OqXXPFuucReZ/dQ2qLkuTZT3K7pXsbcc9ZOLj0d8JVK/kjEaram8ppadAlbxqI++GjWNHQ==
 
 "@radix-ui/number@1.1.3":
   version "1.1.3"
@@ -6298,28 +6298,28 @@ postcss@^8.5.16, postcss@^8.5.26:
     picocolors "^1.1.1"
     source-map-js "^1.2.1"
 
-posthog-js@^1.422.1:
-  version "1.422.1"
-  resolved "https://registry.yarnpkg.com/posthog-js/-/posthog-js-1.422.1.tgz#d3292fd5ab13b4e685548e89b3a8198222280aa6"
-  integrity sha512-T0jOnq85RV0tvlmoFTShqulU753Yd9v5QdfbT7mxZnloky9feTqtUULxl28KHQdhpbgfZnj4WJkMBXhNH2z+TA==
+posthog-js@^1.434.2:
+  version "1.434.2"
+  resolved "https://registry.yarnpkg.com/posthog-js/-/posthog-js-1.434.2.tgz#168ec1113f6da89adab4b338dfb66cd5a66c9738"
+  integrity sha512-xyvjj88U2Cp1JfDzmifLvNbdiY/z+YbTT1DaRRKRZ+qzaF9IKqMLumpv8jTKGh6y3m4vc3xz0ku8h5Tw0XU9zQ==
   dependencies:
-    "@posthog/browser-common" "^0.6.1"
-    "@posthog/core" "^1.49.1"
-    "@posthog/types" "^1.407.0"
+    "@posthog/browser-common" "^0.9.0"
+    "@posthog/core" "^1.55.0"
+    "@posthog/types" "^1.412.2"
     core-js "^3.49.0"
     dompurify "^3.4.13"
     fflate "^0.4.8"
     preact "^10.29.3"
     query-selector-shadow-dom "^1.0.1"
-    web-vitals "^5.3.0"
-    web-vitals-soft-navs "npm:web-vitals@6.0.0"
+    web-vitals "^6.2.1"
+    web-vitals-soft-navs "npm:web-vitals@6.2.1"
 
-posthog-node@^5.51.4:
-  version "5.51.4"
-  resolved "https://registry.yarnpkg.com/posthog-node/-/posthog-node-5.51.4.tgz#0a6e86f772e26399b62ee515ba7f3a9be93b36f7"
-  integrity sha512-gI6JMBnU3vjDNclUBWonw3y7k8Y0UPIAVO4AQ2zu9eyW+7sY8UQRofx4JIA7IGYLMEbs4gykfogOmXp16+oUdg==
+posthog-node@^5.52.5:
+  version "5.52.5"
+  resolved "https://registry.yarnpkg.com/posthog-node/-/posthog-node-5.52.5.tgz#989a47d57c01516af3a33c64b37eef8aa9a54c43"
+  integrity sha512-r4KRXh2MvcHYh1s3NUca022GqujkJjpmD4qbRzWOLVTu8BfN3fqZj+MyKIxvHPXsS8sKsNVX+MlKk2qzW0Y4GQ==
   dependencies:
-    "@posthog/core" "^1.49.1"
+    "@posthog/core" "^1.55.1"
 
 preact@^10.29.3:
   version "10.29.8"
@@ -7389,15 +7389,15 @@ walk-up-path@^4.0.0:
   resolved "https://registry.npmjs.org/walk-up-path/-/walk-up-path-4.0.0.tgz"
   integrity sha512-3hu+tD8YzSLGuFYtPRb48vdhKMi0KQV5sn+uWr8+7dMEq/2G/dtLrdDinkLjqq5TIbIBjYJ4Ax/n3YiaW7QM8A==
 
-"web-vitals-soft-navs@npm:web-vitals@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-6.0.0.tgz#05c7c10e7c4bba4acfe35c59767bd52894e22350"
-  integrity sha512-Guaibvy/+uNtL6Bsu4jmMJGzuSl91oeRH5iO9pPRbYftnFUr3yqT1TUNX/OE4o9HexuEMU3Kb/Wg7iKhlffZUA==
+"web-vitals-soft-navs@npm:web-vitals@6.2.1":
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-6.2.1.tgz#1a5c857ceffc8cc25d3977f91b05f2a37505353c"
+  integrity sha512-rLcLXA2sx6+9dE88NHFubwTtGxpK4yYBLj6qHPdFoCaLr0cXGb4efOqtKLlm4loGA4OEKHIQKMKzZkKyOh5ctw==
 
-web-vitals@^5.3.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-5.3.0.tgz#a67f57f229fdf68be99eb99d3725946def284ff3"
-  integrity sha512-q6LWsLatGYZp5VGBIOvbTj6JBV2nOmC8KvWztXBmwJcfFAzhwKwbOxhUH306XY3CcaZDUlSmSuNPBsCn0bFu+g==
+web-vitals@^6.2.1:
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-6.2.2.tgz#ff4a7a8d7c5df18074a01f1c4f169e1a57df7193"
+  integrity sha512-oto5x6dLEgrRqfcWed+pZEUb2q6ikbFmqF54CRDhI/QGbn+qxC49b4C4OkbH+kb9C3a8shpFD3SgR9kRcs80ZQ==
 
 web-worker@^1.5.0:
   version "1.5.0"

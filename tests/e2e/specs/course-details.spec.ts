@@ -3,7 +3,6 @@ import { expect, test } from '@playwright/test';
 import { selectors } from '../../assets/selectors';
 import {
   expectCourseMetadata,
-  expectProgramSelectionRequired,
   expectSelectedCourse,
   openCourseDetailsPage,
   openCourseSearchPage,
@@ -101,7 +100,26 @@ test.describe('Course details page', () => {
     await expect(page.getByTestId('course-details-code')).toHaveCount(0, TIMEOUT);
   });
 
+  test('shows available course details even when the course belongs to no programs', async ({ page }) => {
+    await page.route('**/programs/list/course/352716', (route) => route.fulfill({ json: [] }));
+    await openCourseDetailsPage(page, MEC111_COURSE_ID);
+
+    await expect(page.getByTestId('course-details-code')).toHaveText('MEC111', TIMEOUT);
+    await expect(page.getByTestId('course-details-title')).toHaveText('Statique de l\'ingénieur', TIMEOUT);
+    await expect(page.getByRole('heading', { name: courseDetailsMessages.description })).toBeVisible(TIMEOUT);
+    await expect(page.locator(selectors.courseOffering('H2026'))).toBeVisible(TIMEOUT);
+    await expect(page.getByRole('heading', { name: courseDetailsMessages.prerequisites })).toHaveCount(0);
+    await expect(page.locator(selectors.courseDetailsProgramSelect)).toHaveCount(0);
+    await expect(page.getByTestId('course-details-no-programs-description')).toHaveCount(0);
+  });
+
   test('loads LOG210 with programs, prerequisites, and offerings', async ({ page }) => {
+    const courseLevelRequests: string[] = [];
+    page.on('request', (request) => {
+      if (new URL(request.url()).pathname.endsWith(`/courses/${LOG210_COURSE_ID}`)) {
+        courseLevelRequests.push(request.url());
+      }
+    });
     await openCourseDetailsPage(page, LOG210_COURSE_ID);
 
     await expect(page.getByTestId('course-details-code')).toHaveText('LOG210', TIMEOUT);
@@ -144,14 +162,23 @@ test.describe('Course details page', () => {
       TIMEOUT,
     );
     await expect(page.getByRole('option', { name: IT_PROGRAM_LABEL })).toBeVisible(TIMEOUT);
+    expect(courseLevelRequests).toHaveLength(0);
   });
 
-  test('requires a valid program for MEC111 without changing the planner selection', async ({ page }) => {
+  test('shows course-level details without a matching program and adds prerequisites after selection', async ({ page }) => {
     await openCourseDetailsPage(page, MEC111_COURSE_ID);
 
     const programSelect = page.locator(selectors.courseDetailsProgramSelect);
 
-    await expectProgramSelectionRequired(page, courseDetailsMessages.selectProgramDescription);
+    await expect(programSelect).toContainText(courseDetailsMessages.selectProgramPlaceholder, TIMEOUT);
+
+    await expect(page.getByTestId('course-details-code')).toHaveText('MEC111', TIMEOUT);
+    await expect(page.getByTestId('course-details-title')).toHaveText('Statique de l\'ingénieur', TIMEOUT);
+    await expect(page.getByRole('heading', { name: courseDetailsMessages.description })).toBeVisible(TIMEOUT);
+    await expect(page.getByRole('heading', { name: courseDetailsMessages.courseOffering })).toBeVisible(TIMEOUT);
+    await expect(page.locator(selectors.courseOffering('H2026'))).toBeVisible(TIMEOUT);
+    await expect(page.getByRole('heading', { name: courseDetailsMessages.prerequisites })).toHaveCount(0);
+    await expect(page.getByText(getRequirementTypeLabel('TRONC'))).toHaveCount(0);
 
     const mec111Request = waitForCourseDetailsResponse(page, MEC111_COURSE_ID, AEROSPACE_PROGRAM_ID);
     await selectProgramInCourseDetails(page, AEROSPACE_PROGRAM_LABEL);
@@ -166,7 +193,8 @@ test.describe('Course details page', () => {
 
     await page.reload();
 
-    await expectProgramSelectionRequired(page, courseDetailsMessages.selectProgramDescription);
+    await expect(programSelect).toContainText(courseDetailsMessages.selectProgramPlaceholder, TIMEOUT);
+    await expect(page.getByTestId('course-details-code')).toHaveText('MEC111', TIMEOUT);
 
     await searchCourseAndWaitForDetails(page, 'LOG', LOG240_COURSE_ID, SOFTWARE_PROGRAM_ID);
 

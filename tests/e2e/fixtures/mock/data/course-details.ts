@@ -1,3 +1,4 @@
+import type { BasicCourseDto } from '@/api/types/course';
 import type {
   CourseAvailabilityDto,
   DetailedProgramCourseDto,
@@ -214,4 +215,28 @@ export function getDetailedProgramCourseFixture(
   );
 
   return course ? structuredClone(course) : null;
+}
+
+export function getBasicCourseFixture(courseId: number): BasicCourseDto | null {
+  const detail = DETAILED_PROGRAM_COURSES.find((candidate) => candidate.courseId === courseId);
+  if (!detail) {
+    return null;
+  }
+
+  const { course } = detail;
+  const trimesterPrefix = { HIVER: 'H', ETE: 'E', AUTOMNE: 'A' };
+  return {
+    id: courseId,
+    code: course.code,
+    title: course.title,
+    description: course.description,
+    credits: course.credits,
+    cycle: course.cycle,
+    createdAt: '2024-01-01T00:00:00.000Z',
+    updatedAt: '2024-01-01T00:00:00.000Z',
+    sessionAvailability: course.courseInstances.map((instance) => ({
+      sessionCode: `${trimesterPrefix[instance.sessionTrimester]}${instance.sessionYear}`,
+      availability: instance.availability,
+    })),
+  };
 }

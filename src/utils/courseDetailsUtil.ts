@@ -56,6 +56,7 @@ export function getActiveProgramId(
 
 export function getCourseHeaderDescription(
   options: {
+    basicCourseError?: string | null;
     courseDetailsError?: string;
     programsError?: string;
     isProgramsLoading: boolean;
@@ -64,6 +65,14 @@ export function getCourseHeaderDescription(
   },
   tCourseDetails: (key: string, values?: Record<string, unknown>) => string,
 ): string {
+  if (options.activeProgramId === null && !options.basicCourseError) {
+    return tCourseDetails('loadingCourse');
+  }
+
+  if (options.basicCourseError != null) {
+    return options.basicCourseError;
+  }
+
   if (options.courseDetailsError) {
     return options.courseDetailsError;
   }

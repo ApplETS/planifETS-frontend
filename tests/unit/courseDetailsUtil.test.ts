@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getCourseDetailsProgramState, getCourseDetailsVisibility } from '../../src/utils/courseDetailsUtil';
+import { getCourseDetailsProgramState, getCourseDetailsVisibility, getCourseHeaderDescription } from '../../src/utils/courseDetailsUtil';
 
 describe('getCourseDetailsProgramState', () => {
   it.each([
@@ -82,5 +82,29 @@ describe('getCourseDetailsVisibility', () => {
       hasBasicCourse,
       basicCourseLoading,
     })).toEqual({ showEmptyState, showCourseSection });
+  });
+});
+
+describe('getCourseHeaderDescription', () => {
+  const defaults = {
+    activeProgramId: 10,
+    isProgramsLoading: false,
+    courseDetailsLoading: false,
+  };
+
+  it.each([
+    { name: 'basic course loading', options: { activeProgramId: null }, expected: 'loadingCourse' },
+    { name: 'basic course loading despite a program error', options: { activeProgramId: null, programsError: 'program error' }, expected: 'loadingCourse' },
+    { name: 'basic course error without a program', options: { activeProgramId: null, basicCourseError: 'basic error' }, expected: 'basic error' },
+    { name: 'basic error precedes other errors', options: { basicCourseError: 'basic error', courseDetailsError: 'details error', programsError: 'program error' }, expected: 'basic error' },
+    { name: 'details error precedes a program error', options: { courseDetailsError: 'details error', programsError: 'program error' }, expected: 'details error' },
+    { name: 'program error precedes loading', options: { programsError: 'program error', isProgramsLoading: true }, expected: 'program error' },
+    { name: 'programs loading', options: { isProgramsLoading: true }, expected: 'loadingPrograms' },
+    { name: 'details loading', options: { courseDetailsLoading: true }, expected: 'loadingCourse' },
+    { name: 'default loading message', options: {}, expected: 'loadingCourse' },
+    { name: 'empty basic error with a selected program', options: { basicCourseError: '' }, expected: '' },
+    { name: 'empty basic error without a program', options: { activeProgramId: null, basicCourseError: '' }, expected: 'loadingCourse' },
+  ])('$name', ({ options, expected }) => {
+    expect(getCourseHeaderDescription({ ...defaults, ...options }, (key) => key)).toBe(expected);
   });
 });

@@ -253,6 +253,7 @@ const CourseDetailsPage = () => {
 
   const courseHeaderDescription = getCourseHeaderDescription(
     {
+      basicCourseError,
       courseDetailsError: courseDetailsError ?? undefined,
       programsError: programsError ?? undefined,
       isProgramsLoading,
@@ -318,9 +319,7 @@ const CourseDetailsPage = () => {
                   <CourseHeaderContent
                     course={displayCourse}
                     courseDetails={courseDetails}
-                    courseHeaderDescription={activeProgramId === null && !basicCourseError
-                      ? tCourseDetails('loadingCourse')
-                      : basicCourseError ?? courseHeaderDescription}
+                    courseHeaderDescription={courseHeaderDescription}
                     tCourseDetails={tCourseDetails as TranslationFn}
                     tCommons={tCommons as TranslationFn}
                   />

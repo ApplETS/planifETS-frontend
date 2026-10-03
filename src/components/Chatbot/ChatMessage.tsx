@@ -2,9 +2,9 @@
 
 import type { ChatMessage as ChatMessageType } from './types';
 
-type ChatMessageProps = {
+type ChatMessageProps = Readonly<{
   message: ChatMessageType;
-};
+}>;
 
 export default function ChatMessage({
   message,

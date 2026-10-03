@@ -25,9 +25,9 @@ import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 import { buildRecommendationCards, hasCourseDescription } from './recommendations';
 
-type ChatbotPanelProps = {
+type ChatbotPanelProps = Readonly<{
   onClose: () => void;
-};
+}>;
 
 const BACKEND_LLM_EXHAUSTED_MESSAGE
   = 'All LLM providers have been exhausted without a successful response.';

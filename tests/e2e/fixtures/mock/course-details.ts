@@ -1,5 +1,6 @@
 import type { Page } from '@playwright/test';
 import {
+  getBasicCourseFixture,
   getDetailedProgramCourseFixture,
   getProgramsListByCourseIdFixture,
 } from './data/course-details';
@@ -13,6 +14,11 @@ function jsonResponse(status: number, body: unknown) {
 }
 
 export function registerCourseDetailsRoutes(page: Page) {
+  page.route(/\/courses\/\d+(?:\?.*)?$/, (route) => {
+    const courseId = Number.parseInt(new URL(route.request().url()).pathname.split('/').pop() ?? '', 10);
+    const course = getBasicCourseFixture(courseId);
+    route.fulfill(jsonResponse(course ? 200 : 404, course ?? { message: 'Course not found' }));
+  });
   page.route('**/programs/list/course/**', (route) => {
     const courseId = Number.parseInt(route.request().url().split('/').pop() ?? '', 10);
     const programs = Number.isNaN(courseId)

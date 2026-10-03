@@ -5,10 +5,10 @@ import { useTranslations } from 'next-intl';
 
 import { Button } from '@/shadcn/ui/button';
 
-type ChatbotButtonProps = {
+type ChatbotButtonProps = Readonly<{
   isOpen: boolean;
   onClick: () => void;
-};
+}>;
 
 export default function ChatbotButton({
   isOpen,

@@ -9,20 +9,9 @@ export type ApiResponse<T> = {
   headers: Headers;
 };
 
-type BackendApiMessage = string | string[] | Record<string, unknown>;
-
-type BackendErrorDto = {
-  statusCode: number;
-  timestamp: string; // ISO string
-  path: string;
-  message: BackendApiMessage;
-  // backend currently doesn't send extras, but keep optional slot for future
-  details?: unknown;
-};
-
 // Optional normalized shape for UI code
 export type ApiError = {
   statusCode: number | null;
   message: string; // human-friendly message
-  raw?: BackendErrorDto | unknown;
+  raw?: unknown;
 };

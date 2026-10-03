@@ -19,7 +19,7 @@ export function useProgramCoursesApi(programIds: number[]) {
       return;
     }
     previousProgramIds.current = currentProgramIds;
-    execute();
+    void execute();
     // eslint-disable-next-line react/exhaustive-deps
   }, [programIds]);
 

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description: 'Outil de planification de sessions pour les étudiants de l\'École de technologie supérieure',
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const messages = await getMessages();
 
   return (

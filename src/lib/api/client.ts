@@ -6,8 +6,8 @@ type RequestConfig = RequestInit & {
 };
 
 class ApiClient {
-  private baseURL: string;
-  private defaultHeaders: HeadersInit;
+  private readonly baseURL: string;
+  private readonly defaultHeaders: HeadersInit;
 
   constructor() {
     this.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:3001';

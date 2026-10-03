@@ -37,7 +37,7 @@ export default function Session({
     sessionTiming,
   });
   const getSessionBorderColor = () => {
-    if (!draggedItem || !draggedItem.course) {
+    if (!draggedItem?.course) {
       return isOver ? 'border-blue-400' : getSeasonBorder(sessionTerm);
     }
     if (isKnownSessionAvailability === false) {

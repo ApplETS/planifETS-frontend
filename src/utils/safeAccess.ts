@@ -8,10 +8,7 @@ export function safeGet<T>(record: Record<string, T>, key: string): T | undefine
 
 // Get a value from a Record with numeric keys
 export function safeGetNumber<T>(record: Record<number, T>, key: number): T | undefined {
-  if (Object.hasOwn(record, key)) {
-    return record[key];
-  }
-  return undefined;
+  return safeGet(record as unknown as Record<string, T>, String(key));
 }
 
 // Check if a key exists in a Record

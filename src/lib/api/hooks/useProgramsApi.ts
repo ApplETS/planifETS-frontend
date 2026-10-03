@@ -17,7 +17,7 @@ export function useProgramsApi() {
   const { data, loading, error, execute, reset } = useApi(() => programService.getPrograms());
 
   useEffect(() => {
-    execute();
+    void execute();
     // eslint-disable-next-line react/exhaustive-deps
   }, []);
 

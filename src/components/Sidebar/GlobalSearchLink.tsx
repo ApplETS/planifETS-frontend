@@ -8,7 +8,7 @@ type GlobalSearchLinkProps = {
   className?: string;
 };
 
-export default function GlobalSearchLink({ onClickAction, className }: GlobalSearchLinkProps) {
+export default function GlobalSearchLink({ onClickAction, className }: Readonly<GlobalSearchLinkProps>) {
   const t = useTranslations('PlannerPage');
 
   return (

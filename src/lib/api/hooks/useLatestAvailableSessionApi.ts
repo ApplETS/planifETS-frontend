@@ -10,7 +10,7 @@ export function useLatestAvailableSessionApi() {
   const sessionCount = useSessionStore((state) => Object.keys(state.sessions).length);
 
   useEffect(() => {
-    execute();
+    void execute();
   }, [execute]);
 
   // Sync session store after fetching latest session info, or when sessions are created

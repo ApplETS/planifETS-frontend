@@ -76,7 +76,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
           const sessionYear = Number(session.substring(1));
           const sessionKey = generateSessionKey(sessionYear, sessionTerm);
           const sessionObj = sessionStore.getSessionByKey?.(sessionKey);
-          const alreadyAdded = sessionObj && sessionObj.courseInstances.some((ci) => ci.courseId === course.id);
+          const alreadyAdded = sessionObj?.courseInstances.some((ci) => ci.courseId === course.id);
 
           return (
             <Tooltip key={session}>

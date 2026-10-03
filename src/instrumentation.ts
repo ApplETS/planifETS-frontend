@@ -4,7 +4,7 @@ export function register() {
   // No-op for initialization
 }
 
-export const onRequestError = async (
+export const onRequestError = (
   err: unknown,
   request: Readonly<{ path: string; method: string; headers: Record<string, string | string[] | undefined> }>,
 ) => {

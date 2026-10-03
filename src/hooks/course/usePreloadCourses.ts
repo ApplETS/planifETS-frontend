@@ -90,7 +90,7 @@ export const usePreloadCourses = (hasHydrated: boolean) => {
       }
     };
 
-    fetchMissingCourses();
+    void fetchMissingCourses();
   }, [hasHydrated, setCourses]);
 
   return { loading };

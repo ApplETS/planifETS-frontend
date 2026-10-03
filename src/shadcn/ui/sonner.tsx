@@ -14,7 +14,7 @@ import { useTheme } from '@/hooks/useTheme';
 // Note: next-themes package requirement has been removed; we use our own theme hook instead
 const Toaster = ({ className, ...props }: ToasterProps) => {
   const { theme } = useTheme();
-  const themeMode = (theme && theme.mode);
+  const themeMode = (theme?.mode);
 
   const themeClasses = 'bg-popover text-popover-foreground border border-border';
 

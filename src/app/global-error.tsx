@@ -4,7 +4,7 @@ import NextError from 'next/error';
 import { useEffect } from 'react';
 import { monitoring } from '@/lib/monitoring';
 
-export default function GlobalError({ error }: { error: Error & { digest?: string } }) {
+export default function GlobalError({ error }: Readonly<{ error: Error & { digest?: string } }>) {
   useEffect(() => {
     monitoring.captureException(error);
   }, [error]);

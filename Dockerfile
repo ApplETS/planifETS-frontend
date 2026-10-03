@@ -76,8 +76,7 @@ ENV NEXT_PUBLIC_APP_ENV=production
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 
 # Keep the standalone bundle in its own folder (do not flatten)
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./.next/standalone

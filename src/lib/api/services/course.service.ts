@@ -38,7 +38,7 @@ export const courseService = {
     queryParams.append('query', params.query);
 
     // programCodes is optional - only add if provided and not empty
-    if (params.programCodes && params.programCodes.trim()) {
+    if (params.programCodes?.trim()) {
       queryParams.append('programCodes', params.programCodes.trim());
     }
 

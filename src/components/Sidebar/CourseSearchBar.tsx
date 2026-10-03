@@ -8,7 +8,7 @@ type CourseSearchProps = {
   value?: string;
 };
 
-export default function CourseSearchbar({ onSearch, value = '' }: CourseSearchProps) {
+export default function CourseSearchbar({ onSearch, value = '' }: Readonly<CourseSearchProps>) {
   const t = useTranslations('PlannerPage');
 
   const [searchQuery, setSearchQuery] = useState(value);

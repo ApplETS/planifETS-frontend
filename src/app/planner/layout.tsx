@@ -5,7 +5,7 @@ import CourseSidebar from '@/components/Sidebar/CourseSidebar';
 
 import { useOnboardingStore } from '@/store/onboardingStore';
 
-export default function PlannerLayout({ children }: { children: React.ReactNode }) {
+export default function PlannerLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const hasCompletedOnboarding = useOnboardingStore(
     (state) => state.hasCompletedOnboarding,
   );

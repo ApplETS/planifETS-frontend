@@ -13,7 +13,7 @@ type ResetDialogProps = {
   onCloseAction: () => void;
 };
 
-export default function ResetDialog({ isOpen, onCloseAction }: ResetDialogProps) {
+export default function ResetDialog({ isOpen, onCloseAction }: Readonly<ResetDialogProps>) {
   const t = useTranslations('Commons');
   const [isResetting, setIsResetting] = useState(false);
 
@@ -29,11 +29,9 @@ export default function ResetDialog({ isOpen, onCloseAction }: ResetDialogProps)
   };
 
   const footerActions = (
-    <>
-      <Button variant="destructive" onClick={handleConfirmReset} disabled={isResetting}>
-        {isResetting ? t('resetting') : t('confirm-reset')}
-      </Button>
-    </>
+    <Button variant="destructive" onClick={handleConfirmReset} disabled={isResetting}>
+      {isResetting ? t('resetting') : t('confirm-reset')}
+    </Button>
   );
 
   return (

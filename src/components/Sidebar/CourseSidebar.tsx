@@ -64,7 +64,7 @@ export default function CourseSidebar() {
   };
 
   const handleGlobalSearch = () => {
-    triggerSearch(searchQuery);
+    void triggerSearch(searchQuery);
   };
 
   function renderCoursesContent() {

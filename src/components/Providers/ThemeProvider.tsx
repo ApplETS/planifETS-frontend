@@ -21,16 +21,22 @@ const defaultTheme: Theme = {
 
 export function ThemeProvider({
   children,
-}: { children: React.ReactNode }) {
+}: Readonly<{ children: React.ReactNode }>) {
   // Use default theme initially to avoid hydration mismatch
   const [currentTheme, setCurrentTheme] = useState<Theme>(defaultTheme);
   const [isMounted, setIsMounted] = useState(false);
 
   // Initialize theme after mount
   useEffect(() => {
-    // Mark as mounted
-    Promise.resolve().then(() => setIsMounted(true));
-    Promise.resolve().then(() => setCurrentTheme(getInitialTheme()));
+    let active = true;
+    // Defer initialization without a floating Promise or synchronous effect update.
+    queueMicrotask(() => {
+      if (!active) {
+        return;
+      }
+      setIsMounted(true);
+      setCurrentTheme(getInitialTheme());
+    });
 
     // Set up system theme change listener
     if (typeof globalThis !== 'undefined' && globalThis.matchMedia) {
@@ -46,10 +52,13 @@ export function ThemeProvider({
 
       colorSchemeQuery.addEventListener('change', handleSystemThemeChange);
       return () => {
+        active = false;
         colorSchemeQuery.removeEventListener('change', handleSystemThemeChange);
       };
     }
-    return () => {};
+    return () => {
+      active = false;
+    };
   }, []);
 
   const contextValue = useMemo(() => ({
@@ -65,7 +74,7 @@ export function ThemeProvider({
   // Apply theme to document elements
   useEffect(() => {
     if (typeof document !== 'undefined') {
-      document.documentElement.setAttribute('data-theme', `${currentTheme.color}-${currentTheme.mode}`);
+      document.documentElement.dataset.theme = `${currentTheme.color}-${currentTheme.mode}`;
     }
   }, [currentTheme]);
 

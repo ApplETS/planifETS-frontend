@@ -12,7 +12,7 @@ const baseConfig: NextConfig = {
   // Required for PostHog
   // SDK sends requests with trailing slashes that Next.js would otherwise redirect, breaking the proxy.
   skipTrailingSlashRedirect: true,
-  async rewrites() {
+  rewrites() {
     if (appEnv === 'development') {
       return [];
     }

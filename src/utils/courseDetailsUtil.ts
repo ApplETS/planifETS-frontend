@@ -6,6 +6,39 @@ type CourseDetailsEmptyState = {
   textClassName: string;
 };
 
+export function getCourseDetailsProgramState(options: {
+  hasSelectedCourse: boolean;
+  hasPrograms: boolean;
+  hasLoadedPrograms: boolean;
+  programsLoading: boolean;
+  programsError: string | null;
+}) {
+  const isProgramsLoading = options.programsLoading
+    || (options.hasSelectedCourse && !options.hasLoadedPrograms && !options.programsError);
+  const showNoProgramsState = options.hasSelectedCourse
+    && !isProgramsLoading && !options.programsError && !options.hasPrograms;
+  const shouldRenderCourseSection = options.hasSelectedCourse
+    && !isProgramsLoading && !showNoProgramsState;
+
+  return { isProgramsLoading, showNoProgramsState, shouldRenderCourseSection };
+}
+
+export function getCourseDetailsVisibility(options: {
+  hasSelectedCourse: boolean;
+  showNoProgramsState: boolean;
+  shouldRenderCourseSection: boolean;
+  hasBasicCourse: boolean;
+  basicCourseLoading: boolean;
+}) {
+  const hasBasicCourseContent = options.hasBasicCourse || options.basicCourseLoading;
+  return {
+    showEmptyState: !options.hasSelectedCourse
+      || (options.showNoProgramsState && !hasBasicCourseContent),
+    showCourseSection: options.shouldRenderCourseSection
+      || (options.showNoProgramsState && hasBasicCourseContent),
+  };
+}
+
 export function getActiveProgramId(
   selectedProgramId: number | null,
   availablePrograms: Array<{ programId: number }>,

@@ -22,6 +22,8 @@ import { useProgramStore } from '@/store/programStore';
 import {
   getActiveProgramId,
   getCourseDetailsEmptyState,
+  getCourseDetailsProgramState,
+  getCourseDetailsVisibility,
   getCourseHeaderDescription,
 } from '@/utils/courseDetailsUtil';
 import { parsePositiveInteger } from '@/utils/numberUtil';
@@ -207,10 +209,14 @@ const CourseDetailsPage = () => {
   } = useProgramsListByCourseIdApi(courseId);
 
   const availablePrograms = programs ?? [];
-  const isProgramsLoading = programsLoading || (hasSelectedCourse && programs === null && !programsError);
   const hasPrograms = availablePrograms.length > 0;
-  const showNoProgramsState = hasSelectedCourse && !isProgramsLoading && !programsError && !hasPrograms;
-  const shouldRenderCourseSection = hasSelectedCourse && !isProgramsLoading && !showNoProgramsState;
+  const { isProgramsLoading, showNoProgramsState, shouldRenderCourseSection } = getCourseDetailsProgramState({
+    hasSelectedCourse,
+    hasPrograms,
+    hasLoadedPrograms: programs !== null,
+    programsLoading,
+    programsError,
+  });
   const selectedProgramIds = useProgramStore((state) => state.getSelectedProgramIds());
   const selectedPlannerProgramId = selectedProgramIds.find((id) =>
     availablePrograms.some((program) => program.programId === id)) ?? null;
@@ -264,7 +270,13 @@ const CourseDetailsPage = () => {
     },
     tCourseDetails as TranslationFn,
   );
-  const showEmptyState = !hasSelectedCourse || (showNoProgramsState && !basicCourse && !basicCourseLoading);
+  const { showEmptyState, showCourseSection } = getCourseDetailsVisibility({
+    hasSelectedCourse,
+    showNoProgramsState,
+    shouldRenderCourseSection,
+    hasBasicCourse: basicCourse !== null,
+    basicCourseLoading,
+  });
 
   return (
     <div className="px-4 py-8 sm:px-6 lg:px-8">
@@ -298,7 +310,7 @@ const CourseDetailsPage = () => {
           )
           : null}
 
-        {(shouldRenderCourseSection || (showNoProgramsState && (basicCourse || basicCourseLoading)))
+        {showCourseSection
           ? (
             <section className="overflow-hidden rounded-xl border border-border/70 bg-background/95 shadow-sm backdrop-blur-sm">
               <div className={cn('grid gap-0', hasPrograms && 'lg:grid-cols-[minmax(0,1fr)_320px]')}>

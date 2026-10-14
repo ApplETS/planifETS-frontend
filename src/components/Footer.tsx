@@ -11,6 +11,9 @@ type BackendInfo = {
   environment: string;
 };
 
+const FRONTEND_REPO = 'https://github.com/ApplETS/planifETS-frontend';
+const BACKEND_REPO = 'https://github.com/ApplETS/planifETS-backend';
+
 export function Footer() {
   const t = useTranslations('Footer');
   const linkClasses = 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors';
@@ -150,16 +153,26 @@ export function Footer() {
               {environment}
             </span>
           )}
-          <span className="mr-3">
+          <a
+            href={FRONTEND_REPO}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mr-3 hover:text-gray-600 dark:hover:text-gray-300 hover:underline underline-offset-2 transition-colors"
+          >
             {t('frontend')}
             {': '}
             {frontendSha ?? 'dev'}
-          </span>
-          <span>
+          </a>
+          <a
+            href={BACKEND_REPO}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-gray-600 dark:hover:text-gray-300 hover:underline underline-offset-2 transition-colors"
+          >
             {t('backend')}
             {': '}
             {backendInfo ? (backendInfo.gitSha ?? 'dev') : '…'}
-          </span>
+          </a>
         </p>
       </div>
     </footer>

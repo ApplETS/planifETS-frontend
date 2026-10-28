@@ -27,6 +27,16 @@
     "admission-day-note": "This will create sessions from your admission year to today.",
     "complete": "Complete"
   },
+  "Planners": {
+    "label": "Planner",
+    "default-name": "Default Planner",
+    "add": "New planner",
+    "description": "Create a separate plan with its own sessions and courses. Your other planners stay unchanged. Saved in this browser.",
+    "name": "Planner name",
+    "name-placeholder": "e.g. Study + work",
+    "start-year": "Starting year",
+    "create": "Create planner"
+  },
   "PlannerPage": {
     "year-with-value": "Year {value}",
     "sessionTerms": {

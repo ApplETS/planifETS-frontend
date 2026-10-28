@@ -8,7 +8,7 @@ import { getPrerequisiteDisplayData } from '@/utils/courseUtil';
 import { getCurrentSession } from '@/utils/sessionUtil';
 
 type PrerequisitesSectionProps = {
-  courseDetails: DetailedProgramCourseDto;
+  courseDetails: DetailedProgramCourseDto | null;
 };
 
 const PrerequisitesSection = ({ courseDetails }: PrerequisitesSectionProps) => {
@@ -16,15 +16,15 @@ const PrerequisitesSection = ({ courseDetails }: PrerequisitesSectionProps) => {
 
   const currentSessionTerm = getCurrentSession();
   const currentSessionYear = new Date().getFullYear();
-  const structuredPrerequisites = courseDetails.prerequisites.map(({ prerequisite }) => ({
+  const structuredPrerequisites = courseDetails?.prerequisites.map(({ prerequisite }) => ({
     id: prerequisite.course.id,
     code: prerequisite.course.code,
     title: prerequisite.course.title,
-  }));
+  })) ?? [];
 
   const { unstructuredPrerequisite } = getPrerequisiteDisplayData(
     structuredPrerequisites.map((candidate) => candidate.code),
-    courseDetails.unstructuredPrerequisite,
+    courseDetails?.unstructuredPrerequisite,
   );
 
   const hasPrerequisites = structuredPrerequisites.length > 0 || unstructuredPrerequisite !== null;

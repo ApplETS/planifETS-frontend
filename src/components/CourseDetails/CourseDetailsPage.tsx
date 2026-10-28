@@ -93,21 +93,21 @@ const CourseHeaderContent = ({
         {course.title}
       </p>
 
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-2">
-        <div className="flex flex-wrap gap-2">
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
+        <div className="flex flex-wrap items-center gap-2">
           <Tag variant="credits">
             {course.credits}
             {' '}
             {tCommons('credits')}
           </Tag>
-          <Tag variant="sessionAvailable">
+          <Tag variant="credits">
             {tCourseDetails('cycle')}
             {' '}
             {course.cycle}
           </Tag>
           {courseDetails?.type
             ? (
-              <Tag variant="sessionAvailable">
+              <Tag variant="credits">
                 {tCourseDetails('requirementType')}
                 {': '}
                 {courseDetails.type}
@@ -117,7 +117,7 @@ const CourseHeaderContent = ({
           {courseDetails?.typicalSessionIndex == null
             ? null
             : (
-              <Tag variant="sessionAvailable">
+              <Tag variant="credits">
                 {tCourseDetails('typicalSessionIndex', { value: courseDetails.typicalSessionIndex })}
               </Tag>
             )}
@@ -164,15 +164,11 @@ const CourseContentSections = ({
         </PageSection>
       </div>
 
-      {courseDetails
-        ? (
-          <div className="grid gap-6">
-            <PageSection title={tCourseDetails('prerequisites')}>
-              <PrerequisitesSection courseDetails={courseDetails} />
-            </PageSection>
-          </div>
-        )
-        : null}
+      <div className="grid gap-6">
+        <PageSection title={tCourseDetails('prerequisites')}>
+          <PrerequisitesSection courseDetails={courseDetails} />
+        </PageSection>
+      </div>
 
       <div className="grid gap-6 lg:col-span-2">
         <PageSection title={tCourseDetails('courseOffering')}>
@@ -217,6 +213,7 @@ const CourseDetailsPage = () => {
     programsLoading,
     programsError,
   });
+  const showProgramPanel = hasPrograms || showNoProgramsState;
   const selectedProgramIds = useProgramStore((state) => state.getSelectedProgramIds());
   const selectedPlannerProgramId = selectedProgramIds.find((id) =>
     availablePrograms.some((program) => program.programId === id)) ?? null;
@@ -314,8 +311,8 @@ const CourseDetailsPage = () => {
         {showCourseSection
           ? (
             <section className="overflow-hidden rounded-xl border border-border/70 bg-background/95 shadow-sm backdrop-blur-sm">
-              <div className={cn('grid gap-0', hasPrograms && 'lg:grid-cols-[minmax(0,1fr)_320px]')}>
-                <header className={cn('p-6', hasPrograms && 'border-b border-border/60 lg:border-b-0 lg:border-r')}>
+              <div className={cn('grid gap-0', showProgramPanel && 'lg:grid-cols-[minmax(0,1fr)_320px]')}>
+                <header className={cn('p-6', showProgramPanel && 'border-b border-border/60 lg:border-b-0 lg:border-r')}>
                   <CourseHeaderContent
                     course={displayCourse}
                     courseDetails={courseDetails}
@@ -325,7 +322,7 @@ const CourseDetailsPage = () => {
                   />
                 </header>
 
-                {hasPrograms
+                {showProgramPanel
                   ? (
                     <ProgramSelector
                       availablePrograms={availablePrograms}

@@ -27,6 +27,8 @@ services:
       - /app/.next
     environment:
       NODE_ENV: development
+      # Poll Windows bind mounts because filesystem events may not reach the container.
+      WATCHPACK_POLLING: '500'
       NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:3001/api}
       NEXT_PUBLIC_APP_ENV: ${NEXT_PUBLIC_APP_ENV:-development}
     profiles:

@@ -3,7 +3,7 @@ import type {
   ProgramCoursesDto,
 } from '@/api/types/program';
 import type { Course } from '@/types/course';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { courseService } from '@/api/services/course.service';
 import { programService } from '@/api/services/program.service';
@@ -14,18 +14,17 @@ import { mapApiCourseToAppCourse, mapBasicCourseToAppCourse } from '@/utils/cour
 
 /**
  * Hook to preload courses that are in sessions or favorites
- * Fetches missing course data on mount using /program-courses/ids
+ * Fetches missing course data on mount and planner changes using /program-courses/ids
  */
 export const usePreloadCourses = (hasHydrated: boolean) => {
   const [loading, setLoading] = useState(false);
-  const hasFetched = useRef(false);
+  const activePlannerId = usePlannerStore((state) => state.activePlannerId);
   const { setCourses } = useCourseStore();
 
   useEffect(() => {
-    if (!hasHydrated || hasFetched.current) {
+    if (!hasHydrated) {
       return;
     }
-    hasFetched.current = true;
 
     const fetchMissingCourses = async () => {
       // Get current state from stores
@@ -91,7 +90,7 @@ export const usePreloadCourses = (hasHydrated: boolean) => {
     };
 
     void fetchMissingCourses();
-  }, [hasHydrated, setCourses]);
+  }, [hasHydrated, activePlannerId, setCourses]);
 
   return { loading };
 };

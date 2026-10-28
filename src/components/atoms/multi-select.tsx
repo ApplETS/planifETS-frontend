@@ -152,7 +152,7 @@ export function MultiSelect({
           {open && selectables.length > 0
             ? (
               <div className="absolute top-1 z-50 w-full overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-                <CommandGroup className="max-h-80 overflow-auto">
+                <CommandGroup className="max-h-80 overflow-auto scrollbar-thin">
                   {selectables.map((option) => (
                     <CommandItem
                       role="option"

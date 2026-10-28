@@ -58,7 +58,7 @@ const ProgramSelector = ({
           <SelectContent
             position="popper"
             align="start"
-            className="w-(--radix-select-trigger-width) max-w-(--radix-select-content-available-width)"
+            className="w-(--radix-select-trigger-width) max-w-(--radix-select-content-available-width) scrollbar-thin"
           >
             {availablePrograms.map((program) => (
               <SelectItem key={program.programId} value={program.programId.toString()}>

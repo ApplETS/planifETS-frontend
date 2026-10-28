@@ -137,7 +137,15 @@
     "more-options": "À propos",
     "feedback": "Feedback",
     "frontend-source-code": "Code source frontend",
-    "backend-source-code": "Code source backend"
+    "backend-source-code": "Code source backend",
+    "contributors": "Contributeurs",
+    "contributors-title": "Contributeurs",
+    "contributors-description": "Merci à toutes les personnes qui ont contribué au frontend et au backend.",
+    "contributors-loading": "Chargement des contributeurs…",
+    "contributors-error": "Impossible de charger les contributeurs. Réessayez plus tard.",
+    "contributors-retry": "Réessayer",
+    "contributors-empty": "Aucun contributeur trouvé.",
+    "view-github-profile": "Voir le profil de {login} sur GitHub"
   },
   "Landing": {
     "headline": "Planifiez vos sessions à l'ÉTS, simplement.",

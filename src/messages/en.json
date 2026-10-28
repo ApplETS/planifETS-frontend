@@ -137,7 +137,15 @@
     "more-options": "About",
     "feedback": "Feedback",
     "frontend-source-code": "Frontend source code",
-    "backend-source-code": "Backend source code"
+    "backend-source-code": "Backend source code",
+    "contributors": "Contributors",
+    "contributors-title": "Contributors",
+    "contributors-description": "Thanks to everyone who contributed to the frontend and backend.",
+    "contributors-loading": "Loading contributors…",
+    "contributors-error": "Could not load contributors. Try again later.",
+    "contributors-retry": "Try again",
+    "contributors-empty": "No contributors found.",
+    "view-github-profile": "View {login} on GitHub"
   },
   "Landing": {
     "headline": "Plan your ÉTS sessions, simply.",

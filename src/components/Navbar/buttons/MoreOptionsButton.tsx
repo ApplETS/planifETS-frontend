@@ -1,8 +1,10 @@
 'use client';
 
-import { AppWindow, Bug, Info, Server } from 'lucide-react';
+import { AppWindow, Bug, Info, Server, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 
+import ContributorsDialog from '@/components/dialogs/ContributorsDialog';
 import { Button } from '@/shadcn/ui/button';
 import {
   DropdownMenu,
@@ -19,39 +21,47 @@ const LINKS = {
 
 export default function MoreOptionsButton({ iconOnly = false }: Readonly<{ iconOnly?: boolean }>) {
   const t = useTranslations('Navbar');
+  const [contributorsOpen, setContributorsOpen] = useState(false);
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="normal-case flex items-center gap-1"
-          aria-label={t('more-options')}
-        >
-          <Info className="size-4" />
-          {!iconOnly && t('more-options')}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="z-[70]">
-        <DropdownMenuItem asChild>
-          <a href={LINKS.reportBug} target="_blank" rel="noopener noreferrer">
-            <Bug className="mr-2 h-4 w-4" />
-            {t('feedback')}
-          </a>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <a href={LINKS.frontendSource} target="_blank" rel="noopener noreferrer">
-            <AppWindow className="mr-2 h-4 w-4" />
-            {t('frontend-source-code')}
-          </a>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <a href={LINKS.backendSource} target="_blank" rel="noopener noreferrer">
-            <Server className="mr-2 h-4 w-4" />
-            {t('backend-source-code')}
-          </a>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            className="normal-case flex items-center gap-1"
+            aria-label={t('more-options')}
+          >
+            <Info className="size-4" />
+            {!iconOnly && t('more-options')}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="z-[70]">
+          <DropdownMenuItem asChild>
+            <a href={LINKS.reportBug} target="_blank" rel="noopener noreferrer">
+              <Bug className="mr-2 h-4 w-4" />
+              {t('feedback')}
+            </a>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <a href={LINKS.frontendSource} target="_blank" rel="noopener noreferrer">
+              <AppWindow className="mr-2 h-4 w-4" />
+              {t('frontend-source-code')}
+            </a>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <a href={LINKS.backendSource} target="_blank" rel="noopener noreferrer">
+              <Server className="mr-2 h-4 w-4" />
+              {t('backend-source-code')}
+            </a>
+          </DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => setContributorsOpen(true)}>
+            <Users className="mr-2 h-4 w-4" />
+            {t('contributors')}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <ContributorsDialog open={contributorsOpen} onOpenChange={setContributorsOpen} />
+    </>
   );
 }

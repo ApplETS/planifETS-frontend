@@ -197,7 +197,7 @@ const CourseSearchSelect = ({
         {showDropdown
           ? (
             <div className="absolute inset-x-0 top-[calc(100%+0.1rem)] z-50 overflow-hidden rounded-xl border border-border bg-popover g">
-              <CommandList className="max-h-80">
+              <CommandList className="max-h-80 scrollbar-thin">
                 {error
                   ? (
                     <div

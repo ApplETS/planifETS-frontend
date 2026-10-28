@@ -20,7 +20,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/shadcn/ui/tooltip';
 import { usePlannerStore } from '@/store/plannerStore';
 import { SESSION_SELECTION_BOUNDS } from '@/utils/sessionUtil';
 
-function PlannerNameTooltip({ name, children }: { name: string; children: ReactNode }) {
+function PlannerNameTooltip({ name, children }: { readonly name: string; readonly children: ReactNode }) {
   const triggerRef = useRef<HTMLElement | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -57,7 +57,7 @@ function PlannerNameTooltip({ name, children }: { name: string; children: ReactN
   );
 }
 
-export default function PlannerSelector({ disabled }: { disabled: boolean }) {
+export default function PlannerSelector({ disabled }: { readonly disabled: boolean }) {
   const t = useTranslations('Planners');
   const {
     activePlannerId,

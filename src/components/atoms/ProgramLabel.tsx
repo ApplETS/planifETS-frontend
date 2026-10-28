@@ -1,5 +1,5 @@
 type ProgramLabelProps = {
-  text: string;
+  readonly text: string;
 };
 
 export default function ProgramLabel({ text }: ProgramLabelProps) {

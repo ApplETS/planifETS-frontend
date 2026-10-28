@@ -14,6 +14,9 @@ import '@/css/print.css';
 export const metadata: Metadata = {
   title: 'PlanifETS',
   description: 'Outil de planification de sessions pour les étudiants de l\'École de technologie supérieure',
+  icons: {
+    icon: { url: '/favicon.webp', type: 'image/webp' },
+  },
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -22,7 +25,6 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon.webp" />
         {process.env.NEXT_PUBLIC_APP_ENV !== 'development'
           ? (
             <script

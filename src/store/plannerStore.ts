@@ -4,30 +4,41 @@
  * - name: (e.g., 'Default Planner', 'Fall 2024 Plan')
  * - sessionKeys: string[] - Array of session keys that exist (e.g., ['A2024', 'H2025', 'E2025'])
  * - favoriteCourses: number[] - User's favorited course IDs (moved from courseStore)
+ * - inactivePlanners: saved planners, including their sessions; active sessions stay in sessionStore
  */
 
-import type { TermEnum } from '@/types/session';
+import type { Session, TermEnum } from '@/types/session';
 
 import { create } from 'zustand';
 import { persistConfig } from '@/lib/persistConfig';
-import { safeHas } from '@/utils/safeAccess';
+import { safeGet, safeHas } from '@/utils/safeAccess';
 import {
+  createSessionsForYear,
   extractYearFromSessionKey,
   generateSessionKey,
   generateSessionRange,
   ORDERED_SESSION_TERMS,
+  SESSION_SELECTION_BOUNDS,
 } from '@/utils/sessionUtil';
 
 import { useCourseStore } from './courseStore';
 import { useSessionStore } from './sessionStore';
 
-type PlannerState = {
+type SavedPlanner = {
   name: string;
   sessionKeys: string[];
   favoriteCourses: number[];
+  sessions: Record<string, Session>;
+};
+
+type PlannerState = Omit<SavedPlanner, 'sessions'> & {
+  activePlannerId: string;
+  inactivePlanners: Record<string, SavedPlanner>;
 };
 
 type PlannerActions = {
+  createPlanner: (name: string, startYear: number) => void;
+  switchPlanner: (plannerId: string) => void;
   initializePlanner: (startYear: number) => void;
   addYear: () => void;
   deleteYear: (year: number) => void;
@@ -40,9 +51,65 @@ type PlannerActions = {
 
 export const usePlannerStore = create<PlannerState & PlannerActions>()(
   persistConfig('planner-store', (set, get) => ({
+    activePlannerId: 'default',
+    inactivePlanners: {},
     name: 'Default Planner',
     sessionKeys: [],
     favoriteCourses: [],
+
+    createPlanner: (name, startYear) => {
+      const currentYear = new Date().getFullYear();
+      const trimmedName = name.trim();
+      if (
+        !trimmedName || trimmedName.length > 80
+        || !Number.isInteger(startYear)
+        || startYear < currentYear - SESSION_SELECTION_BOUNDS.PAST_YEARS
+        || startYear > currentYear + SESSION_SELECTION_BOUNDS.FUTURE_YEARS
+      ) {
+        return;
+      }
+
+      const plannerId = crypto.randomUUID();
+      const sessionKeys = generateSessionRange(startYear, Math.max(currentYear, startYear));
+      const sessions: Record<string, Session> = {};
+      for (const year of new Set(sessionKeys.map(extractYearFromSessionKey))) {
+        Object.assign(sessions, createSessionsForYear(year));
+      }
+
+      set((state) => ({
+        inactivePlanners: {
+          ...state.inactivePlanners,
+          [plannerId]: { name: trimmedName, sessionKeys, favoriteCourses: [], sessions },
+        },
+      }));
+      get().switchPlanner(plannerId);
+    },
+
+    switchPlanner: (plannerId) => {
+      const state = get();
+      const planner = safeGet(state.inactivePlanners, plannerId);
+      if (plannerId === state.activePlannerId || !planner) {
+        return;
+      }
+
+      const inactivePlanners = { ...state.inactivePlanners };
+      inactivePlanners[state.activePlannerId] = {
+        name: state.name,
+        sessionKeys: state.sessionKeys,
+        favoriteCourses: state.favoriteCourses,
+        sessions: useSessionStore.getState().sessions,
+      };
+      delete inactivePlanners[plannerId];
+
+      useSessionStore.getState().setSessions(planner.sessions);
+      set({
+        activePlannerId: plannerId,
+        inactivePlanners,
+        name: planner.name,
+        sessionKeys: planner.sessionKeys,
+        favoriteCourses: planner.favoriteCourses,
+      });
+    },
 
     toggleFavorite: (courseId: number) => {
       set((state) => {

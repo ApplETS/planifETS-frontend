@@ -4,6 +4,7 @@ import { CommandEmpty, Command as CommandPrimitive } from 'cmdk';
 import { Search, X } from 'lucide-react';
 import * as React from 'react';
 
+import ProgramLabel from '@/components/atoms/ProgramLabel';
 import { Badge } from '@/shadcn/ui/badge';
 import { Command, CommandGroup, CommandItem, CommandList } from '@/shadcn/ui/command';
 import { normalizeSearchText } from '@/utils/stringUtil';
@@ -76,10 +77,10 @@ export function MultiSelect({
       onKeyDown={handleKeyDown}
       filter={(value, search) =>
         normalizeSearchText(value).includes(normalizeSearchText(search)) ? 1 : 0}
-      className="overflow-visible bg-transparent select-none"
+      className="min-w-0 max-w-full overflow-visible bg-transparent select-none"
     >
       <div
-        className="group flex flex-wrap items-center gap-2 rounded-md border border-border bg-background
+        className="group rounded-md border border-border bg-background
         px-3 py-1.5 min-h-10 w-full max-w-full select-none"
         style={{ boxSizing: 'border-box' }}
         // Open ONLY on pointer interaction (click/tap) on the control.
@@ -93,21 +94,21 @@ export function MultiSelect({
           }
         }}
       >
-        <div className="flex flex-wrap gap-1 flex-1">
+        <div className="flex w-full min-w-0 flex-wrap gap-1">
           {selected.map((option) => (
             <Badge
               key={option.value}
               variant="secondary"
-              className="flex items-center gap-1 text-foreground font-semibold py-1 rounded-lg"
+              className="flex min-w-0 max-w-full items-start gap-1 whitespace-normal text-foreground font-semibold py-1 rounded-lg"
               data-testid={`program-chip-${option.id}`}
             >
-              <span>{option.label || option.value || 'No name'}</span>
+              <ProgramLabel text={String(option.label || option.value || 'No name')} />
               <button
                 type="button"
                 name="remove-option"
                 aria-label={`Remove ${option.label || option.value}`}
                 title={`Remove ${option.label || option.value}`}
-                className="py-0.5 outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                className="shrink-0 py-0.5 outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     handleUnselectOption(option);
@@ -124,7 +125,7 @@ export function MultiSelect({
             </Badge>
           ))}
 
-          <div className="flex items-center gap-2 flex-1 ml-1">
+          <div className="flex min-w-0 max-w-full items-center gap-2 flex-1 ml-1">
             <Search className="size-4 shrink-0 text-muted-foreground" />
             <CommandPrimitive.Input
               ref={inputRef}
@@ -146,18 +147,18 @@ export function MultiSelect({
         </div>
       </div>
 
-      <div className="relative mt-1 w-full">
+      <div className="relative w-full">
         <CommandList>
           {open && selectables.length > 0
             ? (
-              <div className="absolute top-0 z-50 w-full overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-md outline-none animate-in">
+              <div className="absolute top-1 z-50 w-full overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-md outline-none animate-in">
                 <CommandGroup className="max-h-80 overflow-auto">
                   {selectables.map((option) => (
                     <CommandItem
                       role="option"
                       key={option.value}
-                      value={option.label}
-                      className="px-4 py-2.5"
+                      value={[option.code, option.label].filter(Boolean).join(' ')}
+                      className="min-w-0 whitespace-normal px-4 py-2.5"
                       onMouseDown={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
@@ -169,7 +170,7 @@ export function MultiSelect({
                         inputRef.current?.blur();
                       }}
                     >
-                      {option.label}
+                      <ProgramLabel text={option.label} />
                     </CommandItem>
                   ))}
                 </CommandGroup>

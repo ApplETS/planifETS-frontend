@@ -27,6 +27,16 @@
     "admission-day-note": "Ceci permet créer des sessions de votre année d'admission à aujourd'hui.",
     "complete": "Terminer"
   },
+  "Planners": {
+    "label": "Plan",
+    "default-name": "Plan par défaut",
+    "add": "Nouveau plan",
+    "description": "Créez un plan avec ses propres sessions et cours. Vos autres plans restent inchangés. Enregistré dans ce navigateur.",
+    "name": "Nom du plan",
+    "name-placeholder": "Ex. Études + emploi",
+    "start-year": "Année de début",
+    "create": "Créer le plan"
+  },
   "PlannerPage": {
     "year-with-value": "Année {value}",
     "sessionTerms": {

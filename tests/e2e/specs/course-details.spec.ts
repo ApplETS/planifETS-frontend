@@ -1,3 +1,4 @@
+/* eslint-disable antfu/consistent-list-newline */
 import type { Page } from '@playwright/test';
 import { expect, test } from '@playwright/test';
 import { selectors } from '../../assets/selectors';
@@ -48,7 +49,9 @@ test.describe('Course details page', () => {
     });
   });
 
-  test('loads /course without a selected course and lets the user search from there', async ({ page }) => {
+  test('loads /course without a selected course and lets the user search from there', async ({
+    page,
+  }) => {
     await openCourseSearchPage(page);
 
     const programSelect = page.locator(selectors.courseDetailsProgramSelect);
@@ -64,7 +67,12 @@ test.describe('Course details page', () => {
     );
     await expect(programSelect).toHaveCount(0, TIMEOUT);
 
-    await searchCourseAndWaitForDetails(page, 'LOG', LOG240_COURSE_ID, SOFTWARE_PROGRAM_ID);
+    await searchCourseAndWaitForDetails(
+      page,
+      'LOG',
+      LOG240_COURSE_ID,
+      SOFTWARE_PROGRAM_ID,
+    );
 
     await expectSelectedCourse(page, {
       courseCode: 'LOG240',
@@ -86,7 +94,9 @@ test.describe('Course details page', () => {
     await expect(programSelect).toHaveCount(0, TIMEOUT);
   });
 
-  test('shows a simple empty state when no programs are found for a course id', async ({ page }) => {
+  test('shows a simple empty state when no programs are found for a course id', async ({
+    page,
+  }) => {
     await page.goto('/course/999999');
 
     const programSelect = page.locator(selectors.courseDetailsProgramSelect);
@@ -100,17 +110,42 @@ test.describe('Course details page', () => {
     await expect(page.getByTestId('course-details-code')).toHaveCount(0, TIMEOUT);
   });
 
-  test('shows available course details even when the course belongs to no programs', async ({ page }) => {
-    await page.route('**/programs/list/course/352716', (route) => route.fulfill({ json: [] }));
+  test('shows available course details even when the course belongs to no programs', async ({
+    page,
+  }) => {
+    await page.route('**/programs/list/course/352716', (route) =>
+      route.fulfill({ json: [] }),
+    );
     await openCourseDetailsPage(page, MEC111_COURSE_ID);
 
     await expect(page.getByTestId('course-details-code')).toHaveText('MEC111', TIMEOUT);
-    await expect(page.getByTestId('course-details-title')).toHaveText('Statique de l\'ingénieur', TIMEOUT);
-    await expect(page.getByRole('heading', { name: courseDetailsMessages.description })).toBeVisible(TIMEOUT);
+    await expect(page.getByTestId('course-details-title')).toHaveText(
+      'Statique de l\'ingénieur',
+      TIMEOUT,
+    );
+    await expect(
+      page.getByRole('heading', { name: courseDetailsMessages.description }),
+    ).toBeVisible(TIMEOUT);
     await expect(page.locator(selectors.courseOffering('H2026'))).toBeVisible(TIMEOUT);
-    await expect(page.getByRole('heading', { name: courseDetailsMessages.prerequisites })).toHaveCount(0);
+    await expect(
+      page.getByRole('heading', { name: courseDetailsMessages.prerequisites }),
+    ).toBeVisible(TIMEOUT);
+    await expect(page.getByText(NO_PREREQUISITES_MESSAGE)).toBeVisible(TIMEOUT);
     await expect(page.locator(selectors.courseDetailsProgramSelect)).toHaveCount(0);
-    await expect(page.getByTestId('course-details-no-programs-description')).toHaveCount(0);
+
+    const courseHeader = page
+      .locator('section')
+      .filter({ has: page.getByTestId('course-details-code') });
+
+    await expect(
+      courseHeader.getByText(courseDetailsMessages.selectProgramLabel, { exact: true }),
+    ).toBeVisible(TIMEOUT);
+    await expect(
+      courseHeader.getByText(courseDetailsMessages.noPrograms, { exact: true }),
+    ).toBeVisible(TIMEOUT);
+    await expect(page.getByTestId('course-details-no-programs-description')).toHaveCount(
+      0,
+    );
   });
 
   test('loads LOG210 with programs, prerequisites, and offerings', async ({ page }) => {
@@ -128,75 +163,151 @@ test.describe('Course details page', () => {
       TIMEOUT,
     );
 
-    await expectCourseMetadata(page, getRequirementTypeLabel('TRONC'), getTypicalSessionLabel(3));
+    await expectCourseMetadata(
+      page,
+      getRequirementTypeLabel('TRONC'),
+      getTypicalSessionLabel(3),
+    );
+
+    const cycleTag = page.getByText(`${courseDetailsMessages.cycle} 1`, { exact: true });
+
+    await expect(cycleTag).not.toHaveCSS('cursor', 'pointer');
+
+    const cycleBackground = await cycleTag.evaluate(
+      (element) => getComputedStyle(element).backgroundColor,
+    );
+    await cycleTag.hover();
+
+    await expect(cycleTag).toHaveCSS('background-color', cycleBackground);
 
     await expect(page.getByText('LOG121')).toHaveCount(1, TIMEOUT);
     await expect(page.getByText('Conception orientée objet')).toBeVisible(TIMEOUT);
-    await expect(page.getByText(courseDetailsMessages.unstructuredPrerequisiteRule)).toHaveCount(
+    await expect(
+      page.getByText(courseDetailsMessages.unstructuredPrerequisiteRule),
+    ).toHaveCount(0, TIMEOUT);
+    await expect(
+      page.getByTestId('course-details-unstructured-prerequisite'),
+    ).toHaveCount(0, TIMEOUT);
+    await expect(
+      page.getByRole('heading', { name: courseDetailsMessages.courseOffering }),
+    ).toBeVisible(TIMEOUT);
+    await expect(page.locator(selectors.courseOffering('H2026'))).toContainText(
+      'H26',
+      TIMEOUT,
+    );
+    await expect(page.locator(selectors.courseOffering('E2026'))).toContainText(
+      'E26',
+      TIMEOUT,
+    );
+    await expect(page.locator(selectors.courseOffering('A2026'))).toContainText(
+      'A26',
+      TIMEOUT,
+    );
+    await expect(page.locator(selectors.courseOffering('H2027'))).toContainText(
+      'H27',
+      TIMEOUT,
+    );
+    await expect(getOfferingAvailabilityLocator(page, 'H2026', 'JOUR')).toBeVisible(
+      TIMEOUT,
+    );
+    await expect(getOfferingAvailabilityLocator(page, 'H2026', 'SOIR')).toBeVisible(
+      TIMEOUT,
+    );
+    await expect(getOfferingAvailabilityLocator(page, 'E2026', 'JOUR')).toBeVisible(
+      TIMEOUT,
+    );
+    await expect(getOfferingAvailabilityLocator(page, 'E2026', 'SOIR')).toHaveCount(
       0,
       TIMEOUT,
     );
-    await expect(page.getByTestId('course-details-unstructured-prerequisite')).toHaveCount(
+    await expect(getOfferingAvailabilityLocator(page, 'A2026', 'JOUR')).toBeVisible(
+      TIMEOUT,
+    );
+    await expect(getOfferingAvailabilityLocator(page, 'A2026', 'SOIR')).toHaveCount(
       0,
       TIMEOUT,
     );
-    await expect(page.getByRole('heading', { name: courseDetailsMessages.courseOffering })).toBeVisible(
+    await expect(getOfferingAvailabilityLocator(page, 'H2027', 'JOUR')).toBeVisible(
       TIMEOUT,
     );
-    await expect(page.locator(selectors.courseOffering('H2026'))).toContainText('H26', TIMEOUT);
-    await expect(page.locator(selectors.courseOffering('E2026'))).toContainText('E26', TIMEOUT);
-    await expect(page.locator(selectors.courseOffering('A2026'))).toContainText('A26', TIMEOUT);
-    await expect(page.locator(selectors.courseOffering('H2027'))).toContainText('H27', TIMEOUT);
-    await expect(getOfferingAvailabilityLocator(page, 'H2026', 'JOUR')).toBeVisible(TIMEOUT);
-    await expect(getOfferingAvailabilityLocator(page, 'H2026', 'SOIR')).toBeVisible(TIMEOUT);
-    await expect(getOfferingAvailabilityLocator(page, 'E2026', 'JOUR')).toBeVisible(TIMEOUT);
-    await expect(getOfferingAvailabilityLocator(page, 'E2026', 'SOIR')).toHaveCount(0, TIMEOUT);
-    await expect(getOfferingAvailabilityLocator(page, 'A2026', 'JOUR')).toBeVisible(TIMEOUT);
-    await expect(getOfferingAvailabilityLocator(page, 'A2026', 'SOIR')).toHaveCount(0, TIMEOUT);
-    await expect(getOfferingAvailabilityLocator(page, 'H2027', 'JOUR')).toBeVisible(TIMEOUT);
-    await expect(getOfferingAvailabilityLocator(page, 'H2027', 'SOIR')).toBeVisible(TIMEOUT);
+    await expect(getOfferingAvailabilityLocator(page, 'H2027', 'SOIR')).toBeVisible(
+      TIMEOUT,
+    );
 
     await openProgramSelector(page);
 
     await expect(page.getByRole('option', { name: SOFTWARE_PROGRAM_LABEL })).toBeVisible(
       TIMEOUT,
     );
-    await expect(page.getByRole('option', { name: IT_PROGRAM_LABEL })).toBeVisible(TIMEOUT);
+    await expect(page.getByRole('option', { name: IT_PROGRAM_LABEL })).toBeVisible(
+      TIMEOUT,
+    );
     expect(courseLevelRequests).toHaveLength(0);
   });
 
-  test('shows course-level details without a matching program and adds prerequisites after selection', async ({ page }) => {
+  test('shows course-level details without a matching program and adds prerequisites after selection', async ({
+    page,
+  }) => {
     await openCourseDetailsPage(page, MEC111_COURSE_ID);
 
     const programSelect = page.locator(selectors.courseDetailsProgramSelect);
 
-    await expect(programSelect).toContainText(courseDetailsMessages.selectProgramPlaceholder, TIMEOUT);
+    await expect(programSelect).toContainText(
+      courseDetailsMessages.selectProgramPlaceholder,
+      TIMEOUT,
+    );
 
     await expect(page.getByTestId('course-details-code')).toHaveText('MEC111', TIMEOUT);
-    await expect(page.getByTestId('course-details-title')).toHaveText('Statique de l\'ingénieur', TIMEOUT);
-    await expect(page.getByRole('heading', { name: courseDetailsMessages.description })).toBeVisible(TIMEOUT);
-    await expect(page.getByRole('heading', { name: courseDetailsMessages.courseOffering })).toBeVisible(TIMEOUT);
+    await expect(page.getByTestId('course-details-title')).toHaveText(
+      'Statique de l\'ingénieur',
+      TIMEOUT,
+    );
+    await expect(
+      page.getByRole('heading', { name: courseDetailsMessages.description }),
+    ).toBeVisible(TIMEOUT);
+    await expect(
+      page.getByRole('heading', { name: courseDetailsMessages.courseOffering }),
+    ).toBeVisible(TIMEOUT);
     await expect(page.locator(selectors.courseOffering('H2026'))).toBeVisible(TIMEOUT);
-    await expect(page.getByRole('heading', { name: courseDetailsMessages.prerequisites })).toHaveCount(0);
+    await expect(
+      page.getByRole('heading', { name: courseDetailsMessages.prerequisites }),
+    ).toBeVisible(TIMEOUT);
+    await expect(page.getByText(NO_PREREQUISITES_MESSAGE)).toBeVisible(TIMEOUT);
     await expect(page.getByText(getRequirementTypeLabel('TRONC'))).toHaveCount(0);
 
-    const mec111Request = waitForCourseDetailsResponse(page, MEC111_COURSE_ID, AEROSPACE_PROGRAM_ID);
+    const mec111Request = waitForCourseDetailsResponse(
+      page,
+      MEC111_COURSE_ID,
+      AEROSPACE_PROGRAM_ID,
+    );
     await selectProgramInCourseDetails(page, AEROSPACE_PROGRAM_LABEL);
     await mec111Request;
 
     await expect(programSelect).toContainText(AEROSPACE_PROGRAM_LABEL, TIMEOUT);
 
-    await expectCourseMetadata(page, getRequirementTypeLabel('TRONC'), getTypicalSessionLabel(1));
+    await expectCourseMetadata(
+      page,
+      getRequirementTypeLabel('TRONC'),
+      getTypicalSessionLabel(1),
+    );
 
     await expect(page.getByTestId('course-details-code')).toHaveText('MEC111', TIMEOUT);
     await expect(page.getByText(NO_PREREQUISITES_MESSAGE)).toBeVisible(TIMEOUT);
 
     await page.reload();
 
-    await expect(programSelect).toContainText(courseDetailsMessages.selectProgramPlaceholder, TIMEOUT);
+    await expect(programSelect).toContainText(
+      courseDetailsMessages.selectProgramPlaceholder,
+      TIMEOUT,
+    );
     await expect(page.getByTestId('course-details-code')).toHaveText('MEC111', TIMEOUT);
 
-    await searchCourseAndWaitForDetails(page, 'LOG', LOG240_COURSE_ID, SOFTWARE_PROGRAM_ID);
+    await searchCourseAndWaitForDetails(
+      page,
+      'LOG',
+      LOG240_COURSE_ID,
+      SOFTWARE_PROGRAM_ID,
+    );
 
     await expectSelectedCourse(page, {
       courseHeading: 'LOG240',
@@ -213,32 +324,45 @@ test.describe('Course details page', () => {
     await expect(page.getByRole('heading', { name: 'LOG240' })).toBeVisible(TIMEOUT);
     await expect(programSelect).toContainText(SOFTWARE_PROGRAM_LABEL, TIMEOUT);
 
-    await expectCourseMetadata(page, getRequirementTypeLabel('TRONC'), getTypicalSessionLabel(3));
+    await expectCourseMetadata(
+      page,
+      getRequirementTypeLabel('TRONC'),
+      getTypicalSessionLabel(3),
+    );
 
     await expect(page.getByText('LOG100')).toHaveCount(1, TIMEOUT);
-    await expect(page.getByText('Programmation et réseautique en génie logiciel')).toBeVisible(
+    await expect(
+      page.getByText('Programmation et réseautique en génie logiciel'),
+    ).toBeVisible(TIMEOUT);
+    await expect(
+      page.getByText(courseDetailsMessages.unstructuredPrerequisiteRule),
+    ).toHaveCount(0, TIMEOUT);
+    await expect(
+      page.getByTestId('course-details-unstructured-prerequisite'),
+    ).toHaveCount(0, TIMEOUT);
+    await expect(page.locator(selectors.courseOffering('H2026'))).toContainText(
+      'H26',
       TIMEOUT,
     );
-    await expect(page.getByText(courseDetailsMessages.unstructuredPrerequisiteRule)).toHaveCount(
-      0,
-      TIMEOUT,
-    );
-    await expect(page.getByTestId('course-details-unstructured-prerequisite')).toHaveCount(
-      0,
-      TIMEOUT,
-    );
-    await expect(page.locator(selectors.courseOffering('H2026'))).toContainText('H26', TIMEOUT);
   });
 
-  test('renders LOG320 with structured prerequisites and shows additional unstructured prerequisite rule', async ({ page }) => {
+  test('renders LOG320 with structured prerequisites and shows additional unstructured prerequisite rule', async ({
+    page,
+  }) => {
     await openCourseDetailsPage(page, LOG320_COURSE_ID);
 
     await expect(page.getByTestId('course-details-code')).toHaveText('LOG320', TIMEOUT);
 
-    await expectCourseMetadata(page, getRequirementTypeLabel('TRONC'), getTypicalSessionLabel(4));
+    await expectCourseMetadata(
+      page,
+      getRequirementTypeLabel('TRONC'),
+      getTypicalSessionLabel(4),
+    );
 
     await expect(page.getByText('MAT210')).toHaveCount(2, TIMEOUT);
-    await expect(page.getByText('Logique et mathématiques discrètes')).toBeVisible(TIMEOUT);
+    await expect(page.getByText('Logique et mathématiques discrètes')).toBeVisible(
+      TIMEOUT,
+    );
 
     await expect(page.getByText('LOG121')).toHaveCount(2, TIMEOUT);
     await expect(page.getByText('Conception orientée objet')).toBeVisible(TIMEOUT);
@@ -246,17 +370,17 @@ test.describe('Course details page', () => {
     await expect(page.getByText('Additional prerequisite rule')).toBeVisible(TIMEOUT);
     await expect(page.getByText('MAT210, LOG121')).toBeVisible(TIMEOUT);
 
-    await expect(page.getByText(courseDetailsMessages.unstructuredPrerequisiteRule)).toHaveCount(
-      1,
-      TIMEOUT,
-    );
-    await expect(page.getByTestId('course-details-unstructured-prerequisite')).toHaveCount(
-      1,
-      TIMEOUT,
-    );
+    await expect(
+      page.getByText(courseDetailsMessages.unstructuredPrerequisiteRule),
+    ).toHaveCount(1, TIMEOUT);
+    await expect(
+      page.getByTestId('course-details-unstructured-prerequisite'),
+    ).toHaveCount(1, TIMEOUT);
   });
 
-  test('searches for another course from the details page and keeps the selected program when available', async ({ page }) => {
+  test('searches for another course from the details page and keeps the selected program when available', async ({
+    page,
+  }) => {
     await openCourseDetailsPage(page, LOG210_COURSE_ID);
 
     const programSelect = page.locator(selectors.courseDetailsProgramSelect);
@@ -264,7 +388,12 @@ test.describe('Course details page', () => {
     await expect(programSelect).toContainText(SOFTWARE_PROGRAM_LABEL, TIMEOUT);
     await expect(page.getByRole('heading', { name: 'LOG210' })).toBeVisible(TIMEOUT);
 
-    await searchCourseAndWaitForDetails(page, 'LOG', LOG240_COURSE_ID, SOFTWARE_PROGRAM_ID);
+    await searchCourseAndWaitForDetails(
+      page,
+      'LOG',
+      LOG240_COURSE_ID,
+      SOFTWARE_PROGRAM_ID,
+    );
 
     await expectSelectedCourse(page, {
       courseHeading: 'LOG240',
@@ -273,8 +402,8 @@ test.describe('Course details page', () => {
       programLabel: SOFTWARE_PROGRAM_LABEL,
     });
 
-    await expect(page.getByText('Programmation et réseautique en génie logiciel')).toBeVisible(
-      TIMEOUT,
-    );
+    await expect(
+      page.getByText('Programmation et réseautique en génie logiciel'),
+    ).toBeVisible(TIMEOUT);
   });
 });

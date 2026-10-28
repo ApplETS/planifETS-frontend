@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useOnboardingStore } from '@/store/onboardingStore';
 import { usePlannerStore } from '@/store/plannerStore';
+import { useSessionStore } from '@/store/sessionStore';
 
 type StoreHydrationState = {
   onboardingHydrated: boolean;
@@ -18,7 +19,7 @@ const getHydrationState = (): StoreHydrationState => {
   return {
     plannerHydrated,
     onboardingHydrated,
-    allHydrated: plannerHydrated && onboardingHydrated,
+    allHydrated: plannerHydrated && onboardingHydrated && useSessionStore.persist.hasHydrated(),
   };
 };
 
@@ -32,10 +33,12 @@ export const useStoreHydration = () => {
 
     const unsubPlannerHydration = usePlannerStore.persist.onFinishHydration(syncHydration);
     const unsubOnboardingHydration = useOnboardingStore.persist.onFinishHydration(syncHydration);
+    const unsubSessionHydration = useSessionStore.persist.onFinishHydration(syncHydration);
 
     return () => {
       unsubPlannerHydration();
       unsubOnboardingHydration();
+      unsubSessionHydration();
     };
   }, []);
 

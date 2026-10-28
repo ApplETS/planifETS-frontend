@@ -27,7 +27,7 @@ export default function PlannerPage() {
   const t = useTranslations('Commons');
   const router = useRouter();
 
-  const { initializePlanner, getYears, addYear } = usePlannerStore();
+  const { initializePlanner, getYears, addYear, activePlannerId } = usePlannerStore();
   const { getSessionsByYear, sessions } = useSessionStore();
   const { courses } = useCourseStore();
   const { hasCompletedOnboarding } = useOnboardingStore();
@@ -101,13 +101,13 @@ export default function PlannerPage() {
       data-print-root="planner"
     >
       <div className="w-full">
-        <ProgramSection />
+        <ProgramSection plannerDisabled={!allHydrated} />
       </div>
 
       <div className="w-full flex flex-col gap-4 p-2" data-testid="year-sections">
         {years.map((year) => (
           <YearSection
-            key={year}
+            key={`${activePlannerId}-${year}`}
             year={year}
             sessions={getSessionsByYear(year)}
             isFirstYear={year === Math.min(...years)}

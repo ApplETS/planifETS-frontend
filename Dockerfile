@@ -28,7 +28,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
-CMD ["sh", "-c", "export NEXT_PUBLIC_APP_GIT_SHORT_SHA=$(git rev-parse --short=7 HEAD 2>/dev/null || echo localdev) && yarn dev"]
+CMD ["sh", "-c", "export NEXT_PUBLIC_APP_GIT_SHORT_SHA=$(git rev-parse --short=7 HEAD 2>/dev/null || echo localdev) && yarn dev --webpack"]
 
 # Rebuild the source code only when needed
 FROM base AS builder

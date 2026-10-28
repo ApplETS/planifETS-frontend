@@ -17,7 +17,6 @@ import { useCourseStore } from '@/store/courseStore';
 import { usePlannerStore } from '@/store/plannerStore';
 import { useProgramStore } from '@/store/programStore';
 import { mapApiCourseToAppCourse } from '@/utils/courseUtil';
-import { formatProgramLabel } from '@/utils/programUtil';
 
 const ProgramSelector: React.FC = () => {
   const t = useTranslations('PlannerPage');
@@ -69,7 +68,8 @@ const ProgramSelector: React.FC = () => {
       programs
         .map((program: ProgramDto) => ({
           value: program.id,
-          label: formatProgramLabel(program),
+          label: program.title?.trim() || program.code,
+          code: program.code,
           id: program.id,
           sortLabel: program.title || program.code,
         }))

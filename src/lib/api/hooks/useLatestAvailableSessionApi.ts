@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useApi } from '@/api/hooks/useApi';
 import { sessionService } from '@/api/services/session.service';
+import { usePlannerStore } from '@/store/plannerStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { compareSessions, ORDERED_SESSION_TERMS, trimesterToSessionTerm } from '@/utils/sessionUtil';
 
@@ -8,6 +9,7 @@ export function useLatestAvailableSessionApi() {
   const { data: latestSession, loading, error, execute, reset } = useApi(sessionService.getLatestAvailableSession);
   const markSessionAvailabilityKnown = useSessionStore((state) => state.markSessionAvailabilityKnown);
   const sessionCount = useSessionStore((state) => Object.keys(state.sessions).length);
+  const activePlannerId = usePlannerStore((state) => state.activePlannerId);
 
   useEffect(() => {
     void execute();
@@ -43,7 +45,7 @@ export function useLatestAvailableSessionApi() {
       // non-fatal
       console.error('Failed setting latest available session in store:', e);
     }
-  }, [latestSession, markSessionAvailabilityKnown, sessionCount]);
+  }, [latestSession, markSessionAvailabilityKnown, sessionCount, activePlannerId]);
 
   return { latestSession, loading, error, refetch: execute, reset };
 }

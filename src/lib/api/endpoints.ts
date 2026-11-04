@@ -17,7 +17,6 @@ export const API_ENDPOINTS = {
     BY_ID: (id: number) => `/api/courses/${id}`,
   },
   CHATBOT: {
-    RECOMMEND: '/api/chatbot/recommend',
     RECOMMEND_STREAM: '/api/chatbot/recommend/stream',
   },
   RETRIEVAL: {

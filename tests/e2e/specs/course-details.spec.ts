@@ -157,6 +157,10 @@ test.describe('Course details page', () => {
     });
     await openCourseDetailsPage(page, LOG210_COURSE_ID);
 
+    await expect(page.getByTestId('course-details-page-title')).toHaveText(
+      'LOG210 - Analyse et conception de logiciels',
+      TIMEOUT,
+    );
     await expect(page.getByTestId('course-details-code')).toHaveText('LOG210', TIMEOUT);
     await expect(page.getByTestId('course-details-title')).toHaveText(
       'Analyse et conception de logiciels',

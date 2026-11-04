@@ -74,6 +74,28 @@ async function expectOptionsWrap(options: Locator, control: Locator) {
   }
 }
 
+test('empty program input stays vertically centered', async ({ page }) => {
+  enableMockApi(page);
+  await page.goto('/welcome');
+
+  const programs = page.getByTestId('programs-select');
+  const control = programs.locator('[data-slot="command"] > div').first();
+  const input = programs.locator('input');
+
+  for (const width of [320, 1280]) {
+    await page.setViewportSize({ width, height: 896 });
+
+    await expect(async () => {
+      const bounds = await control.boundingBox();
+      const inputBounds = await input.boundingBox();
+
+      expect(bounds).not.toBeNull();
+      expect(inputBounds).not.toBeNull();
+      expect(Math.abs(inputBounds!.y + inputBounds!.height / 2 - bounds!.y - bounds!.height / 2)).toBeLessThanOrEqual(1);
+    }).toPass();
+  }
+});
+
 test('course program selector wraps the full label without overflowing', async ({ page }) => {
   enableMockApi(page);
   await page.goto('/welcome');

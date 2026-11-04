@@ -1,6 +1,6 @@
 'use client';
 
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import type { Course } from '@/types/course';
 import type { TermEnum } from '@/types/session';
 import { useTranslations } from 'next-intl';
@@ -11,6 +11,7 @@ import Tag from '@/components/atoms/Tag';
 import CourseActionsMenu from '@/components/Planner/CourseActionsMenu';
 import { useCourseOperations } from '@/hooks/course/useCourseOperations';
 import { useDraggableCourse } from '@/hooks/course/useDraggableCourse';
+import { cn } from '@/shadcn/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shadcn/ui/tooltip';
 import { useSessionStore } from '@/store/sessionStore';
 import { DragType } from '@/types/dnd';
@@ -31,9 +32,11 @@ const Section: FC<SectionProps> = ({ title, children }) => (
 
 type CourseCardProps = {
   course: Course;
+  children?: ReactNode;
+  className?: string;
 };
 
-const CourseCard: FC<CourseCardProps> = ({ course }) => {
+const CourseCard: FC<CourseCardProps> = ({ course, children, className }) => {
   const { dragRef, isDragging } = useDraggableCourse({
     course,
     type: DragType.COURSE_CARD,
@@ -54,7 +57,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
       <Section title={t('prerequisites')}>
         {prereqsToDisplay.map((preq) => (
           <Tag key={preq} variant={preq === 'N/A' ? 'secondary' : 'primary'}>
-            {preq}
+            {preq === 'N/A' ? t('no-prerequisites') : preq}
           </Tag>
         ))}
       </Section>
@@ -119,8 +122,11 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
           dragRef(node);
         }
       }}
-      className={`relative w-full cursor-grab active:cursor-grabbing rounded-md bg-background p-4 shadow-md
-        ${isDragging ? 'opacity-50 cursor-grabbing' : 'opacity-100'}`}
+      className={cn(
+        'relative w-full cursor-grab active:cursor-grabbing rounded-md bg-background p-4 shadow-md',
+        isDragging ? 'opacity-50 cursor-grabbing' : 'opacity-100',
+        className,
+      )}
       data-testid={`course-card-${course.code}`}
     >
       <div className="flex items-start justify-between">
@@ -145,6 +151,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
 
       {renderPrerequisites()}
       {renderAvailability()}
+      {children}
     </div>
   );
 };

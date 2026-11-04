@@ -9,6 +9,7 @@ const posthogAssetsHost = posthogApiHost.replace(/\/\/(\w+)\./, '//$1-assets.');
 
 const baseConfig: NextConfig = {
   output: 'standalone',
+  agentRules: false,
   // Required for PostHog
   // SDK sends requests with trailing slashes that Next.js would otherwise redirect, breaking the proxy.
   skipTrailingSlashRedirect: true,

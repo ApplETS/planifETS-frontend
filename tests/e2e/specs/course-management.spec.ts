@@ -118,6 +118,6 @@ test.describe('Course Management', () => {
     const card = page.locator(selectors.courseCard(course.code));
 
     await expect(card).toBeVisible({ timeout: 15000 });
-    await expect(card).toContainText('N/A');
+    await expect(card).toContainText('None');
   });
 });

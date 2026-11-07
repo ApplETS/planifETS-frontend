@@ -325,7 +325,7 @@ test.describe('Course details page', () => {
 
     const programSelect = page.locator(selectors.courseDetailsProgramSelect);
 
-    await expect(page.getByRole('heading', { name: 'LOG240' })).toBeVisible(TIMEOUT);
+    await expect(page.getByTestId('course-details-code')).toHaveText('LOG240', TIMEOUT);
     await expect(programSelect).toContainText(SOFTWARE_PROGRAM_LABEL, TIMEOUT);
 
     await expectCourseMetadata(
@@ -390,7 +390,7 @@ test.describe('Course details page', () => {
     const programSelect = page.locator(selectors.courseDetailsProgramSelect);
 
     await expect(programSelect).toContainText(SOFTWARE_PROGRAM_LABEL, TIMEOUT);
-    await expect(page.getByRole('heading', { name: 'LOG210' })).toBeVisible(TIMEOUT);
+    await expect(page.getByTestId('course-details-code')).toHaveText('LOG210', TIMEOUT);
 
     await searchCourseAndWaitForDetails(
       page,

@@ -112,7 +112,8 @@ export async function expectSelectedCourse(
   }
 
   if (courseHeading) {
-    await expect(page.getByRole('heading', { name: courseHeading })).toBeVisible(
+    await expect(page.getByTestId('course-details-code')).toHaveText(
+      courseHeading,
       TIMEOUT,
     );
   }

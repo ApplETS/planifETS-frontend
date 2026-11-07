@@ -8,13 +8,13 @@ export type RecommendationCardData = {
 };
 
 export type ResolvedRecommendationCardData = RecommendationCardData & {
-  course: Course & { description: string };
+  course: Course;
 };
 
-export function hasCourseDescription(
+export function hasResolvedCourse(
   card: RecommendationCardData,
 ): card is ResolvedRecommendationCardData {
-  return Boolean(card.course?.description?.trim());
+  return Boolean(card.course?.id && card.course.code);
 }
 
 export function buildRecommendationCards(

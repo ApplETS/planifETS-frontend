@@ -150,6 +150,9 @@ const CourseContentSections = ({
   basicCourse,
   tCourseDetails,
 }: CourseContentSectionsProps) => {
+  const [descriptionExpanded, setDescriptionExpanded] = React.useState(false);
+  const tCommons = useTranslations('Commons');
+
   if (!course) {
     return null;
   }
@@ -158,9 +161,21 @@ const CourseContentSections = ({
     <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
       <div className="grid gap-6">
         <PageSection title={tCourseDetails('description')}>
-          <p className="whitespace-pre-line text-sm leading-7">
+          <p className={cn('whitespace-pre-line text-sm leading-7', !descriptionExpanded && 'line-clamp-3')}>
             {course.description || tCourseDetails('missingDescription')}
           </p>
+          {course.description && course.description.length > 0
+            ? (
+              <button
+                type="button"
+                className="mt-2 text-sm font-medium text-primary hover:underline"
+                aria-expanded={descriptionExpanded}
+                onClick={() => setDescriptionExpanded(!descriptionExpanded)}
+              >
+                {tCommons(descriptionExpanded ? 'showLess' : 'showMore')}
+              </button>
+            )
+            : null}
         </PageSection>
       </div>
 
@@ -284,7 +299,9 @@ const CourseDetailsPage = () => {
             className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl"
             data-testid="course-details-page-title"
           >
-            {tCourseDetails('pageTitle')}
+            {displayCourse
+              ? `${displayCourse.code} - ${displayCourse.title}`
+              : tCourseDetails('pageTitle')}
           </h1>
           <div className="w-full lg:max-w-md">
             <CourseSearchSelect

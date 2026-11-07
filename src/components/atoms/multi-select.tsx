@@ -80,7 +80,7 @@ export function MultiSelect({
       className="min-w-0 max-w-full overflow-visible bg-transparent select-none"
     >
       <div
-        className="group rounded-md border border-border bg-background
+        className="group flex items-center rounded-md border border-border bg-background
         px-3 py-1.5 min-h-10 w-full max-w-full select-none"
         style={{ boxSizing: 'border-box' }}
         // Open ONLY on pointer interaction (click/tap) on the control.

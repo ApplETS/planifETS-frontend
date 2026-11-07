@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, Square } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
@@ -9,18 +9,21 @@ import { Input } from '@/shadcn/ui/input';
 
 type ChatInputProps = {
   readonly onSendMessage: (message: string) => void;
+  readonly onCancel: () => void;
   readonly disabled?: boolean;
 };
 
 export default function ChatInput({
   onSendMessage,
+  onCancel,
   disabled = false,
 }: ChatInputProps) {
   const t = useTranslations('Chatbot');
   const [message, setMessage] = useState('');
+  const hasMessage = Boolean(message.trim());
 
   const handleSend = () => {
-    if (!message.trim() || disabled) {
+    if (!message.trim()) {
       return;
     }
 
@@ -37,7 +40,6 @@ export default function ChatInput({
           onChange={(e) => setMessage(e.target.value)}
           placeholder={t('inputPlaceholder')}
           className="h-10 rounded-xl bg-input pr-11 text-left focus-visible:border-input focus-visible:ring-0 focus-visible:shadow-sm"
-          disabled={disabled}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               handleSend();
@@ -48,9 +50,9 @@ export default function ChatInput({
         <Button
           type="button"
           size="icon"
-          aria-label={t('sendButtonAriaLabel')}
-          onClick={handleSend}
-          disabled={disabled}
+          aria-label={disabled && !hasMessage ? t('stopButtonAriaLabel') : t('sendButtonAriaLabel')}
+          onClick={disabled && !hasMessage ? onCancel : handleSend}
+          disabled={!hasMessage && !disabled}
           className="
             absolute
             top-1/2
@@ -59,9 +61,11 @@ export default function ChatInput({
             -translate-y-1/2
             rounded-full
           "
-          data-testid="send-message-button"
+          data-testid={disabled && !hasMessage ? 'stop-message-button' : 'send-message-button'}
         >
-          <ArrowUp className="size-4" />
+          {disabled && !hasMessage
+            ? <Square className="size-3 fill-current" />
+            : <ArrowUp className="size-4" />}
         </Button>
       </div>
     </div>

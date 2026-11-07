@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   buildRecommendationCards,
-  hasCourseDescription,
+  hasResolvedCourse,
 } from '@/components/Chatbot/recommendations';
 
 describe('buildRecommendationCards', () => {
@@ -17,8 +17,8 @@ describe('buildRecommendationCards', () => {
   });
 });
 
-describe('hasCourseDescription', () => {
-  it('keeps only resolved courses with a description', () => {
+describe('hasResolvedCourse', () => {
+  it('keeps draggable course data even when its description is blank or missing', () => {
     const cards = [
       { code: 'LOG680' },
       {
@@ -45,8 +45,19 @@ describe('hasCourseDescription', () => {
           availability: [],
         },
       },
+      {
+        code: 'LOG888',
+        course: {
+          id: 888,
+          code: 'LOG888',
+          title: 'No description field',
+          credits: 3,
+          prerequisites: [],
+          availability: [],
+        },
+      },
     ];
 
-    expect(cards.filter(hasCourseDescription).map(({ code }) => code)).toEqual(['LOG680']);
+    expect(cards.filter(hasResolvedCourse).map(({ code }) => code)).toEqual(['LOG680', 'LOG999', 'LOG888']);
   });
 });

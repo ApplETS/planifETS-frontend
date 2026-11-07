@@ -444,19 +444,23 @@ test.describe('Chatbot', () => {
     await emitStreamEvent(page, 'courses', '[{"code":"LOG680"}]');
 
     const card = panel.locator(selectors.courseCard('LOG680'));
-    const showMore = card.getByRole('button', { name: messages.Chatbot.showMore, exact: true });
+    const showMore = card.getByRole('button', { name: messages.Commons.showMore, exact: true });
 
     await expect(showMore).toBeVisible();
 
-    await expect(card).toContainText(`${'A'.repeat(180)}...`);
+    await expect(card).toContainText(description);
+    await expect(showMore).toHaveAttribute('aria-expanded', 'false');
 
     await showMore.click();
 
-    await expect(card).toContainText(description);
+    await expect(card.getByRole('button', { name: messages.Commons.showLess, exact: true })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
 
-    await card.getByRole('button', { name: messages.Chatbot.showLess, exact: true }).click();
+    await card.getByRole('button', { name: messages.Commons.showLess, exact: true }).click();
 
-    await expect(card).not.toContainText(description);
+    await expect(showMore).toHaveAttribute('aria-expanded', 'false');
   });
 
   test('keeps multiline course descriptions intact and removes blank lines', async ({ page }) => {
@@ -487,7 +491,10 @@ test.describe('Chatbot', () => {
     const card = panel.locator(selectors.courseCard('LOG680'));
 
     await expect(card).toContainText(`First line ${'A'.repeat(180)} Second line ${'B'.repeat(180)}`);
-    await expect(card.getByRole('button', { name: messages.Chatbot.showMore, exact: true })).toHaveCount(0);
+    await expect(card.getByRole('button', { name: messages.Commons.showMore, exact: true })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    );
   });
 
   test('clears the streaming indicator without reporting successful completion after failure', async ({ page }) => {

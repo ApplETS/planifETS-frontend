@@ -76,11 +76,11 @@ export default function ChatMessage({
         </span>
       )}
       {message.interrupted && isUser && (
-        <div className="mt-4 flex w-full items-center gap-3 text-xs text-muted-foreground" role="status">
+        <output className="mt-4 flex w-full items-center gap-3 text-xs text-muted-foreground">
           <span aria-hidden="true" className="h-px flex-1 bg-linear-to-r from-transparent to-muted-foreground/40" />
           <span className="shrink-0">{t('interruptedNotice')}</span>
           <span aria-hidden="true" className="h-px flex-1 bg-linear-to-l from-transparent to-muted-foreground/40" />
-        </div>
+        </output>
       )}
     </div>
   );

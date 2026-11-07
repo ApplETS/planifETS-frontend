@@ -1,10 +1,7 @@
 'use client';
 
 import type { ChatMessage as ChatMessageType } from './types';
-import type {
-  ChatbotCourseSuggestionDto,
-  ChatbotStreamStatus,
-} from '@/api/types';
+import type { ChatbotCourseSuggestionDto, ChatbotStreamStatus } from '@/api/types';
 
 import { Sparkles, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -31,18 +28,39 @@ function updateLoadingAssistantMessage(
   loadingMessageId: string,
   newContent: string,
   isLoading = false,
-  responseState: Pick<ChatMessageType, 'isStreaming' | 'durationMs' | 'model' | 'error'> = {},
+  responseState: Pick<
+    ChatMessageType,
+    'isStreaming' | 'durationMs' | 'model' | 'error'
+  > = {},
 ): ChatMessageType[] {
   return messages.map((message) =>
     message.id === loadingMessageId
-      ? { ...message, content: newContent, isLoading, isStreaming: false, ...responseState }
+      ? {
+        ...message,
+        content: newContent,
+        isLoading,
+        isStreaming: false,
+        ...responseState,
+      }
       : message,
   );
 }
 
-export default function ChatbotPanel({
-  onClose,
-}: ChatbotPanelProps) {
+function updateMessageAfterCancel(
+  message: ChatMessageType,
+  activeMessageId: string | null,
+  activeUserMessageId: string | null,
+): ChatMessageType {
+  if (message.id === activeUserMessageId) {
+    return { ...message, interrupted: true };
+  }
+  if (message.id === activeMessageId) {
+    return { ...message, isLoading: false, isStreaming: false };
+  }
+  return message;
+}
+
+export default function ChatbotPanel({ onClose }: ChatbotPanelProps) {
   const DESCRIPTION_SUMMARY_MAX_LENGTH = 180;
   const t = useTranslations('Chatbot');
   const tCommons = useTranslations('Commons');
@@ -56,9 +74,13 @@ export default function ChatbotPanel({
   ]);
   const [loading, setLoading] = useState(false);
   const [retryPrompt, setRetryPrompt] = useState<string | null>(null);
-  const [expandedDescriptions, setExpandedDescriptions] = useState<Set<string>>(() => new Set());
+  const [expandedDescriptions, setExpandedDescriptions] = useState<Set<string>>(
+    () => new Set(),
+  );
   const [showProgramWarning, setShowProgramWarning] = useState(true);
-  const streamRef = useRef<ReturnType<typeof chatbotService.recommendStream> | null>(null);
+  const streamRef = useRef<ReturnType<typeof chatbotService.recommendStream> | null>(
+    null,
+  );
   const cancelRequestRef = useRef<(() => void) | null>(null);
   const requestIdRef = useRef(0);
   const activeMessageIdRef = useRef<string | null>(null);
@@ -84,13 +106,13 @@ export default function ChatbotPanel({
     const activeUserMessageId = activeUserMessageIdRef.current;
     activeMessageIdRef.current = null;
     activeUserMessageIdRef.current = null;
-    setMessages((prev) => prev
-      .filter((message) => message.id !== activeMessageId || !message.isLoading)
-      .map((message) => message.id === activeUserMessageId
-        ? { ...message, interrupted: true }
-        : message.id === activeMessageId
-          ? { ...message, isLoading: false, isStreaming: false }
-          : message));
+    setMessages((prev) =>
+      prev
+        .filter((message) => message.id !== activeMessageId || !message.isLoading)
+        .map((message) =>
+          updateMessageAfterCancel(message, activeMessageId, activeUserMessageId),
+        ),
+    );
     setLoading(false);
   };
 
@@ -139,25 +161,6 @@ export default function ChatbotPanel({
     return resolvedCards.filter(hasResolvedCourse);
   };
 
-  const summarizeCourseDescription = (description: string) => {
-    const normalizedLines = description
-      .split(/\r?\n/)
-      .map((line) => line.trim())
-      .filter(Boolean);
-
-    if (description.includes('\n')) {
-      return normalizedLines.join('\n');
-    }
-
-    const normalized = normalizedLines.join(' ');
-
-    if (normalized.length <= DESCRIPTION_SUMMARY_MAX_LENGTH) {
-      return normalized;
-    }
-
-    return `${normalized.slice(0, DESCRIPTION_SUMMARY_MAX_LENGTH).trimEnd()}...`;
-  };
-
   const handleSendMessage = async (content: string) => {
     if (loading) {
       handleCancel();
@@ -192,13 +195,22 @@ export default function ChatbotPanel({
 
     const updateAssistantMessage = (
       nextContent: string,
-      responseState: Pick<ChatMessageType, 'isStreaming' | 'durationMs' | 'model' | 'error'> = {},
+      responseState: Pick<
+        ChatMessageType,
+        'isStreaming' | 'durationMs' | 'model' | 'error'
+      > = {},
     ) => {
       if (requestId !== requestIdRef.current) {
         return;
       }
       setMessages((prev) =>
-        updateLoadingAssistantMessage(prev, loadingMessageId, nextContent, false, responseState),
+        updateLoadingAssistantMessage(
+          prev,
+          loadingMessageId,
+          nextContent,
+          false,
+          responseState,
+        ),
       );
     };
 
@@ -206,7 +218,10 @@ export default function ChatbotPanel({
       if (requestId !== requestIdRef.current) {
         return;
       }
-      updateAssistantMessage(nextContent, { durationMs: performance.now() - startedAt, model });
+      updateAssistantMessage(nextContent, {
+        durationMs: performance.now() - startedAt,
+        model,
+      });
       setLoading(false);
     };
 
@@ -233,12 +248,17 @@ export default function ChatbotPanel({
         'Chatbot is busy. Try again shortly.': t('busyError'),
         'Chatbot is temporarily unavailable. Please try again.': t('unavailableError'),
         'Chatbot request timed out. Please try again.': t('timeoutError'),
-        'Invalid chatbot request. Please rephrase your message.': t('invalidRequestError'),
+        'Invalid chatbot request. Please rephrase your message.':
+          t('invalidRequestError'),
         'Received an invalid chatbot status event.': t('invalidStatusEventError'),
         'Received an invalid chatbot reasoning event.': t('invalidReasoningEventError'),
         'Received an invalid chatbot courses event.': t('invalidCoursesEventError'),
-        'The recommendation stream closed before returning courses.': t('streamClosedBeforeCoursesError'),
-        'Unable to receive chatbot recommendations.': t('unableToReceiveRecommendationsError'),
+        'The recommendation stream closed before returning courses.': t(
+          'streamClosedBeforeCoursesError',
+        ),
+        'Unable to receive chatbot recommendations.': t(
+          'unableToReceiveRecommendationsError',
+        ),
       };
       const errorMessage = streamErrorMap[rawErrorMessage] ?? rawErrorMessage;
 
@@ -255,7 +275,8 @@ export default function ChatbotPanel({
       streamRef.current = null;
 
       await new Promise<void>((resolve, reject) => {
-        cancelRequestRef.current = () => reject(new DOMException('Request cancelled', 'AbortError'));
+        cancelRequestRef.current = () =>
+          reject(new DOMException('Request cancelled', 'AbortError'));
         streamRef.current = chatbotService.recommendStream(
           {
             prompt: content,
@@ -288,14 +309,21 @@ export default function ChatbotPanel({
 
               try {
                 const fallbackReason = reasoning || t('thinkingAi');
-                const resolvedCourses = await resolveSuggestedCourses(courses, fallbackReason);
+                const resolvedCourses = await resolveSuggestedCourses(
+                  courses,
+                  fallbackReason,
+                );
                 if (requestId !== requestIdRef.current) {
                   return;
                 }
 
-                setMessages((prev) => prev.map((message) => message.id === loadingMessageId
-                  ? { ...message, suggestedCourses: resolvedCourses }
-                  : message));
+                setMessages((prev) =>
+                  prev.map((message) =>
+                    message.id === loadingMessageId
+                      ? { ...message, suggestedCourses: resolvedCourses }
+                      : message,
+                  ),
+                );
                 completeAssistantMessage(reasoning || fallbackReason);
                 resolve();
               } catch (error) {
@@ -354,9 +382,7 @@ export default function ChatbotPanel({
         <div className="flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-violet-500 dark:text-violet-300" />
 
-          <span className="font-semibold">
-            {t('buttonLabel')}
-          </span>
+          <span className="font-semibold">{t('buttonLabel')}</span>
 
           <span
             className="
@@ -398,7 +424,8 @@ export default function ChatbotPanel({
                 </div>
                 {message.suggestedCourses.map((course) => {
                   const descriptionId = `${message.id}:${course.code}`;
-                  const description = course.course.description?.trim() || course.reason || '';
+                  const description =
+                    course.course.description?.trim() || course.reason || '';
                   const isExpanded = expandedDescriptions.has(descriptionId);
                   const isLong = description.length > DESCRIPTION_SUMMARY_MAX_LENGTH;
 
@@ -408,7 +435,9 @@ export default function ChatbotPanel({
                       course={course.course}
                       className="select-none rounded-lg border border-violet-200/70 bg-background/80 shadow-sm dark:border-border"
                     >
-                      <p className={`pt-3 text-sm text-muted-foreground ${isExpanded ? '' : 'line-clamp-3'}`}>
+                      <p
+                        className={`pt-3 text-sm text-muted-foreground ${isExpanded ? '' : 'line-clamp-3'}`}
+                      >
                         {description}
                       </p>
                       {isLong && (
@@ -416,15 +445,17 @@ export default function ChatbotPanel({
                           type="button"
                           className="pt-1 text-sm font-medium text-violet-600 hover:underline dark:text-violet-300"
                           aria-expanded={isExpanded}
-                          onClick={() => setExpandedDescriptions((expanded) => {
-                            const next = new Set(expanded);
-                            if (isExpanded) {
-                              next.delete(descriptionId);
-                            } else {
-                              next.add(descriptionId);
-                            }
-                            return next;
-                          })}
+                          onClick={() =>
+                            setExpandedDescriptions((expanded) => {
+                              const next = new Set(expanded);
+                              if (isExpanded) {
+                                next.delete(descriptionId);
+                              } else {
+                                next.add(descriptionId);
+                              }
+                              return next;
+                            })
+                          }
                         >
                           {tCommons(isExpanded ? 'showLess' : 'showMore')}
                         </button>
@@ -450,7 +481,7 @@ export default function ChatbotPanel({
 
       {/* Input */}
       {programIds.length === 0 && showProgramWarning && (
-        <div className="flex items-start justify-between gap-2 px-4 pb-2 text-sm text-amber-700 dark:text-amber-300" role="status">
+        <output className="flex items-start justify-between gap-2 px-4 pb-2 text-sm text-amber-700 dark:text-amber-300">
           <p>{t('selectProgramWarning')}</p>
           <button
             type="button"
@@ -460,9 +491,13 @@ export default function ChatbotPanel({
           >
             <X className="size-4" />
           </button>
-        </div>
+        </output>
       )}
-      <ChatInput onSendMessage={handleSendMessage} onCancel={handleCancel} disabled={loading} />
+      <ChatInput
+        onSendMessage={handleSendMessage}
+        onCancel={handleCancel}
+        disabled={loading}
+      />
     </div>
   );
 }

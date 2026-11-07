@@ -53,11 +53,12 @@ function extractReason(data: string): string {
 
 function extractCourses(data: string): ChatbotCourseSuggestionDto[] | null {
   const payload = parseJsonPayload(data);
-  const courses = Array.isArray(payload)
-    ? payload
-    : payload && typeof payload === 'object'
-      ? (payload as Record<string, unknown>).courses
-      : null;
+  let courses: unknown = null;
+  if (Array.isArray(payload)) {
+    courses = payload;
+  } else if (payload && typeof payload === 'object') {
+    courses = (payload as Record<string, unknown>).courses;
+  }
 
   if (!Array.isArray(courses)) {
     return null;
@@ -77,6 +78,25 @@ function extractCourses(data: string): ChatbotCourseSuggestionDto[] | null {
 
 function extractStatus(data: string): ChatbotStreamStatus | null {
   return data === 'SEARCHING_EMBEDDINGS' || data === 'THINKING_AI' ? data : null;
+}
+
+function getHttpError(status: number, payload: unknown): Error {
+  const busy = status === 429 || (status === 503
+    && !!payload && typeof payload === 'object' && 'message' in payload
+    && payload.message === 'Chatbot is busy. Try again shortly.');
+  if (busy) return new Error('Chatbot is busy. Try again shortly.');
+  if (status === 504) return new Error('Chatbot request timed out. Please try again.');
+  if (status === 400) return new Error('Invalid chatbot request. Please rephrase your message.');
+  return new Error('Chatbot is temporarily unavailable. Please try again.');
+}
+
+function getConnectionError(error: unknown, connected: boolean): Error {
+  if (!(error instanceof TypeError)) {
+    return error instanceof Error ? error : new Error('Unable to receive chatbot recommendations.');
+  }
+  return new Error(connected
+    ? 'The recommendation stream closed before returning courses.'
+    : 'Unable to receive chatbot recommendations.');
 }
 
 async function* readEvents(body: ReadableStream<Uint8Array>) {
@@ -143,16 +163,7 @@ export const chatbotService = {
         }
         if (!response.ok) {
           const payload: unknown = await response.json().catch(() => null);
-          const busy = response.status === 429 || (response.status === 503
-            && !!payload && typeof payload === 'object' && 'message' in payload
-            && payload.message === 'Chatbot is busy. Try again shortly.');
-          throw new Error(busy
-            ? 'Chatbot is busy. Try again shortly.'
-            : response.status === 504
-              ? 'Chatbot request timed out. Please try again.'
-              : response.status === 400
-                ? 'Invalid chatbot request. Please rephrase your message.'
-                : 'Chatbot is temporarily unavailable. Please try again.');
+          throw getHttpError(response.status, payload);
         }
         if (!response.body || !response.headers.get('content-type')?.includes('text/event-stream')) {
           throw new Error('Chatbot is temporarily unavailable. Please try again.');
@@ -196,13 +207,8 @@ export const chatbotService = {
         if (completed) {
           return;
         }
-        const message = error instanceof TypeError
-          ? connected
-            ? 'The recommendation stream closed before returning courses.'
-            : 'Unable to receive chatbot recommendations.'
-          : error instanceof Error ? error.message : 'Unable to receive chatbot recommendations.';
         close();
-        handlers.onError(new Error(message));
+        handlers.onError(getConnectionError(error, connected));
       }
     };
     void run();

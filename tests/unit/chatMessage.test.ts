@@ -14,7 +14,7 @@ describe('ChatMessage interruption notice', () => {
       message: { id: '1', role: 'user', content: 'hey broski', interrupted: true },
     }));
 
-    expect(html).toMatch(/hey broski<\/span><\/div><div class="mt-4 flex w-full[^"]*" role="status">/);
+    expect(html).toMatch(/hey broski<\/span><\/div><output class="mt-4 flex w-full[^"]*">/);
     expect(html).toContain('h-px flex-1 bg-linear-to-r from-transparent to-muted-foreground/40');
     expect(html).toContain('h-px flex-1 bg-linear-to-l from-transparent to-muted-foreground/40');
     expect(html).toContain('<span class="shrink-0">Interrupted</span>');
@@ -26,7 +26,7 @@ describe('ChatMessage interruption notice', () => {
         message: { id: '1', role, content: 'Hello', interrupted: role === 'assistant' },
       }));
 
-      expect(html).not.toContain('role="status"');
+      expect(html).not.toContain('<output');
     }
   });
 });

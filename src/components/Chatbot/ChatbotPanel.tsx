@@ -352,6 +352,18 @@ export default function ChatbotPanel({ onClose }: ChatbotPanelProps) {
     }
   };
 
+  const toggleDescription = (descriptionId: string, isExpanded: boolean) => {
+    setExpandedDescriptions((expanded) => {
+      const next = new Set(expanded);
+      if (isExpanded) {
+        next.delete(descriptionId);
+      } else {
+        next.add(descriptionId);
+      }
+      return next;
+    });
+  };
+
   return (
     <div
       className="
@@ -424,8 +436,8 @@ export default function ChatbotPanel({ onClose }: ChatbotPanelProps) {
                 </div>
                 {message.suggestedCourses.map((course) => {
                   const descriptionId = `${message.id}:${course.code}`;
-                  const description =
-                    course.course.description?.trim() || course.reason || '';
+                  const description
+                    = course.course.description?.trim() || course.reason || '';
                   const isExpanded = expandedDescriptions.has(descriptionId);
                   const isLong = description.length > DESCRIPTION_SUMMARY_MAX_LENGTH;
 
@@ -445,17 +457,7 @@ export default function ChatbotPanel({ onClose }: ChatbotPanelProps) {
                           type="button"
                           className="pt-1 text-sm font-medium text-violet-600 hover:underline dark:text-violet-300"
                           aria-expanded={isExpanded}
-                          onClick={() =>
-                            setExpandedDescriptions((expanded) => {
-                              const next = new Set(expanded);
-                              if (isExpanded) {
-                                next.delete(descriptionId);
-                              } else {
-                                next.add(descriptionId);
-                              }
-                              return next;
-                            })
-                          }
+                          onClick={() => toggleDescription(descriptionId, isExpanded)}
                         >
                           {tCommons(isExpanded ? 'showLess' : 'showMore')}
                         </button>

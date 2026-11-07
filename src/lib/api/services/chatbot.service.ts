@@ -84,9 +84,15 @@ function getHttpError(status: number, payload: unknown): Error {
   const busy = status === 429 || (status === 503
     && !!payload && typeof payload === 'object' && 'message' in payload
     && payload.message === 'Chatbot is busy. Try again shortly.');
-  if (busy) return new Error('Chatbot is busy. Try again shortly.');
-  if (status === 504) return new Error('Chatbot request timed out. Please try again.');
-  if (status === 400) return new Error('Invalid chatbot request. Please rephrase your message.');
+  if (busy) {
+    return new Error('Chatbot is busy. Try again shortly.');
+  }
+  if (status === 504) {
+    return new Error('Chatbot request timed out. Please try again.');
+  }
+  if (status === 400) {
+    return new Error('Invalid chatbot request. Please rephrase your message.');
+  }
   return new Error('Chatbot is temporarily unavailable. Please try again.');
 }
 

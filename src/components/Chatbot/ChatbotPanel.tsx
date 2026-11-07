@@ -270,6 +270,35 @@ export default function ChatbotPanel({ onClose }: ChatbotPanelProps) {
       setRetryPrompt(content);
     };
 
+    const handleCourses = async (
+      courses: ChatbotCourseSuggestionDto[],
+      resolve: () => void,
+      reject: (reason?: unknown) => void,
+    ) => {
+      if (requestId !== requestIdRef.current) {
+        return;
+      }
+      streamRef.current = null;
+
+      try {
+        const fallbackReason = reasoning || t('thinkingAi');
+        const resolvedCourses = await resolveSuggestedCourses(courses, fallbackReason);
+        if (requestId !== requestIdRef.current) {
+          return;
+        }
+
+        setMessages((prev) => prev.map((message) => (
+          message.id === loadingMessageId
+            ? { ...message, suggestedCourses: resolvedCourses }
+            : message
+        )));
+        completeAssistantMessage(reasoning || fallbackReason);
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    };
+
     try {
       streamRef.current?.close();
       streamRef.current = null;
@@ -301,34 +330,8 @@ export default function ChatbotPanel({ onClose }: ChatbotPanelProps) {
             onModel: (modelName) => {
               model = modelName;
             },
-            onCourses: async (courses) => {
-              if (requestId !== requestIdRef.current) {
-                return;
-              }
-              streamRef.current = null;
-
-              try {
-                const fallbackReason = reasoning || t('thinkingAi');
-                const resolvedCourses = await resolveSuggestedCourses(
-                  courses,
-                  fallbackReason,
-                );
-                if (requestId !== requestIdRef.current) {
-                  return;
-                }
-
-                setMessages((prev) =>
-                  prev.map((message) =>
-                    message.id === loadingMessageId
-                      ? { ...message, suggestedCourses: resolvedCourses }
-                      : message,
-                  ),
-                );
-                completeAssistantMessage(reasoning || fallbackReason);
-                resolve();
-              } catch (error) {
-                reject(error);
-              }
+            onCourses: (courses) => {
+              void handleCourses(courses, resolve, reject);
             },
             onError: (error) => {
               if (requestId !== requestIdRef.current) {

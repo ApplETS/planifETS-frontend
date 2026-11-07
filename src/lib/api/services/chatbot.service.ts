@@ -105,12 +105,28 @@ function getConnectionError(error: unknown, connected: boolean): Error {
     : 'Unable to receive chatbot recommendations.');
 }
 
+type EventState = { type: string; data: string[] };
+
+function parseEventLine(line: string, state: EventState): { type: string; data: string } | null {
+  if (line === '') {
+    const event = state.data.length > 0 ? { type: state.type, data: state.data.join('\n') } : null;
+    state.type = 'message';
+    state.data = [];
+    return event;
+  }
+  if (line.startsWith('event:')) {
+    state.type = line.slice(6).replace(/^ /, '');
+  } else if (line.startsWith('data:')) {
+    state.data.push(line.slice(5).replace(/^ /, ''));
+  }
+  return null;
+}
+
 async function* readEvents(body: ReadableStream<Uint8Array>) {
   const reader = body.getReader();
   const decoder = new TextDecoder();
   let buffer = '';
-  let type = 'message';
-  let data: string[] = [];
+  const state: EventState = { type: 'message', data: [] };
   try {
     while (true) {
       const chunk = await reader.read();
@@ -118,23 +134,12 @@ async function* readEvents(body: ReadableStream<Uint8Array>) {
         break;
       }
       buffer += decoder.decode(chunk.value, { stream: true });
-      while (true) {
-        const end = buffer.indexOf('\n');
-        if (end === -1) {
-          break;
-        }
-        const line = buffer.slice(0, end).replace(/\r$/, '');
-        buffer = buffer.slice(end + 1);
-        if (line === '') {
-          if (data.length > 0) {
-            yield { type, data: data.join('\n') };
-          }
-          type = 'message';
-          data = [];
-        } else if (line.startsWith('event:')) {
-          type = line.slice(6).replace(/^ /, '');
-        } else if (line.startsWith('data:')) {
-          data.push(line.slice(5).replace(/^ /, ''));
+      const lines = buffer.split('\n');
+      buffer = lines.pop() ?? '';
+      for (const rawLine of lines) {
+        const event = parseEventLine(rawLine.replace(/\r$/, ''), state);
+        if (event) {
+          yield event;
         }
       }
     }
@@ -142,6 +147,66 @@ async function* readEvents(body: ReadableStream<Uint8Array>) {
     await reader.cancel().catch(() => {});
     reader.releaseLock();
   }
+}
+
+function dispatchEvent(
+  event: { type: string; data: string },
+  handlers: ChatbotRecommendStreamHandlers,
+  close: () => void,
+): boolean {
+  switch (event.type) {
+    case 'status': {
+      const status = extractStatus(event.data);
+      if (!status) {
+        throw new Error('Received an invalid chatbot status event.');
+      }
+      handlers.onStatus(status);
+      return false;
+    }
+    case 'reason': {
+      const reason = extractReason(event.data);
+      if (reason) {
+        handlers.onReason(reason);
+      }
+      return false;
+    }
+    case 'model':
+      if (event.data.trim().length > 0 && event.data.length <= 200) {
+        handlers.onModel?.(event.data.trim());
+      }
+      return false;
+    case 'courses': {
+      const courses = extractCourses(event.data);
+      if (!courses) {
+        throw new Error('Received an invalid chatbot courses event.');
+      }
+      close();
+      handlers.onCourses(courses);
+      return true;
+    }
+    case 'error':
+      // Server diagnostics can contain internal details; show a safe message.
+      throw new Error('Chatbot is temporarily unavailable. Please try again.');
+    default:
+      return false;
+  }
+}
+
+async function consumeEvents(
+  body: ReadableStream<Uint8Array>,
+  handlers: ChatbotRecommendStreamHandlers,
+  close: () => void,
+  isCompleted: () => boolean,
+): Promise<void> {
+  for await (const event of readEvents(body)) {
+    if (isCompleted()) {
+      return;
+    }
+    if (dispatchEvent(event, handlers, close)) {
+      return;
+    }
+  }
+  throw new Error('The recommendation stream closed before returning courses.');
 }
 
 export const chatbotService = {
@@ -175,40 +240,7 @@ export const chatbotService = {
           throw new Error('Chatbot is temporarily unavailable. Please try again.');
         }
         connected = true;
-        for await (const event of readEvents(response.body)) {
-          if (completed) {
-            return;
-          }
-          if (event.type === 'status') {
-            const status = extractStatus(event.data);
-            if (!status) {
-              throw new Error('Received an invalid chatbot status event.');
-            }
-            handlers.onStatus(status);
-          } else if (event.type === 'reason') {
-            const reason = extractReason(event.data);
-            if (reason) {
-              handlers.onReason(reason);
-            }
-          } else if (event.type === 'model') {
-            // Optional metadata must not prevent a valid answer from completing.
-            if (event.data.trim().length > 0 && event.data.length <= 200) {
-              handlers.onModel?.(event.data.trim());
-            }
-          } else if (event.type === 'courses') {
-            const courses = extractCourses(event.data);
-            if (!courses) {
-              throw new Error('Received an invalid chatbot courses event.');
-            }
-            close();
-            handlers.onCourses(courses);
-            return;
-          } else if (event.type === 'error') {
-            // Server diagnostics can contain internal details; show a safe message.
-            throw new Error('Chatbot is temporarily unavailable. Please try again.');
-          }
-        }
-        throw new Error('The recommendation stream closed before returning courses.');
+        await consumeEvents(response.body, handlers, close, () => completed);
       } catch (error) {
         if (completed) {
           return;
